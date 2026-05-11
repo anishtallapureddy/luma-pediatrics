@@ -1,0 +1,39 @@
+---
+/**
+ * Areas We Serve — surrounding-cities block for local SEO + family discovery.
+ */
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
+
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+---
+{compact ? (
+  <div class="text-sm text-[var(--color-muted-foreground)] leading-relaxed">
+    <span class="font-semibold text-[var(--color-foreground)]">Serving</span>
+    {' '}{SITE.areasServed.join(', ')}, {SITE.areasServedTagline}.
+  </div>
+) : (
+  <div class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 md:p-8 ring-1 ring-[var(--color-border-soft)]">
+    <div class="flex items-center gap-2 text-[var(--color-primary)]">
+      <Icon name="lucide:map-pin" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+      <span class="eyebrow eyebrow-sun">Areas we serve</span>
+    </div>
+    <h3 class="mt-4 text-2xl font-extrabold tracking-tight">
+      Caring for families across North Collin County.
+    </h3>
+    <p class="mt-3 text-[var(--color-foreground)]/80 leading-relaxed">
+      Serving {SITE.areasServed.join(', ')}, {SITE.areasServedTagline}.
+    </p>
+    <ul class="mt-5 flex flex-wrap gap-2">
+      {SITE.areasServed.map((city) => (
+        <li class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-muted)] px-3 py-1.5 text-sm font-semibold text-[var(--color-primary)] ring-1 ring-inset ring-[rgba(200,153,90,0.25)]">
+          <Icon name="lucide:map-pin" class="w-3.5 h-3.5" stroke-width="2" aria-hidden="true" />
+          {city}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}

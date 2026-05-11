@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import PageDecor from '../components/PageDecor.astro';
+import { Icon } from 'astro-icon/components';
+
+const quickLinks = [
+  { href: '/services',     icon: 'lucide:stethoscope', label: 'Services',     desc: 'See what we offer.' },
+  { href: '/new-patients', icon: 'lucide:users',       label: 'New patients', desc: 'How to get started.' },
+  { href: '/faq',          icon: 'lucide:info',        label: 'FAQ',          desc: 'Common questions.' },
+  { href: '/contact',      icon: 'lucide:mail',        label: 'Contact',      desc: 'Send us a message.' },
+];
+---
+<BaseLayout
+  title="Page not found"
+  path="/404"
+  description="The page you're looking for doesn't exist."
+>
+  <section class="page-hero py-20 md:py-28 relative overflow-hidden">
+    <PageDecor variant="lush" sparkles={14} />
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <p
+        class="text-7xl md:text-9xl text-[var(--color-sun)] tracking-tight leading-none"
+        style="font-family: var(--font-display); font-weight: 500;"
+      >
+        404
+      </p>
+      <h1 class="mt-6 text-3xl md:text-5xl tracking-tight">
+        We can't find that page.
+      </h1>
+      <p class="mt-5 tagline-italic-sage text-lg md:text-xl">
+        Let's get you back on track.
+      </p>
+      <p class="mt-6 text-base md:text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-xl mx-auto">
+        The link may be outdated or the page may have moved. Try one of the popular pages below.
+      </p>
+
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <Button href="/" variant="primary">
+          <Icon name="lucide:home" class="w-5 h-5" stroke-width="1.6" />
+          Back to home
+        </Button>
+        <Button href="/contact" variant="secondary">Contact us</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-20 md:pb-28 reveal">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)] text-center mb-6">
+        Popular pages
+      </p>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {quickLinks.map(({ href, icon, label, desc }) => (
+          <a
+            href={href}
+            class="card-lift group rounded-[var(--radius-card)] bg-[var(--color-card)] p-5 ring-1 ring-[var(--color-border-soft)] no-underline"
+          >
+            <span
+              class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-3"
+              aria-hidden="true"
+            >
+              <Icon name={icon} class="w-5 h-5" stroke-width="1.6" />
+            </span>
+            <h2 class="text-base font-bold text-[var(--color-foreground)]">{label}</h2>
+            <p class="mt-1 text-sm text-[var(--color-foreground)]/75 leading-relaxed">{desc}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

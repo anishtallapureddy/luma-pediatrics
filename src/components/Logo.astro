@@ -1,0 +1,57 @@
+---
+/**
+ * Luma Pediatrics logo.
+ *
+ * The mark uses the supplied brand image directly so the gold ring, parent/child
+ * forms, star placement, and center heart glow match the approved logo artwork.
+ */
+interface Props {
+  variant?: 'mark' | 'horizontal' | 'stacked';
+  size?: number;
+  subtitle?: string;
+  class?: string;
+}
+
+const {
+  variant = 'mark',
+  size = 56,
+  subtitle,
+  class: extraClass = '',
+} = Astro.props;
+
+const showWordmark = variant !== 'mark';
+---
+<div
+  class:list={[
+    'inline-flex',
+    variant === 'stacked' ? 'flex-col items-center gap-3.5' : 'items-center gap-3',
+    extraClass,
+  ]}
+>
+  <img
+    src="/images/luma-logo-mark.png"
+    width={size}
+    height={size}
+    alt="Luma Pediatrics logo"
+    class="shrink-0 rounded-full"
+    loading="eager"
+    decoding="async"
+  />
+
+  {showWordmark && (
+    variant === 'stacked' ? (
+      <div class="wordmark-lockup stacked">
+        <p class="wordmark wordmark-main">Luma</p>
+        <p class="wordmark wordmark-secondary">Pediatrics</p>
+        {subtitle && (
+          <p class="wordmark-sub" style="margin-top: 0.5rem;">{subtitle}</p>
+        )}
+      </div>
+    ) : (
+      <span class="wordmark-lockup horizontal">
+        <span class="wordmark wordmark-main">Luma</span>
+        <span class="wordmark wordmark-secondary">Pediatrics</span>
+      </span>
+    )
+  )}
+</div>

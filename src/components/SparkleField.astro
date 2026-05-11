@@ -1,0 +1,43 @@
+---
+/**
+ * Subtle scattered gold sparkle stars — purely decorative background dressing.
+ * Use absolutely-positioned inside a relative parent. `aria-hidden`.
+ *
+ * Pre-computed positions (rather than runtime random) so SSR is deterministic.
+ */
+interface Props {
+  /** Number of stars to render. Default 12. */
+  count?: number;
+  class?: string;
+}
+const { count = 12, class: extraClass = '' } = Astro.props;
+
+// Deterministic pseudo-random positions, sizes, opacities. Aesthetic mix of large + small.
+const stars = [
+  { x: 8,  y: 12, s: 12, o: 0.55 },
+  { x: 92, y: 8,  s: 18, o: 0.65 },
+  { x: 18, y: 78, s: 10, o: 0.4  },
+  { x: 80, y: 70, s: 14, o: 0.5  },
+  { x: 55, y: 4,  s: 8,  o: 0.55 },
+  { x: 4,  y: 55, s: 9,  o: 0.45 },
+  { x: 96, y: 45, s: 11, o: 0.5  },
+  { x: 32, y: 88, s: 7,  o: 0.45 },
+  { x: 70, y: 22, s: 8,  o: 0.4  },
+  { x: 45, y: 92, s: 13, o: 0.55 },
+  { x: 88, y: 92, s: 9,  o: 0.5  },
+  { x: 25, y: 30, s: 7,  o: 0.4  },
+  { x: 60, y: 60, s: 9,  o: 0.45 },
+  { x: 12, y: 38, s: 11, o: 0.5  },
+].slice(0, count);
+---
+<div class={`pointer-events-none absolute inset-0 overflow-hidden ${extraClass}`} aria-hidden="true">
+  {stars.map(({ x, y, s, o }) => (
+    <svg
+      width={s} height={s} viewBox="0 0 14 14"
+      class="absolute"
+      style={`left:${x}%;top:${y}%;opacity:${o};`}
+    >
+      <path d="M 7 0 l 1.3 4.3 l 4.3 1.3 l -4.3 1.3 l -1.3 4.3 l -1.3 -4.3 l -4.3 -1.3 l 4.3 -1.3 z" fill="#C8995A"/>
+    </svg>
+  ))}
+</div>

@@ -1,0 +1,176 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageDecor from '../../components/PageDecor.astro';
+import Picture from '../../components/Picture.astro';
+import Button from '../../components/Button.astro';
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../../site.config';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const date = post.data.publishDate.toLocaleDateString('en-US', {
+  year: 'numeric', month: 'long', day: 'numeric',
+});
+const updated = post.data.updatedDate?.toLocaleDateString('en-US', {
+  year: 'numeric', month: 'long', day: 'numeric',
+});
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.publishDate.toISOString(),
+  ...(post.data.updatedDate && { dateModified: post.data.updatedDate.toISOString() }),
+  author: {
+    '@type': 'Physician',
+    name: post.data.author,
+    medicalSpecialty: 'Pediatrics',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: SITE.name,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${SITE.domain}/favicon.png`,
+    },
+  },
+  image: post.data.hero ? `${SITE.domain}${post.data.hero}` : undefined,
+  mainEntityOfPage: `${SITE.domain}/blog/${post.id}/`,
+};
+---
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  path={`/blog/${post.id}/`}
+  ogImage={post.data.hero}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Parent Resources', path: '/blog/' },
+    { name: post.data.title, path: `/blog/${post.id}/` },
+  ]}
+>
+  <PageDecor />
+
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20 pb-20">
+    <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+      <a href="/blog/" class="no-underline hover:underline">← Parent Resources</a>
+    </p>
+
+    <h1 class="mt-4 font-display text-4xl sm:text-5xl text-[var(--color-primary)] leading-tight">
+      {post.data.title}
+    </h1>
+
+    <p class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--color-muted-foreground)]">
+      <span>By {post.data.author}</span>
+      <span aria-hidden="true">·</span>
+      <time datetime={post.data.publishDate.toISOString()}>{date}</time>
+      {updated && (<><span aria-hidden="true">·</span><span>Updated {updated}</span></>)}
+    </p>
+
+    {post.data.hero && (
+      <figure class="mt-8 rounded-2xl overflow-hidden border border-[rgba(11,29,58,0.08)]">
+        <Picture
+          src={post.data.hero}
+          alt={post.data.heroAlt ?? post.data.title}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+    )}
+
+    <div class="prose-luma mt-10">
+      <Content />
+    </div>
+
+    <aside class="mt-14 rounded-2xl bg-[var(--color-sage-light)] p-6 sm:p-8 border border-[rgba(11,29,58,0.06)]">
+      <p class="font-display text-2xl text-[var(--color-primary)]">
+        Have a question about your child?
+      </p>
+      <p class="mt-2 text-[var(--color-muted-foreground)] leading-relaxed">
+        Luma Pediatrics opens in {SITE.openingWindow} in {SITE.locationShort}.
+        Book your child's first visit, or reach out — we'd love to be your family's pediatric home.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-3">
+        <Button href={SITE.bookingUrl} variant="primary">
+          <Icon slot="icon-left" name="lucide:calendar-check" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
+          Book appointment
+        </Button>
+        <Button href="/contact/" variant="secondary">
+          <Icon slot="icon-left" name="lucide:mail" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
+          Contact us
+        </Button>
+      </div>
+      {post.id === 'vaccine-schedule-explained' && (
+        <p class="mt-5 text-sm">
+          <a href="/vaccines/" class="font-semibold">
+            See the vaccine schedule at a glance →
+          </a>
+        </p>
+      )}
+    </aside>
+
+    <p class="mt-10 text-xs text-[var(--color-muted-foreground)] leading-relaxed">
+      This article is for general educational purposes only and is not a
+      substitute for personalized advice from your child's pediatrician.
+      For urgent concerns, call {SITE.contact.phone} or go to the nearest emergency room.
+    </p>
+  </article>
+</BaseLayout>
+
+<style is:global>
+  .prose-luma {
+    color: var(--color-foreground);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+  .prose-luma > * + * { margin-top: 1.1em; }
+  .prose-luma h2 {
+    font-family: var(--font-display, 'Cormorant Garamond', serif);
+    font-size: 1.875rem;
+    line-height: 1.2;
+    color: var(--color-primary);
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+  }
+  .prose-luma h3 {
+    font-family: var(--font-display, 'Cormorant Garamond', serif);
+    font-size: 1.45rem;
+    color: var(--color-primary);
+    margin-top: 1.6em;
+    margin-bottom: 0.4em;
+  }
+  .prose-luma p { margin: 0; }
+  .prose-luma ul, .prose-luma ol {
+    padding-left: 1.5rem;
+    list-style: disc;
+  }
+  .prose-luma ol { list-style: decimal; }
+  .prose-luma li + li { margin-top: 0.4em; }
+  .prose-luma strong { color: var(--color-primary); font-weight: 600; }
+  .prose-luma em { font-style: italic; }
+  .prose-luma a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prose-luma a:hover { text-decoration-thickness: 2px; }
+  .prose-luma blockquote {
+    border-left: 3px solid var(--color-accent);
+    padding-left: 1rem;
+    color: var(--color-muted-foreground);
+    font-style: italic;
+  }
+</style>

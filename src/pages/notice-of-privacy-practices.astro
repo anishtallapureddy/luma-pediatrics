@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageDecor from '../components/PageDecor.astro';
+import { SITE } from '../site.config';
+
+const lastUpdated = 'May 2026';
+---
+<BaseLayout
+  title="Notice of Privacy Practices (HIPAA)"
+  path="/notice-of-privacy-practices"
+  description="HIPAA Notice of Privacy Practices for Luma Pediatrics in McKinney, TX. Describes how protected health information may be used and disclosed and your rights as a patient."
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Notice of Privacy Practices', path: '/notice-of-privacy-practices' },
+  ]}
+>
+  <section class="page-hero py-14 md:py-20 overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">HIPAA</span>
+      <h1 class="mt-5 text-3xl md:text-4xl tracking-tight">Notice of Privacy Practices</h1>
+      <p class="mt-5 text-sm text-[var(--color-muted-foreground)]">Effective: {lastUpdated}</p>
+      <p class="mt-5 text-base md:text-lg text-[var(--color-foreground)]/80 leading-relaxed">
+        This notice describes how medical information about your child may be used and disclosed
+        and how you can get access to this information. Please review it carefully.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-20 md:pb-28 reveal">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose-luma">
+      <h2>Our commitment</h2>
+      <p>
+        {SITE.name} is committed to protecting your child's medical information. We are required
+        by the Health Insurance Portability and Accountability Act (HIPAA) to maintain the privacy
+        of protected health information ("PHI"), provide this Notice of our legal duties and
+        privacy practices, and follow the terms currently in effect.
+      </p>
+
+      <h2>How we use & disclose PHI</h2>
+      <ul>
+        <li><strong>Treatment.</strong> To provide and coordinate your child's care.</li>
+        <li><strong>Payment.</strong> To bill insurance and obtain payment for services rendered.</li>
+        <li><strong>Healthcare operations.</strong> To run our practice, evaluate quality, and train staff.</li>
+        <li><strong>Required by law.</strong> Public health activities, reporting abuse/neglect, judicial orders, and similar mandates.</li>
+        <li><strong>With your authorization.</strong> Any other use or disclosure not described above will require your written authorization, which you may revoke at any time.</li>
+      </ul>
+
+      <h2>Your rights</h2>
+      <ul>
+        <li><strong>Access.</strong> Request a copy of your child's medical records.</li>
+        <li><strong>Amend.</strong> Request corrections to information you believe is incorrect or incomplete.</li>
+        <li><strong>Accounting of disclosures.</strong> Receive a list of certain disclosures we've made.</li>
+        <li><strong>Restrict use.</strong> Request limits on how we use or share information for treatment, payment, or operations.</li>
+        <li><strong>Confidential communications.</strong> Request that we contact you in a specific way (e.g., by mail rather than phone).</li>
+        <li><strong>Paper copy.</strong> Request a paper copy of this Notice at any time.</li>
+      </ul>
+
+      <h2>Complaints</h2>
+      <p>
+        If you believe your privacy rights have been violated, you may file a complaint with
+        {SITE.name} or with the U.S. Department of Health and Human Services Office for Civil Rights.
+        We will not retaliate for filing a complaint.
+      </p>
+
+      <h2>Contact our privacy officer</h2>
+      <p>
+        Email: <a href={SITE.contact.emailHref}>{SITE.contact.email}</a><br />
+        Phone: <a href={SITE.contact.phoneHref}>{SITE.contact.phone}</a><br />
+        Address: {SITE.name}, {SITE.address.street}, {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}
+      </p>
+
+      <p class="text-sm text-[var(--color-muted-foreground)] mt-10">
+        This Notice is a public-facing summary required by HIPAA. The complete Notice will be
+        provided to you at your first visit, and a signed acknowledgment of receipt will be requested.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose-luma h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-foreground);
+  }
+  .prose-luma p,
+  .prose-luma li {
+    color: rgba(11, 29, 58, 0.85);
+    line-height: 1.7;
+    margin-top: 0.75rem;
+  }
+  .prose-luma ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin-top: 0.75rem;
+  }
+  .prose-luma a {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+</style>

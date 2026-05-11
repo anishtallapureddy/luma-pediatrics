@@ -1,0 +1,25 @@
+---
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
+---
+<section class="affiliations-strip rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-6 md:p-7">
+  <p class="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)] text-center md:text-left">
+    Trusted credentials & affiliations
+  </p>
+  <ul class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    {SITE.affiliations.map(({ icon, label }) => (
+      <li class="flex items-center gap-3">
+        <span
+          class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] ring-1 ring-inset ring-[rgba(200,153,90,0.25)] shrink-0"
+          style="box-shadow: inset 0 1px 1px rgba(255,255,255,0.6);"
+          aria-hidden="true"
+        >
+          <Icon name={icon} class="w-5 h-5" stroke-width="1.6" />
+        </span>
+        <span class="text-sm font-semibold text-[var(--color-foreground)] leading-snug">
+          {label}
+        </span>
+      </li>
+    ))}
+  </ul>
+</section>

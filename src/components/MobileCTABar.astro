@@ -1,0 +1,42 @@
+---
+/**
+ * Sticky mobile CTA bar — fixed to the bottom of the viewport on small screens.
+ * Provides one-tap Call and one-tap Book buttons. Hidden on md+ where the
+ * header already exposes both actions prominently.
+ */
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
+---
+<div
+  class="mobile-cta-bar md:hidden fixed bottom-0 inset-x-0 z-40 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2"
+  role="region"
+  aria-label="Quick contact"
+>
+  <div class="flex gap-2 rounded-full bg-[var(--color-card)]/95 backdrop-blur ring-1 ring-[var(--color-border-soft)] shadow-[0_-6px_24px_-12px_rgba(11,29,58,0.25)] p-1.5">
+    <a
+      href={SITE.contact.phoneHref}
+      class="flex-1 inline-flex items-center justify-center gap-2 min-h-11 px-4 rounded-full text-[var(--color-primary)] no-underline font-semibold border border-[var(--color-border-soft)]"
+      aria-label={`Call ${SITE.name}`}
+    >
+      <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+      Call
+    </a>
+    <a
+      href={SITE.bookingUrl}
+      class="flex-1 inline-flex items-center justify-center gap-2 min-h-11 px-4 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold"
+      aria-label="Book an appointment (opens healow)"
+    >
+      <Icon name="lucide:calendar-check" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+      Book
+    </a>
+  </div>
+</div>
+
+<style>
+  /* Add bottom padding to main on mobile so the sticky bar never covers content */
+  @media (max-width: 767px) {
+    :global(main) {
+      padding-bottom: 5rem;
+    }
+  }
+</style>

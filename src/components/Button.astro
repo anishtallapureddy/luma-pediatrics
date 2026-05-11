@@ -1,0 +1,48 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  ariaLabel?: string;
+}
+
+const {
+  variant = 'primary',
+  href,
+  type = 'button',
+  class: extraClass = '',
+  ariaLabel,
+} = Astro.props;
+
+// Custom cubic-bezier transitions (no default ease anywhere — soft-skill anti-pattern).
+// :active scale(0.97) for tactile press feedback (Jakub).
+const base =
+  'btn group inline-flex items-center justify-center gap-2 min-h-11 px-5 py-3 ' +
+  'rounded-[var(--radius-button)] font-semibold text-base no-underline ' +
+  '[transition:transform_var(--duration-base)_var(--ease-fluid),box-shadow_var(--duration-base)_var(--ease-fluid),background-color_var(--duration-base)_var(--ease-fluid),color_var(--duration-base)_var(--ease-fluid)] ' +
+  'active:scale-[0.97] focus-visible:outline-none ' +
+  '[box-shadow:var(--shadow-soft)] hover:[box-shadow:var(--shadow-soft-hover)]';
+
+const variants: Record<string, string> = {
+  primary:
+    'btn-primary bg-[var(--color-primary)] text-[var(--color-primary-foreground)] ' +
+    'hover:bg-[var(--color-primary-hover)]',
+  secondary:
+    'btn-secondary bg-[var(--color-card)] text-[var(--color-primary)] ' +
+    'ring-1 ring-[rgba(200, 153, 90,0.28)] ring-inset hover:bg-[var(--color-muted)]',
+  ghost:
+    'btn-ghost bg-transparent text-[var(--color-foreground)] hover:bg-[var(--color-muted)] [box-shadow:none] hover:[box-shadow:none]',
+};
+
+const cls = `${base} ${variants[variant]} ${extraClass}`;
+---
+{href ? (
+  <a href={href} class={cls} aria-label={ariaLabel}>
+    <slot />
+  </a>
+) : (
+  <button type={type} class={cls} aria-label={ariaLabel}>
+    <slot />
+  </button>
+)}

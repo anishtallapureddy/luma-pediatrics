@@ -1,0 +1,45 @@
+---
+/**
+ * Soft sage curved wave used as a section transition.
+ * Place between two sections to get the brand's "flowing" look from the marketing assets.
+ */
+interface Props {
+  /** "down" wave sits at the top of the next section; "up" wave sits at the bottom. */
+  direction?: 'down' | 'up';
+  /** Hex fill for the wave (defaults to brand sage). */
+  fill?: string;
+  /** Height in px. */
+  height?: number;
+  class?: string;
+}
+const {
+  direction = 'down',
+  fill = '#7B8F70',
+  height = 72,
+  class: extraClass = '',
+} = Astro.props;
+---
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 1440 100"
+  preserveAspectRatio="none"
+  width="100%"
+  height={height}
+  class={`block ${extraClass}`}
+  style={`transform:${direction === 'up' ? 'scaleY(-1)' : 'none'};`}
+  aria-hidden="true"
+>
+  <path
+    d="M0,40 C240,100 480,0 720,40 C960,80 1200,30 1440,55 L1440,100 L0,100 Z"
+    fill={fill}
+    opacity="0.95"
+  />
+  <!-- Thin gold accent stroke for the elegant touch -->
+  <path
+    d="M0,40 C240,100 480,0 720,40 C960,80 1200,30 1440,55"
+    fill="none"
+     stroke="#C8995A"
+    stroke-width="1.5"
+    opacity="0.7"
+  />
+</svg>

@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageDecor from '../components/PageDecor.astro';
+import { Icon } from 'astro-icon/components';
+
+/**
+ * Simplified childhood vaccine schedule (for parent reference only).
+ * Source: CDC & AAP recommended childhood immunization schedules.
+ * Always confirm with your pediatrician — this is a quick parent overview.
+ */
+const schedule = [
+  { age: 'Birth',           shots: ['Hepatitis B (1st dose)'] },
+  { age: '1–2 months',      shots: ['Hepatitis B (2nd dose)'] },
+  { age: '2 months',        shots: ['DTaP', 'Hib', 'IPV (polio)', 'PCV13', 'Rotavirus'] },
+  { age: '4 months',        shots: ['DTaP', 'Hib', 'IPV', 'PCV13', 'Rotavirus'] },
+  { age: '6 months',        shots: ['DTaP', 'Hib (if needed)', 'IPV', 'PCV13', 'Rotavirus (if needed)', 'Hep B (3rd dose)', 'Flu (annual, starting at 6 mo)'] },
+  { age: '12–15 months',    shots: ['MMR', 'Varicella (chickenpox)', 'Hib', 'PCV13', 'Hepatitis A (1st dose)'] },
+  { age: '15–18 months',    shots: ['DTaP'] },
+  { age: '18–24 months',    shots: ['Hepatitis A (2nd dose)'] },
+  { age: '4–6 years',       shots: ['DTaP', 'IPV', 'MMR', 'Varicella'] },
+  { age: '11–12 years',     shots: ['Tdap booster', 'HPV (2-dose series)', 'Meningococcal (MenACWY)'] },
+  { age: '16 years',        shots: ['Meningococcal booster', 'Meningococcal B (shared decision)'] },
+  { age: 'Annual (all ages 6 mo+)', shots: ['Influenza (flu)', 'COVID-19 (per current CDC recommendation)'] },
+];
+---
+<BaseLayout
+  title="Childhood Vaccine Schedule | Luma Pediatrics McKinney"
+  path="/vaccines"
+  description="A simplified parent-friendly overview of the CDC & AAP recommended childhood vaccine schedule used at Luma Pediatrics in McKinney, TX. Questions welcome at every visit."
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services' },
+    { name: 'Vaccine Schedule', path: '/vaccines' },
+  ]}
+>
+  <section class="page-hero py-14 md:py-20 overflow-hidden">
+    <PageDecor />
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">Vaccines</span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
+        Childhood vaccine schedule
+      </h1>
+      <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
+        Aligned with current CDC and AAP recommendations.
+      </p>
+      <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/80 leading-relaxed">
+        At Luma Pediatrics we follow the immunization schedule published by the CDC and
+        American Academy of Pediatrics. We're happy to walk through it with you in detail —
+        your questions are always welcome.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-16 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] overflow-hidden">
+        <div class="grid grid-cols-[10rem_1fr] sm:grid-cols-[14rem_1fr] bg-[var(--color-muted)] text-[var(--color-primary)] text-xs font-bold uppercase tracking-[0.14em] p-4">
+          <div>Age</div>
+          <div>Recommended vaccines</div>
+        </div>
+        <ul class="divide-y divide-[var(--color-border-soft)]">
+          {schedule.map(({ age, shots }) => (
+            <li class="grid grid-cols-[10rem_1fr] sm:grid-cols-[14rem_1fr] gap-4 p-4 md:p-5">
+              <div class="font-bold text-[var(--color-foreground)]">{age}</div>
+              <ul class="flex flex-wrap gap-2">
+                {shots.map((s) => (
+                  <li class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-muted)] px-3 py-1 text-xs font-semibold text-[var(--color-primary)] ring-1 ring-inset ring-[rgba(200,153,90,0.20)]">
+                    <Icon name="lucide:syringe" class="w-3.5 h-3.5" stroke-width="2" aria-hidden="true" />
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="mt-8 rounded-xl bg-[rgba(231,108,112,0.10)] border border-[rgba(231,108,112,0.40)] p-4 flex items-start gap-3">
+        <Icon name="lucide:info" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-coral)]" stroke-width="1.8" aria-hidden="true" />
+        <p class="text-sm text-[var(--color-foreground)]/90 leading-relaxed">
+          <strong>This is a quick parent reference, not medical advice.</strong> Your child's
+          actual schedule may differ based on their medical history, prior doses, or catch-up
+          timing. We'll review it together at every well-child visit.
+        </p>
+      </div>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2">
+        <a
+          href="/blog/vaccine-schedule-explained/"
+          class="card-lift rounded-[var(--radius-card)] bg-[var(--color-sage-light)] p-5 ring-1 ring-[var(--color-border-soft)] no-underline sm:col-span-2"
+        >
+          <p class="text-sm font-semibold text-[var(--color-primary)]">A parent's guide to the vaccine schedule →</p>
+          <p class="mt-1 text-sm text-[var(--color-foreground)]/75 leading-relaxed">
+            Want the longer story — what each vaccine protects against, why timing matters,
+            and the questions parents ask us most? Read our full guide.
+          </p>
+        </a>
+        <a
+          href="https://www.cdc.gov/vaccines/schedules/parents/index.html"
+          target="_blank"
+          rel="noopener"
+          class="card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] p-5 ring-1 ring-[var(--color-border-soft)] no-underline"
+        >
+          <p class="text-sm font-semibold text-[var(--color-foreground)]">CDC official schedule →</p>
+          <p class="mt-1 text-sm text-[var(--color-foreground)]/70 leading-relaxed">
+            The latest CDC immunization schedule for parents.
+          </p>
+        </a>
+        <a
+          href="https://www.aap.org/en/patient-care/immunizations/"
+          target="_blank"
+          rel="noopener"
+          class="card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] p-5 ring-1 ring-[var(--color-border-soft)] no-underline"
+        >
+          <p class="text-sm font-semibold text-[var(--color-foreground)]">AAP immunization resources →</p>
+          <p class="mt-1 text-sm text-[var(--color-foreground)]/70 leading-relaxed">
+            Parent-facing guidance from the American Academy of Pediatrics.
+          </p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,49 @@
+---
+/**
+ * Inside Luma — office / clinical-feel photo gallery.
+ * Uses the brand-photo library until real office photos exist post-opening.
+ */
+import Picture from './Picture.astro';
+const photos = [
+  { src: '/images/inside-luma-1.jpg', alt: 'A bright, welcoming reception area with warm wood tones and soft natural light' },
+  { src: '/images/inside-luma-2.jpg', alt: 'A calm, sunlit exam room designed to feel comfortable for kids and families' },
+  { src: '/images/inside-luma-3.jpg', alt: 'A cozy waiting area with kid-friendly seating and gentle, warm lighting' },
+  { src: '/images/inside-luma-4.jpg', alt: 'A playful nook with books and toys for little ones to explore' },
+  { src: '/images/inside-luma-5.jpg', alt: 'A clean, light-filled hallway leading to private exam rooms' },
+  { src: '/images/inside-luma-6.jpg', alt: 'A thoughtfully designed family lounge with soft seating and natural textures' },
+];
+---
+<section class="office-gallery">
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {photos.map(({ src, alt }) => (
+      <figure class="office-gallery-card">
+        <Picture src={src} alt={alt} loading="lazy" />
+      </figure>
+    ))}
+  </div>
+  <p class="mt-5 text-xs text-[var(--color-muted-foreground)] text-center">
+    A glimpse of the warmth and care families can expect.
+    Photos from our McKinney office will be added once we open in Fall 2026.
+  </p>
+</section>
+
+<style>
+  .office-gallery-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    aspect-ratio: 4 / 3;
+    box-shadow: var(--shadow-soft);
+    ring: 1px solid var(--color-border-soft);
+  }
+  .office-gallery-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .office-gallery-card:hover img {
+    transform: scale(1.04);
+  }
+</style>

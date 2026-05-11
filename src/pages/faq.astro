@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageDecor from '../components/PageDecor.astro';
+import AfterHoursCard from '../components/AfterHoursCard.astro';
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
+
+const faqs = [
+  {
+    q: 'What ages do you see?',
+    a: 'Newborns through young adults (typically up to age 21). We are equipped to be your child\'s pediatric home from the very first visit through the transition to adult care.',
+  },
+  {
+    q: 'Do you accept Medicaid?',
+    a: 'Yes — we proudly welcome Medicaid families. Excellent pediatric care should be accessible to every family in our community.',
+  },
+  {
+    q: 'What insurance do you accept?',
+    a: 'We work with major insurance providers in addition to Medicaid. If you\'d like us to verify your specific plan before your first visit, please call our office or send us a quick message.',
+  },
+  {
+    q: 'Do you offer same-day sick visits?',
+    a: 'Yes. Call our office in the morning if your child wakes up unwell and we will work to get them seen the same day.',
+  },
+  {
+    q: 'Do you offer telehealth / virtual visits?',
+    a: 'Yes — through healow Telehealth, we offer secure video visits for medication refills, follow-up appointments, lab/imaging result discussions, and behavioral or ADHD check-ins. Available to established Luma patients.',
+  },
+  {
+    q: 'Do you do newborn home visits?',
+    a: "Yes — every Luma newborn family receives one complimentary in-home visit within baby's first two weeks. We check feeding, weight gain, jaundice, and how you're settling in, all without packing up baby for a clinic trip.",
+  },
+  {
+    q: 'How do I book an appointment?',
+    a: 'Use the "Book appointment" button anywhere on this site — it opens our secure patient portal where you can pick a time that works for your family. You can also call the office to schedule by phone.',
+  },
+  {
+    q: 'What should I bring to a first visit?',
+    a: 'Bring a photo ID, your insurance or Medicaid card, your child\'s immunization records (if available), and any forms that need to be signed. For newborns, bring the discharge paperwork from the hospital.',
+  },
+  {
+    q: 'Do you do school, sports, and camp physicals?',
+    a: 'Yes. Bring the forms with you — we\'ll take care of the rest during a regular well-child visit.',
+  },
+  {
+    q: 'When are you opening?',
+    a: `We're opening in ${SITE.openingWindow} in ${SITE.locationShort}. Check back here for updates, or send us a message and we'll let you know as soon as we're seeing patients.`,
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
+---
+<BaseLayout
+  title="FAQ — Insurance, Medicaid, Same-Day Visits | Luma Pediatrics McKinney"
+  path="/faq"
+  description="Common questions about Luma Pediatrics in McKinney, TX: accepted insurance, Medicaid (STAR/CHIP), same-day sick visits, what to bring to your first visit, ages we see, and how to book through our patient portal."
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'FAQ', path: '/faq' },
+  ]}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <section class="page-hero py-14 md:py-20 overflow-hidden">
+    <PageDecor />
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">FAQ</span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
+        Common questions
+      </h1>
+      <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
+        Everything you might want to know.
+      </p>
+      <p class="mt-7 text-lg text-[var(--color-foreground)]/80 leading-relaxed">
+        Don't see your question here? <a href="/contact">Send us a message</a> — we usually reply within one business day.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-20 md:pb-28 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={8} />
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="mb-10">
+        <AfterHoursCard />
+      </div>
+
+      <div class="space-y-3">
+        {faqs.map(({ q, a }, idx) => (
+          <details
+            class="group card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] open:bg-[var(--color-card)] [&[open]_.faq-chevron]:rotate-180"
+            open={idx === 0}
+          >
+            <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+              <h2 class="text-lg md:text-xl font-bold pr-2">{q}</h2>
+              <span
+                class="faq-chevron shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] [transition:transform_var(--duration-base)_var(--ease-fluid)]"
+                aria-hidden="true"
+              >
+                <Icon name="lucide:chevron-down" class="w-5 h-5" stroke-width="2" />
+              </span>
+            </summary>
+            <div class="px-6 pb-6 text-[var(--color-foreground)]/85 leading-relaxed">
+              <p>{a}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

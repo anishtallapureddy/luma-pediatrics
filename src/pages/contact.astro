@@ -1,0 +1,254 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import PageDecor from '../components/PageDecor.astro';
+import AreasServed from '../components/AreasServed.astro';
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
+
+/**
+ * Contact strategy:
+ * — Real APPOINTMENT booking happens at healow (HIPAA-compliant portal). The
+ *   "Book appointment" CTAs throughout the site link to SITE.bookingUrl.
+ * — This page hosts a low-friction GENERAL INQUIRY form for non-PHI questions
+ *   (insurance check, general questions, billing). The form intentionally
+ *   does NOT ask for child name, DOB, or any medical detail — that keeps the
+ *   website out of HIPAA scope.
+ *
+ * Wire `action=` to a form backend (Web3Forms, Formspree) — placeholder for now.
+ */
+---
+<BaseLayout
+  title="Contact Luma Pediatrics — Pediatrician in McKinney, TX"
+  path="/contact"
+  description="Contact Luma Pediatrics in McKinney, TX. Phone, email, office hours, map, and a general inquiry form. Serving McKinney, Prosper, Frisco, Allen, Melissa, Anna, Van Alstyne, Princeton, and nearby North Collin County communities."
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Contact', path: '/contact' },
+  ]}
+>
+  <section class="page-hero py-14 md:py-20 overflow-hidden">
+    <PageDecor />
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">Contact</span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
+        How can we help?
+      </h1>
+      <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
+        Always here for your family.
+      </p>
+      <p class="mt-7 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-2xl mx-auto">
+        For appointments, please use the patient portal. For everything else, send a message below.
+      </p>
+    </div>
+  </section>
+
+  <!-- Two clear paths: booking vs. general inquiry -->
+  <section class="pb-16 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-5 relative z-10">
+      <article class="card-lift rounded-[var(--radius-card)] bg-[var(--color-primary)] text-white p-7 md:p-8">
+        <span class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/15 mb-5" aria-hidden="true">
+          <Icon name="lucide:calendar-check" class="w-6 h-6" stroke-width="1.6" />
+        </span>
+        <h2 class="text-2xl font-extrabold">Book an appointment</h2>
+        <p class="mt-3 text-white/85 leading-relaxed">
+          Use our secure patient portal at healow.com to pick a time that works for your family.
+          HIPAA-compliant and built for pediatric scheduling.
+        </p>
+        <a
+          href={SITE.bookingUrl}
+          class="mt-6 inline-flex items-center gap-2 min-h-11 px-5 py-3 rounded-[var(--radius-button)] font-semibold bg-[var(--color-sun)] text-[var(--color-sun-foreground)] no-underline hover:bg-[#E1AD4A] active:scale-[0.97] [transition:transform_var(--duration-base)_var(--ease-fluid),background-color_var(--duration-base)_var(--ease-fluid)]"
+        >
+          Open patient portal
+          <span class="btn-icon-circle" aria-hidden="true">
+            <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
+          </span>
+        </a>
+      </article>
+
+      <article class="card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 md:p-8">
+        <span
+          class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-muted)] text-[var(--color-primary)] mb-5 ring-1 ring-inset ring-[rgba(11,29,58,0.08)]"
+          style="box-shadow: inset 0 1px 1px rgba(255,255,255,0.6);"
+          aria-hidden="true"
+        >
+          <Icon name="lucide:phone" class="w-6 h-6" stroke-width="1.6" />
+        </span>
+        <h2 class="text-2xl font-extrabold">Call or visit</h2>
+        <p class="mt-3 text-[var(--color-foreground)]/80 leading-relaxed">
+          Prefer to talk to a person? Call the office and we will help you get scheduled.
+        </p>
+          <dl class="mt-5 space-y-2.5 text-base">
+            <div class="flex items-start gap-3">
+              <Icon name="lucide:phone" class="w-5 h-5 text-[var(--color-primary)] mt-1" stroke-width="1.6" aria-hidden="true" />
+              <a href={SITE.contact.phoneHref} class="font-semibold no-underline">{SITE.contact.phone}</a>
+            </div>
+            <div class="flex items-start gap-3">
+              <Icon name="lucide:mail" class="w-5 h-5 text-[var(--color-primary)] mt-1" stroke-width="1.6" aria-hidden="true" />
+              <a href={SITE.contact.emailHref} class="no-underline">{SITE.contact.email}</a>
+            </div>
+            <div class="flex items-start gap-3">
+              <Icon name="lucide:map-pin" class="w-5 h-5 text-[var(--color-primary)] mt-1" stroke-width="1.6" aria-hidden="true" />
+              <address class="not-italic text-[var(--color-foreground)]/85 leading-relaxed">
+                {SITE.address.street}<br />
+                {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}
+              </address>
+            </div>
+            <div class="flex items-start gap-3">
+              <Icon name="lucide:clock" class="w-5 h-5 text-[var(--color-primary)] mt-1" stroke-width="1.6" aria-hidden="true" />
+              <div>
+                {SITE.hours.map(({ day, time }) => (
+                  <div><span class="font-semibold">{day}</span> · {time}</div>
+                ))}
+              </div>
+            </div>
+          </dl>
+
+          <div class="mt-6 overflow-hidden rounded-xl ring-1 ring-inset ring-[rgba(11,29,58,0.08)]">
+            <iframe
+              title={`Map of ${SITE.name} in ${SITE.address.city}, ${SITE.address.region}`}
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              src={`https://www.google.com/maps?q=${encodeURIComponent(`${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}`)}&output=embed`}
+              class="block w-full h-56 border-0"
+            ></iframe>
+          </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- AREAS WE SERVE -->
+  <section class="pb-16 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <AreasServed />
+    </div>
+  </section>
+
+  <!-- GENERAL INQUIRY FORM — non-PHI only -->
+  <section class="py-16 md:py-20 bg-[var(--color-muted)] reveal relative overflow-hidden">
+    <PageDecor variant="soft" sparkles={8} />
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center mb-10">
+        <span class="eyebrow eyebrow-sun">Send a message</span>
+        <h2 class="mt-5 text-3xl md:text-4xl font-extrabold tracking-tight">Have a general question?</h2>
+        <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
+          Use this form for general questions about the practice, insurance, or new-patient info.
+          For appointments, please use the patient portal above.
+        </p>
+      </div>
+
+      <div
+        role="alert"
+        class="rounded-xl bg-[rgba(231,108,112,0.12)] border border-[rgba(231,108,112,0.45)] p-4 mb-6"
+        style="box-shadow: var(--shadow-soft);"
+      >
+        <p class="font-semibold text-[var(--color-foreground)] flex items-start gap-2">
+          <Icon name="lucide:info" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-coral)]" stroke-width="1.8" aria-hidden="true" />
+          <span>
+            <strong>This form is not for emergencies or urgent medical advice.</strong>
+            For emergencies, call 911 or go to the nearest emergency room.
+            Please <strong>do not</strong> include your child's medical details, symptoms, diagnoses, or insurance ID numbers here —
+            we'll cover those at your visit or over the phone.
+          </span>
+        </p>
+      </div>
+
+      {/* Form backend: Web3Forms if access key configured, otherwise mailto fallback. */}
+      <form
+        action={SITE.forms.web3formsAccessKey && SITE.forms.web3formsAccessKey !== 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY' ? 'https://api.web3forms.com/submit' : SITE.contact.emailHref}
+        method={SITE.forms.web3formsAccessKey && SITE.forms.web3formsAccessKey !== 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY' ? 'POST' : 'get'}
+        class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 md:p-9 grid gap-5"
+        style="box-shadow: var(--shadow-soft);"
+      >
+        {SITE.forms.web3formsAccessKey && SITE.forms.web3formsAccessKey !== 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY' && (
+          <>
+            <input type="hidden" name="access_key" value={SITE.forms.web3formsAccessKey} />
+            <input type="hidden" name="subject" value="General inquiry from lumapediatrics.com" />
+            <input type="hidden" name="from_name" value="Luma Pediatrics website" />
+            <input type="hidden" name="redirect" value="/contact?status=thanks" />
+          </>
+        )}
+
+        {/* Honeypot */}
+        <input type="text" name="botcheck" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="first-name" class="block text-sm font-semibold mb-1.5">First name</label>
+            <input id="first-name" name="first-name" type="text" required autocomplete="given-name"
+              class="w-full text-base rounded-lg bg-white px-3.5 py-2.5 ring-1 ring-inset ring-[rgba(11,29,58,0.14)] focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-none [transition:box-shadow_var(--duration-fast)_var(--ease-fluid)]" />
+          </div>
+          <div>
+            <label for="last-name" class="block text-sm font-semibold mb-1.5">Last name</label>
+            <input id="last-name" name="last-name" type="text" required autocomplete="family-name"
+              class="w-full text-base rounded-lg bg-white px-3.5 py-2.5 ring-1 ring-inset ring-[rgba(11,29,58,0.14)] focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-none [transition:box-shadow_var(--duration-fast)_var(--ease-fluid)]" />
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="phone" class="block text-sm font-semibold mb-1.5">Phone</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel"
+              class="w-full text-base rounded-lg bg-white px-3.5 py-2.5 ring-1 ring-inset ring-[rgba(11,29,58,0.14)] focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-none [transition:box-shadow_var(--duration-fast)_var(--ease-fluid)]" />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-semibold mb-1.5">Email</label>
+            <input id="email" name="email" type="email" required autocomplete="email"
+              class="w-full text-base rounded-lg bg-white px-3.5 py-2.5 ring-1 ring-inset ring-[rgba(11,29,58,0.14)] focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-none [transition:box-shadow_var(--duration-fast)_var(--ease-fluid)]" />
+          </div>
+        </div>
+
+        <fieldset>
+          <legend class="block text-sm font-semibold mb-2">Preferred contact method</legend>
+          <div class="flex flex-wrap gap-3">
+            {['Phone', 'Email', 'Text'].map((opt) => (
+              <label class="inline-flex items-center gap-2 rounded-lg bg-white px-3.5 py-2.5 ring-1 ring-inset ring-[rgba(11,29,58,0.14)] cursor-pointer">
+                <input type="radio" name="preferred-contact" value={opt} class="accent-[var(--color-primary)]" />
+                <span>{opt}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <div>
+          <label for="topic" class="block text-sm font-semibold mb-1.5">What is your question about?</label>
+          <select id="topic" name="topic" required
+            class="w-full text-base rounded-lg bg-white px-3.5 py-2.5 ring-1 ring-inset ring-[rgba(11,29,58,0.14)] focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-none [transition:box-shadow_var(--duration-fast)_var(--ease-fluid)]">
+            <option value="">Choose one…</option>
+            <option>New patient information</option>
+            <option>Insurance / Medicaid question</option>
+            <option>Billing question</option>
+            <option>General question about the practice</option>
+            <option>Feedback</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="message" class="block text-sm font-semibold mb-1.5">Your message</label>
+          <textarea id="message" name="message" rows="4" required
+            placeholder="Please do not include medical details, symptoms, or insurance ID numbers."
+            class="w-full text-base rounded-lg bg-white px-3.5 py-2.5 ring-1 ring-inset ring-[rgba(11,29,58,0.14)] focus:ring-2 focus:ring-[var(--color-primary)] focus:outline-none [transition:box-shadow_var(--duration-fast)_var(--ease-fluid)] resize-y"></textarea>
+        </div>
+
+        <label class="flex items-start gap-3 text-sm">
+          <input type="checkbox" name="consent" required class="mt-1 accent-[var(--color-primary)]" />
+          <span class="text-[var(--color-foreground)]/85">
+            I understand this form is not for emergencies or medical advice, and that I should not include
+            my child's protected health information here. By submitting, I agree that {SITE.name} may
+            contact me to respond to my message.
+          </span>
+        </label>
+
+        <Button type="submit" variant="primary" class="justify-self-start">
+          Send message
+          <span class="btn-icon-circle" aria-hidden="true">
+            <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
+          </span>
+        </Button>
+      </form>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageDecor from '../components/PageDecor.astro';
+import { SITE } from '../site.config';
+
+const lastUpdated = 'May 2026';
+---
+<BaseLayout
+  title="Privacy Policy"
+  path="/privacy"
+  description="Privacy policy for Luma Pediatrics in McKinney, TX. How we collect, use, and protect information submitted through our website."
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Privacy Policy', path: '/privacy' },
+  ]}
+>
+  <section class="page-hero py-14 md:py-20 overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">Privacy</span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">Privacy Policy</h1>
+      <p class="mt-5 text-sm text-[var(--color-muted-foreground)]">Last updated: {lastUpdated}</p>
+    </div>
+  </section>
+
+  <section class="pb-20 md:pb-28 reveal">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose-luma">
+      <p>
+        This Privacy Policy explains how Luma Pediatrics ("we," "us," "our") handles
+        information submitted through our website at {SITE.domain}. Protected health information
+        ("PHI") is handled separately under our <a href="/notice-of-privacy-practices">Notice of Privacy Practices</a>
+        (HIPAA), which governs how we use and disclose health information in the course of care.
+      </p>
+
+      <h2>1. Information we collect</h2>
+      <p>
+        We collect information you voluntarily submit via our general inquiry form (name, email,
+        message). Our contact form does not request your child's name, date of birth, or any
+        medical detail — please call the office or use our patient portal for anything clinical.
+      </p>
+      <p>
+        We also collect basic, non-personal log data automatically (IP address, browser type,
+        referring URL, pages visited) to operate and improve the site.
+      </p>
+
+      <h2>2. How we use information</h2>
+      <ul>
+        <li>To respond to inquiries you send through the website.</li>
+        <li>To verify insurance eligibility prior to a first visit, if you provide that information.</li>
+        <li>To improve the website's performance, content, and accessibility.</li>
+        <li>To comply with applicable law.</li>
+      </ul>
+
+      <h2>3. How we share information</h2>
+      <p>
+        We do not sell your information. We share information only with service providers that help
+        us operate the website and our practice (for example, our patient portal, email provider,
+        hosting), and only as necessary to deliver those services. We may disclose information
+        when required by law.
+      </p>
+
+      <h2>4. Cookies & analytics</h2>
+      <p>
+        Our website uses essential cookies for performance and may use privacy-respecting analytics
+        to understand traffic. You can disable cookies in your browser; some features may not function as expected.
+      </p>
+
+      <h2>5. Children's privacy</h2>
+      <p>
+        Our website is directed to parents and guardians. We do not knowingly collect personal
+        information from children under 13 through this website. Clinical care for minors is
+        governed by HIPAA and our <a href="/notice-of-privacy-practices">Notice of Privacy Practices</a>.
+      </p>
+
+      <h2>6. Security</h2>
+      <p>
+        We use reasonable administrative, technical, and physical safeguards to protect information
+        submitted through the website. No system is fully secure; please do not send sensitive
+        clinical information through the contact form — use the secure patient portal instead.
+      </p>
+
+      <h2>7. Your choices</h2>
+      <p>
+        You may request access to, correction of, or deletion of the information you've submitted
+        through the website by emailing <a href={SITE.contact.emailHref}>{SITE.contact.email}</a>.
+      </p>
+
+      <h2>8. Changes to this policy</h2>
+      <p>
+        We may update this policy from time to time. The "Last updated" date above will reflect changes.
+      </p>
+
+      <h2>9. Contact</h2>
+      <p>
+        Questions about this policy? Email <a href={SITE.contact.emailHref}>{SITE.contact.email}</a>
+        or write to {SITE.name}, {SITE.address.street}, {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose-luma h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-foreground);
+  }
+  .prose-luma p,
+  .prose-luma li {
+    color: rgba(11, 29, 58, 0.85);
+    line-height: 1.7;
+    margin-top: 0.75rem;
+  }
+  .prose-luma ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin-top: 0.75rem;
+  }
+  .prose-luma a {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+</style>

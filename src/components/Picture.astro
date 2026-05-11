@@ -1,0 +1,67 @@
+---
+/**
+ * Picture — drop-in <img> replacement that serves a WebP variant when one exists
+ * alongside the JPG/PNG in /public/images/. Falls back to the original on
+ * browsers without WebP support.
+ *
+ * Usage:
+ *   <Picture src="/images/hero-child.jpg" alt="..." class="..." />
+ *
+ * Generate WebP siblings with the image script in /scripts (or the Pillow
+ * one-liner used during the perf migration).
+ */
+interface Props {
+  src: string;
+  alt: string;
+  class?: string;
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
+  decoding?: 'async' | 'sync' | 'auto';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  sizes?: string;
+}
+
+const {
+  src,
+  alt,
+  class: className,
+  width,
+  height,
+  loading = 'lazy',
+  decoding = 'async',
+  fetchpriority,
+  sizes,
+} = Astro.props;
+
+const webpSrc = src.replace(/\.(jpe?g|png)$/i, '.webp');
+const hasWebp = webpSrc !== src;
+---
+{hasWebp ? (
+  <picture>
+    <source srcset={webpSrc} type="image/webp" />
+    <img
+      src={src}
+      alt={alt}
+      class={className}
+      width={width}
+      height={height}
+      loading={loading}
+      decoding={decoding}
+      fetchpriority={fetchpriority}
+      sizes={sizes}
+    />
+  </picture>
+) : (
+  <img
+    src={src}
+    alt={alt}
+    class={className}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchpriority}
+    sizes={sizes}
+  />
+)}

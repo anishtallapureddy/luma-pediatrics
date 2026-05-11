@@ -1,0 +1,45 @@
+---
+import { Icon } from 'astro-icon/components';
+
+/**
+ * Brand feature trio strip — matches the "COMPASSIONATE CARE | FAMILY FOCUSED |
+ * BRIGHTER TOMORROWS" pattern from the brand marketing.
+ *
+ * Two visual modes:
+ *   - default  → on cream/card bg, with navy text and gold icons
+ *   - onSage   → on the sage band, with white text and white icons
+ */
+interface Item { icon: string; label: string; }
+interface Props {
+  items?: Item[];
+  onSage?: boolean;
+  class?: string;
+}
+const {
+  items = [
+    { icon: 'lucide:heart',        label: 'Compassionate care' },
+    { icon: 'lucide:sparkles',     label: 'Family focused' },
+    { icon: 'lucide:shield-check', label: 'Brighter tomorrows' },
+  ],
+  onSage = false,
+  class: extraClass = '',
+} = Astro.props;
+
+const textCls = onSage ? 'text-white' : 'text-[var(--color-primary)]';
+const iconCls = onSage ? 'text-white'  : 'text-[var(--color-sun)]';
+---
+<ul class={`flex flex-wrap items-center justify-center gap-x-10 gap-y-4 ${extraClass}`}>
+  {items.map(({ icon, label }, i) => (
+    <>
+      {i > 0 && (
+        <li aria-hidden="true" class={`hidden sm:block h-5 w-px ${onSage ? 'bg-white/40' : 'bg-[var(--color-sun)]/40'}`}></li>
+      )}
+      <li class="inline-flex items-center gap-2.5">
+        <Icon name={icon} class={`w-5 h-5 ${iconCls}`} stroke-width="1.6" aria-hidden="true" />
+        <span class={`text-xs sm:text-sm uppercase tracking-[0.2em] font-semibold ${textCls}`}>
+          {label}
+        </span>
+      </li>
+    </>
+  ))}
+</ul>

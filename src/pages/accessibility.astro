@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageDecor from '../components/PageDecor.astro';
+import { SITE } from '../site.config';
+
+const lastUpdated = 'May 2026';
+---
+<BaseLayout
+  title="Accessibility Statement"
+  path="/accessibility"
+  description="Luma Pediatrics is committed to providing an accessible website experience for all families in McKinney, TX and surrounding communities."
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Accessibility', path: '/accessibility' },
+  ]}
+>
+  <section class="page-hero py-14 md:py-20 overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">Accessibility</span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">Accessibility Statement</h1>
+      <p class="mt-5 text-sm text-[var(--color-muted-foreground)]">Last updated: {lastUpdated}</p>
+    </div>
+  </section>
+
+  <section class="pb-20 md:pb-28 reveal">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose-luma">
+      <p>
+        {SITE.name} is committed to ensuring that our website is accessible to people with
+        disabilities. We strive to meet or exceed the Web Content Accessibility Guidelines (WCAG) 2.2
+        Level AA standards published by the W3C.
+      </p>
+
+      <h2>What we've done</h2>
+      <ul>
+        <li>Semantic HTML structure with proper heading hierarchy.</li>
+        <li>Color contrast that meets WCAG AA for body text and interactive elements.</li>
+        <li>Alt text on meaningful images; decorative imagery marked aria-hidden.</li>
+        <li>Keyboard navigability with a visible "Skip to main content" link.</li>
+        <li>Reduced-motion support that respects the user's system preference.</li>
+        <li>Touch targets sized for mobile accessibility.</li>
+      </ul>
+
+      <h2>Ongoing work</h2>
+      <p>
+        Accessibility is a continuous effort. We audit the site regularly and welcome feedback
+        from families who use assistive technology.
+      </p>
+
+      <h2>Report a barrier</h2>
+      <p>
+        If you encounter an accessibility barrier on our website — or if you need information
+        in an alternative format — please contact us. We will work with you to provide the
+        information you need.
+      </p>
+      <p>
+        Email: <a href={SITE.contact.emailHref}>{SITE.contact.email}</a><br />
+        Phone: <a href={SITE.contact.phoneHref}>{SITE.contact.phone}</a><br />
+        Mail: {SITE.name}, {SITE.address.street}, {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}
+      </p>
+
+      <h2>In-office accessibility</h2>
+      <p>
+        Our McKinney office is designed to be welcoming for families with diverse needs.
+        If you have specific accommodations to discuss before your first visit, please let us
+        know — we'll do our best to make your child's care feel safe and supported.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose-luma h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-foreground);
+  }
+  .prose-luma p,
+  .prose-luma li {
+    color: rgba(11, 29, 58, 0.85);
+    line-height: 1.7;
+    margin-top: 0.75rem;
+  }
+  .prose-luma ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin-top: 0.75rem;
+  }
+  .prose-luma a {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+</style>

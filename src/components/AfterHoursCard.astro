@@ -1,0 +1,37 @@
+---
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
+---
+<aside class="after-hours-card rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-7 md:p-8">
+  <div class="flex items-center gap-2 text-[var(--color-primary)]">
+    <Icon name="lucide:clock" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+    <span class="eyebrow eyebrow-sun">After-hours care</span>
+  </div>
+  <h2 class="mt-4 text-2xl md:text-3xl font-extrabold tracking-tight">
+    Worried about your child after hours?
+  </h2>
+  <div class="mt-5 grid gap-4 sm:grid-cols-2">
+    <div class="rounded-xl bg-[rgba(231,108,112,0.10)] border border-[rgba(231,108,112,0.40)] p-4">
+      <p class="text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-coral)]">Emergency</p>
+      <p class="mt-2 text-[var(--color-foreground)]/90 leading-relaxed">
+        If your child is in distress, having trouble breathing, unresponsive, or seriously injured —
+        <strong>call 911</strong> or go to the nearest emergency room.
+      </p>
+    </div>
+    <div class="rounded-xl bg-[var(--color-muted)] ring-1 ring-inset ring-[rgba(200,153,90,0.25)] p-4">
+      <p class="text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-primary)]">Nurse triage (24/7)</p>
+      <p class="mt-2 text-[var(--color-foreground)]/90 leading-relaxed">
+        For non-emergency concerns when our office is closed, call
+        {' '}<a href={SITE.afterHours.partnerPhoneHref} class="font-semibold">
+          {SITE.afterHours.partner}
+        </a>:
+        <a href={SITE.afterHours.partnerPhoneHref} class="block font-bold text-lg mt-1">
+          {SITE.afterHours.partnerPhone}
+        </a>
+      </p>
+    </div>
+  </div>
+  <p class="mt-5 text-xs text-[var(--color-muted-foreground)]">
+    {SITE.afterHours.note}
+  </p>
+</aside>

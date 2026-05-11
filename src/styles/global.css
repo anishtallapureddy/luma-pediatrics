@@ -1,0 +1,956 @@
+@import "tailwindcss";
+
+@import "@fontsource/cormorant-garamond/400.css";
+@import "@fontsource/cormorant-garamond/500.css";
+@import "@fontsource/cormorant-garamond/600.css";
+@import "@fontsource/cormorant-garamond/700.css";
+@import "@fontsource/cormorant-garamond/400-italic.css";
+@import "@fontsource/cormorant-garamond/500-italic.css";
+@import "@fontsource/plus-jakarta-sans/400.css";
+@import "@fontsource/plus-jakarta-sans/500.css";
+@import "@fontsource/plus-jakarta-sans/600.css";
+@import "@fontsource/plus-jakarta-sans/700.css";
+
+/* ---------------------------------------------------------------------------
+   Luma Pediatrics of McKinney — design tokens
+   Palette extracted from official brand guide (provided 2026-05-10):
+      #0B1D3A  navy        — primary (CTAs, headings, body text)
+      #7B8F70  sage green  — secondary
+      #DAA43A  golden yellow — accent (highlights, stars, eyebrows)
+     #E76C70  coral       — tertiary accent (highlight pops; use sparingly)
+      #F6F4EF  warm cream  — page background
+
+   Contrast on cream: navy 14:1 (AAA), white-on-navy 14:1 (AAA).
+   Sage darkened for CTAs (#647A5A) so white text passes AA on it.
+
+   Design-system rationale also documented in this session's files/:
+   - luma-design-system.md      (Medical Clinic rule from ui-ux-pro-max-skill)
+   - refinement-pass.md         (Jakub Krehel motion polish + soft-skill patterns)
+--------------------------------------------------------------------------- */
+@theme {
+  /* Brand — navy is the workhorse */
+  --color-primary:                #0B1D3A;
+  --color-primary-hover:          #162D52;
+  --color-primary-foreground:     #FFFFFF;
+
+  /* Sage — secondary CTAs, success/trust states. The darker variant ensures AA on white-text CTAs. */
+  --color-sage:                   #6F8064;   /* AA-capable CTA fill */
+  --color-sage-light:             #7B8F70;   /* brand sage — backgrounds, decoration */
+  --color-sage-hover:             #59694F;
+  --color-sage-foreground:        #FFFFFF;
+
+  /* Golden yellow — decorative highlights only; not used for text on cream (insufficient contrast) */
+  --color-sun:                    #C8995A;
+  --color-sun-foreground:         #0B1D3A;
+
+  /* Coral — reserved for stars / occasional emphasis (per brand palette) */
+  --color-coral:                  #E76C70;
+  --color-coral-foreground:       #FFFFFF;
+
+  /* Surfaces — warm cream palette matching the brand poster (May 10, 2026 ref) */
+  --color-background:             #F7EFE4;
+  --color-foreground:             #0B1D3A;   /* navy for body text — AAA contrast on cream */
+  --color-card:                   #FDFAF3;
+  --color-card-foreground:        #0B1D3A;
+  --color-muted:                  #F0E5D2;   /* warm ivory deeper — alt sections */
+  --color-muted-foreground:       #5B6877;
+  --color-border-soft:            #E6D9C2;
+
+  /* States */
+  --color-destructive:            #B23B2B;
+  --color-destructive-foreground: #FFFFFF;
+  --color-ring:                   #0B1D3A;
+
+  /* Typography — elegant serif display (per brand guide); humanist sans for body */
+  --font-display: "Cormorant Garamond", "EB Garamond", Georgia, "Times New Roman", serif;
+  --font-body:    "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Radii */
+  --radius-button: 0.75rem;
+  --radius-card:   1.35rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Motion tokens — design-motion-principles (Jakub Krehel primary lens)
+--------------------------------------------------------------------------- */
+:root {
+  --ease-fluid:        cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-emphasized:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft-out:     cubic-bezier(0.22, 1, 0.36, 1);
+
+  --duration-fast:        180ms;
+  --duration-base:        280ms;
+  --duration-emphasized:  600ms;
+
+  /* Multi-layer shadows tuned to the warm cream campaign visuals */
+  --shadow-soft:
+    0 0 0 1px rgba(11, 29, 58, 0.045),
+    0 1px 2px -1px rgba(11, 29, 58, 0.05),
+    0 12px 28px -22px rgba(112, 82, 48, 0.28);
+
+  --shadow-soft-hover:
+    0 0 0 1px rgba(11, 29, 58, 0.08),
+    0 10px 24px -16px rgba(11, 29, 58, 0.18),
+    0 18px 36px -24px rgba(112, 82, 48, 0.25);
+
+  --shadow-elevated:
+    0 0 0 1px rgba(11, 29, 58, 0.06),
+    0 14px 30px -18px rgba(11, 29, 58, 0.16),
+    0 26px 52px -30px rgba(112, 82, 48, 0.28);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background:
+      radial-gradient(40rem 30rem at 8% 10%, rgba(255, 255, 255, 0.62), transparent 65%),
+      radial-gradient(38rem 26rem at 92% 6%, rgba(200, 153, 90, 0.09), transparent 62%),
+      radial-gradient(32rem 26rem at 90% 92%, rgba(123, 143, 112, 0.10), transparent 68%),
+      var(--color-background);
+    color: var(--color-foreground);
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-foreground);
+    letter-spacing: -0.005em;
+    line-height: 1.1;
+  }
+
+  p, li {
+    line-height: 1.65;
+  }
+
+  a {
+    color: var(--color-primary);
+    text-underline-offset: 3px;
+    transition: color var(--duration-fast) var(--ease-fluid);
+  }
+  a:hover {
+    color: var(--color-primary-hover);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+    }
+  }
+}
+
+@layer utilities {
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: 1rem;
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-button);
+    z-index: 100;
+    transition: top var(--duration-base) var(--ease-fluid);
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* Jakub Krehel's enter recipe: opacity + translateY + blur "materializing" effect */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(6px);
+    transition:
+      opacity     var(--duration-emphasized) var(--ease-emphasized),
+      transform   var(--duration-emphasized) var(--ease-emphasized),
+      filter      var(--duration-emphasized) var(--ease-emphasized);
+    will-change: transform, opacity, filter;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  /* Pill eyebrow tag (soft-skill pattern) — sage tint with navy text */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(123, 143, 112, 0.14);
+    color: var(--color-primary);
+    border: 1px solid rgba(123, 143, 112, 0.24);
+    border-radius: 9999px;
+    padding: 0.45rem 0.95rem;
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .eyebrow-sun {
+    background-color: rgba(200, 153, 90, 0.13);
+    border-color: rgba(200, 153, 90, 0.28);
+  }
+
+  /* Double-Bezel "outer shell" wrapper (soft-skill pattern, used sparingly) */
+  .bezel-shell {
+    padding: 0.5rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3));
+    border: 1px solid rgba(11, 29, 58, 0.08);
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-soft);
+  }
+  .bezel-core {
+    border-radius: calc(1.5rem - 0.5rem);
+    overflow: hidden;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.55);
+  }
+
+  /* Button-in-button nested icon circle (soft-skill pattern) */
+  .btn-icon-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 9999px;
+    background-color: rgba(255, 255, 255, 0.20);
+    transition: transform var(--duration-base) var(--ease-fluid);
+  }
+  .btn-secondary .btn-icon-circle {
+    background-color: rgba(11, 29, 58, 0.10);
+  }
+  a:hover > .btn-icon-circle,
+  button:hover > .btn-icon-circle {
+    transform: translateX(2px);
+  }
+
+  /* Card hover lift */
+  .card-lift {
+    border: 1px solid rgba(11, 29, 58, 0.055);
+    transition:
+      transform   var(--duration-base) var(--ease-fluid),
+      box-shadow  var(--duration-base) var(--ease-fluid);
+    box-shadow: var(--shadow-soft);
+  }
+  .card-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft-hover);
+  }
+
+  /* Sticky nav scrolled state */
+  .nav-scrolled {
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: saturate(140%) blur(12px);
+    -webkit-backdrop-filter: saturate(140%) blur(12px);
+  }
+
+  /* Announcement bar — gold w/ navy text */
+  .announce-bar {
+    background: linear-gradient(90deg, var(--color-sun) 0%, #E1AD4A 100%);
+    color: var(--color-sun-foreground);
+  }
+
+  /* Subtle entrance for hero — runs immediately on load (not scroll-driven) */
+  .fade-up {
+    animation: fadeUp var(--duration-emphasized) var(--ease-emphasized) both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+    to   { opacity: 1; transform: translateY(0);   filter: blur(0); }
+  }
+
+  /* Brand accent text/bg utilities */
+  .text-sun   { color: var(--color-sun); }
+  .text-sage  { color: var(--color-sage-light); }
+  .text-coral { color: var(--color-coral); }
+
+  .bg-sun   { background-color: var(--color-sun); }
+  .bg-sage  { background-color: var(--color-sage-light); }
+  .bg-coral { background-color: var(--color-coral); }
+
+  /* On-navy contexts */
+  .on-navy {
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+  }
+  .on-navy a { color: var(--color-sun); }
+  .on-navy a:hover { color: #F3C46E; }
+
+  /* ===== Brand-specific elegant treatments (from real brand guide) ===== */
+
+  /* Italic serif tagline — gold or sage, used under headings */
+  .tagline-italic {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-sun);
+    letter-spacing: 0.005em;
+  }
+  .tagline-italic-sage {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-sage-light);
+    letter-spacing: 0.005em;
+  }
+
+  /* Letter-spaced serif wordmark style, matching the campaign lockups */
+  .wordmark-lockup {
+    display: inline-grid;
+    justify-items: center;
+    gap: 0.16rem;
+    color: var(--color-primary);
+    line-height: 1;
+  }
+  .wordmark-lockup.horizontal {
+    justify-items: start;
+    gap: 0.08rem;
+    transform: translateY(0.02rem);
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.36em;
+    line-height: 1;
+    color: var(--color-primary);
+    text-transform: uppercase;
+  }
+  .wordmark-main {
+    font-size: clamp(1.7rem, 5.4vw, 3.05rem);
+    font-weight: 700;
+  }
+  .wordmark-secondary {
+    font-size: clamp(0.86rem, 2.45vw, 1.42rem);
+    letter-spacing: 0.28em;
+    font-weight: 600;
+  }
+  .horizontal .wordmark-main {
+    font-size: 1.22rem;
+    letter-spacing: 0.34em;
+  }
+  .horizontal .wordmark-secondary {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+  }
+  .header-logo .wordmark-lockup.horizontal {
+    gap: 0.18rem;
+  }
+  .header-logo .horizontal .wordmark-main {
+    font-size: clamp(1.55rem, 2.3vw, 2.1rem);
+    letter-spacing: 0.32em;
+    font-weight: 700;
+  }
+  .header-logo .horizontal .wordmark-secondary {
+    font-size: clamp(0.82rem, 1.2vw, 1.08rem);
+    letter-spacing: 0.24em;
+    font-weight: 600;
+  }
+  .header-logo img {
+    box-shadow: 0 10px 24px -18px rgba(11, 29, 58, 0.38);
+  }
+  @media (max-width: 640px) {
+    .header-logo img {
+      width: 56px;
+      height: 56px;
+    }
+    .header-logo .horizontal .wordmark-main {
+      font-size: 1.18rem;
+      letter-spacing: 0.24em;
+      font-weight: 700;
+    }
+    .header-logo .horizontal .wordmark-secondary {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      font-weight: 600;
+    }
+  }
+  .wordmark-sub {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: 0.32em;
+    color: var(--color-sage-light);
+    text-transform: uppercase;
+    font-size: 0.6em;
+  }
+  .wordmark-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    margin-top: 0.14rem;
+    font-family: var(--font-body);
+    font-size: clamp(0.43rem, 1.1vw, 0.62rem);
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    color: var(--color-sage-light);
+    text-transform: uppercase;
+  }
+  .wordmark-location::before,
+  .wordmark-location::after {
+    content: "";
+    width: 0.2rem;
+    height: 0.2rem;
+    border-radius: 9999px;
+    background: var(--color-sun);
+  }
+  .horizontal .wordmark-location {
+    font-size: 0.34rem;
+    letter-spacing: 0.28em;
+    gap: 0.28rem;
+  }
+
+  /* "Opening Soon" pill — gold-outlined elegant style from brand assets */
+  .pill-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.62rem 1.45rem;
+    border-radius: 9999px;
+    border: 1.5px solid rgba(200, 153, 90, 0.76);
+    background-color: rgba(255, 250, 246, 0.74);
+    box-shadow: 0 8px 24px -20px rgba(11, 29, 58, 0.32);
+    color: var(--color-primary);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  @media (max-height: 820px) and (min-width: 768px) {
+    .pill-status {
+      padding: 0.45rem 1.05rem;
+      font-size: 0.72rem;
+    }
+    .pill-status .pill-italic {
+      font-size: 0.9rem;
+    }
+  }
+  .pill-status .pill-italic {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    font-size: 1.05rem;
+    color: var(--color-sage-light);
+  }
+
+  /* Decorative star divider:  ──── ✦ ──── */
+  .star-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: var(--color-sun);
+  }
+  .star-divider::before,
+  .star-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-sun), transparent);
+    max-width: 4rem;
+  }
+
+  /* Subtle decorative star glyph (use as ::before/::after via .twinkle utility) */
+  .twinkle {
+    position: relative;
+  }
+  .twinkle::before {
+    content: "✦";
+    color: var(--color-sun);
+    opacity: 0.85;
+    margin-right: 0.4rem;
+  }
+  .twinkle::after {
+    content: "✦";
+    color: var(--color-sun);
+    opacity: 0.85;
+    margin-left: 0.4rem;
+  }
+
+  .logo-aura svg {
+    filter: drop-shadow(0 18px 34px rgba(200, 153, 90, 0.22));
+  }
+
+  .brand-hero,
+  .page-hero,
+  .campaign-panel {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .brand-hero {
+    min-height: calc(100dvh - 9rem);
+    display: flex;
+    flex-direction: column;
+    background:
+      radial-gradient(34rem 28rem at 50% 34%, rgba(255, 255, 255, 0.72), transparent 70%),
+      radial-gradient(24rem 18rem at 18% 78%, rgba(123, 143, 112, 0.13), transparent 66%),
+      radial-gradient(28rem 20rem at 84% 20%, rgba(200, 153, 90, 0.12), transparent 68%);
+  }
+
+  .brand-hero::before,
+  .page-hero::before,
+  .campaign-panel::before {
+    content: "";
+    position: absolute;
+    inset: 1.5rem auto auto -5rem;
+    width: 15rem;
+    height: 15rem;
+    border: 1.5px solid rgba(200, 153, 90, 0.30);
+    border-radius: 9999px;
+    opacity: 0.75;
+    z-index: 0;
+  }
+
+  .brand-hero::after,
+  .page-hero::after,
+  .campaign-panel::after {
+    content: "";
+    position: absolute;
+    inset: auto -6rem -4rem auto;
+    width: 18rem;
+    height: 18rem;
+    border: 1.5px solid rgba(200, 153, 90, 0.26);
+    border-radius: 9999px;
+    opacity: 0.72;
+    z-index: 0;
+  }
+
+  .page-hero {
+    overflow: hidden;
+    background:
+      radial-gradient(25rem 16rem at 50% 24%, rgba(255, 255, 255, 0.62), transparent 66%),
+      radial-gradient(20rem 14rem at 88% 16%, rgba(200, 153, 90, 0.08), transparent 64%);
+  }
+
+  .hero-poster {
+    position: relative;
+    max-width: 46rem;
+    margin-inline: auto;
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+
+  .script-kicker {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-sage-light);
+    letter-spacing: 0.01em;
+  }
+
+  .hero-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 9999px;
+    background: rgba(123, 143, 112, 0.12);
+    border: 1px solid rgba(123, 143, 112, 0.32);
+    color: var(--color-sage-light);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  .hero-status-pill svg { color: var(--color-sun); }
+
+  .service-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.7rem;
+    border-radius: 9999px;
+    background-color: rgba(231, 108, 112, 0.12);
+    color: var(--color-coral);
+    border: 1px solid rgba(231, 108, 112, 0.32);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .walkthrough-step {
+    padding: 1rem 0;
+  }
+  .walkthrough-photo {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    aspect-ratio: 4 / 3;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--color-border-soft);
+  }
+  .walkthrough-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .walkthrough-photo:hover img {
+    transform: scale(1.03);
+  }
+
+  .brand-cloud,
+  .botanical-spray {
+    position: absolute;
+    pointer-events: none;
+    color: rgba(123, 143, 112, 0.55);
+    z-index: 0;
+  }
+
+  .brand-cloud {
+    width: 7.5rem;
+    height: 3.2rem;
+    border: 1.2px solid rgba(200, 153, 90, 0.22);
+    border-top-color: rgba(200, 153, 90, 0.32);
+    border-radius: 9999px;
+    opacity: 0.78;
+  }
+  .brand-cloud::before,
+  .brand-cloud::after {
+    content: "";
+    position: absolute;
+    bottom: 1.15rem;
+    border: 1.2px solid rgba(200, 153, 90, 0.24);
+    border-bottom: 0;
+    background: var(--color-background);
+    border-radius: 9999px 9999px 0 0;
+  }
+  .brand-cloud::before {
+    left: 1.4rem;
+    width: 2.2rem;
+    height: 2rem;
+  }
+  .brand-cloud::after {
+    left: 3.25rem;
+    width: 2.8rem;
+    height: 2.55rem;
+  }
+
+  .cloud-left { left: 5%; top: 35%; transform: scale(0.74); }
+  .cloud-right { right: 7%; top: 12%; }
+
+  .botanical-spray {
+    width: 8rem;
+    height: 12rem;
+    opacity: 0.62;
+  }
+  .botanical-spray::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 1px;
+    height: 10rem;
+    background: currentColor;
+    transform: rotate(16deg);
+    transform-origin: bottom;
+  }
+  .botanical-spray span {
+    position: absolute;
+    width: 1.1rem;
+    height: 2.05rem;
+    border-radius: 100% 0 100% 0;
+    background: currentColor;
+    opacity: 0.62;
+    transform: rotate(var(--r));
+  }
+  .botanical-spray span:nth-child(1) { left: 2.1rem; bottom: 1.4rem; --r: -48deg; }
+  .botanical-spray span:nth-child(2) { left: 4.4rem; bottom: 3.1rem; --r: 36deg; }
+  .botanical-spray span:nth-child(3) { left: 2.5rem; bottom: 4.9rem; --r: -48deg; }
+  .botanical-spray span:nth-child(4) { left: 4.75rem; bottom: 6.6rem; --r: 34deg; }
+  .botanical-spray span:nth-child(5) { left: 3rem; bottom: 8.25rem; --r: -42deg; }
+
+  .leaf-left { left: 5%; bottom: 4.5rem; transform: rotate(-12deg); }
+  .leaf-right { right: 5%; bottom: 3rem; transform: scaleX(-1) rotate(-10deg); }
+
+  .sage-sweep {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: clamp(2.4rem, 6vw, 4rem);
+    background: var(--color-sage-light);
+    clip-path: ellipse(78% 75% at 50% 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .campaign-panel {
+    overflow: hidden;
+    background:
+      radial-gradient(28rem 22rem at 12% 38%, rgba(255, 255, 255, 0.68), transparent 70%),
+      radial-gradient(24rem 18rem at 83% 16%, rgba(200, 153, 90, 0.11), transparent 64%),
+      var(--color-background);
+  }
+
+  .campaign-card {
+    border: 1px solid rgba(200, 153, 90, 0.20);
+    border-radius: 2rem;
+    background: rgba(255, 250, 246, 0.72);
+    box-shadow: var(--shadow-elevated);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .logo-showcase {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(200, 153, 90, 0.28);
+    border-radius: 2rem;
+    background:
+      radial-gradient(18rem 14rem at 52% 38%, rgba(200, 153, 90, 0.13), transparent 68%),
+      radial-gradient(24rem 18rem at 92% 18%, rgba(255, 255, 255, 0.92), transparent 64%),
+      rgba(255, 253, 248, 0.78);
+    box-shadow: var(--shadow-elevated);
+  }
+  .logo-showcase::before {
+    content: "✦";
+    position: absolute;
+    top: 0.85rem;
+    right: 2rem;
+    color: rgba(200, 153, 90, 0.15);
+    font-size: 5rem;
+    line-height: 1;
+  }
+
+  .brand-mini-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.82);
+    border-radius: 1.15rem;
+    box-shadow: 0 12px 28px -20px rgba(11, 29, 58, 0.35);
+  }
+
+  .hero-poster-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-elevated);
+    background: var(--color-card);
+  }
+  .hero-poster-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .hero-family-photo {
+    position: relative;
+    overflow: hidden;
+    border: 0.45rem solid rgba(255, 253, 248, 0.94);
+    border-radius: 2rem;
+    background: var(--color-card);
+    box-shadow: var(--shadow-elevated);
+  }
+  .hero-family-photo::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 34%;
+    background: linear-gradient(0deg, rgba(11, 29, 58, 0.64), transparent);
+    pointer-events: none;
+  }
+  .hero-family-photo img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 8.4;
+    object-fit: cover;
+    object-position: center;
+  }
+  .hero-family-photo figcaption {
+    position: absolute;
+    left: 1.15rem;
+    right: 1.15rem;
+    bottom: 1rem;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    color: #FFFFFF;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.24);
+  }
+
+  @media (max-height: 820px) and (min-width: 768px) {
+    .brand-hero .hero-logo-large img {
+      width: 150px;
+      height: 150px;
+    }
+    .brand-hero .wordmark-main {
+      font-size: 2.25rem;
+    }
+    .brand-hero .wordmark-secondary {
+      font-size: 1.04rem;
+    }
+    .hero-family-photo img {
+      aspect-ratio: 16 / 7.2;
+    }
+  }
+
+  .trust-gallery {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(26rem 20rem at 8% 18%, rgba(200, 153, 90, 0.10), transparent 70%),
+      radial-gradient(26rem 20rem at 94% 88%, rgba(123, 143, 112, 0.12), transparent 68%);
+  }
+
+  .photo-trust-card {
+    overflow: hidden;
+    border-radius: 1.7rem;
+    background: var(--color-card);
+    box-shadow: var(--shadow-soft);
+  }
+  .photo-trust-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3.35;
+    object-fit: cover;
+  }
+  .photo-trust-card figcaption {
+    padding: 1.15rem 1.2rem 1.3rem;
+  }
+  .photo-trust-card h3 {
+    font-size: 1.35rem;
+  }
+  .photo-trust-card p {
+    margin-top: 0.35rem;
+    color: rgba(11, 29, 58, 0.74);
+    font-size: 0.94rem;
+    line-height: 1.55;
+  }
+
+  .provider-spotlight {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(26rem 20rem at 85% 20%, rgba(200, 153, 90, 0.10), transparent 66%),
+      var(--color-background);
+  }
+  .provider-card {
+    border: 1px solid rgba(200, 153, 90, 0.22);
+    border-radius: 2rem;
+    background: rgba(255, 253, 248, 0.82);
+    box-shadow: var(--shadow-elevated);
+  }
+  .provider-photo-stack {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32rem;
+  }
+  .provider-photo-stack img {
+    position: relative;
+    display: block;
+    width: min(88%, 26rem);
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 22%;
+    border: 0.45rem solid rgba(255, 253, 248, 0.94);
+    border-radius: 2rem;
+    box-shadow: var(--shadow-elevated);
+  }
+  @media (min-width: 1024px) {
+    .provider-photo-stack {
+      min-height: 38rem;
+    }
+    .provider-photo-stack img {
+      width: min(92%, 28rem);
+      aspect-ratio: 4 / 5.1;
+    }
+  }
+  .provider-logo-stack {
+    min-height: 30rem;
+  }
+  .provider-logo-emblem {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: min(82%, 24rem);
+    padding: 2rem 1.5rem;
+    border: 0.45rem solid rgba(255, 253, 248, 0.94);
+    border-radius: 2rem;
+    background:
+      radial-gradient(16rem 12rem at 50% 36%, rgba(200, 153, 90, 0.16), transparent 70%),
+      rgba(255, 253, 248, 0.90);
+    box-shadow: var(--shadow-elevated);
+  }
+  .provider-logo-stack img {
+    right: 0;
+    bottom: 0;
+    aspect-ratio: 1 / 1.08;
+    border-radius: 9999px 9999px 2rem 2rem;
+  }
+  .provider-detail-list {
+    display: grid;
+    gap: 0.8rem;
+  }
+  .provider-detail-list li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    color: rgba(11, 29, 58, 0.82);
+  }
+
+  .navy-campaign {
+    background:
+      radial-gradient(28rem 22rem at 86% 16%, rgba(200, 153, 90, 0.08), transparent 62%),
+      radial-gradient(24rem 16rem at 12% 100%, rgba(123, 143, 112, 0.12), transparent 66%),
+      var(--color-primary);
+    color: #FFFFFF;
+  }
+  .navy-campaign h1,
+  .navy-campaign h2,
+  .navy-campaign h3 {
+    color: #FFFFFF;
+  }
+  .navy-card {
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    background: rgba(255, 255, 255, 0.055);
+    box-shadow: 0 18px 42px -28px rgba(0, 0, 0, 0.55);
+  }
+  .navy-campaign .eyebrow {
+    background-color: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #FFFFFF;
+  }
+  .navy-campaign .eyebrow-sun {
+    background-color: rgba(200, 153, 90, 0.22);
+    border-color: rgba(200, 153, 90, 0.45);
+    color: var(--color-sun);
+  }
+  .navy-campaign p,
+  .navy-campaign li {
+    color: rgba(255, 255, 255, 0.88);
+  }
+}

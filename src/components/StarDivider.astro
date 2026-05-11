@@ -1,0 +1,19 @@
+---
+/**
+ * Decorative divider: thin gold gradient line with a 4-point star centered.
+ * Used between sections to add the brand's elegant feel.
+ */
+interface Props {
+  class?: string;
+  /** Width as a CSS value, default 8rem total line span on each side. */
+  span?: string;
+}
+const { class: extraClass = '', span = '5rem' } = Astro.props;
+---
+<div class={`flex items-center justify-center gap-4 ${extraClass}`} aria-hidden="true">
+  <span class="block h-px" style={`width:${span};background:linear-gradient(90deg,transparent,#C8995A,transparent);`}></span>
+  <svg width="14" height="14" viewBox="0 0 14 14" class="shrink-0">
+    <path d="M 7 0 l 1.3 4.3 l 4.3 1.3 l -4.3 1.3 l -1.3 4.3 l -1.3 -4.3 l -4.3 -1.3 l 4.3 -1.3 z" fill="#C8995A"/>
+  </svg>
+  <span class="block h-px" style={`width:${span};background:linear-gradient(90deg,transparent,#C8995A,transparent);`}></span>
+</div>

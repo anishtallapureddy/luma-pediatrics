@@ -1,0 +1,43 @@
+---
+/**
+ * PageDecor — reusable, elegant background decorations that echo the brand poster:
+ * gold-outlined clouds, sage leaf sprays, and scattered gold sparkles.
+ *
+ * Drop inside any `.page-hero`, `.brand-hero`, or `.campaign-panel` container
+ * (or any positioned section) as the very first child. All decorations are
+ * absolutely positioned and aria-hidden.
+ *
+ * Variants control density:
+ *  - "soft"  (default) : subtle, for inner page heroes
+ *  - "lush"            : more decoration, for the homepage hero
+ *  - "minimal"         : just sparkles, no clouds/leaves
+ */
+import SparkleField from './SparkleField.astro';
+
+interface Props {
+  variant?: 'soft' | 'lush' | 'minimal';
+  sparkles?: number;
+}
+
+const { variant = 'soft', sparkles } = Astro.props;
+const sparkleCount = sparkles ?? (variant === 'lush' ? 12 : variant === 'minimal' ? 6 : 8);
+const showClouds = variant !== 'minimal';
+const showLeaves = variant !== 'minimal';
+---
+{showClouds && (
+  <>
+    <div class="brand-cloud cloud-left" aria-hidden="true"></div>
+    <div class="brand-cloud cloud-right" aria-hidden="true"></div>
+  </>
+)}
+{showLeaves && (
+  <>
+    <div class="botanical-spray leaf-left" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="botanical-spray leaf-right" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </>
+)}
+<SparkleField count={sparkleCount} class="z-0" />

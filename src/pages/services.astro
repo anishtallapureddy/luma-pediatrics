@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageDecor from '../components/PageDecor.astro';
+import { Icon } from 'astro-icon/components';
+import { services } from '../data/services';
+---
+<BaseLayout
+  title="Pediatric Services in McKinney, TX — Well-Child, Sick Visits, Vaccines"
+  path="/services"
+  description="Comprehensive pediatric services at Luma Pediatrics in McKinney, TX: newborn care, well-child checkups, same-day sick visits, immunizations, school and sports physicals, ADHD and behavioral care, and teen health."
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services' },
+  ]}
+>
+  <section class="page-hero py-14 md:py-20 overflow-hidden">
+    <PageDecor />
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">Services</span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
+        Comprehensive pediatric care — every visit.
+      </h1>
+      <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
+        From your child's first checkup to their last visit before college.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-20 md:pb-28 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={8} />
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid gap-5">
+        {services.map(({ icon, title, full, badge }) => (
+          <article class="card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 flex gap-5">
+            <span
+              class="shrink-0 inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[var(--color-muted)] text-[var(--color-primary)] ring-1 ring-inset ring-[rgba(11,29,58,0.08)]"
+              style="box-shadow: inset 0 1px 1px rgba(255,255,255,0.6);"
+            >
+              <Icon name={icon} class="w-7 h-7" stroke-width="1.6" aria-hidden="true" />
+            </span>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h2 class="text-xl md:text-2xl font-bold">{title}</h2>
+                {badge && <span class="service-badge">{badge}</span>}
+              </div>
+              <p class="mt-2 text-[var(--color-foreground)]/80 leading-relaxed">{full}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

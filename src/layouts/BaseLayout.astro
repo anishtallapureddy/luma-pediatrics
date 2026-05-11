@@ -1,0 +1,228 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileCTABar from '../components/MobileCTABar.astro';
+import { SITE } from '../site.config';
+
+interface BreadcrumbItem {
+  name: string;
+  path: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  path?: string;
+  ogImage?: string;
+  breadcrumbs?: BreadcrumbItem[];
+}
+
+const {
+  title,
+  description = SITE.description,
+  path = '',
+  ogImage = '/og-default.png',
+  breadcrumbs,
+} = Astro.props;
+
+const siteTitle = title === SITE.name ? title : `${title} · ${SITE.name}`;
+const canonical = new URL(path, Astro.site).toString();
+const ogImageUrl = new URL(ogImage, Astro.site).toString();
+
+/* ---------- MedicalBusiness / LocalBusiness JSON-LD ---------- */
+const fullPhoneDigits = SITE.contact.phone.replace(/[^0-9]/g, '');
+const telephone = `+1-${fullPhoneDigits}`;
+
+const sameAs = [SITE.social.facebook, SITE.social.instagram, SITE.social.googleBusiness].filter(Boolean);
+
+const dayMap: Record<string, string[]> = {
+  'Mon–Fri': ['Monday','Tuesday','Wednesday','Thursday','Friday'],
+  'Saturday': ['Saturday'],
+  'Sunday': ['Sunday'],
+};
+
+const openingHoursSpecification = SITE.hours
+  .filter((h) => h.time.toLowerCase() !== 'closed')
+  .map((h) => {
+    const [open, close] = h.time.split('–').map((s) => s.trim());
+    const to24 = (t: string) => {
+      const m = t.match(/^(\d{1,2}):(\d{2})\s*(am|pm)$/i);
+      if (!m) return t;
+      let hh = parseInt(m[1], 10);
+      const mm = m[2];
+      const mer = m[3].toLowerCase();
+      if (mer === 'pm' && hh < 12) hh += 12;
+      if (mer === 'am' && hh === 12) hh = 0;
+      return `${String(hh).padStart(2, '0')}:${mm}`;
+    };
+    return {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: dayMap[h.day] ?? [h.day],
+      opens: to24(open),
+      closes: to24(close),
+    };
+  });
+
+const businessSchema = {
+  '@context': 'https://schema.org',
+  '@type': ['MedicalBusiness', 'MedicalClinic', 'LocalBusiness'],
+  '@id': `${SITE.domain}/#practice`,
+  name: SITE.name,
+  alternateName: 'Luma Peds',
+  description: SITE.description,
+  url: SITE.domain,
+  logo: new URL('/favicon.png', SITE.domain).toString(),
+  image: new URL('/og-default.png', SITE.domain).toString(),
+  telephone,
+  email: SITE.contact.email,
+  priceRange: '$$',
+  currenciesAccepted: 'USD',
+  paymentAccepted: 'Cash, Credit Card, Insurance, Medicaid',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    addressLocality: SITE.address.city,
+    addressRegion: SITE.address.region,
+    postalCode: SITE.address.postalCode,
+    addressCountry: SITE.address.country,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: SITE.geo.latitude,
+    longitude: SITE.geo.longitude,
+  },
+  hasMap: `https://www.google.com/maps?q=${encodeURIComponent(
+    `${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}`
+  )}`,
+  medicalSpecialty: 'Pediatrics',
+  areaServed: SITE.areasServed.map((city) => ({
+    '@type': 'City',
+    name: city,
+    containedInPlace: { '@type': 'AdministrativeArea', name: 'Collin County, Texas' },
+  })),
+  knowsLanguage: ['English', ...SITE.provider.languages],
+  openingHoursSpecification,
+  ...(sameAs.length ? { sameAs } : {}),
+  employee: {
+    '@type': 'Physician',
+    '@id': `${SITE.domain}/about#physician`,
+    name: SITE.provider.name,
+    medicalSpecialty: 'Pediatrics',
+    jobTitle: SITE.provider.role,
+    knowsLanguage: ['English', ...SITE.provider.languages],
+    alumniOf: SITE.provider.education.map((e) => ({ '@type': 'EducationalOrganization', name: e })),
+  },
+};
+
+const breadcrumbSchema = breadcrumbs && breadcrumbs.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbs.map((b, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: b.name,
+        item: new URL(b.path, SITE.domain).toString(),
+      })),
+    }
+  : null;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{siteTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    {SITE.analytics.googleSiteVerification && (
+      <meta name="google-site-verification" content={SITE.analytics.googleSiteVerification} />
+    )}
+    {SITE.analytics.bingSiteVerification && (
+      <meta name="msvalidate.01" content={SITE.analytics.bingSiteVerification} />
+    )}
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0B1D3A" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={siteTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- JSON-LD: enriched MedicalBusiness + Physician schema for local & AI search -->
+    <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
+    {breadcrumbSchema && (
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    )}
+
+    {import.meta.env.PROD && SITE.analytics.ga4MeasurementId && (
+      <>
+        <script
+          is:inline
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${SITE.analytics.ga4MeasurementId}`}
+        />
+        <script is:inline define:vars={{ ga4Id: SITE.analytics.ga4MeasurementId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', ga4Id, { anonymize_ip: true });
+        </script>
+      </>
+    )}
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <MobileCTABar />
+
+    <!-- Motion: scroll-driven reveal via IntersectionObserver (Jakub Krehel's enter recipe).
+         Plus sticky-nav shadow-on-scroll toggle. Respects prefers-reduced-motion. -->
+    <script is:inline>
+      (function () {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-visible'); });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+
+        var header = document.querySelector('header');
+        if (header) {
+          var onScroll = function () {
+            if (window.scrollY > 8) header.classList.add('nav-scrolled');
+            else header.classList.remove('nav-scrolled');
+          };
+          onScroll();
+          window.addEventListener('scroll', onScroll, { passive: true });
+        }
+      })();
+    </script>
+  </body>
+</html>

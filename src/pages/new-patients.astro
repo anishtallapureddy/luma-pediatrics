@@ -1,0 +1,164 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageDecor from '../components/PageDecor.astro';
+import PatientForms from '../components/PatientForms.astro';
+import AfterHoursCard from '../components/AfterHoursCard.astro';
+import InsuranceVerifyForm from '../components/InsuranceVerifyForm.astro';
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
+import { insurancePlans } from '../data/services';
+import Picture from '../components/Picture.astro';
+
+/**
+ * Photo walkthrough — each step gets a brand-library image so the page reads
+ * like a friendly visual tour rather than a wall of text.
+ */
+const steps = [
+  {
+    n: '1',
+    t: 'Book or call',
+    d: "Book online through our patient portal, or call the office. We'll verify benefits and confirm your visit.",
+    img: '/images/journey-1.jpg',
+    alt: 'A parent booking a pediatric visit online from a warm, sunlit home',
+  },
+  {
+    n: '2',
+    t: 'Bring three things',
+    d: "Photo ID, your insurance card, and your child's immunization records (if available). For newborns, bring discharge paperwork from the hospital.",
+    img: '/images/journey-2.jpg',
+    alt: 'A family preparing ID, insurance card, and immunization records for a first visit',
+  },
+  {
+    n: '3',
+    t: 'Meet the team',
+    d: 'Plan on about an hour for a first visit. We take time to listen, do a thorough exam, and answer every question you have.',
+    img: '/images/journey-3.jpg',
+    alt: 'A pediatrician meeting a child and parent at eye level in a calm exam room',
+  },
+  {
+    n: '4',
+    t: 'Stay connected',
+    d: "After your visit you'll get a summary, instructions, and a clear path for follow-up. Refills and routine questions go through our office or telehealth.",
+    img: '/images/journey-4.jpg',
+    alt: 'A parent reviewing a visit summary and telehealth follow-up on their phone',
+  },
+];
+
+const bringList = [
+  'Photo ID for the parent or legal guardian',
+  'Insurance card (or Medicaid card)',
+  'Immunization records, if available',
+  'A list of any current medications',
+  'For newborns: hospital discharge paperwork',
+  'Forms that need to be signed (school, sports, camp)',
+];
+---
+<BaseLayout
+  title="New Patients | Luma Pediatrics in McKinney, TX"
+  path="/new-patients"
+  description="Becoming a patient at Luma Pediatrics in McKinney, TX is easy. We accept major Texas insurance plans, Medicaid (STAR & CHIP), and self-pay. See what to expect at your first visit and what to bring."
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'New Patients', path: '/new-patients' },
+  ]}
+>
+  <section class="page-hero py-14 md:py-20 overflow-hidden">
+    <PageDecor />
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">New patients</span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
+        Welcome to the practice.
+      </h1>
+      <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
+        First visits, made easy. Here's what to expect.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-16 md:pb-20 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <ol class="space-y-8">
+        {steps.map(({ n, t, d, img, alt }, idx) => (
+          <li class="walkthrough-step grid gap-6 lg:gap-10 items-center lg:grid-cols-2">
+            <figure class={`walkthrough-photo ${idx % 2 === 1 ? 'lg:order-2' : ''}`}>
+              <Picture src={img} alt={alt} loading="lazy" />
+            </figure>
+            <div class={idx % 2 === 1 ? 'lg:order-1' : ''}>
+              <span
+                class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-primary)] text-white font-extrabold text-lg"
+                style="font-family: var(--font-display); box-shadow: inset 0 1px 1px rgba(255,255,255,0.25);"
+                aria-hidden="true"
+              >{n}</span>
+              <h2 class="mt-4 text-2xl md:text-3xl font-extrabold tracking-tight">{t}</h2>
+              <p class="mt-3 text-[var(--color-foreground)]/82 leading-relaxed">{d}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- AFTER-HOURS GUIDANCE -->
+  <section class="pb-16 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <AfterHoursCard />
+    </div>
+  </section>
+
+  <section class="py-16 md:py-20 bg-[var(--color-muted)] reveal relative overflow-hidden">
+    <PageDecor variant="soft" sparkles={8} />
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div>
+          <span class="eyebrow">What to bring</span>
+          <h2 class="mt-5 text-2xl md:text-3xl font-extrabold tracking-tight">A quick checklist</h2>
+          <ul class="mt-6 space-y-2.5">
+            {bringList.map((item) => (
+              <li class="flex gap-3 text-[var(--color-foreground)]/85">
+                <Icon name="lucide:check-circle" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-sage-light)]" stroke-width="1.8" aria-hidden="true" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <span class="eyebrow eyebrow-sun">Insurance</span>
+          <h2 class="mt-5 text-2xl md:text-3xl font-extrabold tracking-tight">Major insurance & Medicaid</h2>
+          <p class="mt-5 text-[var(--color-foreground)]/85 leading-relaxed">
+            We work with most major Texas plans and proudly welcome Medicaid families:
+          </p>
+          <ul class="mt-4 grid gap-1.5 sm:grid-cols-2 text-[var(--color-foreground)]/85">
+            {insurancePlans.map((plan) => (
+              <li class="flex gap-2 items-start">
+                <Icon name="lucide:check-circle" class="w-4 h-4 mt-1 shrink-0 text-[var(--color-sage-light)]" stroke-width="1.8" aria-hidden="true" />
+                <span>{plan}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-4 text-[var(--color-foreground)]/85 leading-relaxed">
+            Don't see your plan? Send us your details using the form below and we'll verify it before your visit.
+            Self-pay families are also welcome — we'll discuss pricing transparently up front.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSURANCE VERIFY FORM -->
+  <section class="py-14 md:py-18 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <InsuranceVerifyForm />
+    </div>
+  </section>
+
+  <!-- PATIENT FORMS — downloadable PDFs to fill out ahead of first visit -->
+  <section class="py-14 md:py-18 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <PatientForms />
+    </div>
+  </section>
+</BaseLayout>

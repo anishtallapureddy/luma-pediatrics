@@ -1,0 +1,165 @@
+---
+import { Icon } from 'astro-icon/components';
+import Button from './Button.astro';
+import Logo from './Logo.astro';
+import { SITE } from '../site.config';
+
+// Hide the "Home" link in the visible nav (the logo is the Home affordance)
+const navLinks = SITE.nav.filter((n) => n.href !== '/');
+---
+<header
+  class="sticky top-0 z-40 bg-[var(--color-background)]/88 border-b border-[rgba(200, 153, 90,0.10)] [transition:box-shadow_var(--duration-base)_var(--ease-fluid),border-color_var(--duration-base)_var(--ease-fluid),backdrop-filter_var(--duration-base)_var(--ease-fluid)]"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex min-h-20 items-center justify-between gap-3 py-2">
+      <a
+        href="/"
+         class="header-logo no-underline [transition:transform_var(--duration-fast)_var(--ease-fluid)] hover:scale-[1.02]"
+         aria-label={`${SITE.name} — Home`}
+       >
+         <Logo variant="horizontal" size={60} />
+      </a>
+
+      <nav aria-label="Primary" class="hidden md:flex items-center gap-1">
+        {navLinks.map(({ href, label }) => (
+          <a
+            href={href}
+             class="px-3 py-2 rounded-full text-[var(--color-foreground)] no-underline font-medium hover:bg-[rgba(200, 153, 90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid),color_var(--duration-fast)_var(--ease-fluid)]"
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a
+          href={SITE.contact.phoneHref}
+          class="sm:hidden inline-flex items-center justify-center w-11 h-11 rounded-full text-[var(--color-primary)] no-underline border border-[var(--color-border-soft)] hover:bg-[rgba(200,153,90,0.10)]"
+          aria-label="Call the office"
+        >
+          <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+        </a>
+        <a
+          href={SITE.contact.phoneHref}
+           class="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-full text-[var(--color-foreground)] no-underline font-medium hover:bg-[rgba(200, 153, 90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
+          aria-label="Call the office"
+        >
+          <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
+          <span class="hidden lg:inline">{SITE.contact.phone}</span>
+        </a>
+        <!-- Book Appointment → healow (external HIPAA-compliant patient portal).
+             On phones the label compresses to "Book" to leave room for the menu toggle. -->
+        <Button href={SITE.bookingUrl} variant="primary" ariaLabel="Book an appointment (opens healow)">
+          <Icon name="lucide:calendar-check" class="w-4 h-4" stroke-width="1.6" />
+          <span class="sm:hidden">Book</span>
+          <span class="hidden sm:inline">Book Appointment</span>
+        </Button>
+
+        <button
+          type="button"
+          class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-full text-[var(--color-primary)] bg-transparent border border-[var(--color-border-soft)] hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
+          aria-label="Open menu"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+          data-mobile-menu-toggle
+        >
+          <Icon name="lucide:menu" class="w-5 h-5 mobile-menu-icon-open" stroke-width="2" aria-hidden="true" />
+          <Icon name="lucide:x" class="w-5 h-5 mobile-menu-icon-close" stroke-width="2" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile drawer — slides down below the header when toggled. -->
+    <div id="mobile-menu" class="md:hidden mobile-menu-panel" data-mobile-menu>
+      <div class="mobile-menu-inner">
+        <nav aria-label="Primary mobile" class="flex flex-col py-2">
+          {navLinks.map(({ href, label }) => (
+            <a
+              href={href}
+              class="px-2 py-3 rounded-lg text-base text-[var(--color-foreground)] no-underline font-medium hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
+            >
+              {label}
+            </a>
+          ))}
+          <a
+            href={SITE.contact.phoneHref}
+            class="mt-1 px-2 py-3 rounded-lg text-base text-[var(--color-primary)] no-underline font-semibold inline-flex items-center gap-2 border-t border-[rgba(11,29,58,0.06)]"
+            aria-label={`Call ${SITE.name}`}
+          >
+            <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+            {SITE.contact.phone}
+          </a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* Smooth height collapse using grid-template-rows trick — no JS height math needed,
+     and the panel still measures correctly when content changes. */
+  .mobile-menu-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--duration-base, 220ms) var(--ease-fluid, ease);
+    overflow: hidden;
+  }
+  .mobile-menu-panel[data-open="true"] {
+    grid-template-rows: 1fr;
+  }
+  .mobile-menu-inner {
+    min-height: 0;
+    border-top: 1px solid rgba(11, 29, 58, 0.06);
+  }
+  /* Icon swap — show menu icon when closed, X when open. */
+  [data-mobile-menu-toggle] .mobile-menu-icon-close { display: none; }
+  [data-mobile-menu-toggle][aria-expanded="true"] .mobile-menu-icon-open { display: none; }
+  [data-mobile-menu-toggle][aria-expanded="true"] .mobile-menu-icon-close { display: inline-block; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu-panel { transition: none; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var toggle = document.querySelector('[data-mobile-menu-toggle]');
+    var panel = document.querySelector('[data-mobile-menu]');
+    if (!toggle || !panel) return;
+
+    function setOpen(open) {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      if (open) panel.setAttribute('data-open', 'true');
+      else panel.removeAttribute('data-open');
+    }
+
+    toggle.addEventListener('click', function () {
+      var isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!isOpen);
+    });
+
+    // Close when a nav link is tapped
+    panel.addEventListener('click', function (e) {
+      var target = e.target;
+      while (target && target !== panel) {
+        if (target.tagName === 'A') { setOpen(false); break; }
+        target = target.parentNode;
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // Close when viewport grows past mobile breakpoint
+    var mq = window.matchMedia('(min-width: 768px)');
+    var onChange = function () { if (mq.matches) setOpen(false); };
+    if (mq.addEventListener) mq.addEventListener('change', onChange);
+    else if (mq.addListener) mq.addListener(onChange);
+  })();
+</script>
