@@ -14,7 +14,7 @@
 - **Status:** Now accepting new patients · Opening Fall 2026
 - **Hours:** Mon–Fri 8:00 am–5:30 pm · Sat 9:00 am–12:00 pm · Sun closed
 - **Booking:** Through the secure healow patient portal
-- **Insurance:** Major Texas insurance plans + Texas Medicaid (STAR & CHIP). Common carriers: Blue Cross Blue Shield of Texas, Aetna, UnitedHealthcare, Cigna, Humana.
+- **Insurance:** Major Texas insurance plans. Common carriers: Blue Cross Blue Shield of Texas, Aetna, UnitedHealthcare, Cigna, Humana.
 
 ## Services offered
 
@@ -48,7 +48,7 @@ McKinney, Prosper, Melissa, Anna, Van Alstyne, Princeton, Allen, Frisco, and nea
 - [Services](https://www.lumapediatrics.com/services): Full list of pediatric services offered.
 - [Vaccine Schedule](https://www.lumapediatrics.com/vaccines): Parent-friendly overview of the CDC/AAP childhood immunization schedule.
 - [New Patients](https://www.lumapediatrics.com/new-patients): First-visit walkthrough, patient forms, after-hours guidance, accepted insurance, insurance verification form.
-- [FAQ](https://www.lumapediatrics.com/faq): Frequently asked questions about insurance, Medicaid, same-day visits, telehealth, booking.
+- [FAQ](https://www.lumapediatrics.com/faq): Frequently asked questions about insurance, same-day visits, telehealth, booking.
 - [Parent Resources / Blog](https://www.lumapediatrics.com/blog/): Pediatrician-written articles on newborn care, fever, sleep, vaccines, and other common parent questions.
 - [Contact](https://www.lumapediatrics.com/contact): Address, phone, hours, map, contact form, areas served.
 - [Privacy Policy](https://www.lumapediatrics.com/privacy)

@@ -46,7 +46,7 @@ const steps = [
 
 const bringList = [
   'Photo ID for the parent or legal guardian',
-  'Insurance card (or Medicaid card)',
+  'Insurance card',
   'Immunization records, if available',
   'A list of any current medications',
   'For newborns: hospital discharge paperwork',
@@ -56,7 +56,7 @@ const bringList = [
 <BaseLayout
   title="New Patients | Luma Pediatrics in McKinney, TX"
   path="/new-patients"
-  description="Becoming a patient at Luma Pediatrics in McKinney, TX is easy. We accept major Texas insurance plans, Medicaid (STAR & CHIP), and self-pay. See what to expect at your first visit and what to bring."
+  description="Becoming a patient at Luma Pediatrics in McKinney, TX is easy. We accept major Texas insurance plans and self-pay. See what to expect at your first visit and what to bring."
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'New Patients', path: '/new-patients' },
@@ -125,9 +125,9 @@ const bringList = [
 
         <div>
           <span class="eyebrow eyebrow-sun">Insurance</span>
-          <h2 class="mt-5 text-2xl md:text-3xl font-extrabold tracking-tight">Major insurance & Medicaid</h2>
+          <h2 class="mt-5 text-2xl md:text-3xl font-extrabold tracking-tight">Major insurance accepted</h2>
           <p class="mt-5 text-[var(--color-foreground)]/85 leading-relaxed">
-            We work with most major Texas plans and proudly welcome Medicaid families:
+            We work with most major Texas plans:
           </p>
           <ul class="mt-4 grid gap-1.5 sm:grid-cols-2 text-[var(--color-foreground)]/85">
             {insurancePlans.map((plan) => (

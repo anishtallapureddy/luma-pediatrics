@@ -103,5 +103,4 @@ export const insurancePlans = [
   'UnitedHealthcare',
   'Cigna',
   'Humana',
-  'Texas Medicaid (STAR & CHIP)',
 ];
