@@ -16,23 +16,28 @@ export const SITE = {
   openingWindow: 'Fall 2026',
   locationShort: 'McKinney, Texas',
   description:
-    "Luma Pediatrics provides warm, thoughtful pediatric care for newborns, children, and teens in McKinney, Texas. Led by Praveena Tallapureddy, M.D., F.A.A.P., we partner with families through every stage of childhood.",
+    "Luma Pediatrics is a board-certified pediatric practice opening in McKinney, Texas, offering warm, evidence-based care for newborns, children, and teens through every stage of childhood.",
   domain: 'https://www.lumapediatrics.com',
 
+  /**
+   * Provider-detail visibility flag.
+   *
+   * Set to `false` until closer to launch — while the founding pediatrician
+   * is still employed elsewhere we do not publish her name, headshot,
+   * education, or personal bio on the public site. Flip to `true` to restore
+   * the full provider profile, headshot, structured data, and bylines.
+   */
+  showProviderProfile: false,
+
   provider: {
-    name: 'Praveena Tallapureddy, M.D., F.A.A.P.',
-    shortName: 'Dr. Tallapureddy',
+    name: 'Our pediatrician',
+    shortName: 'Our pediatrician',
     role: 'Board-certified pediatrician',
     intro:
-      'Dr. Tallapureddy brings thoughtful, family-centered pediatric care to McKinney with a warm bedside manner and a deep commitment to helping children feel safe, seen, and supported.',
-    education: [
-      'Bachelor of Science in Biology — Saint Louis University, St. Louis, MO',
-      'Doctorate of Medicine — Texas A&M College of Medicine, College Station, TX',
-      'Pediatric Residency — Baylor Scott & White, Temple, TX',
-    ],
-    personal:
-      'Dr. Tallapureddy resides in McKinney with her husband and two children. She enjoys spending time with family, dancing, and cheering for the San Francisco 49ers and Texas A&M Aggies.',
-    languages: ['Telugu', 'Hindi', 'Urdu'],
+      'Luma Pediatrics is led by a board-certified pediatrician with a warm, family-centered approach and a deep commitment to helping children feel safe, seen, and supported. Provider profile will be shared closer to opening day.',
+    education: [],
+    personal: '',
+    languages: [],
   },
 
   address: {
@@ -94,8 +99,8 @@ export const SITE = {
   affiliations: [
     { icon: 'lucide:shield-check', label: 'Board-Certified Pediatrician' },
     { icon: 'lucide:award',        label: 'Fellow, American Academy of Pediatrics (AAP)' },
-    { icon: 'lucide:graduation-cap', label: 'Texas A&M College of Medicine' },
-    { icon: 'lucide:stethoscope',  label: 'Baylor Scott & White — Pediatric Residency' },
+    { icon: 'lucide:stethoscope',  label: 'Evidence-based primary pediatric care' },
+    { icon: 'lucide:heart',        label: 'Family-centered, all ages welcome' },
   ],
 
   /** Downloadable patient forms (placeholders until the practice opens). */

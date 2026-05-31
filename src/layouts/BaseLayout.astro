@@ -101,18 +101,24 @@ const businessSchema = {
     name: city,
     containedInPlace: { '@type': 'AdministrativeArea', name: 'Collin County, Texas' },
   })),
-  knowsLanguage: ['English', ...SITE.provider.languages],
+  knowsLanguage: SITE.showProviderProfile
+    ? ['English', ...SITE.provider.languages]
+    : ['English'],
   openingHoursSpecification,
   ...(sameAs.length ? { sameAs } : {}),
-  employee: {
-    '@type': 'Physician',
-    '@id': `${SITE.domain}/about#physician`,
-    name: SITE.provider.name,
-    medicalSpecialty: 'Pediatrics',
-    jobTitle: SITE.provider.role,
-    knowsLanguage: ['English', ...SITE.provider.languages],
-    alumniOf: SITE.provider.education.map((e) => ({ '@type': 'EducationalOrganization', name: e })),
-  },
+  ...(SITE.showProviderProfile
+    ? {
+        employee: {
+          '@type': 'Physician',
+          '@id': `${SITE.domain}/about#physician`,
+          name: SITE.provider.name,
+          medicalSpecialty: 'Pediatrics',
+          jobTitle: SITE.provider.role,
+          knowsLanguage: ['English', ...SITE.provider.languages],
+          alumniOf: SITE.provider.education.map((e) => ({ '@type': 'EducationalOrganization', name: e })),
+        },
+      }
+    : {}),
 };
 
 const breadcrumbSchema = breadcrumbs && breadcrumbs.length

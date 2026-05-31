@@ -8,7 +8,7 @@ const blog = defineCollection({
     description: z.string(),
     publishDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    author: z.string().default('Praveena Tallapureddy, M.D., F.A.A.P.'),
+    author: z.string().default('Luma Pediatrics'),
     hero: z.string().optional(),
     heroAlt: z.string().optional(),
     tags: z.array(z.string()).default([]),
