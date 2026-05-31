@@ -58,6 +58,7 @@ export default defineConfig({
           'handshake',
           'arrow-up-right',
           'message-circle',
+          'siren',
         ],
       },
     }),

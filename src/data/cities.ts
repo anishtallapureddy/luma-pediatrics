@@ -42,7 +42,7 @@ export const CITIES: CityPage[] = [
       'Frisco families — Luma Pediatrics is a short drive east, offering longer visits and same-day sick appointments.',
     landmarks: ['The Star', 'Stonebriar', 'Phillips Creek Ranch', 'Frisco ISD schools'],
     whyLuma:
-      "Frisco parents tell us they want a pediatrician who actually listens. Our model — fewer patients per provider, longer visit times, direct provider access — is built for that.",
+      'Frisco families seeking a pediatrician focused on continuity and unhurried visits will find Luma a short drive east — with longer appointment times, direct access to your provider, and same-day availability for sick visits.',
   },
   {
     slug: 'allen',
@@ -53,7 +53,7 @@ export const CITIES: CityPage[] = [
       'Allen families can reach Luma Pediatrics in under fifteen minutes via US-75 — with same-day sick visits and gentle, unhurried care.',
     landmarks: ['Watters Creek', 'Twin Creeks', 'Allen ISD schools', 'Allen Premium Outlets'],
     whyLuma:
-      "We see a lot of Allen families because we're easy to reach off 75 and we never double-book. When your child is sick, we get you in the same day — no triage runaround.",
+      'Allen families can reach Luma in under fifteen minutes via US-75. Our scheduling model preserves same-day availability for sick visits, and routine appointments are designed to run on time.',
   },
   {
     slug: 'prosper',
@@ -64,6 +64,6 @@ export const CITIES: CityPage[] = [
       'Prosper families — Luma Pediatrics offers warm, evidence-based care just down 380, with newborn rounds at BSW McKinney.',
     landmarks: ['Windsong Ranch', 'Light Farms', 'Prosper ISD schools', 'Gates of Prosper'],
     whyLuma:
-      "Many Prosper families deliver at BSW McKinney — where we'll round on your newborn before you even leave the hospital. From there, the transition to our clinic is seamless.",
+      'For Prosper families delivering at Baylor Scott & White Medical Center – McKinney, Luma provides in-hospital newborn rounds and a seamless transition to outpatient pediatric care.',
   },
 ];

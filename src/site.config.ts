@@ -41,7 +41,7 @@ export const SITE = {
     experienceLine:
       'Backed by years of pediatric experience caring for North Texas families.',
     intro:
-      'Luma Pediatrics is led by a board-certified pediatrician with over a decade of experience caring for North Texas families — a warm, family-centered approach and a deep commitment to helping children feel safe, seen, and supported. Full provider profile will be shared closer to opening day.',
+      'Luma Pediatrics is led by a board-certified pediatrician with years of experience caring for North Texas families — a warm, family-centered approach and a deep commitment to helping children feel safe, seen, and supported. Full provider profile will be shared closer to opening day.',
     education: [],
     personal: '',
     languages: [],
@@ -106,7 +106,7 @@ export const SITE = {
   /** Professional affiliations / credentials surfaced near the provider bio. */
   affiliations: [
     { icon: 'lucide:shield-check', label: 'Board-Certified Pediatrician' },
-    { icon: 'lucide:award',        label: 'Fellow, American Academy of Pediatrics (AAP)' },
+    { icon: 'lucide:award',        label: 'Member, American Academy of Pediatrics (AAP)' },
     { icon: 'lucide:stethoscope',  label: 'Evidence-based primary pediatric care' },
     { icon: 'lucide:heart',        label: 'Family-centered, all ages welcome' },
   ],
