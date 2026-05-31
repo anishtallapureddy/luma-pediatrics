@@ -27,16 +27,6 @@ export const services: ServiceItem[] = [
     featured: true,
   },
   {
-    icon: 'lucide:home',
-    title: 'Newborn Home Visit',
-    badge: 'Included',
-    short:
-      'A complimentary in-home visit within your baby\'s first two weeks — feeding check, weight, jaundice screen.',
-    full:
-      'Every Luma newborn family receives one complimentary in-home visit within the first two weeks. We check feeding, weight gain, jaundice, and how you\'re settling in — all without packing up baby for a clinic trip. It\'s our way of making the fourth trimester feel a little easier.',
-    featured: true,
-  },
-  {
     icon: 'lucide:stethoscope',
     title: 'Well-Child Visits',
     short:

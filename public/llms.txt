@@ -19,7 +19,6 @@
 ## Services offered
 
 - Newborn care (lactation support, growth tracking, jaundice screening)
-- Newborn home visit — one complimentary in-home visit within baby's first two weeks
 - Well-child visits (head-to-toe exam, developmental screening, milestone guidance)
 - Same-day sick visits (fevers, infections, ear pain, stomach bugs, injuries)
 - Vaccinations (full CDC/AAP-aligned childhood schedule)
@@ -49,7 +48,7 @@ McKinney, Prosper, Melissa, Anna, Van Alstyne, Princeton, Allen, Frisco, and nea
 - [Services](https://www.lumapediatrics.com/services): Full list of pediatric services offered.
 - [Vaccine Schedule](https://www.lumapediatrics.com/vaccines): Parent-friendly overview of the CDC/AAP childhood immunization schedule.
 - [New Patients](https://www.lumapediatrics.com/new-patients): First-visit walkthrough, patient forms, after-hours guidance, accepted insurance, insurance verification form.
-- [FAQ](https://www.lumapediatrics.com/faq): Frequently asked questions about insurance, Medicaid, same-day visits, telehealth, home visits, booking.
+- [FAQ](https://www.lumapediatrics.com/faq): Frequently asked questions about insurance, Medicaid, same-day visits, telehealth, booking.
 - [Parent Resources / Blog](https://www.lumapediatrics.com/blog/): Pediatrician-written articles on newborn care, fever, sleep, vaccines, and other common parent questions.
 - [Contact](https://www.lumapediatrics.com/contact): Address, phone, hours, map, contact form, areas served.
 - [Privacy Policy](https://www.lumapediatrics.com/privacy)
