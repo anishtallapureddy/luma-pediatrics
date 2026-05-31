@@ -58,6 +58,7 @@ export const SITE = {
   contact: {
     phone: '(555) 555-0100',
     phoneHref: 'tel:+15555550100',
+    smsHref: 'sms:+15555550100',
     email: 'hello@lumapediatrics.com',
     emailHref: 'mailto:hello@lumapediatrics.com',
   },
