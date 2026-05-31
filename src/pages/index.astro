@@ -81,8 +81,10 @@ const trustPhotos = [
           <p class="mt-5 text-lg md:text-2xl tagline-italic-sage leading-snug">
             Where your child's health shines.
           </p>
-          <p class="mt-4 text-sm md:text-base text-[var(--color-foreground)]/74 max-w-xl md:max-w-none mx-auto lg:mx-0 leading-relaxed lg:whitespace-nowrap">
-            Warm, modern care for newborns to teens — right here in {SITE.locationShort.split(',')[0]}.
+          <p class="mt-4 text-base md:text-lg text-[var(--color-foreground)]/80 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+            Hi — we're a small, family-run pediatric clinic opening in {SITE.locationShort.split(',')[0]}.
+            We take fewer patients per provider so we can take more time with yours.
+            Newborns to teens, well checks to same-day sick visits — we're so glad you found us.
           </p>
 
           <div class="mt-6 flex flex-wrap justify-center lg:justify-start gap-3">
@@ -135,7 +137,9 @@ const trustPhotos = [
           </h2>
         </div>
         <p class="text-lg text-[var(--color-foreground)]/78 leading-relaxed max-w-2xl lg:ml-auto">
-          Real smiles. Calm, kid-friendly moments. A bright, modern space — so your child looks forward to coming back.
+          We know clinics can feel cold and rushed. We've built the opposite — a calm, bright
+          space where your child gets to know us, and we get to know them. Real smiles.
+          Unhurried visits. The kind of place kids actually look forward to.
         </p>
       </div>
 
@@ -208,6 +212,107 @@ const trustPhotos = [
         {' '}<strong class="font-semibold">{SITE.provider.experienceLine}</strong>
         {' '}Board-certified, evidence-based, and built on long relationships with the families we serve.
       </p>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       WHAT TO EXPECT — conversational, empathy-led trust block
+       ==================================================================== -->
+  <section class="py-20 md:py-28 reveal relative">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto text-center mb-12">
+        <span class="eyebrow">What to expect</span>
+        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight">A visit that actually feels different.</h2>
+        <p class="mt-5 text-lg text-[var(--color-foreground)]/78 leading-relaxed">
+          We've all been to clinics that feel like a conveyor belt. Here's how we're doing it differently.
+        </p>
+      </div>
+
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <article class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 card-lift">
+          <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-4">
+            <Icon name="lucide:clock" class="w-6 h-6" stroke-width="1.6" />
+          </span>
+          <h3 class="text-xl font-semibold mb-2" style="font-family: var(--font-display);">You won't feel rushed</h3>
+          <p class="text-[var(--color-foreground)]/80 leading-relaxed">
+            We block longer visit times on purpose. That means we get to actually answer your
+            questions — even the ones you weren't sure how to ask.
+          </p>
+        </article>
+        <article class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 card-lift">
+          <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-4">
+            <Icon name="lucide:phone" class="w-6 h-6" stroke-width="1.6" />
+          </span>
+          <h3 class="text-xl font-semibold mb-2" style="font-family: var(--font-display);">Hours that fit your workday</h3>
+          <p class="text-[var(--color-foreground)]/80 leading-relaxed">
+            Parents work — we get it. We open at 7:30 am on weekdays and are here
+            Saturday mornings, so well checks and sick visits don't have to mean
+            burning a PTO day. Call in the morning, see us the same day.
+          </p>
+        </article>
+        <article class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 card-lift">
+          <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-4">
+            <Icon name="lucide:message-circle" class="w-6 h-6" stroke-width="1.6" />
+          </span>
+          <h3 class="text-xl font-semibold mb-2" style="font-family: var(--font-display);">Text us — really</h3>
+          <p class="text-[var(--color-foreground)]/80 leading-relaxed">
+            Quick question about a rash, a refill, or whether to come in? Send us a text
+            during office hours. No phone tree, no hold music — just a real reply from
+            people who know your child.
+          </p>
+        </article>
+        <article class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 card-lift">
+          <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-4">
+            <Icon name="lucide:users" class="w-6 h-6" stroke-width="1.6" />
+          </span>
+          <h3 class="text-xl font-semibold mb-2" style="font-family: var(--font-display);">Same provider, every time</h3>
+          <p class="text-[var(--color-foreground)]/80 leading-relaxed">
+            Your child sees the same pediatrician at every visit. We learn what's normal for
+            them, what makes them anxious, what makes them laugh. That continuity is the care.
+          </p>
+        </article>
+        <article class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 card-lift">
+          <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-4">
+            <Icon name="lucide:heart" class="w-6 h-6" stroke-width="1.6" />
+          </span>
+          <h3 class="text-xl font-semibold mb-2" style="font-family: var(--font-display);">No question is too small</h3>
+          <p class="text-[var(--color-foreground)]/80 leading-relaxed">
+            New parent, second-time parent, fifth-time parent — kids surprise us all.
+            Ask us anything. We'd rather hear from you than have you Google it at 2am.
+          </p>
+        </article>
+        <article class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 card-lift">
+          <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-4">
+            <Icon name="lucide:hospital" class="w-6 h-6" stroke-width="1.6" />
+          </span>
+          <h3 class="text-xl font-semibold mb-2" style="font-family: var(--font-display);">From the hospital, home</h3>
+          <p class="text-[var(--color-foreground)]/80 leading-relaxed">
+            Delivering at Baylor Scott & White McKinney? We'll meet your baby at the bedside —
+            a smooth handoff from the hospital straight to your pediatric home.
+          </p>
+        </article>
+        <article class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 card-lift">
+          <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-4">
+            <Icon name="lucide:shield-check" class="w-6 h-6" stroke-width="1.6" />
+          </span>
+          <h3 class="text-xl font-semibold mb-2" style="font-family: var(--font-display);">Backed by a children's ER, 24/7</h3>
+          <p class="text-[var(--color-foreground)]/80 leading-relaxed">
+            When something serious happens, you need pediatric expertise — not a general
+            ER. We coordinate directly with a dedicated children's hospital and ER nearby,
+            so your child is always seen by people who treat kids first.
+          </p>
+        </article>
+        <article class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 card-lift">
+          <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-4">
+            <Icon name="lucide:handshake" class="w-6 h-6" stroke-width="1.6" />
+          </span>
+          <h3 class="text-xl font-semibold mb-2" style="font-family: var(--font-display);">Meet us before you commit</h3>
+          <p class="text-[var(--color-foreground)]/80 leading-relaxed">
+            Choosing a pediatrician is a big call. Come by for a free Meet & Greet — tour the
+            space, meet your pediatrician, ask the questions that matter. No pressure.
+          </p>
+        </article>
+      </div>
     </div>
   </section>
 

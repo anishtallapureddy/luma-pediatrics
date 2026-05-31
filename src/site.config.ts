@@ -63,8 +63,8 @@ export const SITE = {
   },
 
   hours: [
-    { day: 'Mon–Fri',  time: '8:00 am – 5:30 pm' },
-    { day: 'Saturday', time: '9:00 am – 12:00 pm' },
+    { day: 'Mon–Fri',  time: '7:30 am – 4:30 pm' },
+    { day: 'Saturday', time: '8:30 am – 12:30 pm' },
     { day: 'Sunday',   time: 'Closed' },
   ],
 

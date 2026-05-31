@@ -57,6 +57,7 @@ export default defineConfig({
           'hospital',
           'handshake',
           'arrow-up-right',
+          'message-circle',
         ],
       },
     }),
