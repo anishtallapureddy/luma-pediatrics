@@ -54,6 +54,8 @@ export default defineConfig({
           'file-text',
           'video',
           'send',
+          'hospital',
+          'handshake',
         ],
       },
     }),
