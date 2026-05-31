@@ -32,6 +32,8 @@ export default defineConfig({
           'menu',
           'x',
           'arrow-right',
+          'pill',
+          'alert-triangle',
           'check',
           'check-circle',
           'star',

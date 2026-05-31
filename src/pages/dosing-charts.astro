@@ -1,0 +1,323 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageDecor from '../components/PageDecor.astro';
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
+
+/**
+ * Pediatric OTC dosing charts for parents.
+ *
+ * All doses are weight-based per the standard AAP/manufacturer guidance:
+ *   - Acetaminophen (Tylenol): 10–15 mg/kg/dose every 4–6 hours,
+ *     max 5 doses in 24 hours, max 75 mg/kg/day (≤ 4000 mg/day in adults).
+ *   - Ibuprofen (Advil/Motrin): 10 mg/kg/dose every 6–8 hours,
+ *     max 4 doses in 24 hours. NOT for infants under 6 months.
+ *   - Diphenhydramine (Benadryl): 1 mg/kg/dose every 6 hours.
+ *     NOT for children under 2 years without provider direction; AAP
+ *     discourages use for colds or as a sleep aid.
+ *
+ * References:
+ *   - HealthyChildren.org (AAP) — https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Acetaminophen-Dosage-Table.aspx
+ *   - HealthyChildren.org (AAP) — https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Ibuprofen-for-Children-Dosage-Table.aspx
+ *   - Manufacturer dosing charts (Tylenol, Motrin, Children's Benadryl)
+ *
+ * Doses are conservative and rounded per AAP convention.
+ */
+
+interface DoseRow {
+  weightLb: string;
+  weightKg: string;
+  ageHint?: string;
+  doseMg: string;
+  // Optional liquid concentrations
+  infantDrops?: string;     // 80 mg/mL or 50 mg/1.25 mL
+  childSuspension?: string; // 160 mg/5 mL or 100 mg/5 mL or 12.5 mg/5 mL
+  chewable?: string;
+}
+
+const acetaminophen: DoseRow[] = [
+  { weightLb: '6–11 lb',  weightKg: '2.7–5 kg',   ageHint: '0–3 mo',   doseMg: 'Call office before giving', childSuspension: '—' },
+  { weightLb: '12–17 lb', weightKg: '5.4–7.7 kg', ageHint: '4–11 mo',  doseMg: '80 mg',  childSuspension: '2.5 mL' },
+  { weightLb: '18–23 lb', weightKg: '8–10.5 kg',  ageHint: '12–23 mo', doseMg: '120 mg', childSuspension: '3.75 mL' },
+  { weightLb: '24–35 lb', weightKg: '10.9–15.9 kg', ageHint: '2–3 yr', doseMg: '160 mg', childSuspension: '5 mL (1 tsp)', chewable: '2 tablets (80 mg)' },
+  { weightLb: '36–47 lb', weightKg: '16.3–21.4 kg', ageHint: '4–5 yr', doseMg: '240 mg', childSuspension: '7.5 mL', chewable: '3 tablets (80 mg)' },
+  { weightLb: '48–59 lb', weightKg: '21.8–26.8 kg', ageHint: '6–8 yr', doseMg: '320 mg', childSuspension: '10 mL (2 tsp)', chewable: '4 tablets (80 mg)' },
+  { weightLb: '60–71 lb', weightKg: '27.3–32.3 kg', ageHint: '9–10 yr', doseMg: '400 mg', childSuspension: '12.5 mL', chewable: '5 tablets (80 mg)' },
+  { weightLb: '72–95 lb', weightKg: '32.7–43.2 kg', ageHint: '11 yr',  doseMg: '480 mg', childSuspension: '15 mL (3 tsp)', chewable: '6 tablets (80 mg)' },
+  { weightLb: '96+ lb',   weightKg: '43.6+ kg',   ageHint: '12+ yr',  doseMg: '640 mg (max 1000 mg/dose adult)', childSuspension: '—', chewable: 'Use adult-strength 325–500 mg' },
+];
+
+const ibuprofen: DoseRow[] = [
+  { weightLb: 'Under 12 lb', weightKg: 'Under 5.4 kg', ageHint: 'Under 6 mo', doseMg: 'Do NOT give — under 6 months is unsafe', childSuspension: '—' },
+  { weightLb: '12–17 lb', weightKg: '5.4–7.7 kg', ageHint: '6–11 mo', doseMg: '50 mg',  infantDrops: '1.25 mL', childSuspension: '2.5 mL' },
+  { weightLb: '18–23 lb', weightKg: '8–10.5 kg',  ageHint: '12–23 mo', doseMg: '75 mg',  infantDrops: '1.875 mL', childSuspension: '3.75 mL' },
+  { weightLb: '24–35 lb', weightKg: '10.9–15.9 kg', ageHint: '2–3 yr', doseMg: '100 mg', childSuspension: '5 mL (1 tsp)', chewable: '1 tablet (100 mg)' },
+  { weightLb: '36–47 lb', weightKg: '16.3–21.4 kg', ageHint: '4–5 yr', doseMg: '150 mg', childSuspension: '7.5 mL', chewable: '1½ tablets' },
+  { weightLb: '48–59 lb', weightKg: '21.8–26.8 kg', ageHint: '6–8 yr', doseMg: '200 mg', childSuspension: '10 mL (2 tsp)', chewable: '2 tablets' },
+  { weightLb: '60–71 lb', weightKg: '27.3–32.3 kg', ageHint: '9–10 yr', doseMg: '250 mg', childSuspension: '12.5 mL', chewable: '2½ tablets' },
+  { weightLb: '72–95 lb', weightKg: '32.7–43.2 kg', ageHint: '11 yr',  doseMg: '300 mg', childSuspension: '15 mL (3 tsp)', chewable: '3 tablets' },
+  { weightLb: '96+ lb',   weightKg: '43.6+ kg',   ageHint: '12+ yr',  doseMg: '400 mg (adult dose)', childSuspension: '—', chewable: 'Use adult 200 mg tablets (2 tabs)' },
+];
+
+const diphenhydramine: DoseRow[] = [
+  { weightLb: 'Any',       weightKg: 'Any',         ageHint: 'Under 2 yr', doseMg: 'Do NOT give without provider direction', childSuspension: '—' },
+  { weightLb: '20–24 lb',  weightKg: '9–10.9 kg',   ageHint: '~2 yr',     doseMg: '6.25 mg',  childSuspension: '2.5 mL (½ tsp)' },
+  { weightLb: '25–37 lb',  weightKg: '11.3–16.8 kg', ageHint: '3–5 yr',   doseMg: '12.5 mg',  childSuspension: '5 mL (1 tsp)', chewable: '1 chewable (12.5 mg)' },
+  { weightLb: '38–49 lb',  weightKg: '17.2–22.2 kg', ageHint: '5–7 yr',   doseMg: '18.75 mg', childSuspension: '7.5 mL', chewable: '1½ chewables' },
+  { weightLb: '50–99 lb',  weightKg: '22.7–44.9 kg', ageHint: '8–11 yr',  doseMg: '25 mg',    childSuspension: '10 mL (2 tsp)', chewable: '2 chewables' },
+  { weightLb: '100+ lb',   weightKg: '45+ kg',     ageHint: '12+ yr',    doseMg: '50 mg',    childSuspension: '20 mL (4 tsp)', chewable: '4 chewables' },
+];
+
+const lastReviewed = 'November 2025';
+---
+<BaseLayout
+  title="Pediatric OTC Dosing Charts (Tylenol, Motrin, Benadryl) | Luma Pediatrics"
+  path="/dosing-charts/"
+  description="Pediatric weight-based dosing for acetaminophen (Tylenol), ibuprofen (Motrin/Advil), and diphenhydramine (Benadryl) — quick parent reference from Luma Pediatrics in McKinney, TX."
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Parent Resources', path: '/blog/' },
+    { name: 'OTC Dosing Charts', path: '/dosing-charts/' },
+  ]}
+>
+  <section class="page-hero py-14 md:py-20 overflow-hidden">
+    <PageDecor />
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">Parent Resources</span>
+      <h1 class="mt-5 font-display text-4xl md:text-5xl tracking-tight text-[var(--color-primary)]">
+        OTC Dosing Charts
+      </h1>
+      <p class="mt-4 text-lg text-[var(--color-muted-foreground)] leading-relaxed">
+        Weight-based dosing for the three most common over-the-counter
+        medications we get questions about. Print this page, or save it on
+        your phone for the middle of the night.
+      </p>
+    </div>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 pb-6">
+    <div class="rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)]/5 p-5">
+      <p class="font-display text-lg text-[var(--color-primary)] flex items-start gap-3">
+        <Icon name="lucide:alert-triangle" class="w-6 h-6 mt-1 shrink-0 text-[var(--color-accent)]" stroke-width="2" aria-hidden="true" />
+        <span>
+          <strong>Always dose by weight, not age.</strong>
+          Use a syringe or measuring cup — never a kitchen spoon. If you're
+          unsure or your child is under 3 months old with a fever (≥ 100.4 °F /
+          38 °C rectal), call us at {SITE.contact.phone} before giving anything.
+        </span>
+      </p>
+    </div>
+  </section>
+
+  {/* === ACETAMINOPHEN === */}
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 reveal">
+    <div class="flex items-baseline justify-between flex-wrap gap-2">
+      <h2 class="font-display text-3xl text-[var(--color-primary)]">
+        Acetaminophen (Tylenol)
+      </h2>
+      <p class="text-sm text-[var(--color-muted-foreground)]">10–15 mg/kg every 4–6 hours</p>
+    </div>
+    <p class="mt-3 text-[var(--color-muted-foreground)] leading-relaxed">
+      Safe from <strong>any age</strong> (with provider OK under 3 months). Maximum
+      <strong>5 doses in 24 hours</strong>. Liquid concentration shown is the standard
+      <strong>infants' / children's suspension: 160 mg per 5 mL</strong> (these are
+      the same product since 2011 — no separate "infant drops" anymore).
+    </p>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-[rgba(11,29,58,0.10)]">
+      <table class="w-full text-sm dosing-table">
+        <thead>
+          <tr>
+            <th>Weight</th>
+            <th>Approx. age</th>
+            <th>Dose</th>
+            <th>Liquid (160 mg / 5 mL)</th>
+            <th>Chewable (80 mg)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {acetaminophen.map((r) => (
+            <tr>
+              <td><strong>{r.weightLb}</strong><br /><span class="kg">{r.weightKg}</span></td>
+              <td>{r.ageHint}</td>
+              <td>{r.doseMg}</td>
+              <td>{r.childSuspension}</td>
+              <td>{r.chewable ?? '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {/* === IBUPROFEN === */}
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 reveal">
+    <div class="flex items-baseline justify-between flex-wrap gap-2">
+      <h2 class="font-display text-3xl text-[var(--color-primary)]">
+        Ibuprofen (Motrin / Advil)
+      </h2>
+      <p class="text-sm text-[var(--color-muted-foreground)]">10 mg/kg every 6–8 hours</p>
+    </div>
+    <p class="mt-3 text-[var(--color-muted-foreground)] leading-relaxed">
+      <strong>Do not give to infants under 6 months.</strong> Maximum
+      <strong>4 doses in 24 hours</strong>. Give with food or milk to reduce
+      stomach upset. Two common liquid strengths:
+      <strong>infant drops 50 mg/1.25 mL</strong> and
+      <strong>children's suspension 100 mg/5 mL</strong>.
+    </p>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-[rgba(11,29,58,0.10)]">
+      <table class="w-full text-sm dosing-table">
+        <thead>
+          <tr>
+            <th>Weight</th>
+            <th>Approx. age</th>
+            <th>Dose</th>
+            <th>Infant drops (50 mg / 1.25 mL)</th>
+            <th>Children's liquid (100 mg / 5 mL)</th>
+            <th>Chewable / tablet (100 mg)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ibuprofen.map((r) => (
+            <tr>
+              <td><strong>{r.weightLb}</strong><br /><span class="kg">{r.weightKg}</span></td>
+              <td>{r.ageHint}</td>
+              <td>{r.doseMg}</td>
+              <td>{r.infantDrops ?? '—'}</td>
+              <td>{r.childSuspension}</td>
+              <td>{r.chewable ?? '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {/* === DIPHENHYDRAMINE === */}
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 reveal">
+    <div class="flex items-baseline justify-between flex-wrap gap-2">
+      <h2 class="font-display text-3xl text-[var(--color-primary)]">
+        Diphenhydramine (Benadryl)
+      </h2>
+      <p class="text-sm text-[var(--color-muted-foreground)]">1 mg/kg every 6 hours</p>
+    </div>
+    <p class="mt-3 text-[var(--color-muted-foreground)] leading-relaxed">
+      <strong>Do not give to children under 2 years</strong> without specific
+      direction from your pediatrician. The AAP also <strong>discourages
+      diphenhydramine for colds or as a sleep aid</strong> — it can cause
+      paradoxical agitation or, rarely, dangerous breathing changes in young
+      children. Use it for true allergic reactions only. Standard liquid is
+      <strong>12.5 mg per 5 mL</strong>.
+    </p>
+
+    <div class="mt-6 overflow-x-auto rounded-xl border border-[rgba(11,29,58,0.10)]">
+      <table class="w-full text-sm dosing-table">
+        <thead>
+          <tr>
+            <th>Weight</th>
+            <th>Approx. age</th>
+            <th>Dose</th>
+            <th>Liquid (12.5 mg / 5 mL)</th>
+            <th>Chewable (12.5 mg)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {diphenhydramine.map((r) => (
+            <tr>
+              <td><strong>{r.weightLb}</strong><br /><span class="kg">{r.weightKg}</span></td>
+              <td>{r.ageHint}</td>
+              <td>{r.doseMg}</td>
+              <td>{r.childSuspension}</td>
+              <td>{r.chewable ?? '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {/* === WHEN TO CALL === */}
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 reveal">
+    <h2 class="font-display text-2xl text-[var(--color-primary)]">When to call us</h2>
+    <ul class="mt-4 space-y-2 text-[var(--color-foreground)] leading-relaxed list-disc pl-5">
+      <li>Any fever in an infant <strong>under 3 months</strong> (rectal ≥ 100.4 °F / 38 °C).</li>
+      <li>Fever over <strong>104 °F (40 °C)</strong> at any age.</li>
+      <li>Fever lasting <strong>more than 3 days</strong>, or returning after a fever-free stretch.</li>
+      <li>Child is hard to wake, dehydrated (no wet diapers ≥ 8 hours), or refusing fluids.</li>
+      <li>Breathing fast, working hard to breathe, or wheezing.</li>
+      <li>You're just not sure — that's always a fine reason to call.</li>
+    </ul>
+    <p class="mt-6">
+      <a
+        href={SITE.contact.phoneHref}
+        class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold hover:opacity-90"
+      >
+        <Icon name="lucide:phone" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
+        Call {SITE.contact.phone}
+      </a>
+    </p>
+  </section>
+
+  {/* === SOURCES / DISCLAIMER === */}
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 text-sm text-[var(--color-muted-foreground)] leading-relaxed">
+    <h3 class="font-display text-lg text-[var(--color-primary)] mb-2">Sources &amp; reviewed</h3>
+    <p>
+      Dosing tables are derived from the
+      <a href="https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Acetaminophen-Dosage-Table.aspx" target="_blank" rel="noopener noreferrer" class="underline">
+        American Academy of Pediatrics (HealthyChildren.org) acetaminophen
+      </a>
+      and
+      <a href="https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Ibuprofen-for-Children-Dosage-Table.aspx" target="_blank" rel="noopener noreferrer" class="underline">
+        ibuprofen
+      </a>
+      dosing tables, along with the published manufacturer dosing charts for
+      Children's Tylenol, Children's Motrin, and Children's Benadryl.
+      Last reviewed by Dr. Praveena Tallapureddy: <strong>{lastReviewed}</strong>.
+    </p>
+    <p class="mt-3">
+      This page is a quick reference for parents and is not a substitute for
+      personalized medical advice. For urgent concerns call {SITE.contact.phone},
+      or go to the nearest emergency room. For poison-related questions, call
+      Poison Control at <strong>1-800-222-1222</strong>.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .dosing-table {
+    border-collapse: collapse;
+    background: var(--color-background);
+  }
+  .dosing-table th,
+  .dosing-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(11, 29, 58, 0.08);
+    vertical-align: top;
+  }
+  .dosing-table thead th {
+    background: rgba(200, 153, 90, 0.08);
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-primary);
+    font-size: 0.85rem;
+    text-transform: none;
+    letter-spacing: 0.01em;
+  }
+  .dosing-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .dosing-table tbody tr:nth-child(even) {
+    background: rgba(11, 29, 58, 0.025);
+  }
+  .dosing-table .kg {
+    color: var(--color-muted-foreground);
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+  @media print {
+    .dosing-table { font-size: 11pt; }
+    .page-hero { padding: 0.5rem 0; }
+  }
+</style>
