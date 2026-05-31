@@ -41,7 +41,7 @@ export const SITE = {
     experienceLine:
       'Backed by years of pediatric experience caring for North Texas families.',
     intro:
-      'Luma Pediatrics is led by a board-certified pediatrician with years of experience caring for North Texas families — a warm, family-centered approach and a deep commitment to helping children feel safe, seen, and supported. Full provider profile will be shared closer to opening day.',
+      'Luma Pediatrics is led by a board-certified pediatrician with a warm, family-centered approach and a deep commitment to helping children feel safe, seen, and supported. Provider profile will be shared closer to opening day.',
     education: [],
     personal: '',
     languages: [],

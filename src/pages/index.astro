@@ -28,49 +28,6 @@ const promises = [
   },
 ];
 
-const expectations = [
-  {
-    icon: 'lucide:clock',
-    title: 'Thoughtful, unhurried visits',
-    body: 'Appointment times are intentionally longer so every concern is examined carefully and every question receives a complete answer.',
-  },
-  {
-    icon: 'lucide:calendar',
-    title: 'Schedules that work for families',
-    body: 'Weekday hours from 7:30 am and Saturday mornings make it easier to schedule routine and same-day visits without disrupting school or work.',
-  },
-  {
-    icon: 'lucide:message-circle',
-    title: 'Direct, secure communication',
-    body: 'Reach our clinical team by phone, secure text, or patient portal during office hours — without phone trees or long hold times.',
-  },
-  {
-    icon: 'lucide:users',
-    title: 'Continuity with your pediatrician',
-    body: 'Your child sees the same board-certified pediatrician at every visit, supporting accurate diagnosis, consistent care, and a trusted long-term relationship.',
-  },
-  {
-    icon: 'lucide:shield-check',
-    title: 'Evidence-based pediatric medicine',
-    body: 'Care guided by current AAP and CDC recommendations, delivered with clear explanations so families understand every decision.',
-  },
-  {
-    icon: 'lucide:hospital',
-    title: 'Newborn rounds at BSW McKinney',
-    body: 'In-hospital newborn visits at Baylor Scott & White Medical Center – McKinney, ensuring a seamless transition from the hospital to your pediatric home.',
-  },
-  {
-    icon: 'lucide:siren',
-    title: 'Pediatric specialty access',
-    body: "When advanced care is needed, we coordinate referrals to North Texas's leading children's hospitals and pediatric subspecialists.",
-  },
-  {
-    icon: 'lucide:handshake',
-    title: 'Complimentary Meet & Greet',
-    body: 'Tour the practice and meet your pediatrician before establishing care — an opportunity to ensure Luma is the right fit for your family.',
-  },
-];
-
 const trustPhotos = [
   {
     src: '/images/trust-family.jpg',
@@ -135,10 +92,8 @@ const trustPhotos = [
           <p class="mt-5 text-lg md:text-2xl tagline-italic-sage leading-snug">
             Where your child's health shines.
           </p>
-          <p class="mt-4 text-base md:text-lg text-[var(--color-foreground)]/80 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-            Luma Pediatrics is an independent pediatric practice opening in {SITE.locationShort.split(',')[0]},
-            offering comprehensive care for newborns through young adulthood —
-            from well-child visits and immunizations to same-day sick care.
+          <p class="mt-4 text-sm md:text-base text-[var(--color-foreground)]/74 max-w-xl md:max-w-none mx-auto lg:mx-0 leading-relaxed lg:whitespace-nowrap">
+            Warm, modern care for newborns to teens — right here in {SITE.locationShort.split(',')[0]}.
           </p>
 
           <div class="mt-6 flex flex-wrap justify-center lg:justify-start gap-3">
@@ -176,15 +131,13 @@ const trustPhotos = [
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] items-end mb-12">
         <div>
-          <span class="eyebrow eyebrow-sun">Warm, safe, attentive</span>
+          <span class="eyebrow eyebrow-sun">Warm, safe, happy</span>
           <h2 class="mt-5 text-4xl md:text-6xl tracking-tight">
-            A welcoming environment for every visit.
+            Care that feels reassuring from the first hello.
           </h2>
         </div>
         <p class="text-lg text-[var(--color-foreground)]/78 leading-relaxed max-w-2xl lg:ml-auto">
-          Our practice is designed to feel calm, bright, and reassuring — a place where children
-          are comfortable and parents feel supported. Thoughtful, unhurried visits delivered with
-          the warmth and professionalism your family deserves.
+          Real smiles. Calm, kid-friendly moments. A bright, modern space — so your child looks forward to coming back.
         </p>
       </div>
 
@@ -257,34 +210,6 @@ const trustPhotos = [
         {' '}<strong class="font-semibold">{SITE.provider.experienceLine}</strong>
         {' '}Board-certified pediatric care, grounded in current AAP and CDC clinical guidelines.
       </p>
-    </div>
-  </section>
-
-  <!-- ====================================================================
-       WHAT TO EXPECT — conversational, empathy-led trust block
-       ==================================================================== -->
-  <section class="py-20 md:py-28 reveal relative">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mx-auto text-center mb-12">
-        <span class="eyebrow">What to expect</span>
-        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight">Comprehensive, evidence-based pediatric care.</h2>
-        <p class="mt-5 text-lg text-[var(--color-foreground)]/78 leading-relaxed">
-          A clinical model built around continuity, accessibility, and the highest standards of
-          modern pediatric medicine.
-        </p>
-      </div>
-
-      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {expectations.map(({ icon, title, body }) => (
-          <article class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 card-lift">
-            <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-4">
-              <Icon name={icon} class="w-6 h-6" stroke-width="1.6" aria-hidden="true" />
-            </span>
-            <h3 class="text-xl font-semibold mb-2" style="font-family: var(--font-display);">{title}</h3>
-            <p class="text-[var(--color-foreground)]/80 leading-relaxed">{body}</p>
-          </article>
-        ))}
-      </div>
     </div>
   </section>
 
