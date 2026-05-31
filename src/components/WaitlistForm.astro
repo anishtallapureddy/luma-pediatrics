@@ -1,0 +1,146 @@
+---
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
+
+interface Props {
+  variant?: 'hero' | 'inline';
+  title?: string;
+  blurb?: string;
+}
+
+const { variant = 'inline', title, blurb } = Astro.props;
+
+const w3fConfigured =
+  !!SITE.forms.web3formsAccessKey &&
+  SITE.forms.web3formsAccessKey !== 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY';
+
+const action = w3fConfigured ? 'https://api.web3forms.com/submit' : SITE.contact.emailHref;
+
+const headline = title ?? 'Be among the first families at Luma';
+const intro =
+  blurb ??
+  `We're opening ${SITE.openingWindow} in ${SITE.locationShort}. Join the founding-families list and we'll reach out the moment we're booking appointments — no spam, ever.`;
+
+const isHero = variant === 'hero';
+---
+<section class:list={['waitlist-card rounded-[var(--radius-card)] p-7 md:p-9', isHero ? 'waitlist-hero ring-1 ring-[var(--color-border-soft)] bg-[var(--color-card)]' : 'bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)]']}>
+  <div class="flex items-center gap-2 text-[var(--color-primary)]">
+    <Icon name="lucide:sparkles" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+    <span class="eyebrow eyebrow-sun">Founding families</span>
+  </div>
+  <h2 class:list={['mt-4 font-extrabold tracking-tight', isHero ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl']}>
+    {headline}
+  </h2>
+  <p class="mt-3 text-[var(--color-foreground)]/85 leading-relaxed">
+    {intro}
+  </p>
+
+  <form
+    action={action}
+    method={w3fConfigured ? 'POST' : 'get'}
+    class="mt-6 grid gap-4 sm:grid-cols-2"
+    data-waitlist-form
+  >
+    {w3fConfigured && (
+      <>
+        <input type="hidden" name="access_key" value={SITE.forms.web3formsAccessKey} />
+        <input type="hidden" name="subject" value="New waitlist signup — Luma Pediatrics" />
+        <input type="hidden" name="from_name" value="Luma Pediatrics website" />
+        <input type="hidden" name="redirect" value="/?waitlist=thanks" />
+      </>
+    )}
+    {/* Honeypot */}
+    <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
+
+    <label class="block sm:col-span-1">
+      <span class="text-sm font-semibold text-[var(--color-foreground)]">Parent / guardian name <span class="text-[var(--color-muted-foreground)] font-normal">(optional)</span></span>
+      <input
+        type="text"
+        name="parent_name"
+        autocomplete="name"
+        class="mt-1 w-full min-h-11 px-3 rounded-lg bg-[var(--color-background)] ring-1 ring-[var(--color-border-soft)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
+      />
+    </label>
+    <label class="block sm:col-span-1">
+      <span class="text-sm font-semibold text-[var(--color-foreground)]">Email</span>
+      <input
+        type="email"
+        name="email"
+        required
+        autocomplete="email"
+        placeholder="you@example.com"
+        class="mt-1 w-full min-h-11 px-3 rounded-lg bg-[var(--color-background)] ring-1 ring-[var(--color-border-soft)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
+      />
+    </label>
+    <label class="block sm:col-span-1">
+      <span class="text-sm font-semibold text-[var(--color-foreground)]">Child's age or due date <span class="text-[var(--color-muted-foreground)] font-normal">(optional)</span></span>
+      <input
+        type="text"
+        name="child_age_or_due"
+        placeholder="e.g. 4 months, due April 2026"
+        class="mt-1 w-full min-h-11 px-3 rounded-lg bg-[var(--color-background)] ring-1 ring-[var(--color-border-soft)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
+      />
+    </label>
+    <label class="block sm:col-span-1">
+      <span class="text-sm font-semibold text-[var(--color-foreground)]">City <span class="text-[var(--color-muted-foreground)] font-normal">(optional)</span></span>
+      <input
+        type="text"
+        name="city"
+        autocomplete="address-level2"
+        placeholder="McKinney, Frisco, Allen…"
+        class="mt-1 w-full min-h-11 px-3 rounded-lg bg-[var(--color-background)] ring-1 ring-[var(--color-border-soft)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
+      />
+    </label>
+
+    <div class="sm:col-span-2 flex items-center gap-3 flex-wrap">
+      <button
+        type="submit"
+        class="inline-flex items-center justify-center gap-2 min-h-11 px-6 rounded-full bg-[var(--color-primary)] text-white font-semibold hover:brightness-110 focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 outline-none"
+      >
+        <Icon name="lucide:send" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+        Join the waitlist
+      </button>
+      <p class="text-xs text-[var(--color-muted-foreground)]">
+        We'll only use your info to share opening news. Unsubscribe anytime.
+      </p>
+    </div>
+  </form>
+</section>
+
+{!w3fConfigured && (
+  <script is:inline>
+    // Until Web3Forms is configured, hijack submit to compose a mailto:
+    document.querySelectorAll('form[data-waitlist-form]').forEach((form) => {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const data = new FormData(form);
+        if (data.get('botcheck')) return; // honeypot
+        const email = (data.get('email') || '').toString().trim();
+        if (!email) return;
+        const name = (data.get('parent_name') || '').toString().trim();
+        const child = (data.get('child_age_or_due') || '').toString().trim();
+        const city = (data.get('city') || '').toString().trim();
+        const subject = encodeURIComponent('Waitlist signup — Luma Pediatrics');
+        const body = encodeURIComponent(
+          [
+            'Hi Luma Pediatrics team,',
+            '',
+            "I'd like to join the founding-families waitlist.",
+            '',
+            name ? `Name: ${name}` : null,
+            `Email: ${email}`,
+            child ? `Child's age or due date: ${child}` : null,
+            city ? `City: ${city}` : null,
+            '',
+            'Please let me know when you start booking appointments.',
+            '',
+            'Thanks!',
+          ]
+            .filter(Boolean)
+            .join('\n')
+        );
+        window.location.href = `mailto:${form.getAttribute('action').replace('mailto:', '')}?subject=${subject}&body=${body}`;
+      });
+    });
+  </script>
+)}

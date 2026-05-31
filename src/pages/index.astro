@@ -5,6 +5,7 @@ import StarDivider from '../components/StarDivider.astro';
 import SageWave from '../components/SageWave.astro';
 import FeatureTrio from '../components/FeatureTrio.astro';
 import SparkleField from '../components/SparkleField.astro';
+import WaitlistForm from '../components/WaitlistForm.astro';
 import { Icon } from 'astro-icon/components';
 import { SITE } from '../site.config';
 import { featuredServices as services } from '../data/services';
@@ -194,6 +195,15 @@ const trustPhotos = [
           </span>
         </Button>
       </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       WAITLIST — pre-launch founding-families capture
+       ==================================================================== -->
+  <section class="py-16 md:py-20 reveal">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <WaitlistForm variant="hero" />
     </div>
   </section>
 

@@ -86,7 +86,11 @@ const year = new Date().getFullYear();
     <div class="mt-10 pt-6 border-t border-[var(--color-border-soft)] text-xs text-[var(--color-muted-foreground)] space-y-2">
       <p>
         <strong class="text-[var(--color-foreground)]">Serving</strong>
-        {' '}{SITE.areasServed.join(', ')}, {SITE.areasServedTagline}.
+        {' '}<a href="/pediatrician/mckinney/" class="underline-offset-2 hover:underline">McKinney</a>,
+        {' '}<a href="/pediatrician/frisco/" class="underline-offset-2 hover:underline">Frisco</a>,
+        {' '}<a href="/pediatrician/allen/" class="underline-offset-2 hover:underline">Allen</a>,
+        {' '}<a href="/pediatrician/prosper/" class="underline-offset-2 hover:underline">Prosper</a>,
+        {' '}and <a href="/pediatrician/" class="underline-offset-2 hover:underline">{SITE.areasServedTagline}</a>.
       </p>
       <p>
         <strong>Not medical advice.</strong> This website is for informational purposes only and is not a substitute

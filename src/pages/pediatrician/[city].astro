@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import WaitlistForm from '../../components/WaitlistForm.astro';
+import { Icon } from 'astro-icon/components';
+import { CITIES } from '../../data/cities.ts';
+import { SITE } from '../../site.config';
+import { featuredServices } from '../../data/services';
+
+export function getStaticPaths() {
+  return CITIES.map((c) => ({ params: { city: c.slug }, props: { city: c } }));
+}
+
+const { city } = Astro.props;
+
+const title = `Pediatrician in ${city.name}, TX`;
+const description = `Luma Pediatrics — a warm, evidence-based pediatric clinic serving ${city.name} families. Newborn care, well checks, same-day sick visits, and gentle, unhurried appointments. Opening ${SITE.openingWindow} in McKinney.`;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={`/pediatrician/${city.slug}/`}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Service area', path: '/pediatrician/' },
+    { name: city.name, path: `/pediatrician/${city.slug}/` },
+  ]}
+>
+  <section class="relative bg-gradient-to-b from-sky-50 via-white to-white pt-16 pb-12 md:pt-24 md:pb-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-sm font-semibold tracking-wider uppercase text-luma-gold mb-3">
+        Serving {city.name}, TX
+      </p>
+      <h1 class="text-4xl md:text-5xl font-display text-luma-ink mb-5 leading-tight">
+        A pediatric home for {city.name} families
+      </h1>
+      <p class="text-lg md:text-xl text-luma-ink/80 max-w-2xl mx-auto mb-2">
+        {city.intro}
+      </p>
+      {city.distanceMi > 0 && (
+        <p class="text-sm text-luma-ink/60 mb-8">
+          <Icon name="lucide:map-pin" class="inline w-4 h-4 -mt-0.5" />
+          About {city.distanceMi} miles from {city.name} · {city.driveMinutes} drive to our McKinney clinic
+        </p>
+      )}
+      <div class="flex flex-wrap justify-center gap-3">
+        <Button href="#waitlist" variant="primary">
+          Join the founding-families list
+        </Button>
+        <Button href="/about/" variant="secondary">About Luma</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 md:py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl md:text-3xl font-display text-luma-ink mb-4">
+        Built for the {city.name} community
+      </h2>
+      <p class="text-luma-ink/80 mb-6 leading-relaxed">{city.whyLuma}</p>
+      <ul class="flex flex-wrap gap-2">
+        {city.landmarks.map((lm) => (
+          <li class="px-3 py-1.5 rounded-full bg-luma-sage/20 text-luma-ink text-sm">
+            {lm}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="py-12 md:py-16 bg-luma-cream/40">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl md:text-3xl font-display text-luma-ink mb-8 text-center">
+        Care we'll offer {city.name} families
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {featuredServices.slice(0, 6).map((svc) => (
+          <a href="/services/" class="block p-5 rounded-2xl bg-white border border-luma-ink/10 hover:border-luma-gold/50 hover:shadow-md transition">
+            <h3 class="font-semibold text-luma-ink mb-1">{svc.title}</h3>
+            <p class="text-sm text-luma-ink/70">{svc.short}</p>
+          </a>
+        ))}
+      </div>
+      <p class="text-center mt-6">
+        <a href="/services/" class="text-luma-gold hover:underline font-medium">See all services →</a>
+      </p>
+    </div>
+  </section>
+
+  <section id="waitlist" class="py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <WaitlistForm variant="hero" />
+    </div>
+  </section>
+</BaseLayout>

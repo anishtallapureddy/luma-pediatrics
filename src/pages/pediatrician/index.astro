@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+import { CITIES } from '../../data/cities.ts';
+import { SITE } from '../../site.config';
+
+const title = 'Service area — pediatric care across North Collin County';
+const description = `Luma Pediatrics serves families across McKinney, Frisco, Allen, Prosper, and surrounding North Collin County communities. Opening ${SITE.openingWindow}.`;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path="/pediatrician/"
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Service area', path: '/pediatrician/' },
+  ]}
+>
+  <section class="pt-16 pb-10 md:pt-24 md:pb-14 text-center">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-sm font-semibold tracking-wider uppercase text-luma-gold mb-3">
+        North Collin County
+      </p>
+      <h1 class="text-4xl md:text-5xl font-display text-luma-ink mb-5 leading-tight">
+        Pediatric care for your neighborhood
+      </h1>
+      <p class="text-lg text-luma-ink/80">
+        Based in McKinney, Luma welcomes families from across the area. Pick your city below to see how we serve your community.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {CITIES.map((c) => (
+          <a
+            href={`/pediatrician/${c.slug}/`}
+            class="block p-6 rounded-2xl bg-white border border-luma-ink/10 hover:border-luma-gold hover:shadow-lg transition group"
+          >
+            <div class="flex items-start justify-between mb-2">
+              <h2 class="text-2xl font-display text-luma-ink group-hover:text-luma-gold transition">
+                {c.name}
+              </h2>
+              <Icon name="lucide:arrow-up-right" class="w-5 h-5 text-luma-ink/40 group-hover:text-luma-gold transition" />
+            </div>
+            <p class="text-sm text-luma-ink/60 mb-3">
+              {c.distanceMi === 0 ? 'In town' : `${c.distanceMi} mi · ${c.driveMinutes}`}
+            </p>
+            <p class="text-luma-ink/80 text-sm leading-relaxed">{c.intro}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
