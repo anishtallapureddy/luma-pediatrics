@@ -59,6 +59,20 @@ interface Snapshot {
       geography: string;
     }>;
   };
+  communityVirusWatch?: {
+    asOf?: string;
+    region?: string;
+    entries: Array<{
+      name: string;
+      category: 'Respiratory' | 'Gastrointestinal' | 'Other Pediatric';
+      level: SignalLevel;
+      trend: TrendDirection;
+      positivityPct?: number;
+      parentNote?: string;
+      note?: string;
+    }>;
+    stale?: boolean;
+  };
 }
 
 async function loadSnapshot(): Promise<Snapshot | null> {
@@ -176,6 +190,19 @@ const aqi = data ? aqiSummary(data.airQuality.currentAqi, data.airQuality.catego
 const pollen = data ? pollenSummary(data.pollen) : null;
 const respiratory = data ? respiratorySummary(data.respiratoryIllness) : null;
 const vpd = data ? vpdSummary(data.vaccinePreventable) : null;
+
+const virusEntries = data?.communityVirusWatch?.entries ?? [];
+const virusByCategory = {
+  Respiratory: virusEntries.filter((v) => v.category === 'Respiratory'),
+  Gastrointestinal: virusEntries.filter((v) => v.category === 'Gastrointestinal'),
+  'Other Pediatric': virusEntries.filter((v) => v.category === 'Other Pediatric'),
+};
+const virusLevelDot = (lvl: SignalLevel): string => {
+  if (lvl === 'Very High' || lvl === 'High') return 'bg-[var(--color-coral)]';
+  if (lvl === 'Moderate') return 'bg-[var(--color-sun)]';
+  if (lvl === 'Low') return 'bg-[var(--color-sage)]';
+  return 'bg-[var(--color-muted-foreground)]/50';
+};
 
 const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string; icon: string; text: string }> = {
   ok: {
@@ -341,6 +368,51 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                     )}
                     <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
                       Statewide activity from CDC NNDSS — neighborhood-level cases aren't reported publicly.
+                    </p>
+                  </div>
+                </div>
+              </article>
+            )}
+
+            {/* Community virus watch (full 12-virus grid) */}
+            {virusEntries.length > 0 && (
+              <article class="rounded-[var(--radius-card)] border bg-[var(--color-card)] border-[var(--color-border-soft)] p-6 sm:col-span-2">
+                <div class="flex items-start gap-4">
+                  <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl text-[var(--color-primary)] bg-[rgba(60,90,160,0.10)]">
+                    <Icon name="lucide:activity" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+                  </span>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">What's going around</p>
+                    <h2 class="mt-1 text-xl tracking-tight">Community virus watch</h2>
+                    <p class="mt-2 text-sm text-[var(--color-foreground)]/85 leading-relaxed">
+                      Common bugs we're seeing in the North Dallas area right now. Green = quiet, yellow = some around, red = lots going around.
+                    </p>
+
+                    {(['Respiratory', 'Gastrointestinal', 'Other Pediatric'] as const).map((cat) => (
+                      virusByCategory[cat].length > 0 && (
+                        <div class="mt-5">
+                          <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">{cat}</p>
+                          <ul class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {virusByCategory[cat].map((v) => (
+                              <li class="flex items-start gap-2.5 rounded-xl bg-[var(--color-background)] px-3 py-2.5 ring-1 ring-inset ring-[var(--color-border-soft)]">
+                                <span class={`inline-block w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${virusLevelDot(v.level)}`} aria-hidden="true"></span>
+                                <div class="min-w-0 flex-1">
+                                  <p class="text-sm font-medium text-[var(--color-foreground)]">
+                                    {v.name}
+                                    <span class="text-[var(--color-muted-foreground)] font-normal"> — {v.level.toLowerCase()}{v.trend === 'Rising' ? ', rising' : v.trend === 'Decreasing' ? ', easing' : ''}</span>
+                                  </p>
+                                  {v.parentNote && (
+                                    <p class="mt-0.5 text-xs text-[var(--color-muted-foreground)] leading-relaxed">{v.parentNote}</p>
+                                  )}
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )
+                    ))}
+                    <p class="mt-4 text-xs text-[var(--color-muted-foreground)]">
+                      Sources: CDC NREVSS, NoroSTAT, and Texas DSHS regional surveillance. Updated daily.{data.communityVirusWatch?.stale ? ' (Showing the most recent available data.)' : ''}
                     </p>
                   </div>
                 </div>
