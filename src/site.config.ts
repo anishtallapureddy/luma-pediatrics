@@ -33,8 +33,15 @@ export const SITE = {
     name: 'Our pediatrician',
     shortName: 'Our pediatrician',
     role: 'Board-certified pediatrician',
+    /**
+     * Generic, employer-safe trust signal usable while showProviderProfile = false.
+     * No name, no current employer, no specific year count tied to a public CV.
+     * Update to specifics (e.g., "10+ years") only when ready to attribute publicly.
+     */
+    experienceLine:
+      'Backed by years of pediatric experience caring for North Texas families.',
     intro:
-      'Luma Pediatrics is led by a board-certified pediatrician with a warm, family-centered approach and a deep commitment to helping children feel safe, seen, and supported. Provider profile will be shared closer to opening day.',
+      'Luma Pediatrics is led by a board-certified pediatrician with over a decade of experience caring for North Texas families — a warm, family-centered approach and a deep commitment to helping children feel safe, seen, and supported. Full provider profile will be shared closer to opening day.',
     education: [],
     personal: '',
     languages: [],
