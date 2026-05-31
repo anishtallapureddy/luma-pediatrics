@@ -60,18 +60,19 @@ interface Snapshot {
     }>;
   };
   communityVirusWatch?: {
-    asOf?: string;
-    region?: string;
+    geography?: string;
+    providerNote?: string;
     entries: Array<{
       name: string;
-      category: 'Respiratory' | 'Gastrointestinal' | 'Other Pediatric';
+      category: 'respiratory' | 'gastrointestinal' | 'other-pediatric';
       level: SignalLevel;
       trend: TrendDirection;
       positivityPct?: number;
       parentNote?: string;
-      note?: string;
+      providerNote?: string;
     }>;
     stale?: boolean;
+    lastUpdated?: string;
   };
 }
 
@@ -193,9 +194,14 @@ const vpd = data ? vpdSummary(data.vaccinePreventable) : null;
 
 const virusEntries = data?.communityVirusWatch?.entries ?? [];
 const virusByCategory = {
-  Respiratory: virusEntries.filter((v) => v.category === 'Respiratory'),
-  Gastrointestinal: virusEntries.filter((v) => v.category === 'Gastrointestinal'),
-  'Other Pediatric': virusEntries.filter((v) => v.category === 'Other Pediatric'),
+  respiratory: virusEntries.filter((v) => v.category === 'respiratory'),
+  gastrointestinal: virusEntries.filter((v) => v.category === 'gastrointestinal'),
+  'other-pediatric': virusEntries.filter((v) => v.category === 'other-pediatric'),
+};
+const VIRUS_CATEGORY_LABEL: Record<string, string> = {
+  respiratory: 'Respiratory viruses',
+  gastrointestinal: 'Stomach bugs',
+  'other-pediatric': 'Other common pediatric viruses',
 };
 const virusLevelDot = (lvl: SignalLevel): string => {
   if (lvl === 'Very High' || lvl === 'High') return 'bg-[var(--color-coral)]';
@@ -388,10 +394,10 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                       Common bugs we're seeing in the North Dallas area right now. Green = quiet, yellow = some around, red = lots going around.
                     </p>
 
-                    {(['Respiratory', 'Gastrointestinal', 'Other Pediatric'] as const).map((cat) => (
+                    {(['respiratory', 'gastrointestinal', 'other-pediatric'] as const).map((cat) => (
                       virusByCategory[cat].length > 0 && (
                         <div class="mt-5">
-                          <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">{cat}</p>
+                          <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">{VIRUS_CATEGORY_LABEL[cat]}</p>
                           <ul class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {virusByCategory[cat].map((v) => (
                               <li class="flex items-start gap-2.5 rounded-xl bg-[var(--color-background)] px-3 py-2.5 ring-1 ring-inset ring-[var(--color-border-soft)]">
@@ -399,7 +405,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                                 <div class="min-w-0 flex-1">
                                   <p class="text-sm font-medium text-[var(--color-foreground)]">
                                     {v.name}
-                                    <span class="text-[var(--color-muted-foreground)] font-normal"> — {v.level.toLowerCase()}{v.trend === 'Rising' ? ', rising' : v.trend === 'Decreasing' ? ', easing' : ''}</span>
+                                    <span class="text-[var(--color-muted-foreground)] font-normal"> — {v.level === 'Unknown' ? 'data unavailable' : v.level.toLowerCase()}{v.level !== 'Unknown' && v.trend === 'Rising' ? ', rising' : v.level !== 'Unknown' && v.trend === 'Decreasing' ? ', easing' : ''}{typeof v.positivityPct === 'number' ? ` · ${v.positivityPct.toFixed(1)}% positive` : ''}</span>
                                   </p>
                                   {v.parentNote && (
                                     <p class="mt-0.5 text-xs text-[var(--color-muted-foreground)] leading-relaxed">{v.parentNote}</p>
