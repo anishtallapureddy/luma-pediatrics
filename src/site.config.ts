@@ -166,6 +166,7 @@ export const SITE = {
     { href: '/services',      label: 'Services' },
     { href: '/new-patients',  label: 'New Patients' },
     { href: '/blog',          label: 'Resources' },
+    { href: '/health-watch',  label: 'Health Watch' },
     { href: '/faq',           label: 'FAQ' },
     { href: '/contact',       label: 'Contact' },
   ],

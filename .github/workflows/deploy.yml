@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  repository_dispatch:
+    types: [pulse-snapshot-updated]
+  schedule:
+    # Daily rebuild at 14:00 UTC (9am CDT / 8am CST) — picks up any drift
+    # from the Luma Pulse snapshot even without an explicit dispatch.
+    - cron: '0 14 * * *'
 
 permissions:
   contents: read

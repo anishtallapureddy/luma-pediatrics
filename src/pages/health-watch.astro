@@ -1,0 +1,388 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageDecor from '../components/PageDecor.astro';
+import Button from '../components/Button.astro';
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
+
+/**
+ * Luma Local Health Watch — parent-facing page.
+ *
+ * Reads the daily snapshot produced by the internal Luma Pediatric Pulse
+ * dashboard (https://github.com/anishtallapureddy/luma-pediatric-pulse) and
+ * renders a calm, plain-language version for parents.
+ *
+ * Source of truth lives in the Pulse repo; this page fetches at build time so
+ * there are no runtime API keys, no client-side fetching, and no CORS.
+ * Astro re-builds on push and via repository_dispatch from the Pulse refresh
+ * job.
+ */
+
+const SNAPSHOT_SOURCES = [
+  'https://pulse.lumapediatrics.com/snapshot.json',
+  'https://raw.githubusercontent.com/anishtallapureddy/luma-pediatric-pulse/main/data/snapshot.json',
+];
+
+type SignalLevel = 'Low' | 'Moderate' | 'High' | 'Very High' | 'Unknown';
+type TrendDirection = 'Decreasing' | 'Stable' | 'Rising';
+type VpdStatus = 'Active outbreak' | 'Outbreak watch' | 'Sporadic' | 'No recent cases' | 'Unknown';
+
+interface Snapshot {
+  lastRefreshedAt?: string;
+  lastUpdated: string;
+  coverageArea: string[];
+  airQuality: {
+    currentAqi: number;
+    category: string;
+    primaryPollutant: string;
+  };
+  pollen: {
+    treeLevel: SignalLevel;
+    grassLevel: SignalLevel;
+    weedLevel: SignalLevel;
+    dominantAllergens: string[];
+  };
+  respiratoryIllness: {
+    rsvLevel: SignalLevel;
+    rsvTrend: TrendDirection;
+    fluLevel: SignalLevel;
+    fluTrend: TrendDirection;
+    covidLevel: SignalLevel;
+    covidTrend: TrendDirection;
+    edRespiratoryVisitTrend: TrendDirection;
+  };
+  vaccinePreventable?: {
+    items: Array<{
+      diseaseName: string;
+      status: VpdStatus;
+      recentCases: number;
+      geography: string;
+    }>;
+  };
+}
+
+async function loadSnapshot(): Promise<Snapshot | null> {
+  for (const url of SNAPSHOT_SOURCES) {
+    try {
+      const res = await fetch(url, { headers: { 'cache-control': 'no-cache' } });
+      if (res.ok) return (await res.json()) as Snapshot;
+    } catch {
+      /* try next */
+    }
+  }
+  return null;
+}
+
+const data = await loadSnapshot();
+
+const refreshed = data?.lastRefreshedAt
+  ? new Date(data.lastRefreshedAt).toLocaleString('en-US', {
+      weekday: 'long',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZone: 'America/Chicago',
+    })
+  : null;
+
+/* -------- Plain-language helpers -------- */
+
+function aqiSummary(aqi: number, cat: string) {
+  if (aqi <= 50) return { tone: 'ok', headline: 'Great air outside', sub: `${cat} — go enjoy the park.` };
+  if (aqi <= 100) return { tone: 'warn', headline: 'Air is okay for most kids', sub: `${cat} — sensitive kids may want lighter outdoor play.` };
+  if (aqi <= 150) return { tone: 'warn', headline: 'Tougher air today', sub: `${cat} — keep asthma rescue inhalers handy.` };
+  return { tone: 'alert', headline: 'Air quality is poor', sub: `${cat} — limit prolonged outdoor exertion, especially for asthma/wheezy kids.` };
+}
+
+function pollenSummary(p: Snapshot['pollen']) {
+  const rank = (l: SignalLevel) => ({ Unknown: -1, Low: 0, Moderate: 1, High: 2, 'Very High': 3 })[l] ?? -1;
+  const peak = ([p.treeLevel, p.grassLevel, p.weedLevel] as SignalLevel[]).reduce<SignalLevel>(
+    (max, lvl) => (rank(lvl) > rank(max) ? lvl : max),
+    'Low',
+  );
+  const allergens = p.dominantAllergens.slice(0, 3).join(', ');
+  if (peak === 'High' || peak === 'Very High') {
+    return {
+      tone: 'alert' as const,
+      peak,
+      headline: `${peak} pollen day`,
+      sub: `${allergens || 'Common allergens'} are elevated. Allergy/asthma kids may need extra antihistamines or inhaler — rinse off after outdoor play.`,
+    };
+  }
+  if (peak === 'Moderate') {
+    return {
+      tone: 'warn' as const,
+      peak,
+      headline: 'Moderate pollen',
+      sub: `${allergens || 'Common allergens'} are picking up. Sensitive kids may notice itchy eyes or sniffles.`,
+    };
+  }
+  return { tone: 'ok' as const, peak, headline: 'Low pollen', sub: 'Comfortable day for outdoor play.' };
+}
+
+function respiratorySummary(r: Snapshot['respiratoryIllness']) {
+  const concerning =
+    r.edRespiratoryVisitTrend === 'Rising' ||
+    r.rsvTrend === 'Rising' || r.fluTrend === 'Rising' || r.covidTrend === 'Rising' ||
+    r.rsvLevel === 'High' || r.rsvLevel === 'Very High' ||
+    r.fluLevel === 'High' || r.fluLevel === 'Very High';
+
+  const which: string[] = [];
+  if (r.rsvLevel !== 'Low' && r.rsvLevel !== 'Unknown') which.push('RSV');
+  if (r.fluLevel !== 'Low' && r.fluLevel !== 'Unknown') which.push('flu');
+  if (r.covidLevel !== 'Low' && r.covidLevel !== 'Unknown') which.push('COVID');
+
+  if (concerning) {
+    return {
+      tone: 'warn' as const,
+      headline: `Cough & cold season is active${which.length ? ` (${which.join(', ')})` : ''}`,
+      sub: 'More fever, cough, and congestion in the area. Wash hands often, keep sick kids home, and call us if your child has trouble breathing, dehydration, or fever you can\'t manage.',
+    };
+  }
+  return {
+    tone: 'ok' as const,
+    headline: 'Quiet respiratory week',
+    sub: 'Low local activity right now — usual healthy habits.',
+  };
+}
+
+function vpdSummary(v: Snapshot['vaccinePreventable']) {
+  if (!v) return null;
+  const active = v.items.filter((i) => i.status === 'Active outbreak');
+  const watch = v.items.filter((i) => i.status === 'Outbreak watch');
+  if (active.length > 0) {
+    return {
+      tone: 'alert' as const,
+      headline: `${active.map((i) => i.diseaseName).join(', ')} reported in Texas`,
+      sub: 'Vaccinated kids are well protected. If you\'re behind on shots or unsure, please call us — we\'ll review your child\'s record and catch up safely.',
+    };
+  }
+  if (watch.length > 0) {
+    return {
+      tone: 'warn' as const,
+      headline: `Watching ${watch.map((i) => i.diseaseName).join(', ')} in the region`,
+      sub: 'Good time to double-check your child\'s vaccine record. Call us anytime — we\'re happy to review.',
+    };
+  }
+  return {
+    tone: 'ok' as const,
+    headline: 'No vaccine-preventable outbreaks locally',
+    sub: 'Routine immunizations are doing their job. Keep up with the schedule and you\'re set.',
+  };
+}
+
+const aqi = data ? aqiSummary(data.airQuality.currentAqi, data.airQuality.category) : null;
+const pollen = data ? pollenSummary(data.pollen) : null;
+const respiratory = data ? respiratorySummary(data.respiratoryIllness) : null;
+const vpd = data ? vpdSummary(data.vaccinePreventable) : null;
+
+const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string; icon: string; text: string }> = {
+  ok: {
+    bg: 'bg-[rgba(111,128,100,0.10)]',
+    border: 'border-[rgba(111,128,100,0.30)]',
+    icon: 'text-[var(--color-sage-hover)] bg-[rgba(111,128,100,0.15)]',
+    text: 'text-[var(--color-sage-hover)]',
+  },
+  warn: {
+    bg: 'bg-[rgba(200,153,90,0.10)]',
+    border: 'border-[rgba(200,153,90,0.35)]',
+    icon: 'text-[#7a5a25] bg-[rgba(200,153,90,0.20)]',
+    text: 'text-[#7a5a25]',
+  },
+  alert: {
+    bg: 'bg-[rgba(231,108,112,0.10)]',
+    border: 'border-[rgba(231,108,112,0.40)]',
+    icon: 'text-[var(--color-coral)] bg-[rgba(231,108,112,0.15)]',
+    text: 'text-[#a72d31]',
+  },
+};
+---
+<BaseLayout
+  title="Local Health Watch | Luma Pediatrics McKinney"
+  path="/health-watch"
+  description="A morning snapshot for North DFW parents — pollen, air quality, cough & cold activity, and vaccine-preventable disease watch around McKinney, Melissa, Anna, Prosper, and Frisco. From your pediatricians at Luma Pediatrics."
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Local Health Watch', path: '/health-watch' },
+  ]}
+>
+  <section class="page-hero py-14 md:py-20 overflow-hidden">
+    <PageDecor />
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">For McKinney parents</span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
+        Local Health Watch
+      </h1>
+      <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
+        What's in the air around our community today.
+      </p>
+      <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/80 leading-relaxed">
+        A simple morning snapshot for North DFW families — pollen, air quality,
+        cough &amp; cold activity, and vaccine-preventable disease watch. Updated
+        every morning by 7 AM so you can plan the day.
+      </p>
+      {refreshed && (
+        <p class="mt-3 text-sm text-[var(--color-muted-foreground)]">
+          Refreshed {refreshed} CT
+        </p>
+      )}
+    </div>
+  </section>
+
+  {!data && (
+    <section class="pb-16">
+      <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="rounded-[var(--radius-card)] bg-[rgba(231,108,112,0.10)] border border-[rgba(231,108,112,0.40)] p-6 flex items-start gap-3">
+          <Icon name="lucide:cloud-off" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-coral)]" stroke-width="1.8" aria-hidden="true" />
+          <div>
+            <p class="font-semibold text-[var(--color-foreground)]">Snapshot temporarily unavailable</p>
+            <p class="mt-1 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
+              We couldn't load today's local snapshot. Please check back later, or
+              call us at <a href={SITE.contact.phoneHref} class="underline font-semibold">{SITE.contact.phone}</a> with any urgent concerns.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {data && (
+    <>
+      <!-- 4 plain-language cards -->
+      <section class="pb-12 reveal relative overflow-hidden">
+        <PageDecor variant="minimal" sparkles={6} />
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div class="grid gap-5 sm:grid-cols-2">
+            {/* Air */}
+            {aqi && (
+              <article class={`rounded-[var(--radius-card)] border ${toneClasses[aqi.tone as 'ok' | 'warn' | 'alert'].bg} ${toneClasses[aqi.tone as 'ok' | 'warn' | 'alert'].border} p-6`}>
+                <div class="flex items-start gap-4">
+                  <span class={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${toneClasses[aqi.tone as 'ok' | 'warn' | 'alert'].icon}`}>
+                    <Icon name="lucide:wind" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+                  </span>
+                  <div class="min-w-0">
+                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">Outdoor air</p>
+                    <h2 class="mt-1 text-xl tracking-tight">{aqi.headline}</h2>
+                    <p class="mt-2 text-sm text-[var(--color-foreground)]/85 leading-relaxed">{aqi.sub}</p>
+                    <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
+                      AQI {data.airQuality.currentAqi} · primary pollutant: {data.airQuality.primaryPollutant}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            )}
+
+            {/* Pollen */}
+            {pollen && (
+              <article class={`rounded-[var(--radius-card)] border ${toneClasses[pollen.tone].bg} ${toneClasses[pollen.tone].border} p-6`}>
+                <div class="flex items-start gap-4">
+                  <span class={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${toneClasses[pollen.tone].icon}`}>
+                    <Icon name="lucide:flower-2" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+                  </span>
+                  <div class="min-w-0">
+                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">Pollen</p>
+                    <h2 class="mt-1 text-xl tracking-tight">{pollen.headline}</h2>
+                    <p class="mt-2 text-sm text-[var(--color-foreground)]/85 leading-relaxed">{pollen.sub}</p>
+                    <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
+                      Trees {data.pollen.treeLevel} · Grass {data.pollen.grassLevel} · Weeds {data.pollen.weedLevel}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            )}
+
+            {/* Respiratory */}
+            {respiratory && (
+              <article class={`rounded-[var(--radius-card)] border ${toneClasses[respiratory.tone].bg} ${toneClasses[respiratory.tone].border} p-6 sm:col-span-2`}>
+                <div class="flex items-start gap-4">
+                  <span class={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${toneClasses[respiratory.tone].icon}`}>
+                    <Icon name="lucide:activity" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+                  </span>
+                  <div class="min-w-0">
+                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">Cough &amp; cold activity</p>
+                    <h2 class="mt-1 text-xl tracking-tight">{respiratory.headline}</h2>
+                    <p class="mt-2 text-sm text-[var(--color-foreground)]/85 leading-relaxed">{respiratory.sub}</p>
+                    <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
+                      RSV {data.respiratoryIllness.rsvLevel} ({data.respiratoryIllness.rsvTrend.toLowerCase()}) ·
+                      Flu {data.respiratoryIllness.fluLevel} ({data.respiratoryIllness.fluTrend.toLowerCase()}) ·
+                      COVID {data.respiratoryIllness.covidLevel} ({data.respiratoryIllness.covidTrend.toLowerCase()})
+                    </p>
+                  </div>
+                </div>
+              </article>
+            )}
+
+            {/* Vaccine-preventable */}
+            {vpd && (
+              <article class={`rounded-[var(--radius-card)] border ${toneClasses[vpd.tone].bg} ${toneClasses[vpd.tone].border} p-6 sm:col-span-2`}>
+                <div class="flex items-start gap-4">
+                  <span class={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${toneClasses[vpd.tone].icon}`}>
+                    <Icon name="lucide:shield-check" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+                  </span>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">Vaccine-preventable disease watch</p>
+                    <h2 class="mt-1 text-xl tracking-tight">{vpd.headline}</h2>
+                    <p class="mt-2 text-sm text-[var(--color-foreground)]/85 leading-relaxed">{vpd.sub}</p>
+                    {data.vaccinePreventable && (
+                      <ul class="mt-4 flex flex-wrap gap-2">
+                        {data.vaccinePreventable.items.map((d) => (
+                          <li class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-card)] px-3 py-1 text-xs font-medium text-[var(--color-foreground)] ring-1 ring-inset ring-[var(--color-border-soft)]">
+                            <span class={`inline-block w-2 h-2 rounded-full ${
+                              d.status === 'Active outbreak' ? 'bg-[var(--color-coral)]' :
+                              d.status === 'Outbreak watch' ? 'bg-[var(--color-sun)]' :
+                              d.status === 'Sporadic' ? 'bg-[var(--color-sun)]/60' :
+                              'bg-[var(--color-sage)]'
+                            }`} aria-hidden="true"></span>
+                            {d.diseaseName}: <span class="text-[var(--color-muted-foreground)]">{d.status.toLowerCase()}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
+                      Statewide activity from CDC NNDSS — neighborhood-level cases aren't reported publicly.
+                    </p>
+                  </div>
+                </div>
+              </article>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <!-- Parent CTAs -->
+      <section class="pb-16">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+              <div class="max-w-2xl">
+                <h2 class="text-2xl tracking-tight">Have a question about today?</h2>
+                <p class="mt-2 text-[var(--color-foreground)]/80 leading-relaxed">
+                  Wheezing, fever, persistent cough, vaccine catch-up, or just unsure? We're here. Call us or book a sick visit and we'll help you sort it out.
+                </p>
+              </div>
+              <div class="flex flex-wrap gap-3 shrink-0">
+                <Button href={SITE.contact.phoneHref} variant="ghost" ariaLabel={`Call ${SITE.name}`}>
+                  <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" />
+                  {SITE.contact.phone}
+                </Button>
+                <Button href={SITE.bookingUrl} variant="primary" ariaLabel="Book a sick visit">
+                  <Icon name="lucide:calendar-check" class="w-4 h-4" stroke-width="1.8" />
+                  Book a sick visit
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 rounded-xl bg-[rgba(11,29,58,0.04)] border border-[var(--color-border-soft)] p-4 flex items-start gap-3">
+            <Icon name="lucide:info" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-primary)]" stroke-width="1.8" aria-hidden="true" />
+            <p class="text-sm text-[var(--color-foreground)]/85 leading-relaxed">
+              <strong>This is general guidance for our community, not medical advice for your child.</strong>
+              We use public data from EPA AirNow, Google Pollen, CDC, and Texas DSHS to share what's going around. Anything specific to your child — please call us. That's what we're here for.
+            </p>
+          </div>
+        </div>
+      </section>
+    </>
+  )}
+</BaseLayout>
