@@ -121,25 +121,11 @@ const values = [
             </div>
           </div>
 
-          <!-- Life outside the clinic: personal note + casual family photo -->
+          <!-- Life outside the clinic -->
           <div class="provider-divider mt-12 pt-12">
-            <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] items-center">
-              <div>
-                <span class="eyebrow eyebrow-sun">Life outside the clinic</span>
-                <h3 class="mt-5 text-2xl md:text-3xl tracking-tight">The person behind the stethoscope.</h3>
-                <p class="mt-6 text-lg text-[var(--color-foreground)]/82 leading-relaxed">{SITE.provider.lifeOutside}</p>
-              </div>
-              {SITE.provider.familyPhoto ? (
-                <div class="provider-photo-stack" aria-label={`${SITE.provider.shortName} with her family`}>
-                  <Picture src={SITE.provider.familyPhoto} alt={`${SITE.provider.shortName} with her family outside the clinic`} loading="lazy" />
-                </div>
-              ) : (
-                <div class="provider-photo-placeholder" role="img" aria-label="Casual family photo coming soon">
-                  <Icon name="lucide:image" class="w-8 h-8" stroke-width="1.5" aria-hidden="true" />
-                  <span>Family photo coming soon</span>
-                </div>
-              )}
-            </div>
+            <span class="eyebrow eyebrow-sun">Life outside the clinic</span>
+            <h3 class="mt-5 text-2xl md:text-3xl tracking-tight">The person behind the stethoscope.</h3>
+            <p class="mt-6 max-w-3xl text-lg text-[var(--color-foreground)]/82 leading-relaxed">{SITE.provider.lifeOutside}</p>
           </div>
 
           <!-- Quick facts -->

@@ -66,12 +66,6 @@ export const SITE = {
           'Newborn through young adult care, including well-checks, sick visits, and chronic condition management',
       },
     ],
-    /**
-     * Casual family photo near "Life Outside the Clinic". Leave empty to show a
-     * styled placeholder; set to e.g. '/images/provider-family.jpg' to swap in
-     * the real photo (add a matching .webp sibling for best performance).
-     */
-    familyPhoto: '',
     /** Structured fields retained for schema.org (Physician) — mirror Quick Facts. */
     education: [
       'Texas A&M Health Science Center College of Medicine',
