@@ -95,8 +95,8 @@ const values = [
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       {SITE.showProviderProfile ? (
         <div class="provider-card p-6 md:p-10 lg:p-12">
-          <!-- Intro: professional headshot + first-person welcome -->
-          <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] items-center">
+          <!-- Intro: professional headshot + first-person welcome + personal note -->
+          <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] items-start">
             <div class="provider-photo-stack" aria-label={`Portrait of ${SITE.provider.name}`}>
               <Picture src="/images/provider-headshot.jpg" alt={`${SITE.provider.name}, ${SITE.provider.role} at Luma Pediatrics`} loading="lazy" />
             </div>
@@ -109,6 +109,7 @@ const values = [
                 {SITE.provider.welcome.map((para) => (
                   <p>{para}</p>
                 ))}
+                <p>{SITE.provider.lifeOutside}</p>
               </div>
 
               <div class="mt-8 flex flex-wrap gap-3">
@@ -119,13 +120,6 @@ const values = [
                 <Button href="/contact" variant="secondary">Get in touch</Button>
               </div>
             </div>
-          </div>
-
-          <!-- Life outside the clinic -->
-          <div class="provider-divider mt-12 pt-12">
-            <span class="eyebrow eyebrow-sun">Life outside the clinic</span>
-            <h3 class="mt-5 text-2xl md:text-3xl tracking-tight">The person behind the stethoscope.</h3>
-            <p class="mt-6 max-w-3xl text-lg text-[var(--color-foreground)]/82 leading-relaxed">{SITE.provider.lifeOutside}</p>
           </div>
 
           <!-- Quick facts -->
