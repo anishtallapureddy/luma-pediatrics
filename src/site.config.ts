@@ -22,16 +22,19 @@ export const SITE = {
   /**
    * Provider-detail visibility flag.
    *
-   * Set to `false` until closer to launch — while the founding pediatrician
-   * is still employed elsewhere we do not publish her name, headshot,
-   * education, or personal bio on the public site. Flip to `true` to restore
-   * the full provider profile, headshot, structured data, and bylines.
+   * When `true`, the public site publishes the pediatrician's name, headshot,
+   * education, personal bio, structured data, and bylines. Flip to `false` to
+   * hide all of that behind a "Provider profile coming soon" placeholder
+   * (e.g., pre-launch while the founding pediatrician is still employed
+   * elsewhere).
    */
-  showProviderProfile: false,
+  showProviderProfile: true,
 
   provider: {
-    name: 'Our pediatrician',
-    shortName: 'Our pediatrician',
+    name: 'Praveena Tallapureddy, M.D., F.A.A.P.',
+    /** Visible heading form on the About page ("Meet {displayName}"). */
+    displayName: 'Praveena Tallapureddy, MD',
+    shortName: 'Dr. Tallapureddy',
     role: 'Board-certified pediatrician',
     /**
      * Generic, employer-safe trust signal usable while showProviderProfile = false.
@@ -40,11 +43,41 @@ export const SITE = {
      */
     experienceLine:
       'Backed by years of pediatric experience caring for North Texas families.',
-    intro:
-      'Luma Pediatrics is led by a board-certified pediatrician with a warm, family-centered approach and a deep commitment to helping children feel safe, seen, and supported. Provider profile will be shared closer to opening day.',
-    education: [],
-    personal: '',
-    languages: [],
+    /** First-person welcome shown beside the professional headshot. */
+    welcome: [
+      'Hello, and welcome to Luma Pediatrics!',
+      "I'm Dr. Praveena Tallapureddy—a board-certified pediatrician, mom of two, and proud Aggie.",
+      'As both a doctor and a parent, I know that raising kids is a beautiful, unpredictable, and sometimes overwhelming adventure. I founded Luma Pediatrics to build the exact kind of practice I would want for my own children: a place where medical expertise meets genuine partnership, and where you always feel heard and never rushed.',
+      'My goal is for you to leave every visit with a clear plan, confidence in next steps, and the peace of mind that your voice was truly heard. They say it takes a village to raise a child, and I would be absolutely honored to be a part of yours!',
+    ],
+    /** Personal note shown beside the casual family photo. */
+    lifeOutside:
+      "When I'm not in the office, you'll usually find me chasing after my two kids, enjoying a walk, or spending time with my massive extended family. I look forward to our monthly cousins' cooking sessions despite my complete lack of culinary talent. I'm also an avid reader with an apparent superpower for remembering every tiny detail which has made me the unofficial narrator of my book club.",
+    /** Quick-facts grid rendered under the bio. */
+    quickFacts: [
+      { label: 'Board Certified', value: 'American Board of Pediatrics' },
+      { label: 'Education', value: 'Texas A&M Health Science Center College of Medicine' },
+      { label: 'Residency', value: "Baylor Scott & White McLane Children's Hospital" },
+      { label: 'Community', value: 'Serving McKinney and North Texas families since 2022' },
+      { label: 'Languages', value: 'Fluent in Telugu; Conversational in Hindi and Urdu' },
+      {
+        label: 'Care Scope',
+        value:
+          'Newborn through young adult care, including well-checks, sick visits, and chronic condition management',
+      },
+    ],
+    /**
+     * Casual family photo near "Life Outside the Clinic". Leave empty to show a
+     * styled placeholder; set to e.g. '/images/provider-family.jpg' to swap in
+     * the real photo (add a matching .webp sibling for best performance).
+     */
+    familyPhoto: '',
+    /** Structured fields retained for schema.org (Physician) — mirror Quick Facts. */
+    education: [
+      'Texas A&M Health Science Center College of Medicine',
+      "Baylor Scott & White McLane Children's Hospital",
+    ],
+    languages: ['Telugu', 'Hindi', 'Urdu'],
   },
 
   address: {
@@ -106,9 +139,9 @@ export const SITE = {
   /** Professional affiliations / credentials surfaced near the provider bio. */
   affiliations: [
     { icon: 'lucide:shield-check', label: 'Board-Certified Pediatrician' },
-    { icon: 'lucide:award',        label: 'Member, American Academy of Pediatrics (AAP)' },
-    { icon: 'lucide:stethoscope',  label: 'Evidence-based primary pediatric care' },
-    { icon: 'lucide:heart',        label: 'Family-centered, all ages welcome' },
+    { icon: 'lucide:award',        label: 'Fellow, American Academy of Pediatrics (AAP)' },
+    { icon: 'lucide:graduation-cap', label: 'Texas A&M College of Medicine' },
+    { icon: 'lucide:stethoscope',  label: 'Baylor Scott & White — Pediatric Residency' },
   ],
 
   /** Downloadable patient forms (placeholders until the practice opens). */

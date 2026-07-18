@@ -94,51 +94,65 @@ const values = [
     <PageDecor variant="minimal" sparkles={6} />
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       {SITE.showProviderProfile ? (
-        <div class="provider-card grid gap-10 lg:grid-cols-[0.8fr_1.2fr] items-center p-6 md:p-10">
-          <div class="provider-photo-stack" aria-label={`Portrait of ${SITE.provider.name}`}>
-            <Picture src="/images/provider-headshot.jpg" alt={`${SITE.provider.name}, ${SITE.provider.role} at Luma Pediatrics`} loading="lazy" />
+        <div class="provider-card p-6 md:p-10 lg:p-12">
+          <!-- Intro: professional headshot + first-person welcome -->
+          <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] items-center">
+            <div class="provider-photo-stack" aria-label={`Portrait of ${SITE.provider.name}`}>
+              <Picture src="/images/provider-headshot.jpg" alt={`${SITE.provider.name}, ${SITE.provider.role} at Luma Pediatrics`} loading="lazy" />
+            </div>
+
+            <div>
+              <span class="eyebrow">Meet your pediatrician</span>
+              <h2 class="mt-5 text-2xl md:text-3xl lg:text-4xl tracking-tight">Meet {SITE.provider.displayName}</h2>
+              <p class="mt-3 text-lg font-semibold text-[var(--color-sage-light)]">{SITE.provider.role}</p>
+              <div class="mt-6 space-y-4 text-lg text-[var(--color-foreground)]/82 leading-relaxed">
+                {SITE.provider.welcome.map((para) => (
+                  <p>{para}</p>
+                ))}
+              </div>
+
+              <div class="mt-8 flex flex-wrap gap-3">
+                <Button href={SITE.bookingUrl} variant="primary" ariaLabel="Book an appointment (opens healow)">
+                  <Icon name="lucide:calendar-check" class="w-5 h-5" stroke-width="1.6" />
+                  Book appointment
+                </Button>
+                <Button href="/contact" variant="secondary">Get in touch</Button>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <span class="eyebrow">Meet your pediatrician</span>
-            <h2 class="mt-5 text-xl md:text-2xl lg:text-[1.875rem] tracking-tight whitespace-nowrap">{SITE.provider.name}</h2>
-            <p class="mt-3 text-lg font-semibold text-[var(--color-sage-light)]">{SITE.provider.role}</p>
-            <p class="mt-6 text-lg text-[var(--color-foreground)]/82 leading-relaxed">
-              {SITE.provider.intro}
-            </p>
+          <!-- Life outside the clinic: personal note + casual family photo -->
+          <div class="provider-divider mt-12 pt-12">
+            <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] items-center">
+              <div>
+                <span class="eyebrow eyebrow-sun">Life outside the clinic</span>
+                <h3 class="mt-5 text-2xl md:text-3xl tracking-tight">The person behind the stethoscope.</h3>
+                <p class="mt-6 text-lg text-[var(--color-foreground)]/82 leading-relaxed">{SITE.provider.lifeOutside}</p>
+              </div>
+              {SITE.provider.familyPhoto ? (
+                <div class="provider-photo-stack" aria-label={`${SITE.provider.shortName} with her family`}>
+                  <Picture src={SITE.provider.familyPhoto} alt={`${SITE.provider.shortName} with her family outside the clinic`} loading="lazy" />
+                </div>
+              ) : (
+                <div class="provider-photo-placeholder" role="img" aria-label="Casual family photo coming soon">
+                  <Icon name="lucide:image" class="w-8 h-8" stroke-width="1.5" aria-hidden="true" />
+                  <span>Family photo coming soon</span>
+                </div>
+              )}
+            </div>
+          </div>
 
-            <ul class="provider-detail-list mt-7">
-              {SITE.provider.education.map((item) => (
-                <li>
-                  <Icon name="lucide:graduation-cap" class="w-5 h-5 mt-1 shrink-0 text-[var(--color-sun)]" stroke-width="1.8" aria-hidden="true" />
-                  <span>{item}</span>
-                </li>
+          <!-- Quick facts -->
+          <div class="provider-divider mt-12 pt-12">
+            <span class="eyebrow">Quick facts</span>
+            <dl class="provider-facts mt-6">
+              {SITE.provider.quickFacts.map((fact) => (
+                <div class="provider-fact">
+                  <dt>{fact.label}</dt>
+                  <dd>{fact.value}</dd>
+                </div>
               ))}
-              {SITE.provider.personal && (
-                <li>
-                  <Icon name="lucide:heart" class="w-5 h-5 mt-1 shrink-0 text-[var(--color-sun)]" stroke-width="1.8" aria-hidden="true" />
-                  <span>{SITE.provider.personal}</span>
-                </li>
-              )}
-              {SITE.provider.languages.length > 0 && (
-                <li>
-                  <Icon name="lucide:users" class="w-5 h-5 mt-1 shrink-0 text-[var(--color-sun)]" stroke-width="1.8" aria-hidden="true" />
-                  <span>Additional languages include {SITE.provider.languages.join(', ')}.</span>
-                </li>
-              )}
-            </ul>
-
-            <div class="mt-8">
-              <AffiliationsStrip />
-            </div>
-
-            <div class="mt-8 flex flex-wrap gap-3">
-              <Button href={SITE.bookingUrl} variant="primary" ariaLabel="Book an appointment (opens healow)">
-                <Icon name="lucide:calendar-check" class="w-5 h-5" stroke-width="1.6" />
-                Book appointment
-              </Button>
-              <Button href="/contact" variant="secondary">Get in touch</Button>
-            </div>
+            </dl>
           </div>
         </div>
       ) : (
