@@ -60,7 +60,7 @@ export const services: ServiceItem[] = [
     short:
       'Same-day appointments for fevers, infections, injuries, and the unexpected.',
     full:
-      'Same-day appointments for fevers, coughs, ear pain, stomach bugs, rashes, injuries, and the unexpected. Call our office in the morning and we will work to get your child seen the same day.',
+      'Same-day appointments for fevers, coughs, ear pain, stomach bugs, rashes, injuries, and the unexpected. Call or text us in the morning and we will work to get your child seen the same day.',
     featured: true,
   },
   {
@@ -101,9 +101,9 @@ export const services: ServiceItem[] = [
     icon: 'lucide:video',
     title: 'Telehealth / Virtual Visits',
     short:
-      'Secure video visits via healow Telehealth — for medication refills and quick follow-ups.',
+      'Secure video visits for medication refills and quick follow-ups.',
     full:
-      'Skip the trip when you don\'t need to come in. Through healow Telehealth, we offer secure video visits for prescription refills, follow-up appointments, lab/imaging result discussions, and behavioral or ADHD check-ins. Available to established Luma patients.',
+      'Skip the trip when you don\'t need to come in. We offer secure video visits for prescription refills, follow-up appointments, lab/imaging result discussions, and behavioral or ADHD check-ins. Available to established Luma patients.',
     featured: true,
   },
 ];

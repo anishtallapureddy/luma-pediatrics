@@ -16,6 +16,8 @@ interface Props {
   path?: string;
   ogImage?: string;
   breadcrumbs?: BreadcrumbItem[];
+  /** When true, adds <meta name="robots" content="noindex, nofollow"> (e.g. for pre-launch pages hidden from nav). */
+  noindex?: boolean;
 }
 
 const {
@@ -24,6 +26,7 @@ const {
   path = '',
   ogImage = '/og-default.png',
   breadcrumbs,
+  noindex = false,
 } = Astro.props;
 
 const siteTitle = title === SITE.name ? title : `${title} · ${SITE.name}`;
@@ -157,6 +160,7 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
     <title>{siteTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     {SITE.analytics.googleSiteVerification && (
       <meta name="google-site-verification" content={SITE.analytics.googleSiteVerification} />

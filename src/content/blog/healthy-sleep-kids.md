@@ -67,7 +67,7 @@ Adolescent biology really does push the sleep-wake cycle later. That's not lazin
 - Phone out of the bedroom (or at minimum, on greyscale + do-not-disturb)
 - Morning light exposure to anchor the rhythm
 
-## When to call us
+## When to call or text us
 
 Most sleep difficulties are developmental, not medical. Call if you notice:
 

@@ -1,9 +1,6 @@
 /**
  * Single source of truth for site-wide content.
  * Edit values here → they propagate everywhere.
- *
- * NOTE on the healow booking URL: placeholder — replace with the real
- *      "Book Appointment" deep-link healow gives the practice.
  */
 
 export const SITE = {
@@ -122,10 +119,6 @@ export const SITE = {
   ],
   areasServedTagline: 'and nearby North Collin County communities',
 
-  // PLACEHOLDER: replace with the real healow booking URL from the practice.
-  // healow gives practices a unique link like https://book.healow.com/?p=...
-  bookingUrl: 'https://book.healow.com/',
-
   /**
    * Approximate geo coordinates for the practice address — used for
    * LocalBusiness JSON-LD schema. Replace with the verified lat/lng once
@@ -161,20 +154,23 @@ export const SITE = {
   ],
 
   /**
-   * After-hours guidance. The first option is the practice's recommended
-   * pediatric nurse triage line; the second is the universal 911 instruction.
-   * IMPORTANT: verify the partner number before launch.
+   * After-hours guidance. When `showNurseTriage` is true the card shows a
+   * partner pediatric nurse-triage line alongside the universal 911 instruction;
+   * when false, only the 911 guidance + "call our office" line are shown.
+   * IMPORTANT: verify the partner number before enabling nurse triage.
    */
   afterHours: {
+    /** Hidden until the partner nurse-triage line is confirmed. */
+    showNurseTriage: false,
     partner: "Children's Health Plano",
     partnerPhone: '(469) 303-2000',
     partnerPhoneHref: 'tel:+14693032000',
     note: 'Pediatric nurse triage available 24/7. Verify current line at launch.',
   },
 
-  /** Telehealth offering — Healow Telehealth for med refills + follow-ups. */
+  /** Telehealth offering for med refills + follow-ups. */
   telehealth: {
-    platform: 'healow Telehealth',
+    platform: 'Telehealth',
     useCases: [
       'Prescription refills',
       'Follow-up visits',
@@ -228,7 +224,6 @@ export const SITE = {
     { href: '/',              label: 'Home' },
     { href: '/about',         label: 'About' },
     { href: '/services',      label: 'Services' },
-    { href: '/new-patients',  label: 'New Patients' },
     { href: '/resources',     label: 'Resources' },
     { href: '/faq',           label: 'FAQ' },
     { href: '/contact',       label: 'Contact' },

@@ -55,7 +55,7 @@ Call us — or 911 — if you see:
 
 We will sometimes prescribe **oseltamivir (Tamiflu)** if your child is in a high-risk group or seen within 48 hours of symptom onset. Annual flu shots from age 6 months are the single best protection — please don't skip them.
 
-## Call us — same day — for any of these
+## Call or text us — same day — for any of these
 
 - Any of the RSV breathing signs above
 - Fever in a baby **under 3 months** (always)

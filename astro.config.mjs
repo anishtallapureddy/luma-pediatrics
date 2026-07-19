@@ -11,7 +11,10 @@ export default defineConfig({
     inlineStylesheets: 'auto',
   },
   integrations: [
-    sitemap(),
+    sitemap({
+      // Exclude pre-launch pages that are hidden from navigation.
+      filter: (page) => !page.includes('/new-patients'),
+    }),
     icon({
       include: {
         lucide: [

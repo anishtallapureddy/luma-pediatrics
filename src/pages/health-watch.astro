@@ -152,7 +152,7 @@ function respiratorySummary(r: Snapshot['respiratoryIllness']) {
     return {
       tone: 'warn' as const,
       headline: `Cough & cold season is active${which.length ? ` (${which.join(', ')})` : ''}`,
-      sub: 'More fever, cough, and congestion in the area. Wash hands often, keep sick kids home, and call us if your child has trouble breathing, dehydration, or fever you can\'t manage.',
+      sub: 'More fever, cough, and congestion in the area. Wash hands often, keep sick kids home, and call or text us if your child has trouble breathing, dehydration, or fever you can\'t manage.',
     };
   }
   return {
@@ -170,14 +170,14 @@ function vpdSummary(v: Snapshot['vaccinePreventable']) {
     return {
       tone: 'alert' as const,
       headline: `${active.map((i) => i.diseaseName).join(', ')} reported in Texas`,
-      sub: 'Vaccinated kids are well protected. If you\'re behind on shots or unsure, please call us — we\'ll review your child\'s record and catch up safely.',
+      sub: 'Vaccinated kids are well protected. If you\'re behind on shots or unsure, please call or text us — we\'ll review your child\'s record and catch up safely.',
     };
   }
   if (watch.length > 0) {
     return {
       tone: 'warn' as const,
       headline: `Watching ${watch.map((i) => i.diseaseName).join(', ')} in the region`,
-      sub: 'Good time to double-check your child\'s vaccine record. Call us anytime — we\'re happy to review.',
+      sub: 'Good time to double-check your child\'s vaccine record. Call or text us anytime — we\'re happy to review.',
     };
   }
   return {
@@ -272,7 +272,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
             <p class="font-semibold text-[var(--color-foreground)]">Snapshot temporarily unavailable</p>
             <p class="mt-1 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
               We couldn't load today's local snapshot. Please check back later, or
-              call us at <a href={SITE.contact.phoneHref} class="underline font-semibold">{SITE.contact.phone}</a> with any urgent concerns.
+              call or text us at <a href={SITE.contact.phoneHref} class="underline font-semibold">{SITE.contact.phone}</a> with any urgent concerns.
             </p>
           </div>
         </div>
@@ -436,7 +436,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
               <div class="max-w-2xl">
                 <h2 class="text-2xl tracking-tight">Have a question about today?</h2>
                 <p class="mt-2 text-[var(--color-foreground)]/80 leading-relaxed">
-                  Wheezing, fever, persistent cough, vaccine catch-up, or just unsure? We're here. Call us and we'll help you sort it out.
+                  Wheezing, fever, persistent cough, vaccine catch-up, or just unsure? We're here. Call or text us and we'll help you sort it out.
                 </p>
               </div>
               <div class="flex flex-wrap gap-3 shrink-0">
@@ -452,7 +452,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
             <Icon name="lucide:info" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-primary)]" stroke-width="1.8" aria-hidden="true" />
             <p class="text-sm text-[var(--color-foreground)]/85 leading-relaxed">
               <strong>This is general guidance for our community, not medical advice for your child.</strong>
-              We use public data from EPA AirNow, Google Pollen, CDC, and Texas DSHS to share what's going around. Anything specific to your child — please call us. That's what we're here for.
+              We use public data from EPA AirNow, Google Pollen, CDC, and Texas DSHS to share what's going around. Anything specific to your child — please call or text us. That's what we're here for.
             </p>
           </div>
         </div>

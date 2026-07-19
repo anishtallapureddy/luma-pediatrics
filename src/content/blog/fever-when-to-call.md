@@ -21,14 +21,14 @@ For a child who is otherwise drinking, peeing, and reasonably comfortable:
 
 - **Fluids first.** Small, frequent sips of water, breast milk, formula, or an electrolyte drink.
 - **Dress lightly.** Bundling a feverish child traps heat. One thin layer is enough.
-- **Medicine if uncomfortable.** Acetaminophen (Tylenol) is okay from birth at the right weight-based dose. Ibuprofen (Motrin / Advil) is okay from **6 months and older**, never younger. Follow the dosing on the package — or call us.
+- **Medicine if uncomfortable.** Acetaminophen (Tylenol) is okay from birth at the right weight-based dose. Ibuprofen (Motrin / Advil) is okay from **6 months and older**, never younger. Follow the dosing on the package — or call or text us.
 - **Never give aspirin to children.** It is linked to a rare but serious condition called Reye's syndrome.
 
 You do **not** have to break the fever to "feel like you're doing something." Bringing the temperature from 103° to 101° will not change the course of the illness — it just makes your child a little more comfortable.
 
-## Call us — same day
+## Call or text us — same day
 
-Call the office (or our after-hours triage line) for any of these:
+Call or text us for any of these:
 
 - **Any fever in a baby under 3 months** — always urgent
 - Fever **above 104°F** in a child of any age
@@ -51,6 +51,6 @@ Call the office (or our after-hours triage line) for any of these:
 
 In a child older than 3 months who is otherwise alert, drinking, and reasonably playful, **fever is a symptom — not an emergency.** It is your child's immune system at work.
 
-But you know your child. If something feels off — even with a normal temperature — call us. That is exactly what we are here for.
+But you know your child. If something feels off — even with a normal temperature — call or text us. That is exactly what we are here for.
 
 *This article is for general educational purposes and is not a substitute for advice from your child's pediatrician.*
