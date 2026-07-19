@@ -63,8 +63,9 @@ const inputClass =
       <input type="text" name="child_age_or_due" placeholder="e.g. 4 months, due April 2026" class={inputClass} />
     </label>
     <label class="block sm:col-span-1">
-      <span class="text-sm font-semibold text-[var(--color-foreground)]">City <span class="text-[var(--color-muted-foreground)] font-normal">(optional)</span></span>
-      <input type="text" name="city" autocomplete="address-level2" placeholder="McKinney, Frisco, Allen…" class={inputClass} />
+      <span class="text-sm font-semibold text-[var(--color-foreground)]">Mobile phone <span class="text-[var(--color-muted-foreground)] font-normal">(optional)</span></span>
+      <input type="tel" name="phone" autocomplete="tel" placeholder="(469) 555-1234" class={inputClass} />
+      <span class="mt-1 block text-xs text-[var(--color-muted-foreground)] leading-relaxed">We'll only text you about Luma Pediatrics opening updates and scheduling. Standard messaging rates may apply.</span>
     </label>
 
     <div class="sm:col-span-2 flex items-center gap-3 flex-wrap">

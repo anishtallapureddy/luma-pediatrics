@@ -14,7 +14,7 @@ function doPost(e) {
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
         'Timestamp', 'Parent / guardian', 'Email',
-        'Child age or due date', 'City', 'Page', 'Submitted at (browser)'
+        'Child age or due date', 'Mobile phone', 'Page', 'Submitted at (browser)'
       ]);
     }
 
@@ -24,7 +24,7 @@ function doPost(e) {
       p.parent_name || '',
       p.email || '',
       p.child_age_or_due || '',
-      p.city || '',
+      p.phone || '',
       p.page || '',
       p.submitted_at || ''
     ]);
