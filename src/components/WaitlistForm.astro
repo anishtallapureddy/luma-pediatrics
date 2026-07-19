@@ -15,7 +15,7 @@ const { variant = 'inline', title, blurb } = Astro.props;
  *
  * Submits (via AJAX) to a Google Apps Script Web App that appends each signup
  * to a Google Sheet — see docs/waitlist-setup.md. When SITE.forms.waitlistEndpoint
- * is empty the form degrades gracefully to a "call or text us" prompt (no mailto).
+ * is empty the form degrades gracefully to a "call us" prompt (no mailto).
  */
 const endpoint = (SITE.forms.waitlistEndpoint ?? '').trim();
 
@@ -136,7 +136,7 @@ const inputClass =
       }
 
       if (!endpoint) {
-        showError('Online signup is being set up — please call or text ' + phone + ' and we\u2019ll add you.');
+        showError('Online signup is being set up — please call ' + phone + ' and we\u2019ll add you.');
         return;
       }
 
@@ -159,7 +159,7 @@ const inputClass =
       } catch (err) {
         if (btn) btn.disabled = false;
         if (label) label.textContent = original;
-        showError('Something went wrong. Please try again, or call or text us at ' + phone + '.');
+        showError('Something went wrong. Please try again, or call us at ' + phone + '.');
       }
     });
   });

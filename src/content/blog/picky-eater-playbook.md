@@ -64,7 +64,7 @@ A toddler can go through a "white food week" and still be fine if the bigger pic
 - **Talk about anything except the food.** Reduce dinner-table pressure.
 - **Offer, don't urge.** "Here's the broccoli — let me know if you want some" is plenty.
 
-## When to call or text us
+## When to call us
 
 Most picky eating is **annoying, not medical**. But please reach out if:
 

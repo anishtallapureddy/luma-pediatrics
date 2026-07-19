@@ -60,7 +60,7 @@ export const services: ServiceItem[] = [
     short:
       'Same-day appointments for fevers, infections, injuries, and the unexpected.',
     full:
-      'Same-day appointments for fevers, coughs, ear pain, stomach bugs, rashes, injuries, and the unexpected. Call or text us in the morning and we will work to get your child seen the same day.',
+      'Same-day appointments for fevers, coughs, ear pain, stomach bugs, rashes, injuries, and the unexpected. Call us in the morning and we will work to get your child seen the same day.',
     featured: true,
   },
   {

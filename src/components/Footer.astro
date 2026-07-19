@@ -4,8 +4,11 @@ import Logo from './Logo.astro';
 import FeatureTrio from './FeatureTrio.astro';
 import NewsletterSignup from './NewsletterSignup.astro';
 import { SITE } from '../site.config';
+import { CITIES } from '../data/cities.ts';
 
 const year = new Date().getFullYear();
+const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+const cityPageSlugs = new Set(CITIES.map((c) => c.slug));
 ---
 <footer class="mt-24 border-t border-[rgba(200, 153, 90,0.18)] bg-[var(--color-background)]">
   <div class="bg-[var(--color-sage-light)]">
@@ -61,7 +64,7 @@ const year = new Date().getFullYear();
           ))}
         </dl>
         <p class="mt-3 text-sm font-medium text-[var(--color-primary)]">
-          Same-day sick visits available — call or text us.
+          Same-day sick visits available — call us.
         </p>
       </div>
 
@@ -84,12 +87,15 @@ const year = new Date().getFullYear();
 
     <div class="mt-10 pt-6 border-t border-[var(--color-border-soft)] text-xs text-[var(--color-muted-foreground)] space-y-2">
       <p>
-        <strong class="text-[var(--color-foreground)]">Serving</strong>
-        {' '}<a href="/pediatrician/mckinney/" class="underline-offset-2 hover:underline">McKinney</a>,
-        {' '}<a href="/pediatrician/frisco/" class="underline-offset-2 hover:underline">Frisco</a>,
-        {' '}<a href="/pediatrician/allen/" class="underline-offset-2 hover:underline">Allen</a>,
-        {' '}<a href="/pediatrician/prosper/" class="underline-offset-2 hover:underline">Prosper</a>,
-        {' '}and <a href="/pediatrician/" class="underline-offset-2 hover:underline">{SITE.areasServedTagline}</a>.
+        <strong class="text-[var(--color-foreground)]">Serving</strong>{' '}
+        {SITE.areasServed.map((city) =>
+          cityPageSlugs.has(slugify(city)) ? (
+            <><a href={`/pediatrician/${slugify(city)}/`} class="underline-offset-2 hover:underline">{city}</a>{', '}</>
+          ) : (
+            <>{city}{', '}</>
+          )
+        )}
+        <a href="/pediatrician/" class="underline-offset-2 hover:underline">{SITE.areasServedTagline}</a>.
       </p>
       <p>
         <strong>Not medical advice.</strong> This website is for informational purposes only and is not a substitute

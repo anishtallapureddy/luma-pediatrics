@@ -191,7 +191,7 @@ export const SITE = {
      * signup as a row in a Google Sheet you own — no email, no third-party
      * account. Follow docs/waitlist-setup.md to deploy the script, then paste
      * the /exec URL here to activate the in-page form. While empty, the form
-     * shows a friendly "call or text us" message instead of collecting.
+     * shows a friendly "call us" message instead of collecting.
      */
     waitlistEndpoint: 'https://script.google.com/macros/s/AKfycbzuXKLJBONuTLTMthiyOu5NYJp3rd6yrSUi3NfiXgT71OMz447CiN2E9QNRMi8zk7g8aw/exec',
   },
