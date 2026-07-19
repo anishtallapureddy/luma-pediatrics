@@ -436,17 +436,13 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
               <div class="max-w-2xl">
                 <h2 class="text-2xl tracking-tight">Have a question about today?</h2>
                 <p class="mt-2 text-[var(--color-foreground)]/80 leading-relaxed">
-                  Wheezing, fever, persistent cough, vaccine catch-up, or just unsure? We're here. Call us or book a sick visit and we'll help you sort it out.
+                  Wheezing, fever, persistent cough, vaccine catch-up, or just unsure? We're here. Call us and we'll help you sort it out.
                 </p>
               </div>
               <div class="flex flex-wrap gap-3 shrink-0">
-                <Button href={SITE.contact.phoneHref} variant="ghost" ariaLabel={`Call ${SITE.name}`}>
+                <Button href={SITE.contact.phoneHref} variant="primary" ariaLabel={`Call ${SITE.name}`}>
                   <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" />
                   {SITE.contact.phone}
-                </Button>
-                <Button href={SITE.bookingUrl} variant="primary" ariaLabel="Book a sick visit">
-                  <Icon name="lucide:calendar-check" class="w-4 h-4" stroke-width="1.8" />
-                  Book a sick visit
                 </Button>
               </div>
             </div>

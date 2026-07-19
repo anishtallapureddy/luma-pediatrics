@@ -8,8 +8,8 @@ import { SITE } from '../site.config';
 
 /**
  * Contact strategy:
- * — Real APPOINTMENT booking happens at healow (HIPAA-compliant portal). The
- *   "Book appointment" CTAs throughout the site link to SITE.bookingUrl.
+ * — Online appointment booking is not enabled yet (opening soon). Visitors are
+ *   directed to call the office or send a message to establish care.
  * — This page hosts a low-friction GENERAL INQUIRY form for non-PHI questions
  *   (insurance check, general questions, billing). The form intentionally
  *   does NOT ask for child name, DOB, or any medical detail — that keeps the
@@ -38,35 +38,15 @@ import { SITE } from '../site.config';
         Always here for your family.
       </p>
       <p class="mt-7 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-2xl mx-auto">
-        For appointments, please use the patient portal. For everything else, send a message below.
+        Call the office or send a message below — we'd love to hear from you and help your family establish care.
       </p>
     </div>
   </section>
 
-  <!-- Two clear paths: booking vs. general inquiry -->
+  <!-- Get in touch: call, email, visit -->
   <section class="pb-16 reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={6} />
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-5 relative z-10">
-      <article class="card-lift rounded-[var(--radius-card)] bg-[var(--color-primary)] text-white p-7 md:p-8">
-        <span class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/15 mb-5" aria-hidden="true">
-          <Icon name="lucide:calendar-check" class="w-6 h-6" stroke-width="1.6" />
-        </span>
-        <h2 class="text-2xl font-extrabold">Book an appointment</h2>
-        <p class="mt-3 text-white/85 leading-relaxed">
-          Use our secure patient portal at healow.com to pick a time that works for your family.
-          HIPAA-compliant and built for pediatric scheduling.
-        </p>
-        <a
-          href={SITE.bookingUrl}
-          class="mt-6 inline-flex items-center gap-2 min-h-11 px-5 py-3 rounded-[var(--radius-button)] font-semibold bg-[var(--color-sun)] text-[var(--color-sun-foreground)] no-underline hover:bg-[#E1AD4A] active:scale-[0.97] [transition:transform_var(--duration-base)_var(--ease-fluid),background-color_var(--duration-base)_var(--ease-fluid)]"
-        >
-          Open patient portal
-          <span class="btn-icon-circle" aria-hidden="true">
-            <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
-          </span>
-        </a>
-      </article>
-
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <article class="card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 md:p-8">
         <span
           class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-muted)] text-[var(--color-primary)] mb-5 ring-1 ring-inset ring-[rgba(11,29,58,0.08)]"

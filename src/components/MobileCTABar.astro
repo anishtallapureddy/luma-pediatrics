@@ -1,8 +1,8 @@
 ---
 /**
  * Sticky mobile CTA bar — fixed to the bottom of the viewport on small screens.
- * Provides one-tap Call, Text, and Book buttons. Hidden on md+ where the
- * header already exposes booking prominently.
+ * Provides one-tap Call and Text buttons. Hidden on md+ where the header
+ * already exposes contact options.
  */
 import { Icon } from 'astro-icon/components';
 import { SITE } from '../site.config';
@@ -28,14 +28,6 @@ import { SITE } from '../site.config';
     >
       <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
       Text
-    </a>
-    <a
-      href={SITE.bookingUrl}
-      class="flex-1 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm"
-      aria-label="Book an appointment (opens healow)"
-    >
-      <Icon name="lucide:calendar-check" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
-      Book
     </a>
   </div>
 </div>
