@@ -4,6 +4,7 @@ import PageDecor from '../components/PageDecor.astro';
 import AfterHoursCard from '../components/AfterHoursCard.astro';
 import { Icon } from 'astro-icon/components';
 import { SITE } from '../site.config';
+import { insurancePlans } from '../data/services';
 
 const faqs = [
   {
@@ -12,7 +13,7 @@ const faqs = [
   },
   {
     q: 'What insurance do you accept?',
-    a: 'We work with major insurance providers. If you\'d like us to verify your specific plan before your first visit, please call us or send us a quick message.',
+    a: `We accept most major Texas plans, including ${insurancePlans.join(', ')}, and more. If you'd like us to verify your specific plan before your first visit, please call us or send us a quick message.`,
   },
   {
     q: 'Do you offer same-day sick visits?',
