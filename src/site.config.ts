@@ -120,13 +120,15 @@ export const SITE = {
   areasServedTagline: 'and nearby communities',
 
   /**
-   * Geo coordinates for the practice address (3801 North Central Expressway,
-   * McKinney) — used for the contact-page map pin and LocalBusiness JSON-LD.
-   * Refine with Google Maps "What's here?" if the exact suite pin needs nudging.
+   * Geo coordinates for the practice (3801 North Central Expressway, Ste 302,
+   * McKinney) — used for the contact-page map pin, the "Get directions" link,
+   * and LocalBusiness JSON-LD. Set from a Google Maps dropped pin on the
+   * building (west frontage of US-75, just north of Bloomdale); geocoding the
+   * highway-frontage street address lands on the wrong side of US-75.
    */
   geo: {
-    latitude: 33.2386486,
-    longitude: -96.6297816,
+    latitude: 33.2354224,
+    longitude: -96.6322071,
   },
 
   /** External profiles for sameAs structured data (add as they go live). */

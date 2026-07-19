@@ -95,7 +95,7 @@ import { SITE } from '../site.config';
             ></iframe>
           </div>
           <a
-            href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}`)}`}
+            href={`https://www.google.com/maps/dir/?api=1&destination=${SITE.geo.latitude},${SITE.geo.longitude}`}
             target="_blank"
             rel="noopener noreferrer"
             class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-primary)] no-underline hover:underline"
