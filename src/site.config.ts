@@ -114,6 +114,11 @@ export const SITE = {
     'Princeton',
     'Allen',
     'Frisco',
+    'Celina',
+    'Fairview',
+    'Lucas',
+    'Lowry Crossing',
+    'New Hope',
   ],
   areasServedTagline: 'and nearby North Collin County communities',
 

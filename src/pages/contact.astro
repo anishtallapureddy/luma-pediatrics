@@ -21,7 +21,7 @@ import { SITE } from '../site.config';
 <BaseLayout
   title="Contact Luma Pediatrics — Pediatrician in McKinney, TX"
   path="/contact"
-  description="Contact Luma Pediatrics in McKinney, TX. Phone, email, office hours, map, and a general inquiry form. Serving McKinney, Prosper, Frisco, Allen, Melissa, Anna, Van Alstyne, Princeton, and nearby North Collin County communities."
+  description={`Contact Luma Pediatrics in McKinney, TX. Phone, email, office hours, map, and a general inquiry form. Serving ${SITE.areasServed.join(', ')}, ${SITE.areasServedTagline}.`}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'Contact', path: '/contact' },
