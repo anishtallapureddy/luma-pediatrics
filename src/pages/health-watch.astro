@@ -18,9 +18,13 @@ import { SITE } from '../site.config';
  * job.
  */
 
+// The GitHub raw file is the canonical copy the daily Pulse refresh job writes,
+// so it is listed first. pulse.lumapediatrics.com is a CDN mirror that can lag
+// or freeze; loadSnapshot() below always picks the freshest of whatever responds
+// so a stale mirror can never mask newer data.
 const SNAPSHOT_SOURCES = [
-  'https://pulse.lumapediatrics.com/snapshot.json',
   'https://raw.githubusercontent.com/anishtallapureddy/luma-pediatric-pulse/main/data/snapshot.json',
+  'https://pulse.lumapediatrics.com/snapshot.json',
 ];
 
 type SignalLevel = 'Low' | 'Moderate' | 'High' | 'Very High' | 'Unknown';
@@ -77,15 +81,26 @@ interface Snapshot {
 }
 
 async function loadSnapshot(): Promise<Snapshot | null> {
-  for (const url of SNAPSHOT_SOURCES) {
-    try {
+  const results = await Promise.allSettled(
+    SNAPSHOT_SOURCES.map(async (url) => {
       const res = await fetch(url, { headers: { 'cache-control': 'no-cache' } });
-      if (res.ok) return (await res.json()) as Snapshot;
-    } catch {
-      /* try next */
-    }
-  }
-  return null;
+      if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+      return (await res.json()) as Snapshot;
+    }),
+  );
+
+  const snapshots = results
+    .filter((r): r is PromiseFulfilledResult<Snapshot> => r.status === 'fulfilled')
+    .map((r) => r.value);
+
+  if (snapshots.length === 0) return null;
+
+  // Pick the freshest snapshot so a stale/frozen mirror can never mask a newer one.
+  const freshnessOf = (s: Snapshot) =>
+    new Date(s.lastRefreshedAt ?? s.lastUpdated ?? 0).getTime();
+  return snapshots.reduce((freshest, cur) =>
+    freshnessOf(cur) > freshnessOf(freshest) ? cur : freshest,
+  );
 }
 
 const data = await loadSnapshot();
