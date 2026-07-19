@@ -5,6 +5,7 @@ publishDate: 2026-09-15
 hero: /images/blog-rsv-flu.jpg
 heroAlt: A parent's hand on a child's forehead as the child rests under a blanket
 tags: ["RSV", "flu", "cough", "illness", "when-to-call"]
+draft: true
 ---
 
 Every fall and winter, our exam rooms fill up with coughing, snotty, miserable little patients. Parents almost always ask the same question first: **"Is this just a cold, or something worse?"**

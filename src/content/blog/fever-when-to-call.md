@@ -5,6 +5,7 @@ publishDate: 2026-10-01
 hero: /images/blog-fever.jpg
 heroAlt: A thermometer resting on a folded blanket beside a child's stuffed animal
 tags: ["fever", "when-to-call", "symptoms", "parents-guide"]
+draft: true
 ---
 
 A fever is the body doing its job — turning up the heat to fight an infection. Most fevers in healthy kids are not dangerous on their own. What matters far more than the *number* on the thermometer is **how your child looks and acts**.

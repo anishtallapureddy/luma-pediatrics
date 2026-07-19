@@ -5,6 +5,7 @@ publishDate: 2026-10-15
 hero: /images/blog-newborn.jpg
 heroAlt: A newborn baby's tiny hand resting in a parent's finger in soft, warm light
 tags: ["newborn", "first-week", "feeding", "sleep"]
+draft: true
 ---
 
 The first week at home with a newborn is equal parts wonder and worry. You will be tired, your baby will eat and sleep on a clock no one else can read, and almost every parent — even the second- and third-time ones — wonders, *"Is this normal?"*

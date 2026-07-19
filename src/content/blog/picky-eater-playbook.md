@@ -5,6 +5,7 @@ publishDate: 2026-08-01
 hero: /images/blog-picky-eater.jpg
 heroAlt: A toddler at a kitchen table with a colorful plate of food in warm window light
 tags: ["nutrition", "toddler", "picky-eating", "feeding"]
+draft: true
 ---
 
 If your toddler ate four foods last week and is down to two this week, breathe. You are not failing. Picky eating is so common at this age that we essentially expect it — and most of it resolves with patience and a few small shifts.

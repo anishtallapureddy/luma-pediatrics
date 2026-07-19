@@ -19,10 +19,10 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 
 const date = post.data.publishDate.toLocaleDateString('en-US', {
-  year: 'numeric', month: 'long', day: 'numeric',
+  year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
 });
 const updated = post.data.updatedDate?.toLocaleDateString('en-US', {
-  year: 'numeric', month: 'long', day: 'numeric',
+  year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
 });
 
 const articleSchema = {
