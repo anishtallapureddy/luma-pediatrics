@@ -2,7 +2,6 @@
  * Single source of truth for site-wide content.
  * Edit values here → they propagate everywhere.
  *
- * NOTE on the phone number: placeholder — replace with the practice's actual line.
  * NOTE on the healow booking URL: placeholder — replace with the real
  *      "Book Appointment" deep-link healow gives the practice.
  */
@@ -92,9 +91,9 @@ export const SITE = {
   },
 
   contact: {
-    phone: '(555) 555-0100',
-    phoneHref: 'tel:+15555550100',
-    smsHref: 'sms:+15555550100',
+    phone: '(469) 200-1151',
+    phoneHref: 'tel:+14692001151',
+    smsHref: 'sms:+14692001151',
     email: 'hello@lumapediatrics.com',
     emailHref: 'mailto:hello@lumapediatrics.com',
   },
