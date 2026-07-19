@@ -956,6 +956,19 @@
     line-height: 1.45;
     color: var(--color-foreground);
   }
+  .approach-media picture,
+  .approach-media img {
+    display: block;
+    width: 100%;
+  }
+  .approach-media img {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: 50% 38%;
+    border-radius: 2rem;
+    border: 0.4rem solid rgba(255, 253, 248, 0.94);
+    box-shadow: var(--shadow-elevated);
+  }
 
   .navy-campaign {
     background:
