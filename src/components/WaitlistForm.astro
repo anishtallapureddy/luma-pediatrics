@@ -22,7 +22,7 @@ const endpoint = (SITE.forms.waitlistEndpoint ?? '').trim();
 const headline = title ?? 'Join the founding-families list';
 const intro =
   blurb ??
-  `Luma Pediatrics opens ${SITE.openingWindow} in ${SITE.locationShort}. Share your details and we'll notify you the moment scheduling opens — and answer any early questions about establishing care.`;
+  `Luma Pediatrics is opening ${SITE.openingWindow} in ${SITE.locationShort.split(',')[0]}. Join our founding families list to be notified the moment scheduling opens and to receive important practice updates along the way.`;
 
 const isHero = variant === 'hero';
 const inputClass =
