@@ -192,7 +192,7 @@ export const SITE = {
      * the /exec URL here to activate the in-page form. While empty, the form
      * shows a friendly "call or text us" message instead of collecting.
      */
-    waitlistEndpoint: '',
+    waitlistEndpoint: 'https://script.google.com/macros/s/AKfycbzuXKLJBONuTLTMthiyOu5NYJp3rd6yrSUi3NfiXgT71OMz447CiN2E9QNRMi8zk7g8aw/exec',
   },
 
   /** Mailchimp newsletter signup configuration. */
