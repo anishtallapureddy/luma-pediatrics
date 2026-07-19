@@ -169,20 +169,22 @@ const values = [
     </div>
   </section>
 
-  <!-- INSIDE LUMA — office / care-feel gallery -->
-  <section class="py-16 md:py-20 reveal relative overflow-hidden">
-    <PageDecor variant="minimal" sparkles={8} />
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <span class="eyebrow eyebrow-sun">Inside Luma</span>
-        <h2 class="mt-5 text-3xl md:text-4xl tracking-tight">
-          A bright, calm place for kids to come.
-        </h2>
-        <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
-          Warm tones, gentle textures, and kid-friendly details designed to make every visit feel safe.
-        </p>
+  {/* Inside Luma office gallery — hidden until real clinic photos (SITE.showOfficeGallery) */}
+  {SITE.showOfficeGallery && (
+    <section class="py-16 md:py-20 reveal relative overflow-hidden">
+      <PageDecor variant="minimal" sparkles={8} />
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+          <span class="eyebrow eyebrow-sun">Inside Luma</span>
+          <h2 class="mt-5 text-3xl md:text-4xl tracking-tight">
+            A bright, calm place for kids to come.
+          </h2>
+          <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
+            Warm tones, gentle textures, and kid-friendly details designed to make every visit feel safe.
+          </p>
+        </div>
+        <OfficeGallery />
       </div>
-      <OfficeGallery />
-    </div>
-  </section>
+    </section>
+  )}
 </BaseLayout>

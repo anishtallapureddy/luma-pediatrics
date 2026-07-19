@@ -30,6 +30,15 @@ export const SITE = {
    */
   showProviderProfile: true,
 
+  /**
+   * "Inside Luma" office gallery visibility (About page).
+   *
+   * Hidden until real clinic interior photos are available. Flip to `true`
+   * once real photos replace the placeholders in
+   * public/images/inside-luma-*.jpg.
+   */
+  showOfficeGallery: false,
+
   provider: {
     name: 'Praveena Tallapureddy, M.D., F.A.A.P.',
     /** Visible heading form on the About page ("Meet {displayName}"). */
