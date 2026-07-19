@@ -21,7 +21,7 @@ export const services: ServiceItem[] = [
     icon: 'lucide:handshake',
     title: 'Free Meet & Greet',
     short:
-      'Complimentary in-office visit to tour the practice and meet your pediatrician before you commit.',
+      'Complimentary in-office visit to tour the practice, meet your pediatrician, and ask questions before choosing Luma.',
     full:
       'Choosing a pediatrician is a big decision. Schedule a free, no-pressure Meet & Greet session to tour the practice, meet your pediatrician, and ask the questions that matter to your family — before your first appointment. Especially helpful for expectant parents and families new to the area.',
     featured: true,
