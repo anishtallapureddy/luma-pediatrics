@@ -182,6 +182,17 @@ export const SITE = {
   forms: {
     // Sign up free at https://web3forms.com and paste the access key here.
     web3formsAccessKey: 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY',
+
+    /**
+     * Founding-families waitlist backend.
+     *
+     * A Google Apps Script Web App URL (ends in /exec) that appends each
+     * signup as a row in a Google Sheet you own — no email, no third-party
+     * account. Follow docs/waitlist-setup.md to deploy the script, then paste
+     * the /exec URL here to activate the in-page form. While empty, the form
+     * shows a friendly "call or text us" message instead of collecting.
+     */
+    waitlistEndpoint: '',
   },
 
   /** Mailchimp newsletter signup configuration. */
