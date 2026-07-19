@@ -48,7 +48,7 @@ export const services: ServiceItem[] = [
     icon: 'lucide:stethoscope',
     title: 'Well-Child Visits',
     short:
-      'Routine check-ups, developmental screening, and milestone guidance at every age.',
+      'Routine checkups, developmental screenings, and milestone guidance at every age.',
     full:
       'Comprehensive check-ups at every recommended age — from infancy through adolescence. Each visit includes a comprehensive physical exam, developmental and behavioral screening, milestone guidance, growth tracking, and time for your questions.',
     featured: true,
@@ -66,7 +66,7 @@ export const services: ServiceItem[] = [
     icon: 'lucide:syringe',
     title: 'Vaccinations',
     short:
-      'Full schedule of recommended childhood vaccines, on-time and CDC-aligned.',
+      'Keeping your child protected with recommended vaccines based on the latest AAP guidelines.',
     full:
       'The full schedule of recommended childhood vaccines, administered on time and aligned with CDC and AAP guidelines. We are happy to discuss the schedule with you in detail — your questions are welcome.',
     featured: true,
@@ -91,7 +91,7 @@ export const services: ServiceItem[] = [
     icon: 'lucide:users',
     title: 'Teen & Adolescent Health',
     short:
-      'Confidential, age-appropriate care for tweens and teens through young adulthood.',
+      'Support for the physical, emotional, and mental health of tweens and teens.',
     full:
       'Confidential, age-appropriate care for tweens and teens — including mental health screening, sports medicine, and the conversations adolescents deserve to have with a trusted clinician.',
     featured: true,
