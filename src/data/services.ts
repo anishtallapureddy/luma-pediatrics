@@ -100,7 +100,7 @@ export const services: ServiceItem[] = [
     icon: 'lucide:video',
     title: 'Telehealth / Virtual Visits',
     short:
-      'Secure video visits for medication refills and quick follow-ups.',
+      'Convenient virtual follow-up visits for stable ADHD and behavioral care when an in-person exam isn\'t needed.',
     full:
       'Skip the trip when you don\'t need to come in. We offer secure video visits for prescription refills, follow-up appointments, lab/imaging result discussions, and behavioral or ADHD check-ins. Available to established Luma patients.',
     featured: true,

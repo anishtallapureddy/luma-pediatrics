@@ -41,13 +41,6 @@ export const SITE = {
     displayName: 'Praveena Tallapureddy, MD',
     shortName: 'Dr. Tallapureddy',
     role: 'Board-certified pediatrician',
-    /**
-     * Generic, employer-safe trust signal usable while showProviderProfile = false.
-     * No name, no current employer, no specific year count tied to a public CV.
-     * Update to specifics (e.g., "10+ years") only when ready to attribute publicly.
-     */
-    experienceLine:
-      'Backed by years of pediatric experience caring for North Texas families.',
     /** First-person welcome shown beside the professional headshot. */
     welcome: [
       'Hello, and welcome to Luma Pediatrics!',
