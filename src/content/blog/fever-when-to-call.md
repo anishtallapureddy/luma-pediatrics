@@ -3,7 +3,7 @@ title: "Fever in kids: when to worry and when to wait"
 description: "A pediatrician's guide to fevers by age — what's normal, what works at home, and the warning signs that mean it's time to call the doctor."
 publishDate: 2026-10-01
 hero: /images/blog-fever.jpg
-heroAlt: A mother gently comforting her sick child resting in bed
+heroAlt: A thermometer resting on a folded blanket beside a child's stuffed animal
 tags: ["fever", "when-to-call", "symptoms", "parents-guide"]
 ---
 

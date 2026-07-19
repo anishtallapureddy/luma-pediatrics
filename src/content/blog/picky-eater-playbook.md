@@ -3,7 +3,7 @@ title: "The picky eater: a calm pediatrician's playbook"
 description: "Why most toddlers eat 'badly' — and the small, evidence-based shifts that turn the dinner table from a battlefield back into a meal."
 publishDate: 2026-08-01
 hero: /images/blog-picky-eater.jpg
-heroAlt: A young child in a high chair exploring finger foods on the tray
+heroAlt: A toddler at a kitchen table with a colorful plate of food in warm window light
 tags: ["nutrition", "toddler", "picky-eating", "feeding"]
 ---
 
