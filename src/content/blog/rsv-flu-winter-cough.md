@@ -3,7 +3,7 @@ title: "RSV, the flu, and the winter cough: a parent's playbook"
 description: "How to tell the difference between RSV, flu, COVID, and a common cold — what helps at home, what doesn't, and when a cough means call the doctor."
 publishDate: 2026-09-15
 hero: /images/blog-rsv-flu.jpg
-heroAlt: A parent's hand on a child's forehead as the child rests under a blanket
+heroAlt: A child wrapped in a cozy blanket on the sofa, blowing their nose during a winter cold
 tags: ["RSV", "flu", "cough", "illness", "when-to-call"]
 ---
 
