@@ -28,6 +28,12 @@ var PREFERRED_ORDER = ['Timestamp', 'parent_name', 'email', 'phone', 'child_age_
 // Fields that are never stored (spam honeypot, etc.).
 var IGNORED_FIELDS = ['botcheck'];
 
+// ── Daily digest ─────────────────────────────────────────────────────────────
+// Who receives the once-a-day summary of new signups.
+var DIGEST_RECIPIENTS = ['anish@lumapediatrics.com', 'drt@lumapediatrics.com', 'hello@lumapediatrics.com'];
+// Hour (0-23) in the project's timezone for the daily digest trigger.
+var DIGEST_HOUR = 7;
+
 function labelFor(key) {
   if (key === 'Timestamp') return 'Timestamp';
   if (FIELD_LABELS[key]) return FIELD_LABELS[key];
@@ -94,4 +100,77 @@ function jsonOut(obj) {
 // Optional: open the /exec URL in a browser to confirm the endpoint is live.
 function doGet() {
   return ContentService.createTextOutput('Luma Pediatrics waitlist endpoint is live.');
+}
+
+// ── Daily signup digest ──────────────────────────────────────────────────────
+// Emails DIGEST_RECIPIENTS a summary of every signup since the previous digest.
+// Runs on a daily time trigger — install it ONCE by running
+// createDailyDigestTrigger() from the Apps Script editor (Run ▸ the function),
+// approving the extra Gmail/trigger permissions when prompted. No email is sent
+// on days with zero new signups.
+function sendDailyDigest() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName('Waitlist');
+  if (!sheet || sheet.getLastRow() < 2) return; // header only / empty
+
+  var now = new Date();
+  var props = PropertiesService.getScriptProperties();
+  var last = props.getProperty('lastDigestAt');
+  var since = last ? new Date(last) : new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+  var data = sheet.getDataRange().getValues();
+  var headers = data[0].map(String);
+  var tsCol = headers.indexOf('Timestamp');
+  if (tsCol === -1) tsCol = 0;
+
+  var fresh = [];
+  for (var i = 1; i < data.length; i++) {
+    var ts = data[i][tsCol];
+    if (ts instanceof Date && ts > since) fresh.push(data[i]);
+  }
+
+  if (fresh.length === 0) {
+    props.setProperty('lastDigestAt', now.toISOString()); // advance window
+    return;
+  }
+
+  var tz = ss.getSpreadsheetTimeZone();
+  var count = fresh.length;
+  var plural = count === 1 ? '' : 's';
+  var subject = 'Luma waitlist — ' + count + ' new signup' + plural +
+    ' (' + Utilities.formatDate(now, tz, 'EEE, MMM d') + ')';
+
+  var html = '<p style="font-family:Arial,sans-serif">' + count + ' new founding-families signup' +
+    plural + ' since the last update:</p>' +
+    '<table cellpadding="8" cellspacing="0" ' +
+    'style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;border:1px solid #ddd">' +
+    '<tr style="background:#f4f1ea">';
+  headers.forEach(function (h) { html += '<th align="left" style="border:1px solid #ddd">' + esc(h) + '</th>'; });
+  html += '</tr>';
+  fresh.forEach(function (row) {
+    html += '<tr>';
+    row.forEach(function (cell) {
+      var v = (cell instanceof Date) ? Utilities.formatDate(cell, tz, 'MMM d, yyyy h:mm a') : cell;
+      html += '<td style="border:1px solid #ddd">' + esc(v == null ? '' : v) + '</td>';
+    });
+    html += '</tr>';
+  });
+  html += '</table>' +
+    '<p style="font-family:Arial,sans-serif;color:#888;font-size:12px">Full sheet: ' +
+    '<a href="' + ss.getUrl() + '">' + ss.getName() + '</a></p>';
+
+  MailApp.sendEmail({ to: DIGEST_RECIPIENTS.join(','), subject: subject, htmlBody: html });
+  props.setProperty('lastDigestAt', now.toISOString());
+}
+
+function esc(v) {
+  return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Run this ONCE from the editor to (re)install the daily digest trigger.
+function createDailyDigestTrigger() {
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    if (t.getHandlerFunction() === 'sendDailyDigest') ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('sendDailyDigest').timeBased().everyDays(1).atHour(DIGEST_HOUR).create();
 }
