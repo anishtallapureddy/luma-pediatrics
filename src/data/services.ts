@@ -50,7 +50,7 @@ export const services: ServiceItem[] = [
     short:
       'Routine check-ups, developmental screening, and milestone guidance at every age.',
     full:
-      'Comprehensive check-ups at every recommended age — from infancy through adolescence. Each visit includes a head-to-toe exam, developmental and behavioral screening, milestone guidance, growth tracking, and time for your questions.',
+      'Comprehensive check-ups at every recommended age — from infancy through adolescence. Each visit includes a comprehensive physical exam, developmental and behavioral screening, milestone guidance, growth tracking, and time for your questions.',
     featured: true,
   },
   {
