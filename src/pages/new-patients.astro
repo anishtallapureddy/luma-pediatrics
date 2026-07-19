@@ -5,7 +5,6 @@ import PatientForms from '../components/PatientForms.astro';
 import AfterHoursCard from '../components/AfterHoursCard.astro';
 import InsuranceVerifyForm from '../components/InsuranceVerifyForm.astro';
 import { Icon } from 'astro-icon/components';
-import { insurancePlans } from '../data/services';
 
 /**
  * First-visit walkthrough. Photos are intentionally omitted for now; the
@@ -123,21 +122,12 @@ const bringList = [
 
         <div>
           <span class="eyebrow eyebrow-sun">Insurance</span>
-          <h2 class="mt-5 text-2xl md:text-3xl font-extrabold tracking-tight">Major insurance accepted</h2>
+          <h2 class="mt-5 text-2xl md:text-3xl font-extrabold tracking-tight">Insurance details coming soon</h2>
           <p class="mt-5 text-[var(--color-foreground)]/85 leading-relaxed">
-            We work with most major Texas plans:
+            We're completing credentialing now, and we'll share the full list of accepted plans closer to opening.
           </p>
-          <ul class="mt-4 grid gap-1.5 sm:grid-cols-2 text-[var(--color-foreground)]/85">
-            {insurancePlans.map((plan) => (
-              <li class="flex gap-2 items-start">
-                <Icon name="lucide:check-circle" class="w-4 h-4 mt-1 shrink-0 text-[var(--color-sage-light)]" stroke-width="1.8" aria-hidden="true" />
-                <span>{plan}</span>
-              </li>
-            ))}
-          </ul>
-          <p class="mt-2 text-sm italic text-[var(--color-foreground)]/70">…and more</p>
           <p class="mt-4 text-[var(--color-foreground)]/85 leading-relaxed">
-            Don't see your plan? Send us your details using the form below and we'll verify it before your visit.
+            Have a specific plan in mind? Send us your details using the form below and we'll verify it as soon as we're set up.
             Self-pay families are also welcome — we'll discuss pricing transparently up front.
           </p>
         </div>
