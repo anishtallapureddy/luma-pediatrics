@@ -1,5 +1,5 @@
 /**
- * Local landing-page content for nearby North Collin County cities.
+ * Local landing-page content for nearby cities.
  *
  * Each entry powers a /pediatrician/[slug] page used for local search
  * discovery ("pediatrician in Frisco", "Allen pediatric clinic", etc.).

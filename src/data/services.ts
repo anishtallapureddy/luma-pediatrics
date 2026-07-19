@@ -20,7 +20,6 @@ export const services: ServiceItem[] = [
   {
     icon: 'lucide:handshake',
     title: 'Free Meet & Greet',
-    badge: 'New families',
     short:
       'Complimentary in-office visit to tour the practice and meet your pediatrician before you commit.',
     full:

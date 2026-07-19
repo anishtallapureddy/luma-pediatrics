@@ -101,7 +101,7 @@ export const SITE = {
     { day: 'Sunday',   time: 'Closed' },
   ],
 
-  /** Surrounding North Collin County cities the practice serves. */
+  /** Surrounding cities the practice serves. */
   areasServed: [
     'McKinney',
     'Prosper',
@@ -117,7 +117,7 @@ export const SITE = {
     'Lowry Crossing',
     'New Hope',
   ],
-  areasServedTagline: 'and nearby North Collin County communities',
+  areasServedTagline: 'and nearby communities',
 
   /**
    * Approximate geo coordinates for the practice address — used for
