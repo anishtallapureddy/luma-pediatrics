@@ -57,7 +57,7 @@ export const SITE = {
     ],
     /** Personal note shown beside the casual family photo. */
     lifeOutside:
-      "When I'm not in the office, you'll usually find me chasing after my two kids, enjoying a walk, or spending time with my massive extended family. I look forward to our monthly cousins' cooking sessions despite my complete lack of culinary talent. I'm also an avid reader with an apparent superpower for remembering every tiny detail which has made me the unofficial narrator of my book club.",
+      "Outside the office, you'll usually find me chasing my two kids, out on a walk, or with my big extended family—including our monthly cousins' cooking sessions, despite my complete lack of culinary talent. I'm also an avid reader whose knack for remembering every tiny detail has made me the unofficial narrator of my book club.",
     /** Quick-facts grid rendered under the bio. */
     quickFacts: [
       { label: 'Board Certified', value: 'American Board of Pediatrics' },
