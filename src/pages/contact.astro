@@ -90,10 +90,19 @@ import { SITE } from '../site.config';
               title={`Map of ${SITE.name} in ${SITE.address.city}, ${SITE.address.region}`}
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
-              src={`https://www.google.com/maps?q=${encodeURIComponent(`${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}`)}&output=embed`}
+              src={`https://www.google.com/maps?q=${SITE.geo.latitude},${SITE.geo.longitude}&z=16&output=embed`}
               class="block w-full h-56 border-0"
             ></iframe>
           </div>
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-primary)] no-underline hover:underline"
+          >
+            <Icon name="lucide:map-pin" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
+            Get directions
+          </a>
       </article>
     </div>
   </section>
@@ -115,7 +124,6 @@ import { SITE } from '../site.config';
         <h2 class="mt-5 text-3xl md:text-4xl font-extrabold tracking-tight">Have a general question?</h2>
         <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
           Use this form for general questions about the practice, insurance, or new-patient info.
-          For appointments, please use the patient portal above.
         </p>
       </div>
 

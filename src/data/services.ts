@@ -117,7 +117,8 @@ export const featuredServices = services.filter((s) => s.featured);
 export const insurancePlans = [
   'Blue Cross Blue Shield of Texas',
   'Aetna',
-  'UnitedHealthcare',
   'Cigna',
-  'Humana',
+  'UnitedHealthcare',
+  'Scott & White Health Plan',
+  'Curative',
 ];

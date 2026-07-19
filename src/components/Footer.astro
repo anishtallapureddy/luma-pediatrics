@@ -90,12 +90,12 @@ const cityPageSlugs = new Set(CITIES.map((c) => c.slug));
         <strong class="text-[var(--color-foreground)]">Serving</strong>{' '}
         {SITE.areasServed.map((city) =>
           cityPageSlugs.has(slugify(city)) ? (
-            <><a href={`/pediatrician/${slugify(city)}/`} class="underline-offset-2 hover:underline">{city}</a>{', '}</>
+            <><a href={`/pediatrician/${slugify(city)}/`} class="text-inherit underline-offset-2 hover:underline">{city}</a>{', '}</>
           ) : (
             <>{city}{', '}</>
           )
         )}
-        <a href="/pediatrician/" class="underline-offset-2 hover:underline">{SITE.areasServedTagline}</a>.
+        <a href="/pediatrician/" class="text-inherit underline-offset-2 hover:underline">{SITE.areasServedTagline}</a>.
       </p>
       <p>
         <strong>Not medical advice.</strong> This website is for informational purposes only and is not a substitute

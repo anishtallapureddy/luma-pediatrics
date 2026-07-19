@@ -80,7 +80,7 @@ export const SITE = {
   },
 
   address: {
-    street: '3801 North Central Expressway',
+    street: '3801 North Central Expressway, Ste 302',
     city: 'McKinney',
     region: 'TX',
     postalCode: '75071',
@@ -120,13 +120,13 @@ export const SITE = {
   areasServedTagline: 'and nearby communities',
 
   /**
-   * Approximate geo coordinates for the practice address — used for
-   * LocalBusiness JSON-LD schema. Replace with the verified lat/lng once
-   * the practice is opened (Google Maps "What's here?" gives precise values).
+   * Geo coordinates for the practice address (3801 North Central Expressway,
+   * McKinney) — used for the contact-page map pin and LocalBusiness JSON-LD.
+   * Refine with Google Maps "What's here?" if the exact suite pin needs nudging.
    */
   geo: {
-    latitude: 33.2066,
-    longitude: -96.6680,
+    latitude: 33.2386486,
+    longitude: -96.6297816,
   },
 
   /** External profiles for sameAs structured data (add as they go live). */
