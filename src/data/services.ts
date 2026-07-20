@@ -27,21 +27,21 @@ export const services: ServiceItem[] = [
     featured: true,
   },
   {
-    icon: 'lucide:baby',
-    title: 'Newborn Care',
-    short:
-      'Lactation support, growth tracking, and gentle first visits for your newest family member.',
-    full:
-      'A gentle, unhurried first visit. We support feeding (lactation and bottle), track healthy growth and weight gain, screen for jaundice, answer the sleep and crying questions every new parent has, and partner with you through those first big weeks at home.',
-    featured: true,
-  },
-  {
     icon: 'lucide:hospital',
     title: 'Newborn Rounds at BSW McKinney',
     short:
       'In-hospital newborn visits at Baylor Scott & White McKinney — so your baby meets their pediatrician on day one.',
     full:
       'We provide newborn rounding at Baylor Scott & White Medical Center – McKinney. If you deliver at BSW McKinney and choose Luma, your baby meets their pediatrician right at the bedside — for the first exam, feeding support, and a smooth handoff from hospital to home.',
+    featured: true,
+  },
+  {
+    icon: 'lucide:baby',
+    title: 'Newborn Care',
+    short:
+      'Lactation support, growth tracking, and gentle first visits for your newest family member.',
+    full:
+      'A gentle, unhurried first visit. We support feeding (lactation and bottle), track healthy growth and weight gain, screen for jaundice, answer the sleep and crying questions every new parent has, and partner with you through those first big weeks at home.',
     featured: true,
   },
   {
