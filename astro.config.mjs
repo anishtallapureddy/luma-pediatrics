@@ -51,7 +51,9 @@ const holdingRedirects = Object.fromEntries(
 export default defineConfig({
   site: 'https://www.lumapediatrics.com',
   trailingSlash: 'ignore',
-  redirects: holdingRedirects,
+  // SITE OFFLINE: redirects disabled so every non-root path returns the blank
+  // 404 (nothing shown). RESTORE (holding page): re-enable the line below.
+  // redirects: holdingRedirects,
   build: {
     inlineStylesheets: 'auto',
   },

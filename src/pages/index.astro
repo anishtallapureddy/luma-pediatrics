@@ -1,94 +1,23 @@
 ---
 /**
- * TEMPORARY pre-opening holding page (public homepage).
+ * Luma Pediatrics — site intentionally OFFLINE (temporary).
  *
- * The full marketing homepage is preserved at `src/pages/_index.full.astro`.
- * RESTORE: `git mv src/pages/_index.full.astro src/pages/index.astro`
- * (overwriting this file) and remove the redirects from `astro.config.mjs`.
+ * Renders a BLANK page: nothing is shown to visitors. The full marketing site
+ * and the neutral holding page are both preserved via dated Git tags
+ * (preopening-full-site, preopening-holding-page) and branches.
+ *
+ * RESTORE the holding page:
+ *   git checkout preopening-holding-page -- . && rebuild && redeploy
  */
-import HoldingLayout from '../layouts/HoldingLayout.astro';
 ---
 
-<HoldingLayout
-  title="Luma Pediatrics | Future Practice in McKinney"
-  description="Luma Pediatrics is a future pediatric practice in McKinney, Texas. The practice is not currently providing medical services or accepting patients."
-  path="/"
->
-  <div class="holding">
-    <h1 class="holding__name">Luma Pediatrics</h1>
-    <p class="holding__subtitle">Future pediatric practice in McKinney, Texas</p>
-
-    <p class="holding__opening">Opening at a later date.</p>
-
-    <p class="holding__body">
-      Luma Pediatrics is not currently providing medical services, accepting patients, or
-      scheduling appointments. Additional information will be published closer to opening.
-    </p>
-
-    <address class="holding__address">
-      3801 North Central Expressway, Suite 302<br />
-      McKinney, Texas 75071
-    </address>
-
-    <p class="holding__admin">
-      Administrative and vendor inquiries only:<br />
-      <a href="mailto:hello@lumapediatrics.com">hello@lumapediatrics.com</a>
-    </p>
-
-    <p class="holding__emergency" role="note">
-      For medical emergencies, call 911 or visit the nearest emergency department.
-    </p>
-  </div>
-
-  <style>
-    .holding {
-      text-align: center;
-    }
-    .holding__name {
-      font-size: clamp(2.5rem, 6vw, 3.5rem);
-      line-height: 1.05;
-      letter-spacing: -0.01em;
-    }
-    .holding__subtitle {
-      margin-top: 0.75rem;
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-      color: var(--color-muted-foreground);
-    }
-    .holding__opening {
-      margin-top: 1.75rem;
-      font-weight: 600;
-      font-size: 1.125rem;
-      color: var(--color-foreground);
-    }
-    .holding__body {
-      margin: 1rem auto 0;
-      max-width: 34rem;
-      color: rgba(11, 29, 58, 0.85);
-      line-height: 1.7;
-    }
-    .holding__address {
-      margin-top: 2rem;
-      font-style: normal;
-      line-height: 1.6;
-      color: var(--color-foreground);
-    }
-    .holding__admin {
-      margin-top: 1.5rem;
-      color: rgba(11, 29, 58, 0.85);
-      line-height: 1.7;
-    }
-    .holding__admin a {
-      color: var(--color-primary);
-      font-weight: 600;
-    }
-    .holding__emergency {
-      margin-top: 2rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid var(--color-border-soft);
-      font-size: 0.9375rem;
-      color: var(--color-muted-foreground);
-    }
-  </style>
-</HoldingLayout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <title>Luma Pediatrics</title>
+  </head>
+  <body></body>
+</html>
