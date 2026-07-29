@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
-import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 
 // https://astro.build/config
@@ -11,10 +10,9 @@ export default defineConfig({
     inlineStylesheets: 'auto',
   },
   integrations: [
-    sitemap({
-      // Exclude pre-launch pages that are hidden from navigation.
-      filter: (page) => !page.includes('/new-patients'),
-    }),
+    // Sitemap intentionally disabled while pre-launch — we don't advertise URLs
+    // to crawlers yet. AT LAUNCH: re-add `@astrojs/sitemap` here (and restore
+    // the "Sitemap:" line in public/robots.txt).
     icon({
       include: {
         lucide: [

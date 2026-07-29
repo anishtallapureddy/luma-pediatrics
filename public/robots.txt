@@ -1,57 +1,58 @@
-User-agent: *
-Allow: /
+# ─────────────────────────────────────────────────────────────────────────────
+# PRE-LAUNCH — Luma Pediatrics is not publicly launched yet.
+#
+# Every page is served with <meta name="robots" content="noindex, nofollow">
+# (the BaseLayout default), which is the authoritative signal that keeps the
+# site out of Google/Bing results. Standard crawling is intentionally left
+# ALLOWED so those engines can fetch a page and SEE the noindex — a blanket
+# "Disallow: /" would hide the tag and could leave bare URLs in results anyway.
+# No sitemap is published while pre-launch, so nothing is advertised.
+#
+# AT LAUNCH: flip the BaseLayout `noindex` default back to false, re-enable the
+# @astrojs/sitemap integration + restore the "Sitemap:" line, and allow the AI
+# crawlers again if you want the site cited by ChatGPT/Claude/Perplexity/etc.
+# ─────────────────────────────────────────────────────────────────────────────
 
-# Allow major AI/LLM crawlers explicitly so Luma Pediatrics
-# can be cited by ChatGPT, Claude, Gemini, Perplexity, etc.
+# Standard search crawlers: allowed to crawl (so they read the noindex tag).
+User-agent: *
+Disallow:
+
+# AI training / ingestion crawlers: blocked while pre-launch so the unlaunched
+# site isn't scraped into models or surfaced in AI answers.
 User-agent: GPTBot
-Allow: /
+Disallow: /
 
 User-agent: ChatGPT-User
-Allow: /
+Disallow: /
 
 User-agent: OAI-SearchBot
-Allow: /
+Disallow: /
 
 User-agent: ClaudeBot
-Allow: /
+Disallow: /
 
 User-agent: Claude-Web
-Allow: /
+Disallow: /
 
 User-agent: anthropic-ai
-Allow: /
+Disallow: /
 
 User-agent: Google-Extended
-Allow: /
-
-User-agent: GoogleOther
-Allow: /
+Disallow: /
 
 User-agent: PerplexityBot
-Allow: /
+Disallow: /
 
 User-agent: Perplexity-User
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Applebot
-Allow: /
-
-User-agent: Applebot-Extended
-Allow: /
+Disallow: /
 
 User-agent: CCBot
-Allow: /
+Disallow: /
 
 User-agent: meta-externalagent
-Allow: /
+Disallow: /
 
 User-agent: cohere-ai
-Allow: /
+Disallow: /
 
-User-agent: DuckDuckBot
-Allow: /
-
-Sitemap: https://www.lumapediatrics.com/sitemap-index.xml
+# No Sitemap line while pre-launch.

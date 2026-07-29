@@ -16,7 +16,11 @@ interface Props {
   path?: string;
   ogImage?: string;
   breadcrumbs?: BreadcrumbItem[];
-  /** When true, adds <meta name="robots" content="noindex, nofollow"> (e.g. for pre-launch pages hidden from nav). */
+  /**
+   * When true, adds <meta name="robots" content="noindex, nofollow">.
+   * Defaults to TRUE while the site is pre-launch, so the whole site stays out
+   * of search results. AT LAUNCH: flip the default (below) back to false.
+   */
   noindex?: boolean;
 }
 
@@ -26,7 +30,8 @@ const {
   path = '',
   ogImage = '/og-default.png',
   breadcrumbs,
-  noindex = false,
+  // Pre-launch: default the whole site to noindex. Flip back to false at launch.
+  noindex = true,
 } = Astro.props;
 
 const siteTitle = title === SITE.name ? title : `${title} · ${SITE.name}`;
