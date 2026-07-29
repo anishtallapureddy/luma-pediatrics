@@ -1,21 +1,15 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageDecor from '../components/PageDecor.astro';
+import HoldingLayout from '../layouts/HoldingLayout.astro';
 import { SITE } from '../site.config';
 
 const lastUpdated = 'May 2026';
 ---
-<BaseLayout
-  title="Privacy Policy"
+<HoldingLayout
+  title="Privacy Policy · Luma Pediatrics"
   path="/privacy"
   description="Privacy policy for Luma Pediatrics in McKinney, TX. How we collect, use, and protect information submitted through our website."
-  breadcrumbs={[
-    { name: 'Home', path: '/' },
-    { name: 'Privacy Policy', path: '/privacy' },
-  ]}
 >
   <section class="page-hero py-14 md:py-20 overflow-hidden">
-    <PageDecor variant="minimal" sparkles={6} />
     <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
       <span class="eyebrow">Privacy</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">Privacy Policy</h1>
@@ -28,8 +22,8 @@ const lastUpdated = 'May 2026';
       <p>
         This Privacy Policy explains how Luma Pediatrics ("we," "us," "our") handles
         information submitted through our website at {SITE.domain}. Protected health information
-        ("PHI") is handled separately under our <a href="/notice-of-privacy-practices">Notice of Privacy Practices</a>
-        (HIPAA), which governs how we use and disclose health information in the course of care.
+        ("PHI") is handled separately under our Notice of Privacy Practices (HIPAA), which
+        governs how we use and disclose health information in the course of care.
       </p>
 
       <h2>1. Information we collect</h2>
@@ -69,7 +63,7 @@ const lastUpdated = 'May 2026';
       <p>
         Our website is directed to parents and guardians. We do not knowingly collect personal
         information from children under 13 through this website. Clinical care for minors is
-        governed by HIPAA and our <a href="/notice-of-privacy-practices">Notice of Privacy Practices</a>.
+        governed by HIPAA and our Notice of Privacy Practices.
       </p>
 
       <h2>6. Security</h2>
@@ -97,7 +91,7 @@ const lastUpdated = 'May 2026';
       </p>
     </div>
   </section>
-</BaseLayout>
+</HoldingLayout>
 
 <style>
   .prose-luma h2 {

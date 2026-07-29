@@ -1,21 +1,15 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageDecor from '../components/PageDecor.astro';
+import HoldingLayout from '../layouts/HoldingLayout.astro';
 import { SITE } from '../site.config';
 
 const lastUpdated = 'May 2026';
 ---
-<BaseLayout
-  title="Accessibility Statement"
+<HoldingLayout
+  title="Accessibility Statement · Luma Pediatrics"
   path="/accessibility"
   description="Luma Pediatrics is committed to providing an accessible website experience for all families in McKinney, TX and surrounding communities."
-  breadcrumbs={[
-    { name: 'Home', path: '/' },
-    { name: 'Accessibility', path: '/accessibility' },
-  ]}
 >
   <section class="page-hero py-14 md:py-20 overflow-hidden">
-    <PageDecor variant="minimal" sparkles={6} />
     <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
       <span class="eyebrow">Accessibility</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">Accessibility Statement</h1>
@@ -50,24 +44,16 @@ const lastUpdated = 'May 2026';
       <h2>Report a barrier</h2>
       <p>
         If you encounter an accessibility barrier on our website — or if you need information
-        in an alternative format — please contact us. We will work with you to provide the
+        in an alternative format — please email us. We will work with you to provide the
         information you need.
       </p>
       <p>
         Email: <a href={SITE.contact.emailHref}>{SITE.contact.email}</a><br />
-        Phone: <a href={SITE.contact.phoneHref}>{SITE.contact.phone}</a><br />
         Mail: {SITE.name}, {SITE.address.street}, {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}
-      </p>
-
-      <h2>In-office accessibility</h2>
-      <p>
-        Our McKinney office is designed to be welcoming for families with diverse needs.
-        If you have specific accommodations to discuss before your first visit, please let us
-        know — we'll do our best to make your child's care feel safe and supported.
       </p>
     </div>
   </section>
-</BaseLayout>
+</HoldingLayout>
 
 <style>
   .prose-luma h2 {
