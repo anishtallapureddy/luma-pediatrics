@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/sitemap": "3.7.0",
     "@fontsource/cormorant-garamond": "^5.1.0",
     "@fontsource/plus-jakarta-sans": "^5.1.0",
     "@iconify-json/lucide": "^1.2.18",
