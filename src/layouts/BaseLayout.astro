@@ -16,11 +16,7 @@ interface Props {
   path?: string;
   ogImage?: string;
   breadcrumbs?: BreadcrumbItem[];
-  /**
-   * When true, adds <meta name="robots" content="noindex, nofollow">.
-   * Defaults to TRUE while the site is pre-launch, so the whole site stays out
-   * of search results. AT LAUNCH: flip the default (below) back to false.
-   */
+  /** When true, keeps a page out of search results. */
   noindex?: boolean;
 }
 
@@ -30,12 +26,16 @@ const {
   path = '',
   ogImage = '/og-default.png',
   breadcrumbs,
-  // Pre-launch: default the whole site to noindex. Flip back to false at launch.
-  noindex = true,
+  noindex = false,
 } = Astro.props;
 
 const siteTitle = title === SITE.name ? title : `${title} · ${SITE.name}`;
-const canonical = new URL(path, Astro.site).toString();
+const normalizePath = (value: string) => {
+  const normalized = value.replace(/^\/+|\/+$/g, '');
+  if (!normalized) return '/';
+  return normalized.includes('.') ? `/${normalized}` : `/${normalized}/`;
+};
+const canonical = new URL(normalizePath(path), Astro.site).toString();
 const ogImageUrl = new URL(ogImage, Astro.site).toString();
 
 /* ---------- MedicalBusiness / LocalBusiness JSON-LD ---------- */
@@ -43,34 +43,6 @@ const fullPhoneDigits = SITE.contact.phone.replace(/[^0-9]/g, '');
 const telephone = `+1-${fullPhoneDigits}`;
 
 const sameAs = [SITE.social.facebook, SITE.social.instagram, SITE.social.googleBusiness].filter(Boolean);
-
-const dayMap: Record<string, string[]> = {
-  'Mon–Fri': ['Monday','Tuesday','Wednesday','Thursday','Friday'],
-  'Saturday': ['Saturday'],
-  'Sunday': ['Sunday'],
-};
-
-const openingHoursSpecification = SITE.hours
-  .filter((h) => h.time.toLowerCase() !== 'closed')
-  .map((h) => {
-    const [open, close] = h.time.split('–').map((s) => s.trim());
-    const to24 = (t: string) => {
-      const m = t.match(/^(\d{1,2}):(\d{2})\s*(am|pm)$/i);
-      if (!m) return t;
-      let hh = parseInt(m[1], 10);
-      const mm = m[2];
-      const mer = m[3].toLowerCase();
-      if (mer === 'pm' && hh < 12) hh += 12;
-      if (mer === 'am' && hh === 12) hh = 0;
-      return `${String(hh).padStart(2, '0')}:${mm}`;
-    };
-    return {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: dayMap[h.day] ?? [h.day],
-      opens: to24(open),
-      closes: to24(close),
-    };
-  });
 
 const businessSchema = {
   '@context': 'https://schema.org',
@@ -125,7 +97,6 @@ const businessSchema = {
   knowsLanguage: SITE.showProviderProfile
     ? ['English', ...SITE.provider.languages]
     : ['English'],
-  openingHoursSpecification,
   ...(sameAs.length ? { sameAs } : {}),
   ...(SITE.showProviderProfile
     ? {
@@ -150,7 +121,7 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
         '@type': 'ListItem',
         position: i + 1,
         name: b.name,
-        item: new URL(b.path, SITE.domain).toString(),
+        item: new URL(normalizePath(b.path), SITE.domain).toString(),
       })),
     }
   : null;
@@ -165,7 +136,12 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
     <title>{siteTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta
+      name="robots"
+      content={noindex
+        ? 'noindex, nofollow'
+        : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
+    />
 
     {SITE.analytics.googleSiteVerification && (
       <meta name="google-site-verification" content={SITE.analytics.googleSiteVerification} />

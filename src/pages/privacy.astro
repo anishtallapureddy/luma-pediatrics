@@ -1,10 +1,10 @@
 ---
-import HoldingLayout from '../layouts/HoldingLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../site.config';
 
 const lastUpdated = 'May 2026';
 ---
-<HoldingLayout
+<BaseLayout
   title="Privacy Policy · Luma Pediatrics"
   path="/privacy"
   description="Privacy policy for Luma Pediatrics in McKinney, TX. How we collect, use, and protect information submitted through our website."
@@ -91,7 +91,7 @@ const lastUpdated = 'May 2026';
       </p>
     </div>
   </section>
-</HoldingLayout>
+</BaseLayout>
 
 <style>
   .prose-luma h2 {

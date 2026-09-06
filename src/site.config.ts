@@ -7,12 +7,12 @@ export const SITE = {
   name: 'Luma Pediatrics',
   tagline: "Where your child's health shines.",
   subtagline: 'Bright beginnings. Healthy futures.',
-  status: 'Opening Soon',
+  status: 'Opening late 2026',
   /** Opening timeframe phrase — appears in "Opening {openingWindow} in McKinney" copy. */
-  openingWindow: 'soon',
+  openingWindow: 'late 2026',
   locationShort: 'McKinney, Texas',
   description:
-    "Luma Pediatrics is a board-certified pediatric practice opening in McKinney, Texas, offering warm, evidence-based care for newborns, children, and teens through every stage of childhood.",
+    "Luma Pediatrics is a board-certified pediatric practice opening in late 2026 in McKinney, Texas, offering warm, evidence-based care for newborns, children, and teens through every stage of childhood.",
   domain: 'https://www.lumapediatrics.com',
 
   /**

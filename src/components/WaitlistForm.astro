@@ -11,7 +11,7 @@ interface Props {
 const { variant = 'inline', title, blurb } = Astro.props;
 
 /**
- * Founding-families waitlist form.
+ * Practice-updates signup form.
  *
  * Submits (via AJAX) to a Google Apps Script Web App that appends each signup
  * to a Google Sheet — see docs/waitlist-setup.md. When SITE.forms.waitlistEndpoint
@@ -19,10 +19,10 @@ const { variant = 'inline', title, blurb } = Astro.props;
  */
 const endpoint = (SITE.forms.waitlistEndpoint ?? '').trim();
 
-const headline = title ?? 'Join the founding-families list';
+const headline = title ?? 'Stay Updated on Luma';
 const intro =
   blurb ??
-  `Luma Pediatrics is opening ${SITE.openingWindow} in ${SITE.locationShort.split(',')[0]}. Join our founding families list to be notified the moment scheduling opens and to receive important practice updates along the way.`;
+  'Luma Pediatrics is opening in late 2026. Sign up to receive occasional updates about our opening, services, and appointment availability.';
 
 const isHero = variant === 'hero';
 const inputClass =
@@ -31,7 +31,7 @@ const inputClass =
 <section class:list={['waitlist-card rounded-[var(--radius-card)] p-7 md:p-9', isHero ? 'waitlist-hero ring-1 ring-[var(--color-border-soft)] bg-[var(--color-card)]' : 'bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)]']}>
   <div class="flex items-center gap-2 text-[var(--color-primary)]">
     <Icon name="lucide:sparkles" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
-    <span class="eyebrow eyebrow-sun">Founding families</span>
+    <span class="eyebrow eyebrow-sun">Practice updates</span>
   </div>
   <h2 class:list={['mt-4 font-extrabold tracking-tight', isHero ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl']}>
     {headline}
@@ -65,7 +65,7 @@ const inputClass =
     <label class="block sm:col-span-1">
       <span class="text-sm font-semibold text-[var(--color-foreground)]">Mobile phone <span class="text-[var(--color-muted-foreground)] font-normal">(optional)</span></span>
       <input type="tel" name="phone" autocomplete="tel" placeholder="(469) 555-1234" class={inputClass} />
-      <span class="mt-1 block text-xs text-[var(--color-muted-foreground)] leading-relaxed">We'll only text you about Luma Pediatrics opening updates and scheduling. Standard messaging rates may apply.</span>
+      <span class="mt-1 block text-xs text-[var(--color-muted-foreground)] leading-relaxed">We'll only text you occasional Luma updates and appointment availability. Standard messaging rates may apply.</span>
     </label>
 
     <div class="sm:col-span-2 flex items-center gap-3 flex-wrap">
@@ -75,10 +75,10 @@ const inputClass =
         class="inline-flex items-center justify-center gap-2 min-h-11 px-6 rounded-full bg-[var(--color-primary)] text-white font-semibold hover:brightness-110 focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 outline-none disabled:opacity-70 disabled:cursor-not-allowed"
       >
         <Icon name="lucide:send" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
-        <span data-waitlist-submit-label>Join the waitlist</span>
+        <span data-waitlist-submit-label>Sign up for updates</span>
       </button>
       <p class="text-xs text-[var(--color-muted-foreground)]">
-        We'll only use your info to share opening news. Unsubscribe anytime.
+        We'll only use your information for occasional Luma updates. Unsubscribe anytime.
       </p>
     </div>
 
@@ -95,9 +95,9 @@ const inputClass =
       <Icon name="lucide:check" class="w-5 h-5" stroke-width="2.4" />
     </span>
     <div>
-      <p class="font-extrabold text-[var(--color-foreground)]">You're on the list!</p>
+      <p class="font-extrabold text-[var(--color-foreground)]">You're signed up!</p>
       <p class="mt-1 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
-        Thanks for joining our founding families. We'll email you the moment scheduling opens.
+        Thanks for staying connected. We'll share occasional updates as opening approaches.
       </p>
     </div>
   </div>

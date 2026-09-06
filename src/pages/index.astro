@@ -1,23 +1,303 @@
 ---
-/**
- * Luma Pediatrics — site intentionally OFFLINE (temporary).
- *
- * Renders a BLANK page: nothing is shown to visitors. The full marketing site
- * and the neutral holding page are both preserved via dated Git tags
- * (preopening-full-site, preopening-holding-page) and branches.
- *
- * RESTORE the holding page:
- *   git checkout preopening-holding-page -- . && rebuild && redeploy
- */
----
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import StarDivider from '../components/StarDivider.astro';
+import SageWave from '../components/SageWave.astro';
+import SparkleField from '../components/SparkleField.astro';
+import WaitlistForm from '../components/WaitlistForm.astro';
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
+import { featuredServices as services } from '../data/services';
+import Picture from '../components/Picture.astro';
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex, nofollow, noarchive" />
-    <title>Luma Pediatrics</title>
-  </head>
-  <body></body>
-</html>
+const promises = [
+  {
+    icon: 'lucide:clock',
+    title: 'Unhurried, attentive visits',
+    body: 'Longer appointment times by design, so every question is heard and every concern is addressed with care.',
+  },
+  {
+    icon: 'lucide:users',
+    title: 'Continuity of care',
+    body: 'Your child sees the same pediatrician at every visit — building a trusted relationship that grows with your family.',
+  },
+  {
+    icon: 'lucide:heart',
+    title: 'Partnership with parents',
+    body: 'We believe parents know their children best. Our role is to provide clear guidance so you can make informed decisions with confidence.',
+  },
+];
+
+const trustPhotos = [
+  {
+    src: '/images/trust-family.jpg',
+    alt: 'A mother cuddling her happy laughing baby in a soft, sunlit nursery',
+    title: 'Family centered',
+    body: 'Care built around the people who know your child best.',
+  },
+  {
+    src: '/images/trust-checkup.jpg',
+    alt: 'A pediatrician using a stethoscope on a smiling girl held by her mother',
+    title: 'Gentle visits',
+    body: 'Calm, kid-friendly visits that never feel rushed.',
+  },
+  {
+    src: '/images/trust-gentle.jpg',
+    alt: 'A smiling young girl using a stethoscope to listen to her teddy bear',
+    title: 'Confidence in care',
+    body: 'Thoughtful, evidence-based care delivered with warmth and compassion.',
+  },
+  {
+    src: '/images/trust-playful.jpg',
+    alt: 'A happy toddler sitting on a rug, surrounded by a teddy bear, bunny, and stacking toys',
+    title: 'Bright and playful',
+    body: 'A welcoming clinic designed to feel like home.',
+  },
+];
+---
+<BaseLayout
+  title="Pediatrician in McKinney, TX | Newborns to Teens"
+  path="/"
+  description="Luma Pediatrics is a board-certified pediatric practice opening in late 2026 in McKinney, TX. We serve newborns through age 21 with well-child visits, same-day sick care, vaccinations, school physicals, and ADHD/behavioral support."
+>
+
+  <!-- ====================================================================
+       HERO — elegant brand vibe: centered logo + serif wordmark + italic
+       gold tagline, gold sparkles scattered, sage-curved transition below.
+       ==================================================================== -->
+  <section class="brand-hero overflow-hidden">
+    <div class="brand-cloud cloud-left" aria-hidden="true"></div>
+    <div class="brand-cloud cloud-right" aria-hidden="true"></div>
+    <div class="botanical-spray leaf-left" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="botanical-spray leaf-right" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <SparkleField count={12} class="z-0" />
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 flex-1 flex items-center">
+      <div class="fade-up grid gap-8 lg:grid-cols-[0.92fr_1.08fr] items-center w-full">
+        <div class="text-center lg:text-left">
+          <p class="hero-status-pill">
+            <Icon name="lucide:sparkles" class="w-3.5 h-3.5" stroke-width="2" aria-hidden="true" />
+            <span>Opening {SITE.openingWindow} in {SITE.locationShort.split(',')[0]}</span>
+          </p>
+          <h1 class="mt-4 text-4xl md:text-6xl font-semibold tracking-tight leading-[0.98]" style="font-family: var(--font-display);">
+            Expert pediatric care that feels like family.
+          </h1>
+          <div class="mt-5 lg:max-w-xs">
+            <StarDivider span="4rem" />
+          </div>
+          <p class="mt-5 text-lg md:text-2xl tagline-italic-sage leading-snug">
+            Where your child's health shines.
+          </p>
+          <p class="mt-4 text-sm md:text-base text-[var(--color-foreground)]/74 max-w-xl md:max-w-none mx-auto lg:mx-0 leading-relaxed lg:whitespace-nowrap">
+            Warm, comprehensive care for newborns to teens — conveniently located just off US-75.
+          </p>
+
+          <div class="mt-6 flex flex-wrap justify-center lg:justify-start gap-3">
+            <Button href="/services" variant="primary">
+              Explore services
+              <span class="btn-icon-circle" aria-hidden="true">
+                <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
+              </span>
+            </Button>
+            <Button href="/contact" variant="secondary">Get in touch</Button>
+          </div>
+        </div>
+
+        <figure class="hero-poster-image">
+          <Picture src="/images/hero-poster.jpg" alt="Luma Pediatrics — Opening late 2026 in McKinney, TX. Where your child's health shines." loading="eager" fetchpriority="high" />
+        </figure>
+      </div>
+    </div>
+
+    <div class="sage-sweep" aria-hidden="true"></div>
+    <!-- Sage wave transition into the next section -->
+    <SageWave direction="down" height={38} />
+  </section>
+
+  <!-- ====================================================================
+       TRUST-BUILDING PHOTO STRIP — warm faces and safe, happy care moments.
+       ==================================================================== -->
+  <section class="trust-gallery py-20 md:py-28 reveal">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto text-center mb-12">
+        <span class="eyebrow eyebrow-sun">Warm, safe, happy</span>
+        <h2 class="mt-5 text-4xl md:text-6xl tracking-tight">
+          Care that feels reassuring from the first hello.
+        </h2>
+        <p class="mt-6 text-lg text-[var(--color-foreground)]/78 leading-relaxed max-w-2xl mx-auto">
+          A calm, welcoming environment where children feel comfortable, parents feel heard, and every visit is centered on your family.
+        </p>
+      </div>
+
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {trustPhotos.map(({ src, alt, title, body }) => (
+          <figure class="photo-trust-card card-lift">
+            <Picture src={src} alt={alt} loading="lazy" />
+            <figcaption>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       SERVICES preview
+       ==================================================================== -->
+  <section id="services" class="py-20 md:py-28 reveal relative">
+    <SparkleField count={6} />
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto text-center mb-14">
+        <span class="eyebrow">What we do</span>
+        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight lg:whitespace-nowrap">Everything your child needs, in one place.</h2>
+        <p class="mt-5 tagline-italic-sage text-lg md:text-xl">
+          Comprehensive pediatric care — from your baby's first days through young adulthood.
+        </p>
+      </div>
+
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {services.map(({ icon, title, short, badge }) => (
+          <article class="card-lift group rounded-[var(--radius-card)] bg-[var(--color-card)] p-7">
+            <span
+              class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-5 ring-1 ring-inset ring-[rgba(200, 153, 90,0.30)]"
+              style="box-shadow: inset 0 1px 1px rgba(255,255,255,0.6);"
+            >
+              <Icon name={icon} class="w-6 h-6" stroke-width="1.6" aria-hidden="true" />
+            </span>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h3 class="text-2xl font-semibold" style="font-family: var(--font-display);">{title}</h3>
+              {badge && (
+                <span class="service-badge">{badge}</span>
+              )}
+            </div>
+            <p class="mt-2.5 text-[var(--color-foreground)]/80 leading-relaxed">{short}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="mt-10 text-center">
+        <Button href="/services" variant="secondary">
+          See all services
+          <span class="btn-icon-circle" aria-hidden="true">
+            <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
+          </span>
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       EXPERIENCE — generic trust band (employer-safe pre-launch)
+       ==================================================================== -->
+  <section class="py-10 md:py-12 bg-[var(--color-sage-light)]/40 border-y border-[var(--color-border-soft)] reveal">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-base md:text-lg text-luma-ink/85 leading-relaxed">
+        <Icon name="lucide:award" class="inline w-5 h-5 -mt-1 text-luma-gold" />
+        {' '}<strong class="font-semibold">Board-certified pediatric care</strong> backed by years of experience caring for North Texas families and guided by the latest AAP and CDC recommendations.
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       WAITLIST — pre-launch founding-families capture
+       ==================================================================== -->
+  <section class="py-16 md:py-20 reveal">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <WaitlistForm variant="hero" />
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       INSURANCE — gold-tinted band with elegant treatment
+       ==================================================================== -->
+  <section class="py-16 md:py-20 bg-[var(--color-muted)] reveal">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="eyebrow eyebrow-sun">Insurance</span>
+      <h2 class="mt-5 text-3xl md:text-4xl tracking-tight">
+        Care within reach for every family.
+      </h2>
+      <StarDivider class="mt-7" span="3rem" />
+      <p class="mt-7 text-[var(--color-foreground)]/80 max-w-2xl mx-auto leading-relaxed text-lg">
+        We're completing insurance credentialing now — the full list of accepted plans is coming soon. Self-pay families are welcome across North Texas communities, and we're glad to answer questions in the meantime.
+      </p>
+      <div class="mt-7">
+        <a href="/contact" class="font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
+          Have insurance questions? Get in touch →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       OUR PROMISE — values-led block (replaces testimonials pre-launch;
+       we'll add real, attributed reviews after launch with consent).
+       ==================================================================== -->
+  <section aria-label="Our promise to your family" class="py-20 md:py-28 reveal relative navy-campaign">
+    <SparkleField count={8} />
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto text-center mb-14">
+        <span class="eyebrow eyebrow-sun">Our commitment</span>
+        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight text-white">The standards we hold ourselves to</h2>
+        <p class="mt-5 text-white/85 leading-relaxed text-lg">
+          As a new practice, we earn families' trust through the standard of care we provide.
+          These are the commitments you can count on at every visit.
+        </p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-3">
+        {promises.map(({ icon, title, body }) => (
+          <article class="card-lift navy-card rounded-[var(--radius-card)] p-8">
+            <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/15 text-[var(--color-sun)] mb-5" aria-hidden="true">
+              <Icon name={icon} class="w-6 h-6" stroke-width="1.6" />
+            </span>
+            <h3 class="text-xl font-semibold text-white mb-3" style="font-family: var(--font-display);">{title}</h3>
+            <p class="text-white/85 leading-relaxed">{body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================================
+       FINAL CTA — "Still have questions?" pairing FAQ + Contact, instead of
+       duplicating the hero. Keeps a strong close without repeating CTAs.
+       ==================================================================== -->
+  <section class="campaign-panel">
+    <div class="brand-cloud cloud-right" aria-hidden="true"></div>
+    <div class="botanical-spray leaf-right" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <SparkleField count={10} />
+
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
+      <div class="campaign-card px-5 py-12 md:p-14">
+        <span class="eyebrow eyebrow-sun">Still have questions?</span>
+        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight" style="font-family: var(--font-display);">
+          We're here to help your family feel at home.
+        </h2>
+        <StarDivider class="mt-7" span="3rem" />
+        <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/78 max-w-2xl mx-auto leading-relaxed">
+          Browse our FAQ for quick answers, or reach out — we typically reply within one business day.
+        </p>
+        <div class="mt-9 flex flex-wrap justify-center gap-3">
+          <Button href="/faq" variant="primary">
+            <Icon name="lucide:info" class="w-5 h-5" stroke-width="1.6" />
+            Read our FAQ
+          </Button>
+          <Button href="/contact" variant="secondary">
+            Contact us
+            <span class="btn-icon-circle" aria-hidden="true">
+              <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
+            </span>
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

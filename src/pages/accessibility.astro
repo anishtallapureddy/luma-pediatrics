@@ -1,10 +1,10 @@
 ---
-import HoldingLayout from '../layouts/HoldingLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../site.config';
 
 const lastUpdated = 'May 2026';
 ---
-<HoldingLayout
+<BaseLayout
   title="Accessibility Statement · Luma Pediatrics"
   path="/accessibility"
   description="Luma Pediatrics is committed to providing an accessible website experience for all families in McKinney, TX and surrounding communities."
@@ -53,7 +53,7 @@ const lastUpdated = 'May 2026';
       </p>
     </div>
   </section>
-</HoldingLayout>
+</BaseLayout>
 
 <style>
   .prose-luma h2 {

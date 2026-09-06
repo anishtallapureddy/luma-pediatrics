@@ -1,6 +1,6 @@
 Luma Pediatrics
 Where your child's health shines.
-Opening soon in McKinney, Texas.
+Opening late 2026 in McKinney, Texas.
 
 Build a modern pediatric clinic website with the following pages:
 Home, About, Services, New Patients, FAQ, Contact / Request Appointment.
