@@ -202,7 +202,7 @@ export const SITE = {
 
   /**
    * Analytics + search-console verification.
-   * - ga4MeasurementId: Google Analytics 4 measurement ID, e.g. 'G-XXXXXXXXXX'.
+   * - ga4MeasurementId: Google Analytics 4 measurement ID.
    *   Create a property at https://analytics.google.com → Admin → Create property.
    *   Leave empty to disable in dev / before launch.
    * - googleSiteVerification: verification token from Google Search Console
@@ -210,7 +210,7 @@ export const SITE = {
    * - bingSiteVerification: optional, from Bing Webmaster Tools.
    */
   analytics: {
-    ga4MeasurementId: '',
+    ga4MeasurementId: 'G-QL30ZJXMW8',
     googleSiteVerification: '',
     bingSiteVerification: '',
   },
