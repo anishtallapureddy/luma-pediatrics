@@ -39,10 +39,10 @@ export const CITIES: CityPage[] = [
     distanceMi: 8,
     driveMinutes: '15–20 min',
     intro:
-      'Frisco families — Luma Pediatrics is a short drive east, offering longer visits and same-day sick appointments.',
+      'Frisco families — Luma Pediatrics will be a short drive east, with longer visits and planned same-day sick appointments.',
     landmarks: ['The Star', 'Stonebriar', 'Phillips Creek Ranch', 'Frisco ISD schools'],
     whyLuma:
-      'Frisco families seeking a pediatrician focused on continuity and unhurried visits will find Luma a short drive east — with longer appointment times, direct access to your provider, and same-day availability for sick visits.',
+      'Frisco families seeking continuity and unhurried visits will find Luma a short drive east, with longer appointment times and planned same-day availability for sick visits after opening.',
   },
   {
     slug: 'allen',
@@ -50,10 +50,10 @@ export const CITIES: CityPage[] = [
     distanceMi: 7,
     driveMinutes: '12–15 min',
     intro:
-      'Allen families can reach Luma Pediatrics in under fifteen minutes via US-75 — with same-day sick visits and gentle, unhurried care.',
+      'Allen families will be able to reach Luma Pediatrics in under fifteen minutes via US-75 for gentle, unhurried care and planned same-day sick visits.',
     landmarks: ['Watters Creek', 'Twin Creeks', 'Allen ISD schools', 'Allen Premium Outlets'],
     whyLuma:
-      'Allen families can reach Luma in under fifteen minutes via US-75. Our scheduling model preserves same-day availability for sick visits, and routine appointments are designed to run on time.',
+      'Allen families can reach Luma in under fifteen minutes via US-75. After opening, our scheduling model is designed to support same-day sick visits and timely routine appointments.',
   },
   {
     slug: 'prosper',

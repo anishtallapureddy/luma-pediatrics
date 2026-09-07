@@ -1,6 +1,6 @@
 # Luma Pediatrics
 
-> Luma Pediatrics is a board-certified pediatric practice opening in late 2026 in McKinney, Texas. The practice provides primary pediatric care for newborns through age 21, including well-child visits, same-day sick visits, vaccinations, school and sports physicals, ADHD and behavioral care, and newborn/lactation support.
+> Luma Pediatrics is a board-certified pediatric practice opening in late 2026 in McKinney, Texas. Planned services include primary pediatric care for newborns through age 21, well-child visits, same-day sick visits, vaccinations, school and sports physicals, ADHD and behavioral care, and newborn/lactation support.
 
 ## Key facts
 
@@ -22,7 +22,7 @@
 - Newborn care (lactation support, growth tracking, jaundice screening)
 - Newborn rounds at Baylor Scott & White McKinney (in-hospital newborn visits for families delivering at BSW McKinney)
 - Well-child visits (head-to-toe exam, developmental screening, milestone guidance)
-- Same-day sick visits (fevers, infections, ear pain, stomach bugs, injuries)
+- Planned same-day sick visits after opening (fevers, infections, ear pain, stomach bugs, injuries)
 - Vaccinations (full CDC/AAP-aligned childhood schedule)
 - School, sports, and camp physicals
 - ADHD, behavior, and developmental care
@@ -45,12 +45,12 @@ McKinney, Prosper, Melissa, Anna, Van Alstyne, Princeton, Allen, Frisco, Celina,
 
 ## Pages
 
-- [Home](https://www.lumapediatrics.com/): Overview, hero, featured services, testimonials.
-- [About](https://www.lumapediatrics.com/about): Practice philosophy, pediatrician bio, affiliations, inside-the-office gallery.
+- [Home](https://www.lumapediatrics.com/): Overview, featured services, practice updates, and commitments.
+- [About](https://www.lumapediatrics.com/about): Practice philosophy, pediatrician bio, and affiliations.
 - [Services](https://www.lumapediatrics.com/services): Full list of pediatric services offered.
 - [Vaccine Schedule](https://www.lumapediatrics.com/vaccines): Parent-friendly overview of the CDC/AAP childhood immunization schedule.
-- [New Patients](https://www.lumapediatrics.com/new-patients): First-visit walkthrough, patient forms, after-hours guidance, accepted insurance, insurance verification form.
-- [FAQ](https://www.lumapediatrics.com/faq): Frequently asked questions about insurance, same-day visits, telehealth, booking.
+- [New Patients](https://www.lumapediatrics.com/new-patients): Planned first-visit experience, after-hours guidance, and insurance updates.
+- [FAQ](https://www.lumapediatrics.com/faq): Frequently asked questions about insurance, planned same-day visits, telehealth, and scheduling.
 - [Parent Resources / Blog](https://www.lumapediatrics.com/blog/): Pediatrician-written articles on newborn care, fever, sleep, vaccines, and other common parent questions.
 - [Contact](https://www.lumapediatrics.com/contact): Address, phone, hours, map, contact form, areas served.
 - [Privacy Policy](https://www.lumapediatrics.com/privacy)

@@ -1,7 +1,7 @@
 ---
 /**
  * Sticky mobile CTA bar — fixed to the bottom of the viewport on small screens.
- * Provides a one-tap Call button. Hidden on md+ where the header already
+ * Provides one-tap Call and Text buttons. Hidden on md+ where the header already
  * exposes contact options.
  */
 import { Icon } from 'astro-icon/components';
@@ -20,6 +20,14 @@ import { SITE } from '../site.config';
     >
       <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
       Call {SITE.contact.phone}
+    </a>
+    <a
+      href={SITE.contact.smsHref}
+      class="flex-1 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] no-underline font-semibold text-sm ring-1 ring-inset ring-[var(--color-border-soft)]"
+      aria-label={`Text ${SITE.name}`}
+    >
+      <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+      Text us
     </a>
   </div>
 </div>

@@ -14,7 +14,7 @@ export function getStaticPaths() {
 const { city } = Astro.props;
 
 const title = `Pediatrician in ${city.name}, TX`;
-const description = `Luma Pediatrics — a warm, evidence-based pediatric clinic serving ${city.name} families. Newborn care, well checks, same-day sick visits, and gentle, unhurried appointments. Opening ${SITE.openingWindow} in McKinney.`;
+const description = `Luma Pediatrics — a warm, evidence-based pediatric clinic opening ${SITE.openingWindow} in McKinney and welcoming ${city.name} families. Planned services include newborn care, well checks, same-day sick visits, and gentle, unhurried appointments.`;
 ---
 
 <BaseLayout

@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
-import PatientForms from '../components/PatientForms.astro';
 import AfterHoursCard from '../components/AfterHoursCard.astro';
-import InsuranceVerifyForm from '../components/InsuranceVerifyForm.astro';
 import { Icon } from 'astro-icon/components';
 
 /**
@@ -14,8 +12,8 @@ import { Icon } from 'astro-icon/components';
 const steps = [
   {
     n: '1',
-    t: 'Book or call',
-    d: "Book online through our patient portal, or call the office. We'll verify benefits and confirm your visit.",
+    t: 'Stay connected',
+    d: "Join our practice updates or contact the office with general questions. Scheduling will open closer to our November 2026 opening.",
     img: '/images/journey-1.jpg',
     alt: 'A parent booking a pediatric visit online from a warm, sunlit home',
   },
@@ -126,27 +124,11 @@ const bringList = [
             We're completing credentialing now, and we'll share the full list of accepted plans closer to opening.
           </p>
           <p class="mt-4 text-[var(--color-foreground)]/85 leading-relaxed">
-            Have a specific plan in mind? Send us your details using the form below and we'll verify it as soon as we're set up.
-            Self-pay families are also welcome — we'll discuss pricing transparently up front.
+            We will publish accepted plans before scheduling opens. Self-pay families will also be welcome, with pricing discussed transparently up front.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- INSURANCE VERIFY FORM -->
-  <section class="py-14 md:py-18 reveal relative overflow-hidden">
-    <PageDecor variant="minimal" sparkles={6} />
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <InsuranceVerifyForm />
-    </div>
-  </section>
-
-  <!-- PATIENT FORMS — downloadable PDFs to fill out ahead of first visit -->
-  <section class="py-14 md:py-18 reveal relative overflow-hidden">
-    <PageDecor variant="minimal" sparkles={6} />
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <PatientForms />
-    </div>
-  </section>
 </BaseLayout>

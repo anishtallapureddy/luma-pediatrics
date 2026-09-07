@@ -39,12 +39,27 @@ const navLinks = SITE.nav.filter((n) => n.href !== '/');
           <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
         </a>
         <a
+          href={SITE.contact.smsHref}
+          class="sm:hidden inline-flex items-center justify-center w-11 h-11 rounded-full text-[var(--color-primary)] no-underline border border-[var(--color-border-soft)] hover:bg-[rgba(200,153,90,0.10)]"
+          aria-label="Text the office"
+        >
+          <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+        </a>
+        <a
           href={SITE.contact.phoneHref}
            class="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-full text-[var(--color-foreground)] no-underline font-medium whitespace-nowrap hover:bg-[rgba(200, 153, 90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
           aria-label="Call the office"
         >
           <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
           <span class="hidden lg:inline">{SITE.contact.phone}</span>
+        </a>
+        <a
+          href={SITE.contact.smsHref}
+          class="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-full text-[var(--color-foreground)] no-underline font-medium whitespace-nowrap hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
+          aria-label={`Text ${SITE.name}`}
+        >
+          <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
+          <span class="hidden lg:inline">Text us</span>
         </a>
         {/* Book Appointment CTA intentionally omitted until online scheduling is live. */}
 
@@ -81,6 +96,14 @@ const navLinks = SITE.nav.filter((n) => n.href !== '/');
           >
             <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
             {SITE.contact.phone}
+          </a>
+          <a
+            href={SITE.contact.smsHref}
+            class="px-2 py-3 rounded-lg text-base text-[var(--color-primary)] no-underline font-semibold inline-flex items-center gap-2"
+            aria-label={`Text ${SITE.name}`}
+          >
+            <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+            Text us
           </a>
         </nav>
       </div>
