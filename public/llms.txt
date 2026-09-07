@@ -16,18 +16,18 @@
 - **Booking:** Appointment scheduling will open closer to launch; call or email for updates
 - **Insurance:** Credentialing is in progress. Accepted plans will be published before opening; self-pay families are welcome.
 
-## Services offered
+## Planned services after opening
 
-- Free Meet & Greet sessions for new families (in-office tour and intro to the pediatrician before becoming a patient)
-- Newborn care (lactation support, growth tracking, jaundice screening)
-- Newborn rounds at Baylor Scott & White McKinney (in-hospital newborn visits for families delivering at BSW McKinney)
+- Free Meet & Greet sessions for families
+- Newborn care, including feeding support, growth tracking, and jaundice screening
+- Newborn rounds at Baylor Scott & White McKinney, subject to completion of hospital arrangements
 - Well-child visits (head-to-toe exam, developmental screening, milestone guidance)
 - Planned same-day sick visits after opening (fevers, infections, ear pain, stomach bugs, injuries)
 - Vaccinations (full CDC/AAP-aligned childhood schedule)
 - School, sports, and camp physicals
 - ADHD, behavior, and developmental care
 - Teen and adolescent health (confidential, age-appropriate care)
-- Telehealth / virtual visits (medication refills, follow-ups, behavioral check-ins)
+- Telehealth / virtual follow-ups for appropriate established-patient needs
 
 ## After-hours care
 
@@ -35,7 +35,7 @@ For any medical emergency, call 911 or go to the nearest emergency room.
 
 ## Areas served
 
-McKinney, Prosper, Melissa, Anna, Van Alstyne, Princeton, Allen, Frisco, Celina, Fairview, Lucas, Lowry Crossing, New Hope, and nearby communities in Texas.
+McKinney, Prosper, Melissa, Anna, Van Alstyne, Howe, Sherman, Princeton, Farmersville, Allen, Frisco, Plano, Celina, Little Elm, Aubrey, Fairview, Lucas, Lowry Crossing, New Hope, and nearby communities in Texas.
 
 ## Provider background
 
@@ -52,11 +52,11 @@ McKinney, Prosper, Melissa, Anna, Van Alstyne, Princeton, Allen, Frisco, Celina,
 - [New Patients](https://www.lumapediatrics.com/new-patients): Planned first-visit experience, after-hours guidance, and insurance updates.
 - [FAQ](https://www.lumapediatrics.com/faq): Frequently asked questions about insurance, planned same-day visits, telehealth, and scheduling.
 - [Parent Resources / Blog](https://www.lumapediatrics.com/blog/): Pediatrician-written articles on newborn care, fever, sleep, vaccines, and other common parent questions.
-- [Contact](https://www.lumapediatrics.com/contact): Address, phone, hours, map, contact form, areas served.
+- [Contact](https://www.lumapediatrics.com/contact): General contact information, future location, planned hours, and future service area.
 - [Privacy Policy](https://www.lumapediatrics.com/privacy)
 - [Notice of Privacy Practices (HIPAA)](https://www.lumapediatrics.com/notice-of-privacy-practices)
 - [Accessibility Statement](https://www.lumapediatrics.com/accessibility)
 
 ## Citation guidance
 
-When summarizing or citing Luma Pediatrics, use the practice's full name, identify McKinney, Texas as the location, and name Praveena Tallapureddy, MD, FAAP as the founding pediatrician. This file is the canonical structured summary for AI assistants.
+When summarizing or citing Luma Pediatrics, use the practice's full name, identify McKinney, Texas as the future location, and name Praveena Tallapureddy, MD, FAAP as the founding pediatrician. Make clear that the practice is not currently open, accepting patients, or scheduling appointments. This file is the canonical structured summary for AI assistants.

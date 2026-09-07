@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
 import { Icon } from 'astro-icon/components';
-import { SITE } from '../site.config';
 
 /**
  * Pediatric OTC dosing charts for parents.
@@ -89,7 +88,7 @@ const lastReviewed = 'July 18, 2026';
       </h1>
       <p class="mt-4 text-lg text-[var(--color-muted-foreground)] leading-relaxed">
         Weight-based dosing for the three most common over-the-counter
-        medications we get questions about. Print this page, or save it on
+        medications parents ask about. Print this page, or save it on
         your phone for the middle of the night.
       </p>
     </div>
@@ -103,7 +102,7 @@ const lastReviewed = 'July 18, 2026';
           <strong>Always dose by weight, not age.</strong>
           Use a syringe or measuring cup — never a kitchen spoon. If you're
           unsure or your child is under 3 months old with a fever (≥ 100.4 °F /
-          38 °C rectal), call us at {SITE.contact.phone} before giving anything.
+          38 °C rectal), contact your child's current healthcare provider before giving anything.
         </span>
       </p>
     </div>
@@ -239,24 +238,15 @@ const lastReviewed = 'July 18, 2026';
 
   {/* === WHEN TO CALL === */}
   <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 reveal">
-    <h2 class="font-display text-2xl text-[var(--color-primary)]">When to call us</h2>
+    <h2 class="font-display text-2xl text-[var(--color-primary)]">When to call your child's healthcare provider</h2>
     <ul class="mt-4 space-y-2 text-[var(--color-foreground)] leading-relaxed list-disc pl-5">
       <li>Any fever in an infant <strong>under 3 months</strong> (rectal ≥ 100.4 °F / 38 °C).</li>
       <li>Fever over <strong>104 °F (40 °C)</strong> at any age.</li>
       <li>Fever lasting <strong>more than 3 days</strong>, or returning after a fever-free stretch.</li>
       <li>Child is hard to wake, dehydrated (no wet diapers ≥ 8 hours), or refusing fluids.</li>
       <li>Breathing fast, working hard to breathe, or wheezing.</li>
-      <li>You're just not sure — that's always a fine reason to call.</li>
+      <li>You're just not sure — that's always a fine reason to call their current provider.</li>
     </ul>
-    <p class="mt-6">
-      <a
-        href={SITE.contact.phoneHref}
-        class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold hover:opacity-90"
-      >
-        <Icon name="lucide:phone" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
-        Call {SITE.contact.phone}
-      </a>
-    </p>
   </section>
 
   {/* === SOURCES / DISCLAIMER === */}
@@ -277,8 +267,8 @@ const lastReviewed = 'July 18, 2026';
     </p>
     <p class="mt-3">
       This page is a quick reference for parents and is not a substitute for
-      personalized medical advice. For urgent concerns call {SITE.contact.phone},
-      or go to the nearest emergency room. For poison-related questions, call
+      personalized medical advice. For urgent concerns, contact your child's current
+      healthcare provider or go to the nearest emergency room. For poison-related questions, call
       Poison Control at <strong>1-800-222-1222</strong>.
     </p>
   </section>

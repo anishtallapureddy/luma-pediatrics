@@ -12,20 +12,20 @@ const { compact = false } = Astro.props;
 ---
 {compact ? (
   <div class="text-sm text-[var(--color-muted-foreground)] leading-relaxed">
-    <span class="font-semibold text-[var(--color-foreground)]">Serving</span>
+    <span class="font-semibold text-[var(--color-foreground)]">Future service area</span>
     {' '}{SITE.areasServed.join(', ')}, {SITE.areasServedTagline}.
   </div>
 ) : (
   <div class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 md:p-8 ring-1 ring-[var(--color-border-soft)]">
     <div class="flex items-center gap-2 text-[var(--color-primary)]">
       <Icon name="lucide:map-pin" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
-      <span class="eyebrow eyebrow-sun">Areas we serve</span>
+      <span class="eyebrow eyebrow-sun">Future service area</span>
     </div>
     <h3 class="mt-4 text-2xl font-extrabold tracking-tight">
-      Caring for families across North Texas.
+      Planning to welcome families across North Texas.
     </h3>
     <p class="mt-3 text-[var(--color-foreground)]/80 leading-relaxed">
-      Serving {SITE.areasServed.join(', ')}, {SITE.areasServedTagline}.
+      Our planned service area includes {SITE.areasServed.join(', ')}, {SITE.areasServedTagline}.
     </p>
     <ul class="mt-5 flex flex-wrap gap-2">
       {SITE.areasServed.map((city) => (

@@ -1,10 +1,10 @@
-# Founding-families waitlist — Google Sheet backend
+# Practice updates — Google Sheet backend
 
-The homepage/hero **"Join the founding-families list"** form
+The **"Stay Updated on Luma"** form
 (`src/components/WaitlistForm.astro`) submits each signup to a **Google Apps
-Script Web App**, which appends a row to a **Google Sheet you own**. No email,
-no third-party account, no monthly cost — the data lives in your spreadsheet and
-you can sort, filter, or export it anytime.
+Script Web App**, which appends a row to a **Google Sheet you own**. No
+separate marketing platform or monthly cost is required—the data lives in your
+spreadsheet, where you can sort, filter, or export it anytime.
 
 Once deployed, paste the Web App URL into
 `SITE.forms.waitlistEndpoint` in `src/site.config.ts`.
@@ -14,7 +14,7 @@ Once deployed, paste the Web App URL into
 ## One-time setup (about 2–3 minutes)
 
 1. **Create the Sheet.** Go to <https://sheets.new> and name it something like
-   `Luma Pediatrics — Founding Families`.
+   `Luma Pediatrics — Practice Updates`.
 
 2. **Open the script editor.** In that Sheet: **Extensions → Apps Script**.
 
@@ -24,7 +24,7 @@ Once deployed, paste the Web App URL into
 4. **Deploy as a Web App.**
    - Click **Deploy → New deployment**.
    - Click the gear ⚙️ next to "Select type" and choose **Web app**.
-   - **Description:** `Waitlist collector`
+   - **Description:** `Practice updates collector`
    - **Execute as:** **Me** (your Google account).
    - **Who has access:** **Anyone**. *(Required so the public website can post
      to it. The URL is unguessable and the script only ever appends rows — it
@@ -53,7 +53,7 @@ Once deployed, paste the Web App URL into
 ## The script — `waitlist.gs`
 
 ```javascript
-// Luma Pediatrics — founding-families waitlist collector (field-agnostic).
+// Luma Pediatrics — practice-updates signup collector.
 //
 // Container-bound Apps Script: create it via Extensions → Apps Script from
 // inside the Google Sheet that should receive signups. Then deploy it as a
@@ -61,27 +61,19 @@ Once deployed, paste the Web App URL into
 // into SITE.forms.waitlistEndpoint in src/site.config.ts.
 // Full instructions: docs/waitlist-setup.md
 //
-// Field-agnostic by design: it records whatever fields the form posts and adds
-// a new column automatically the first time it sees a new field. You never need
-// to edit or redeploy this script when the form's fields change.
-
-// Friendly column labels for known fields. Unknown fields fall back to a
-// title-cased version of the field key, so brand-new form fields still get a
-// readable column header with zero code changes.
 var FIELD_LABELS = {
-  parent_name: 'Parent / guardian',
+  name: 'Name',
   email: 'Email',
-  phone: 'Mobile phone',
-  child_age_or_due: 'Child age or due date',
+  consent: 'Consent',
+  consent_version: 'Consent version',
   page: 'Page',
   submitted_at: 'Submitted at (browser)'
 };
 
-// Left-to-right column order used only when creating a brand-new sheet.
-var PREFERRED_ORDER = ['Timestamp', 'parent_name', 'email', 'phone', 'child_age_or_due', 'page', 'submitted_at'];
-
-// Fields that are never stored (spam honeypot, etc.).
-var IGNORED_FIELDS = ['botcheck'];
+// Only these public fields are retained. Unknown or manually injected fields
+// are discarded so the endpoint cannot become patient intake.
+var ALLOWED_FIELDS = ['name', 'email', 'consent', 'consent_version', 'page', 'submitted_at'];
+var PREFERRED_ORDER = ['Timestamp'].concat(ALLOWED_FIELDS);
 
 // ── Daily digest ─────────────────────────────────────────────────────────────
 // Who receives the once-a-day summary of new signups.
@@ -106,11 +98,15 @@ function doPost(e) {
     // Honeypot: return success but do not record obvious bots.
     if (params.botcheck) return jsonOut({ ok: true });
 
-    // Map this submission into { columnLabel: value }, always stamping a
-    // server-side Timestamp.
+    var email = String(params.email || '').trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || params.consent !== 'yes') {
+      return jsonOut({ ok: false, error: 'Valid email and affirmative consent are required.' });
+    }
+
+    // Map only allowlisted fields, always stamping a server-side Timestamp.
     var values = { Timestamp: new Date() };
-    Object.keys(params).forEach(function (key) {
-      if (IGNORED_FIELDS.indexOf(key) === -1) values[labelFor(key)] = params[key];
+    ALLOWED_FIELDS.forEach(function (key) {
+      if (params[key] != null) values[labelFor(key)] = params[key];
     });
 
     // Current header labels (empty when the sheet is brand new).
@@ -119,17 +115,14 @@ function doPost(e) {
       : [];
 
     if (headers.length === 0) {
-      // Seed a new sheet with the preferred known columns, then any extras.
+      // Seed a new sheet with the approved columns.
       headers = PREFERRED_ORDER.map(labelFor);
-      Object.keys(values).forEach(function (label) {
-        if (headers.indexOf(label) === -1) headers.push(label);
-      });
       sheet.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold');
       sheet.setFrozenRows(1);
     } else {
-      // Existing sheet: append any never-seen columns on the right. Existing
-      // columns are never reordered, so previously written rows stay aligned.
-      var added = Object.keys(values).filter(function (label) { return headers.indexOf(label) === -1; });
+      // Add newly approved columns without retaining unknown submitted fields.
+      var approvedLabels = PREFERRED_ORDER.map(labelFor);
+      var added = approvedLabels.filter(function (label) { return headers.indexOf(label) === -1; });
       if (added.length) {
         sheet.getRange(1, headers.length + 1, 1, added.length).setValues([added]).setFontWeight('bold');
         headers = headers.concat(added);
@@ -154,7 +147,7 @@ function jsonOut(obj) {
 
 // Optional: open the /exec URL in a browser to confirm the endpoint is live.
 function doGet() {
-  return ContentService.createTextOutput('Luma Pediatrics waitlist endpoint is live.');
+  return ContentService.createTextOutput('Luma Pediatrics practice-updates endpoint is live.');
 }
 
 // ── Daily signup digest ──────────────────────────────────────────────────────
@@ -192,10 +185,10 @@ function sendDailyDigest() {
   var tz = ss.getSpreadsheetTimeZone();
   var count = fresh.length;
   var plural = count === 1 ? '' : 's';
-  var subject = 'Luma waitlist — ' + count + ' new signup' + plural +
+  var subject = 'Luma practice updates — ' + count + ' new signup' + plural +
     ' (' + Utilities.formatDate(now, tz, 'EEE, MMM d') + ')';
 
-  var html = '<p style="font-family:Arial,sans-serif">' + count + ' new founding-families signup' +
+  var html = '<p style="font-family:Arial,sans-serif">' + count + ' new practice-updates signup' +
     plural + ' since the last update:</p>' +
     '<table cellpadding="8" cellspacing="0" ' +
     'style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px;border:1px solid #ddd">' +
@@ -235,10 +228,9 @@ function createDailyDigestTrigger() {
 
 ## How it works / notes
 
-- The script is **field-agnostic**: it records whatever fields the form posts and
-  adds a new column automatically the first time it sees a new field. Add, remove,
-  or rename form fields freely — no script edit or redeploy needed. (A `botcheck`
-  honeypot field is ignored.)
+- The script stores only `name`, `email`, `consent`, `consent_version`, `page`,
+  and `submitted_at`. Unknown fields are discarded, and a valid email plus
+  affirmative consent are required server-side.
 - Submissions use `fetch(..., { mode: 'no-cors' })` because Apps Script Web Apps
   don't send CORS headers. The row is still written; the browser just can't read
   the response, so the site optimistically shows the success message. (A honeypot
@@ -246,15 +238,15 @@ function createDailyDigestTrigger() {
 - **Updating the script?** After editing `waitlist.gs`, run
   **Deploy → Manage deployments → ✏️ Edit → Version: New version → Deploy** so the
   live URL picks up your changes (the `/exec` URL stays the same).
-- **Before the endpoint is set**, the form stays visible but, on submit, shows a
-  friendly "call or text us" message instead of collecting — so nothing breaks.
+- **Before the endpoint is set**, the form stays visible but, on submit, directs
+  visitors to the public email address instead of collecting.
 - Want a summary email? A **daily digest** to the team is built in — see
   **Daily signup digest** below.
 
 
 ---
 
-## Daily signup digest
+## Daily internal signup digest
 
 The script can email the team a once-a-day summary of new signups.
 

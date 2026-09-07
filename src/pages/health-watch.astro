@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
-import Button from '../components/Button.astro';
 import { Icon } from 'astro-icon/components';
 import { SITE } from '../site.config';
 
@@ -167,7 +166,7 @@ function respiratorySummary(r: Snapshot['respiratoryIllness']) {
     return {
       tone: 'warn' as const,
       headline: `Cough & cold season is active${which.length ? ` (${which.join(', ')})` : ''}`,
-      sub: 'More fever, cough, and congestion in the area. Wash hands often, keep sick kids home, and call us if your child has trouble breathing, dehydration, or fever you can\'t manage.',
+      sub: 'More fever, cough, and congestion in the area. Wash hands often, keep sick kids home, and contact your current healthcare provider for breathing trouble, dehydration, or a fever you cannot manage.',
     };
   }
   return {
@@ -185,14 +184,14 @@ function vpdSummary(v: Snapshot['vaccinePreventable']) {
     return {
       tone: 'alert' as const,
       headline: `${active.map((i) => i.diseaseName).join(', ')} reported in Texas`,
-      sub: 'Vaccinated kids are well protected. If you\'re behind on shots or unsure, please call us — we\'ll review your child\'s record and catch up safely.',
+      sub: 'Vaccinated children are well protected. If your child may be behind on vaccines, ask their current healthcare provider to review the record.',
     };
   }
   if (watch.length > 0) {
     return {
       tone: 'warn' as const,
       headline: `Watching ${watch.map((i) => i.diseaseName).join(', ')} in the region`,
-      sub: 'Good time to double-check your child\'s vaccine record. Call us anytime — we\'re happy to review.',
+      sub: 'Good time to double-check your child\'s vaccine record with their current healthcare provider.',
     };
   }
   return {
@@ -249,7 +248,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
 <BaseLayout
   title="Local Health Watch | Luma Pediatrics McKinney"
   path="/health-watch"
-  description="A morning snapshot for North Dallas parents — pollen, air quality, cough & cold activity, and vaccine-preventable disease watch around McKinney, Melissa, Anna, Prosper, and Frisco. From your pediatricians at Luma Pediatrics."
+  description="A general morning snapshot for North Dallas parents covering pollen, air quality, respiratory activity, and vaccine-preventable disease reports around McKinney and nearby communities."
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'Local Health Watch', path: '/health-watch' },
@@ -286,8 +285,8 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
           <div>
             <p class="font-semibold text-[var(--color-foreground)]">Snapshot temporarily unavailable</p>
             <p class="mt-1 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
-              We couldn't load today's local snapshot. Please check back later, or
-              call us at <a href={SITE.contact.phoneHref} class="underline font-semibold">{SITE.contact.phone}</a> with any urgent concerns.
+              We couldn't load today's local snapshot. Please check back later. For current
+              medical concerns, contact your child's existing healthcare provider.
             </p>
           </div>
         </div>
@@ -451,14 +450,9 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
               <div class="max-w-2xl">
                 <h2 class="text-2xl tracking-tight">Have a question about today?</h2>
                 <p class="mt-2 text-[var(--color-foreground)]/80 leading-relaxed">
-                  Wheezing, fever, persistent cough, vaccine catch-up, or just unsure? We're here. Call us and we'll help you sort it out.
+                  Wheezing, fever, persistent cough, vaccine catch-up, or just unsure? Use this
+                  information to prepare questions for your child's current healthcare provider.
                 </p>
-              </div>
-              <div class="flex flex-wrap gap-3 shrink-0">
-                <Button href={SITE.contact.phoneHref} variant="primary" ariaLabel={`Call ${SITE.name}`}>
-                  <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" />
-                  {SITE.contact.phone}
-                </Button>
               </div>
             </div>
           </div>
@@ -467,7 +461,8 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
             <Icon name="lucide:info" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-primary)]" stroke-width="1.8" aria-hidden="true" />
             <p class="text-sm text-[var(--color-foreground)]/85 leading-relaxed">
               <strong>This is general guidance for our community, not medical advice for your child.</strong>
-              We use public data from EPA AirNow, Google Pollen, CDC, and Texas DSHS to share what's going around. Anything specific to your child — please call us. That's what we're here for.
+              We use public data from EPA AirNow, Google Pollen, CDC, and Texas DSHS. For concerns
+              specific to your child, contact their current healthcare provider.
             </p>
           </div>
         </div>

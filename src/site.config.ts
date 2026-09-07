@@ -101,14 +101,20 @@ export const SITE = {
     'Melissa',
     'Anna',
     'Van Alstyne',
+    'Howe',
     'Princeton',
+    'Farmersville',
     'Allen',
     'Frisco',
+    'Plano',
     'Celina',
+    'Little Elm',
+    'Aubrey',
     'Fairview',
     'Lucas',
     'Lowry Crossing',
     'New Hope',
+    'Sherman',
   ],
   areasServedTagline: 'and nearby communities',
 
@@ -139,15 +145,6 @@ export const SITE = {
     { icon: 'lucide:stethoscope',  label: 'Baylor Scott & White — Pediatric Residency' },
   ],
 
-  /** Downloadable patient forms (placeholders until the practice opens). */
-  patientForms: [
-    { file: '/forms/patient-intake-form.pdf',          label: 'New Patient Intake Form' },
-    { file: '/forms/hipaa-acknowledgment.pdf',         label: 'HIPAA Privacy Acknowledgment' },
-    { file: '/forms/vaccine-consent.pdf',              label: 'Vaccine Consent' },
-    { file: '/forms/medical-records-release.pdf',      label: 'Medical Records Release / Transfer' },
-    { file: '/forms/school-sports-physical-form.pdf',  label: 'School / Sports / Camp Physical' },
-  ],
-
   /**
    * After-hours guidance. When `showNurseTriage` is true the card shows a
    * partner pediatric nurse-triage line alongside the universal 911 instruction;
@@ -174,30 +171,17 @@ export const SITE = {
     ],
   },
 
-  /** Web3Forms access key for the contact + insurance-verify forms. */
   forms: {
-    // Sign up free at https://web3forms.com and paste the access key here.
-    web3formsAccessKey: 'REPLACE_WITH_WEB3FORMS_ACCESS_KEY',
-
     /**
-     * Founding-families waitlist backend.
+     * Practice-updates signup backend.
      *
      * A Google Apps Script Web App URL (ends in /exec) that appends each
-     * signup as a row in a Google Sheet you own — no email, no third-party
-     * account. Follow docs/waitlist-setup.md to deploy the script, then paste
+     * signup as a row in a Google Sheet you own, without a separate marketing
+     * platform. Follow docs/waitlist-setup.md to deploy the script, then paste
      * the /exec URL here to activate the in-page form. While empty, the form
-     * shows a friendly "call us" message instead of collecting.
+     * directs visitors to the public email address instead of collecting.
      */
     waitlistEndpoint: 'https://script.google.com/macros/s/AKfycbzuXKLJBONuTLTMthiyOu5NYJp3rd6yrSUi3NfiXgT71OMz447CiN2E9QNRMi8zk7g8aw/exec',
-  },
-
-  /** Mailchimp newsletter signup configuration. */
-  newsletter: {
-    // Find these by going to your Mailchimp Audience → Signup forms → Embedded forms
-    mailchimpAction: '',   // e.g. https://lumapediatrics.us20.list-manage.com/subscribe/post
-    mailchimpUserId: '',   // value of "u" query param
-    mailchimpListId: '',   // value of "id" query param
-    pitch: 'Seasonal parenting tips, vaccine reminders, and Luma updates — about once a month, never spammy.',
   },
 
   /**

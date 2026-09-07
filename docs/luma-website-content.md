@@ -3,22 +3,22 @@ Where your child's health shines.
 Opening late 2026 in McKinney, Texas.
 
 Build a modern pediatric clinic website with the following pages:
-Home, About, Services, New Patients, FAQ, Contact / Request Appointment.
+Home, About, Services, Resources, New Patients, FAQ, and Contact.
 
 Tone:
 Warm, modern, trustworthy, family-centered, physician-led.
 
 Homepage:
-Luma Pediatrics provides warm, thoughtful pediatric care for newborns, children, and teens. We partner with families through every stage of childhood — from newborn visits and well-child checkups to sick visits, vaccines, school physicals, and teen health.
+Luma Pediatrics is a future physician-led practice planned for late 2026. Describe planned care for newborns, children, and teens while making clear that the practice is not open, accepting patients, or scheduling appointments.
 
 Insurance:
-Luma Pediatrics works with major insurance providers and accepts Medicaid patients.
+Insurance credentialing is in progress. Do not publish accepted-plan claims until confirmed.
 
 Services:
 Newborn care, well-child visits, sick visits, vaccinations, school/sports/camp physicals, development and behavior guidance, teen health.
 
-Appointment form fields:
-Parent/guardian first name, last name, phone, email, preferred contact method, child first name, child last name, child date of birth, newborn yes/no, request type, preferred day, preferred time, insurance provider, planning to use insurance yes/no/not sure, Medicaid patient yes/no/not sure, message, consent checkbox.
+Practice-updates form fields:
+Optional name, email, explicit consent, consent-version identifier, source page, and submission timestamp. Do not collect child, medical, insurance, appointment, or patient-registration information.
 
 Disclaimer:
 This form is not for emergencies or urgent medical advice. For emergencies, call 911 or go to the nearest emergency room.

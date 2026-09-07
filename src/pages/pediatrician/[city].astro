@@ -13,8 +13,10 @@ export function getStaticPaths() {
 
 const { city } = Astro.props;
 
-const title = `Pediatrician in ${city.name}, TX`;
-const description = `Luma Pediatrics — a warm, evidence-based pediatric clinic opening ${SITE.openingWindow} in McKinney and welcoming ${city.name} families. Planned services include newborn care, well checks, same-day sick visits, and gentle, unhurried appointments.`;
+const title = city.slug === 'mckinney'
+  ? 'Pediatrician in McKinney, TX'
+  : `Pediatrician Near ${city.name}, TX`;
+const description = `${city.intro} Explore Luma's planned services, future McKinney location, and practice updates.`;
 ---
 
 <BaseLayout
@@ -30,10 +32,12 @@ const description = `Luma Pediatrics — a warm, evidence-based pediatric clinic
   <section class="relative bg-gradient-to-b from-sky-50 via-white to-white pt-16 pb-12 md:pt-24 md:pb-16">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <p class="text-sm font-semibold tracking-wider uppercase text-luma-gold mb-3">
-        Serving {city.name}, TX
+        Future service area · {city.name}, TX
       </p>
       <h1 class="text-4xl md:text-5xl font-display text-luma-ink mb-5 leading-tight">
-        A pediatric home for {city.name} families
+        {city.slug === 'mckinney'
+          ? 'A future pediatric home in McKinney'
+          : `A future pediatric option for ${city.name} families`}
       </h1>
       <p class="text-lg md:text-xl text-luma-ink/80 max-w-2xl mx-auto mb-2">
         {city.intro}
@@ -41,11 +45,11 @@ const description = `Luma Pediatrics — a warm, evidence-based pediatric clinic
       {city.distanceMi > 0 && (
         <p class="text-sm text-luma-ink/60 mb-8">
           <Icon name="lucide:map-pin" class="inline w-4 h-4 -mt-0.5" />
-          About {city.distanceMi} miles from {city.name} · {city.driveMinutes} drive to our McKinney clinic
+          About {city.distanceMi} miles from central {city.name} · {city.driveMinutes} drive to our future McKinney clinic
         </p>
       )}
       <div class="flex flex-wrap justify-center gap-3">
-        <Button href="#waitlist" variant="primary">
+        <Button href="#practice-updates" variant="primary">
           Get Luma updates
         </Button>
         <Button href="/about/" variant="secondary">About Luma</Button>
@@ -88,7 +92,7 @@ const description = `Luma Pediatrics — a warm, evidence-based pediatric clinic
     </div>
   </section>
 
-  <section id="waitlist" class="py-16 md:py-20">
+  <section class="py-16 md:py-20">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <WaitlistForm variant="hero" />
     </div>

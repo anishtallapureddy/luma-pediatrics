@@ -15,20 +15,20 @@ const { variant = 'inline', title, blurb } = Astro.props;
  *
  * Submits (via AJAX) to a Google Apps Script Web App that appends each signup
  * to a Google Sheet — see docs/waitlist-setup.md. When SITE.forms.waitlistEndpoint
- * is empty the form degrades gracefully to a "call us" prompt (no mailto).
+ * is empty the form directs visitors to the public email address.
  */
 const endpoint = (SITE.forms.waitlistEndpoint ?? '').trim();
 
 const headline = title ?? 'Stay Updated on Luma';
 const intro =
   blurb ??
-  'Luma Pediatrics is opening in late 2026. Sign up to receive occasional updates about our opening, services, and appointment availability.';
+  'Luma Pediatrics is a future practice opening in late 2026. Sign up to receive occasional email updates about our planned opening and general services.';
 
 const isHero = variant === 'hero';
 const inputClass =
   'mt-1 w-full min-h-11 px-3 rounded-lg bg-[var(--color-background)] ring-1 ring-[var(--color-border-soft)] focus:ring-2 focus:ring-[var(--color-primary)] outline-none';
 ---
-<section class:list={['waitlist-card rounded-[var(--radius-card)] p-7 md:p-9', isHero ? 'waitlist-hero ring-1 ring-[var(--color-border-soft)] bg-[var(--color-card)]' : 'bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)]']}>
+<section id="practice-updates" class:list={['waitlist-card rounded-[var(--radius-card)] p-7 md:p-9', isHero ? 'waitlist-hero ring-1 ring-[var(--color-border-soft)] bg-[var(--color-card)]' : 'bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)]']}>
   <div class="flex items-center gap-2 text-[var(--color-primary)]">
     <Icon name="lucide:sparkles" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
     <span class="eyebrow eyebrow-sun">Practice updates</span>
@@ -44,28 +44,34 @@ const inputClass =
     class="mt-6 grid gap-4 sm:grid-cols-2"
     data-waitlist-form
     data-endpoint={endpoint}
-    data-phone={SITE.contact.phone}
+    data-email={SITE.contact.email}
     novalidate
   >
     {/* Honeypot — bots fill this; humans never see it. */}
     <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
     <label class="block sm:col-span-1">
-      <span class="text-sm font-semibold text-[var(--color-foreground)]">Parent / guardian name <span class="text-[var(--color-muted-foreground)] font-normal">(optional)</span></span>
-      <input type="text" name="parent_name" autocomplete="name" class={inputClass} />
+      <span class="text-sm font-semibold text-[var(--color-foreground)]">Name <span class="text-[var(--color-muted-foreground)] font-normal">(optional)</span></span>
+      <input type="text" name="name" autocomplete="name" class={inputClass} />
     </label>
     <label class="block sm:col-span-1">
       <span class="text-sm font-semibold text-[var(--color-foreground)]">Email</span>
       <input type="email" name="email" required autocomplete="email" placeholder="you@example.com" class={inputClass} />
     </label>
-    <label class="block sm:col-span-1">
-      <span class="text-sm font-semibold text-[var(--color-foreground)]">Child's age or due date <span class="text-[var(--color-muted-foreground)] font-normal">(optional)</span></span>
-      <input type="text" name="child_age_or_due" placeholder="e.g. 4 months, due April 2026" class={inputClass} />
-    </label>
-    <label class="block sm:col-span-1">
-      <span class="text-sm font-semibold text-[var(--color-foreground)]">Mobile phone <span class="text-[var(--color-muted-foreground)] font-normal">(optional)</span></span>
-      <input type="tel" name="phone" autocomplete="tel" placeholder="(469) 555-1234" class={inputClass} />
-      <span class="mt-1 block text-xs text-[var(--color-muted-foreground)] leading-relaxed">We'll only text you occasional Luma updates and appointment availability. Standard messaging rates may apply.</span>
+    <input type="hidden" name="consent_version" value="practice-updates-v1-2026-09-07" />
+    <label class="sm:col-span-2 flex items-start gap-3 text-sm leading-relaxed">
+      <input
+        type="checkbox"
+        name="consent"
+        value="yes"
+        required
+        class="mt-1 accent-[var(--color-primary)]"
+      />
+      <span class="text-[var(--color-foreground)]/85">
+        I agree to receive occasional email updates about Luma Pediatrics' planned opening and
+        general services. This is not patient registration and does not establish a
+        physician-patient relationship. I can unsubscribe at any time.
+      </span>
     </label>
 
     <div class="sm:col-span-2 flex items-center gap-3 flex-wrap">
@@ -75,10 +81,10 @@ const inputClass =
         class="inline-flex items-center justify-center gap-2 min-h-11 px-6 rounded-full bg-[var(--color-primary)] text-white font-semibold hover:brightness-110 focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 outline-none disabled:opacity-70 disabled:cursor-not-allowed"
       >
         <Icon name="lucide:send" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
-        <span data-waitlist-submit-label>Sign up for updates</span>
+        <span data-waitlist-submit-label>Sign up for email updates</span>
       </button>
       <p class="text-xs text-[var(--color-muted-foreground)]">
-        We'll only use your information for occasional Luma updates. Unsubscribe anytime.
+        Please do not submit medical information.
       </p>
     </div>
 
@@ -97,7 +103,7 @@ const inputClass =
     <div>
       <p class="font-extrabold text-[var(--color-foreground)]">You're signed up!</p>
       <p class="mt-1 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
-        Thanks for staying connected. We'll share occasional updates as opening approaches.
+        Thanks for staying connected. We'll share occasional general updates as opening approaches.
       </p>
     </div>
   </div>
@@ -111,7 +117,7 @@ const inputClass =
     const btn = form.querySelector('[data-waitlist-submit]');
     const label = form.querySelector('[data-waitlist-submit-label]');
     const endpoint = (form.getAttribute('data-endpoint') || '').trim();
-    const phone = form.getAttribute('data-phone') || '';
+    const emailAddress = form.getAttribute('data-email') || '';
     const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
     const showError = (msg) => {
@@ -136,14 +142,19 @@ const inputClass =
         return;
       }
 
+      if (data.get('consent') !== 'yes') {
+        showError('Please confirm that you agree to receive email updates.');
+        return;
+      }
+
       if (!endpoint) {
-        showError('Online signup is being set up — please call ' + phone + ' and we\u2019ll add you.');
+        showError('Online signup is being set up. Please email ' + emailAddress + ' for general information.');
         return;
       }
 
       const original = label ? label.textContent : '';
       if (btn) btn.disabled = true;
-      if (label) label.textContent = 'Joining\u2026';
+      if (label) label.textContent = 'Signing up\u2026';
 
       data.append('page', window.location.pathname);
       data.append('submitted_at', new Date().toISOString());
@@ -160,7 +171,7 @@ const inputClass =
       } catch (err) {
         if (btn) btn.disabled = false;
         if (label) label.textContent = original;
-        showError('Something went wrong. Please try again, or call us at ' + phone + '.');
+        showError('Something went wrong. Please try again, or email ' + emailAddress + '.');
       }
     });
   });

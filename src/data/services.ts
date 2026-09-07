@@ -21,18 +21,18 @@ export const services: ServiceItem[] = [
     icon: 'lucide:handshake',
     title: 'Free Meet & Greet',
     short:
-      'Complimentary in-office visit to tour the practice, meet your pediatrician, and ask questions before choosing Luma.',
+      'A complimentary future opportunity to tour the practice, meet your pediatrician, and ask questions before choosing Luma.',
     full:
-      'Choosing a pediatrician is a big decision. Schedule a free, no-pressure Meet & Greet session to tour the practice, meet your pediatrician, and ask the questions that matter to your family — before your first appointment. Especially helpful for expectant parents and families new to the area.',
+      'After opening, Luma plans to offer free, no-pressure Meet & Greet sessions so families can tour the practice, meet the pediatrician, and ask questions before a first appointment.',
     featured: true,
   },
   {
     icon: 'lucide:hospital',
     title: 'Newborn Rounds at BSW McKinney',
     short:
-      'In-hospital newborn visits at Baylor Scott & White McKinney — so your baby meets their pediatrician on day one.',
+      'Planned in-hospital newborn visits at Baylor Scott & White McKinney.',
     full:
-      'We provide newborn rounding at Baylor Scott & White Medical Center – McKinney. If you deliver at BSW McKinney and choose Luma, your baby meets their pediatrician right at the bedside — for the first exam, feeding support, and a smooth handoff from hospital to home.',
+      'After opening and completion of hospital arrangements, Luma plans to provide newborn rounding at Baylor Scott & White Medical Center – McKinney, supporting the transition from hospital to outpatient pediatric care.',
     featured: true,
   },
   {
@@ -100,9 +100,9 @@ export const services: ServiceItem[] = [
     icon: 'lucide:video',
     title: 'Telehealth / Virtual Visits',
     short:
-      'Convenient virtual follow-up visits for stable ADHD and behavioral care when an in-person exam isn\'t needed.',
+      'Planned virtual follow-up visits for appropriate established-patient needs.',
     full:
-      'Skip the trip when you don\'t need to come in. We offer secure video visits for prescription refills, follow-up appointments, lab/imaging result discussions, and behavioral or ADHD check-ins. Available to established Luma patients.',
+      'After opening, Luma plans to offer secure video follow-ups for appropriate established-patient needs, such as selected medication, result, behavioral, or ADHD check-ins when an in-person exam is not required.',
     featured: true,
   },
 ];

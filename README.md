@@ -53,7 +53,7 @@ The visual design (colors, type, spacing, components, anti-patterns) is document
 
 ## Compliance notes
 
-- **No PHI on this site.** Contact form must not collect symptoms, conditions, or insurance member IDs.
-- **HIPAA scope avoided by design.** Patient portal / booking is delegated to an external HIPAA-compliant SaaS (linked, not embedded).
+- **No PHI on this site.** The email-updates form collects only optional name, email, explicit consent, source page, and timestamps.
+- **No patient intake before opening.** Scheduling, insurance verification, patient forms, and clinical messaging are not offered through the site.
 - **WCAG 2.1 AA** target; Lighthouse a11y score 100.
 - **State medical-advertising rules** vary; have the practice's attorney review before launch.
