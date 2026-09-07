@@ -29,7 +29,7 @@ const {
   noindex = false,
 } = Astro.props;
 
-const siteTitle = title === SITE.name ? title : `${title} · ${SITE.name}`;
+const siteTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
 const normalizePath = (value: string) => {
   const normalized = value.replace(/^\/+|\/+$/g, '');
   if (!normalized) return '/';
@@ -91,9 +91,7 @@ const businessSchema = {
     name: city,
     containedInPlace: { '@type': 'AdministrativeArea', name: 'Collin County, Texas' },
   })),
-  knowsLanguage: SITE.showProviderProfile
-    ? ['English', ...SITE.provider.languages]
-    : ['English'],
+  knowsLanguage: SITE.showProviderProfile ? SITE.provider.languages : ['English'],
   ...(sameAs.length ? { sameAs } : {}),
   ...(SITE.showProviderProfile
     ? {
@@ -103,7 +101,7 @@ const businessSchema = {
           name: SITE.provider.name,
           medicalSpecialty: 'Pediatrics',
           jobTitle: SITE.provider.role,
-          knowsLanguage: ['English', ...SITE.provider.languages],
+          knowsLanguage: SITE.provider.languages,
           alumniOf: SITE.provider.education.map((e) => ({ '@type': 'EducationalOrganization', name: e })),
         },
       }
@@ -160,7 +158,7 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${SITE.name} — ${SITE.tagline}`} />
+    <meta property="og:image:alt" content={`${SITE.name}: ${SITE.tagline}`} />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
@@ -168,12 +166,12 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
     <meta name="twitter:title" content={siteTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
-    <meta name="twitter:image:alt" content={`${SITE.name} — ${SITE.tagline}`} />
+    <meta name="twitter:image:alt" content={`${SITE.name}: ${SITE.tagline}`} />
 
     <!-- JSON-LD: enriched MedicalBusiness + Physician schema for local & AI search -->
-    <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
     {breadcrumbSchema && (
-      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
     )}
 
     {import.meta.env.PROD && SITE.analytics.ga4MeasurementId && (

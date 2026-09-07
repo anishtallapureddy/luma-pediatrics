@@ -21,7 +21,7 @@ export const services: ServiceItem[] = [
     icon: 'lucide:handshake',
     title: 'Free Meet & Greet',
     short:
-      'A complimentary future opportunity to tour the practice, meet your pediatrician, and ask questions before choosing Luma.',
+      'After opening, families may schedule a complimentary visit to see the practice and meet the pediatrician.',
     full:
       'After opening, Luma plans to offer free, no-pressure Meet & Greet sessions so families can tour the practice, meet the pediatrician, and ask questions before a first appointment.',
     featured: true,
@@ -32,25 +32,25 @@ export const services: ServiceItem[] = [
     short:
       'Planned in-hospital newborn visits at Baylor Scott & White McKinney.',
     full:
-      'After opening and completion of hospital arrangements, Luma plans to provide newborn rounding at Baylor Scott & White Medical Center – McKinney, supporting the transition from hospital to outpatient pediatric care.',
+      'After opening and completion of hospital arrangements, Luma plans to provide newborn rounding at Baylor Scott & White Medical Center in McKinney, supporting the transition from hospital to outpatient pediatric care.',
     featured: true,
   },
   {
     icon: 'lucide:baby',
     title: 'Newborn Care',
     short:
-      'Lactation support, growth tracking, and gentle first visits for your newest family member.',
+      'Feeding support, growth tracking, jaundice screening, and newborn visits.',
     full:
-      'A gentle, unhurried first visit. We support feeding (lactation and bottle), track healthy growth and weight gain, screen for jaundice, answer the sleep and crying questions every new parent has, and partner with you through those first big weeks at home.',
+      'Planned newborn visits include breast and bottle-feeding support, growth and weight monitoring, jaundice screening, and time to discuss sleep, crying, and the first weeks at home.',
     featured: true,
   },
   {
     icon: 'lucide:stethoscope',
     title: 'Well-Child Visits',
     short:
-      'Routine checkups, developmental screenings, and milestone guidance at every age.',
+      'Routine checkups, developmental screening, and age-specific guidance.',
     full:
-      'Comprehensive check-ups at every recommended age — from infancy through adolescence. Each visit includes a comprehensive physical exam, developmental and behavioral screening, milestone guidance, growth tracking, and time for your questions.',
+      'Planned well-child visits follow the recommended schedule from infancy through adolescence. Visits include a physical exam, developmental and behavioral screening, growth tracking, age-specific guidance, and time for questions.',
     featured: true,
   },
   {
@@ -68,7 +68,7 @@ export const services: ServiceItem[] = [
     short:
       'Keeping your child protected with recommended vaccines based on the latest AAP guidelines.',
     full:
-      'The full schedule of recommended childhood vaccines, administered on time and aligned with CDC and AAP guidelines. We are happy to discuss the schedule with you in detail — your questions are welcome.',
+      'Luma plans to offer the recommended childhood vaccine schedule aligned with CDC and AAP guidance. Questions about timing and catch-up schedules will be discussed during visits.',
     featured: true,
   },
   {
@@ -83,7 +83,7 @@ export const services: ServiceItem[] = [
     icon: 'lucide:sparkles',
     title: 'ADHD, Behavior & Developmental Care',
     short:
-      'ADHD evaluations, behavior support, early developmental screening, and trusted referrals.',
+      'ADHD evaluations, behavior support, developmental screening, and specialist referrals when needed.',
     full:
       'Evaluations and ongoing support for ADHD, learning concerns, and behavioral challenges. Early screening for developmental delays, family-centered guidance, and trusted referrals to specialists when more support is needed.',
   },
@@ -93,7 +93,7 @@ export const services: ServiceItem[] = [
     short:
       'Support for the physical, emotional, and mental health of tweens and teens.',
     full:
-      'Confidential, age-appropriate care for tweens and teens — including mental health screening, sports medicine, and the conversations adolescents deserve to have with a trusted clinician.',
+      'Planned care for tweens and teens includes age-appropriate preventive care, mental health screening, sports medicine, and confidential discussions consistent with applicable law.',
     featured: true,
   },
   {
@@ -112,7 +112,7 @@ export const featuredServices = services.filter((s) => s.featured);
 /**
  * Insurance carriers commonly accepted. Used on /new-patients so families can
  * self-qualify at a glance. Update when the practice confirms its panel.
- * NOTE: representative list — confirm before launch.
+ * NOTE: representative list - confirm before launch.
  */
 export const insurancePlans = [
   'Blue Cross Blue Shield of Texas',

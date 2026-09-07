@@ -13,18 +13,18 @@ import Picture from '../components/Picture.astro';
 const promises = [
   {
     icon: 'lucide:clock',
-    title: 'Unhurried, attentive visits',
-    body: 'Longer appointment times by design, so every question is heard and every concern is addressed with care.',
+    title: 'Time for questions',
+    body: 'Appointments will be planned with enough time to listen, explain options, and agree on next steps.',
   },
   {
     icon: 'lucide:users',
     title: 'Continuity of care',
-    body: 'Your child sees the same pediatrician at every visit — building a trusted relationship that grows with your family.',
+    body: 'Families will see the same pediatrician and build a consistent relationship over time.',
   },
   {
     icon: 'lucide:heart',
     title: 'Partnership with parents',
-    body: 'We believe parents know their children best. Our role is to provide clear guidance so you can make informed decisions with confidence.',
+    body: 'Parents bring essential knowledge of their child. We provide clear medical guidance and make decisions together.',
   },
 ];
 
@@ -38,31 +38,31 @@ const trustPhotos = [
   {
     src: '/images/trust-checkup.jpg',
     alt: 'A pediatrician using a stethoscope on a smiling girl held by her mother',
-    title: 'Gentle visits',
-    body: 'Calm, kid-friendly visits that never feel rushed.',
+    title: 'Kid-friendly visits',
+    body: 'A calm setting designed to help children feel comfortable.',
   },
   {
     src: '/images/trust-gentle.jpg',
     alt: 'A smiling young girl using a stethoscope to listen to her teddy bear',
-    title: 'Confidence in care',
-    body: 'Thoughtful, evidence-based care delivered with warmth and compassion.',
+    title: 'Clear guidance',
+    body: 'Evidence-based recommendations explained in plain language.',
   },
   {
     src: '/images/trust-playful.jpg',
     alt: 'A happy toddler sitting on a rug, surrounded by a teddy bear, bunny, and stacking toys',
-    title: 'Bright and playful',
-    body: 'A welcoming clinic designed to feel like home.',
+    title: 'Made for children',
+    body: 'A practical, welcoming environment for children and parents.',
   },
 ];
 ---
 <BaseLayout
-  title="Future Pediatrician in McKinney, TX | Opening Late 2026"
+  title="Luma Pediatrics | Pediatric Care in McKinney, TX"
   path="/"
   description="Luma Pediatrics is a board-certified pediatric practice opening in late 2026 in McKinney, TX. Planned services include well-child visits, same-day sick care, vaccinations, school physicals, and ADHD/behavioral support."
 >
 
   <!-- ====================================================================
-       HERO — elegant brand vibe: centered logo + serif wordmark + italic
+       HERO - elegant brand vibe: centered logo + serif wordmark + italic
        gold tagline, gold sparkles scattered, sage-curved transition below.
        ==================================================================== -->
   <section class="brand-hero overflow-hidden">
@@ -93,7 +93,7 @@ const trustPhotos = [
             Where your child's health shines.
           </p>
           <p class="mt-4 text-sm md:text-base text-[var(--color-foreground)]/74 max-w-xl md:max-w-none mx-auto lg:mx-0 leading-relaxed lg:whitespace-nowrap">
-            Warm, comprehensive care for newborns to teens — conveniently located just off US-75.
+            Planned care for newborns to teens, conveniently located just off US-75.
           </p>
 
           <div class="mt-6 flex flex-wrap justify-center lg:justify-start gap-3">
@@ -108,7 +108,7 @@ const trustPhotos = [
         </div>
 
         <figure class="hero-poster-image">
-          <Picture src="/images/hero-poster.jpg" alt="Luma Pediatrics — Opening late 2026 in McKinney, TX. Where your child's health shines." loading="eager" fetchpriority="high" />
+          <Picture src="/images/hero-poster.jpg" alt="Luma Pediatrics. Opening late 2026 in McKinney, TX. Where your child's health shines." loading="eager" fetchpriority="high" />
         </figure>
       </div>
     </div>
@@ -119,17 +119,17 @@ const trustPhotos = [
   </section>
 
   <!-- ====================================================================
-       TRUST-BUILDING PHOTO STRIP — warm faces and safe, happy care moments.
+       TRUST-BUILDING PHOTO STRIP, warm faces and safe, happy care moments.
        ==================================================================== -->
   <section class="trust-gallery py-20 md:py-28 reveal">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-3xl mx-auto text-center mb-12">
-        <span class="eyebrow eyebrow-sun">Warm, safe, happy</span>
+        <span class="eyebrow eyebrow-sun">A space for families</span>
         <h2 class="mt-5 text-4xl md:text-6xl tracking-tight">
-          Care that feels reassuring from the first hello.
+          A calm place for children and parents.
         </h2>
         <p class="mt-6 text-lg text-[var(--color-foreground)]/78 leading-relaxed max-w-2xl mx-auto">
-          A calm, welcoming environment where children feel comfortable, parents feel heard, and every visit is centered on your family.
+          The future clinic is being planned so children can feel comfortable and parents have room to ask questions.
         </p>
       </div>
 
@@ -155,9 +155,9 @@ const trustPhotos = [
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mx-auto text-center mb-14">
         <span class="eyebrow">Planned care</span>
-        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight lg:whitespace-nowrap">Care for every stage of childhood.</h2>
+        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight lg:whitespace-nowrap">Care from infancy through adolescence.</h2>
         <p class="mt-5 tagline-italic-sage text-lg md:text-xl">
-          Planned pediatric services — from your baby's first days through young adulthood.
+          Planned pediatric services from your baby's first days through young adulthood.
         </p>
       </div>
 
@@ -193,7 +193,7 @@ const trustPhotos = [
   </section>
 
   <!-- ====================================================================
-       EXPERIENCE — generic trust band (employer-safe pre-launch)
+       EXPERIENCE, generic trust band (employer-safe pre-launch)
        ==================================================================== -->
   <section class="py-10 md:py-12 bg-[var(--color-sage-light)]/40 border-y border-[var(--color-border-soft)] reveal">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -204,7 +204,7 @@ const trustPhotos = [
     </div>
   </section>
 
-  <!-- Practice updates — independent email opt-in -->
+  <!-- Practice updates, independent email opt-in -->
   <section class="py-16 md:py-20 reveal">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <WaitlistForm variant="hero" />
@@ -212,7 +212,7 @@ const trustPhotos = [
   </section>
 
   <!-- ====================================================================
-       INSURANCE — gold-tinted band with elegant treatment
+       INSURANCE, gold-tinted band with elegant treatment
        ==================================================================== -->
   <section class="py-16 md:py-20 bg-[var(--color-muted)] reveal">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -222,7 +222,7 @@ const trustPhotos = [
       </h2>
       <StarDivider class="mt-7" span="3rem" />
       <p class="mt-7 text-[var(--color-foreground)]/80 max-w-2xl mx-auto leading-relaxed text-lg">
-        We're completing insurance credentialing now — the full list of accepted plans is coming soon. Self-pay families are welcome across North Texas communities, and we're glad to answer questions in the meantime.
+        We're completing insurance credentialing now, the full list of accepted plans is coming soon. Self-pay families are welcome across North Texas communities, and we're glad to answer questions in the meantime.
       </p>
       <div class="mt-7">
         <a href="/contact" class="font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
@@ -233,7 +233,7 @@ const trustPhotos = [
   </section>
 
   <!-- ====================================================================
-       OUR PROMISE — values-led block (replaces testimonials pre-launch;
+       OUR PROMISE, values-led block (replaces testimonials pre-launch;
        we'll add real, attributed reviews after launch with consent).
        ==================================================================== -->
   <section aria-label="Our promise to your family" class="py-20 md:py-28 reveal relative navy-campaign">
@@ -244,7 +244,7 @@ const trustPhotos = [
         <h2 class="mt-5 text-3xl md:text-5xl tracking-tight text-white">The standards we hold ourselves to</h2>
         <p class="mt-5 text-white/85 leading-relaxed text-lg">
           As a future practice, we are building around a clear standard of care.
-          These are the commitments we plan to bring to every visit after opening.
+          These are the standards we plan to bring to patient care after opening.
         </p>
       </div>
 
@@ -263,7 +263,7 @@ const trustPhotos = [
   </section>
 
   <!-- ====================================================================
-       FINAL CTA — "Still have questions?" pairing FAQ + Contact, instead of
+       FINAL CTA, "Still have questions?" pairing FAQ + Contact, instead of
        duplicating the hero. Keeps a strong close without repeating CTAs.
        ==================================================================== -->
   <section class="campaign-panel">
@@ -275,18 +275,18 @@ const trustPhotos = [
 
     <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
       <div class="campaign-card px-5 py-12 md:p-14">
-        <span class="eyebrow eyebrow-sun">Still have questions?</span>
+        <span class="eyebrow eyebrow-sun">Have a question?</span>
         <h2 class="mt-5 text-3xl md:text-5xl tracking-tight" style="font-family: var(--font-display);">
-          We're here to help your family feel at home.
+          We’re here to help your family feel informed, supported, and at ease.
         </h2>
         <StarDivider class="mt-7" span="3rem" />
         <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/78 max-w-2xl mx-auto leading-relaxed">
-          Browse our FAQ for quick answers, or reach out — we typically reply within one business day.
+          Browse our FAQs for quick answers, or reach out to our team. We typically respond within one business day.
         </p>
         <div class="mt-9 flex flex-wrap justify-center gap-3">
           <Button href="/faq" variant="primary">
             <Icon name="lucide:info" class="w-5 h-5" stroke-width="1.6" />
-            Read our FAQ
+            Browse FAQs
           </Button>
           <Button href="/contact" variant="secondary">
             Contact us

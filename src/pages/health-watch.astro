@@ -2,10 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
 import { Icon } from 'astro-icon/components';
-import { SITE } from '../site.config';
 
 /**
- * Luma Local Health Watch — parent-facing page.
+ * Luma Local Health Watch - parent-facing page.
  *
  * Reads the daily snapshot produced by the internal Luma Pediatric Pulse
  * dashboard (https://github.com/anishtallapureddy/luma-pediatric-pulse) and
@@ -79,12 +78,29 @@ interface Snapshot {
   };
 }
 
+function cleanExternalText(value: string) {
+  return value
+    .replace(/\s*\u2014\s*([a-z])/g, (_, letter: string) => `. ${letter.toUpperCase()}`)
+    .replace(/\s*\u2014\s*/g, '. ');
+}
+
+function sanitizeSnapshotValue(value: unknown): unknown {
+  if (typeof value === 'string') return cleanExternalText(value);
+  if (Array.isArray(value)) return value.map(sanitizeSnapshotValue);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, child]) => [key, sanitizeSnapshotValue(child)]),
+    );
+  }
+  return value;
+}
+
 async function loadSnapshot(): Promise<Snapshot | null> {
   const results = await Promise.allSettled(
     SNAPSHOT_SOURCES.map(async (url) => {
       const res = await fetch(url, { headers: { 'cache-control': 'no-cache' } });
       if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-      return (await res.json()) as Snapshot;
+      return sanitizeSnapshotValue(await res.json()) as Snapshot;
     }),
   );
 
@@ -118,10 +134,10 @@ const refreshed = data?.lastRefreshedAt
 /* -------- Plain-language helpers -------- */
 
 function aqiSummary(aqi: number, cat: string) {
-  if (aqi <= 50) return { tone: 'ok', headline: 'Great air outside', sub: `${cat} — go enjoy the park.` };
-  if (aqi <= 100) return { tone: 'warn', headline: 'Air is okay for most kids', sub: `${cat} — sensitive kids may want lighter outdoor play.` };
-  if (aqi <= 150) return { tone: 'warn', headline: 'Tougher air today', sub: `${cat} — keep asthma rescue inhalers handy.` };
-  return { tone: 'alert', headline: 'Air quality is poor', sub: `${cat} — limit prolonged outdoor exertion, especially for asthma/wheezy kids.` };
+  if (aqi <= 50) return { tone: 'ok', headline: 'Great air outside', sub: `${cat}. Good day for outdoor play.` };
+  if (aqi <= 100) return { tone: 'warn', headline: 'Air is okay for most kids', sub: `${cat}. Children who are sensitive to air quality may benefit from lighter outdoor play.` };
+  if (aqi <= 150) return { tone: 'warn', headline: 'Tougher air today', sub: `${cat}. Keep prescribed asthma rescue inhalers available.` };
+  return { tone: 'alert', headline: 'Air quality is poor', sub: `${cat}. Limit prolonged outdoor exertion, especially for children with asthma or wheezing.` };
 }
 
 function pollenSummary(p: Snapshot['pollen']) {
@@ -136,7 +152,7 @@ function pollenSummary(p: Snapshot['pollen']) {
       tone: 'alert' as const,
       peak,
       headline: `${peak} pollen day`,
-      sub: `${allergens || 'Common allergens'} are elevated. Allergy/asthma kids may need extra antihistamines or inhaler — rinse off after outdoor play.`,
+      sub: `${allergens || 'Common allergens'} are elevated. Follow your child's existing allergy or asthma plan and rinse off after outdoor play.`,
     };
   }
   if (peak === 'Moderate') {
@@ -172,7 +188,7 @@ function respiratorySummary(r: Snapshot['respiratoryIllness']) {
   return {
     tone: 'ok' as const,
     headline: 'Quiet respiratory week',
-    sub: 'Low local activity right now — usual healthy habits.',
+    sub: 'Low local activity right now. Continue usual healthy habits.',
   };
 }
 
@@ -265,7 +281,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
         What's in the air around our community today.
       </p>
       <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/80 leading-relaxed">
-        A simple morning snapshot for North DFW families — pollen, air quality,
+        A simple morning snapshot for North DFW families, pollen, air quality,
         cough &amp; cold activity, and vaccine-preventable disease watch. Updated
         every day so you can plan ahead.
       </p>
@@ -387,7 +403,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                       </ul>
                     )}
                     <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
-                      Statewide activity from CDC NNDSS — neighborhood-level cases aren't reported publicly.
+                      Statewide activity from CDC NNDSS. Neighborhood-level cases aren't reported publicly.
                     </p>
                   </div>
                 </div>
@@ -405,7 +421,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                     <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">What's going around</p>
                     <h2 class="mt-1 text-xl tracking-tight">Community virus watch</h2>
                     <p class="mt-2 text-sm text-[var(--color-foreground)]/85 leading-relaxed">
-                      Common bugs we're seeing in the North Dallas area right now. Green = quiet, yellow = some around, red = lots going around.
+                      Respiratory and gastrointestinal activity reported in the North Dallas area. Green means low activity, yellow means moderate activity, and red means high activity.
                     </p>
 
                     {(['respiratory', 'gastrointestinal', 'other-pediatric'] as const).map((cat) => (
@@ -419,7 +435,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                                 <div class="min-w-0 flex-1">
                                   <p class="text-sm font-medium text-[var(--color-foreground)]">
                                     {v.name}
-                                    <span class="text-[var(--color-muted-foreground)] font-normal"> — {v.level === 'Unknown' ? 'data unavailable' : v.level.toLowerCase()}{v.level !== 'Unknown' && v.trend === 'Rising' ? ', rising' : v.level !== 'Unknown' && v.trend === 'Decreasing' ? ', easing' : ''}{typeof v.positivityPct === 'number' ? ` · ${v.positivityPct.toFixed(1)}% positive` : ''}</span>
+                                    <span class="text-[var(--color-muted-foreground)] font-normal"> ({v.level === 'Unknown' ? 'data unavailable' : v.level.toLowerCase()}{v.level !== 'Unknown' && v.trend === 'Rising' ? ', rising' : v.level !== 'Unknown' && v.trend === 'Decreasing' ? ', easing' : ''}{typeof v.positivityPct === 'number' ? `, ${v.positivityPct.toFixed(1)}% positive` : ''})</span>
                                   </p>
                                   {v.parentNote && (
                                     <p class="mt-0.5 text-xs text-[var(--color-muted-foreground)] leading-relaxed">{v.parentNote}</p>

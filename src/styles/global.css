@@ -12,13 +12,13 @@
 @import "@fontsource/plus-jakarta-sans/700.css";
 
 /* ---------------------------------------------------------------------------
-   Luma Pediatrics of McKinney — design tokens
+   Luma Pediatrics of McKinney - design tokens
    Palette extracted from official brand guide (provided 2026-05-10):
-      #0B1D3A  navy        — primary (CTAs, headings, body text)
-      #7B8F70  sage green  — secondary
-      #DAA43A  golden yellow — accent (highlights, stars, eyebrows)
-     #E76C70  coral       — tertiary accent (highlight pops; use sparingly)
-      #F6F4EF  warm cream  — page background
+      #0B1D3A  navy - primary (CTAs, headings, body text)
+      #7B8F70  sage green - secondary
+      #DAA43A  golden yellow - accent (highlights, stars, eyebrows)
+     #E76C70  coral - tertiary accent (highlight pops; use sparingly)
+      #F6F4EF  warm cream - page background
 
    Contrast on cream: navy 14:1 (AAA), white-on-navy 14:1 (AAA).
    Sage darkened for CTAs (#647A5A) so white text passes AA on it.
@@ -28,31 +28,31 @@
    - refinement-pass.md         (Jakub Krehel motion polish + soft-skill patterns)
 --------------------------------------------------------------------------- */
 @theme {
-  /* Brand — navy is the workhorse */
+  /* Brand - navy is the workhorse */
   --color-primary:                #0B1D3A;
   --color-primary-hover:          #162D52;
   --color-primary-foreground:     #FFFFFF;
 
-  /* Sage — secondary CTAs, success/trust states. The darker variant ensures AA on white-text CTAs. */
+  /* Sage - secondary CTAs, success/trust states. The darker variant ensures AA on white-text CTAs. */
   --color-sage:                   #6F8064;   /* AA-capable CTA fill */
-  --color-sage-light:             #7B8F70;   /* brand sage — backgrounds, decoration */
+  --color-sage-light:             #7B8F70;   /* brand sage - backgrounds, decoration */
   --color-sage-hover:             #59694F;
   --color-sage-foreground:        #FFFFFF;
 
-  /* Golden yellow — decorative highlights only; not used for text on cream (insufficient contrast) */
+  /* Golden yellow - decorative highlights only; not used for text on cream (insufficient contrast) */
   --color-sun:                    #C8995A;
   --color-sun-foreground:         #0B1D3A;
 
-  /* Coral — reserved for stars / occasional emphasis (per brand palette) */
+  /* Coral - reserved for stars / occasional emphasis (per brand palette) */
   --color-coral:                  #E76C70;
   --color-coral-foreground:       #FFFFFF;
 
-  /* Surfaces — warm cream palette matching the brand poster (May 10, 2026 ref) */
+  /* Surfaces - warm cream palette matching the brand poster (May 10, 2026 ref) */
   --color-background:             #F7EFE4;
-  --color-foreground:             #0B1D3A;   /* navy for body text — AAA contrast on cream */
+  --color-foreground:             #0B1D3A;   /* navy for body text - AAA contrast on cream */
   --color-card:                   #FDFAF3;
   --color-card-foreground:        #0B1D3A;
-  --color-muted:                  #F0E5D2;   /* warm ivory deeper — alt sections */
+  --color-muted:                  #F0E5D2;   /* warm ivory deeper - alt sections */
   --color-muted-foreground:       #5B6877;
   --color-border-soft:            #E6D9C2;
 
@@ -61,7 +61,7 @@
   --color-destructive-foreground: #FFFFFF;
   --color-ring:                   #0B1D3A;
 
-  /* Typography — elegant serif display (per brand guide); humanist sans for body */
+  /* Typography - elegant serif display (per brand guide); humanist sans for body */
   --font-display: "Cormorant Garamond", "EB Garamond", Georgia, "Times New Roman", serif;
   --font-body:    "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -71,7 +71,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Motion tokens — design-motion-principles (Jakub Krehel primary lens)
+   Motion tokens - design-motion-principles (Jakub Krehel primary lens)
 --------------------------------------------------------------------------- */
 :root {
   --ease-fluid:        cubic-bezier(0.32, 0.72, 0, 1);
@@ -193,7 +193,7 @@
     filter: blur(0);
   }
 
-  /* Pill eyebrow tag (soft-skill pattern) — sage tint with navy text */
+  /* Pill eyebrow tag (soft-skill pattern) - sage tint with navy text */
   .eyebrow {
     display: inline-flex;
     align-items: center;
@@ -267,13 +267,13 @@
     -webkit-backdrop-filter: saturate(140%) blur(12px);
   }
 
-  /* Announcement bar — gold w/ navy text */
+  /* Announcement bar - gold w/ navy text */
   .announce-bar {
     background: linear-gradient(90deg, var(--color-sun) 0%, #E1AD4A 100%);
     color: var(--color-sun-foreground);
   }
 
-  /* Subtle entrance for hero — runs immediately on load (not scroll-driven) */
+  /* Subtle entrance for hero - runs immediately on load (not scroll-driven) */
   .fade-up {
     animation: fadeUp var(--duration-emphasized) var(--ease-emphasized) both;
   }
@@ -301,7 +301,7 @@
 
   /* ===== Brand-specific elegant treatments (from real brand guide) ===== */
 
-  /* Italic serif tagline — gold or sage, used under headings */
+  /* Italic serif tagline - gold or sage, used under headings */
   .tagline-italic {
     font-family: var(--font-display);
     font-style: italic;
@@ -421,7 +421,7 @@
     gap: 0.28rem;
   }
 
-  /* "Opening Soon" pill — gold-outlined elegant style from brand assets */
+  /* "Opening Soon" pill - gold-outlined elegant style from brand assets */
   .pill-status {
     display: inline-flex;
     align-items: center;

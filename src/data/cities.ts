@@ -5,7 +5,7 @@
  * discovery ("pediatrician in Frisco", "Allen pediatric clinic", etc.).
  *
  * Keep copy human, warm, and specific to each community. Avoid keyword
- * stuffing — Google's helpful-content systems penalise it.
+ * stuffing - Google's helpful-content systems penalise it.
  */
 
 export type CityPage = {
@@ -28,10 +28,10 @@ export const CITIES: CityPage[] = [
     distanceMi: 0,
     driveMinutes: 'In town',
     intro:
-      "Luma Pediatrics is opening right here in McKinney — your neighborhood pediatric home for newborns, kids, and teens.",
+      'Luma Pediatrics is opening in McKinney with planned care for newborns, children, and teens.',
     landmarks: ['Stonebridge Ranch', 'Adriatica Village', 'Craig Ranch', 'Historic Downtown McKinney'],
     whyLuma:
-      "We're proud to call McKinney home. Families across Stonebridge, Craig Ranch, Tucker Hill, and downtown will find a calm, unhurried clinic minutes from where they live, learn, and play.",
+      'The future clinic is located near Stonebridge, Craig Ranch, Tucker Hill, and downtown McKinney, with one physician and appointments planned with time for questions.',
   },
   {
     slug: 'frisco',
@@ -39,10 +39,10 @@ export const CITIES: CityPage[] = [
     distanceMi: 8,
     driveMinutes: '15–20 min',
     intro:
-      'Frisco families — Luma Pediatrics will be a short drive east, with longer visits and planned same-day sick appointments.',
+      'Frisco families will find the future Luma Pediatrics practice a short drive east in McKinney.',
     landmarks: ['The Star', 'Stonebriar', 'Phillips Creek Ranch', 'Frisco ISD schools'],
     whyLuma:
-      'Frisco families seeking continuity and unhurried visits will find Luma a short drive east, with longer appointment times and planned same-day availability for sick visits after opening.',
+      'The practice plans to offer Frisco families continuity with one pediatrician, longer appointment times, and same-day sick visits when capacity allows after opening.',
   },
   {
     slug: 'allen',
@@ -50,10 +50,10 @@ export const CITIES: CityPage[] = [
     distanceMi: 7,
     driveMinutes: '12–15 min',
     intro:
-      'Allen families will be able to reach Luma Pediatrics in under fifteen minutes via US-75 for gentle, unhurried care and planned same-day sick visits.',
+      'Allen families will be able to reach the future Luma Pediatrics practice via US-75 in about 12 to 15 minutes.',
     landmarks: ['Watters Creek', 'Twin Creeks', 'Allen ISD schools', 'Allen Premium Outlets'],
     whyLuma:
-      'Allen families can reach Luma in under fifteen minutes via US-75. After opening, our scheduling model is designed to support same-day sick visits and timely routine appointments.',
+      'Allen families can reach Luma in under fifteen minutes via US-75. After opening, we plan to reserve capacity for same-day sick visits and keep routine appointments on time.',
   },
   {
     slug: 'prosper',
@@ -64,7 +64,7 @@ export const CITIES: CityPage[] = [
       'Prosper families will find the future Luma Pediatrics practice just down 380 in McKinney, with planned newborn and primary pediatric care.',
     landmarks: ['Windsong Ranch', 'Light Farms', 'Prosper ISD schools', 'Gates of Prosper'],
     whyLuma:
-      'For Prosper families delivering at Baylor Scott & White Medical Center – McKinney, Luma plans to offer in-hospital newborn rounds and a seamless transition to outpatient pediatric care after opening.',
+      'For Prosper families delivering at Baylor Scott & White Medical Center in McKinney, Luma plans to offer in-hospital newborn rounds and coordinated outpatient follow-up after opening.',
   },
   {
     slug: 'melissa',
@@ -72,10 +72,10 @@ export const CITIES: CityPage[] = [
     distanceMi: 8,
     driveMinutes: '10–15 min',
     intro:
-      'Melissa families will find Luma Pediatrics a short trip south on US-75, with a future McKinney practice designed around continuity and unhurried visits.',
+      'Melissa families will find the future Luma Pediatrics practice a short trip south on US-75 in McKinney.',
     landmarks: ['Liberty', 'North Creek', 'Melissa ISD schools', 'Zadow Park'],
     whyLuma:
-      'As Melissa continues to grow, families deserve convenient access to a pediatrician who can know their child over time. Luma is planned as a nearby option for newborn care, routine checkups, sick visits, and guidance through every stage of childhood.',
+      'Luma is planned as a nearby option for Melissa families seeking one pediatrician for newborn care, routine checkups, sick visits, and care through adolescence.',
   },
   {
     slug: 'anna',
@@ -86,7 +86,7 @@ export const CITIES: CityPage[] = [
       'Anna families will be able to reach Luma Pediatrics by traveling south on US-75 to our future McKinney location.',
     landmarks: ['Anna Town Square', 'Slayter Creek Park', 'Hurricane Creek', 'Anna ISD schools'],
     whyLuma:
-      'For Anna families looking for physician-led pediatric care in the greater McKinney area, Luma is being designed for consistent relationships, thoughtful guidance, and appointments that leave time for questions.',
+      'Luma plans to offer Anna families a consistent relationship with one pediatrician and appointments with time for questions.',
   },
   {
     slug: 'princeton',
@@ -97,7 +97,7 @@ export const CITIES: CityPage[] = [
       'Princeton families will find Luma Pediatrics west of town in McKinney, with planned care for newborns, children, and teens.',
     landmarks: ['Lake Lavon', 'Bridgewater', 'Princeton ISD schools', 'J.M. Caldwell Sr. Community Park'],
     whyLuma:
-      'Luma will offer Princeton families a physician-led pediatric option focused on clear communication and continuity—from newborn and well-child care to planned sick visits, vaccines, physicals, and adolescent health.',
+      'Luma will offer Princeton families a physician-led pediatric option focused on clear communication and continuity, from newborn and well-child care to planned sick visits, vaccines, physicals, and adolescent health.',
   },
   {
     slug: 'celina',
@@ -152,7 +152,7 @@ export const CITIES: CityPage[] = [
       'Sherman and southern Grayson County families who travel to McKinney for care will be welcome at Luma Pediatrics after the practice opens.',
     landmarks: ['Sherman Town Center', 'Austin College', 'Pecan Grove Park', 'Sherman ISD schools'],
     whyLuma:
-      'Luma will offer Sherman-area families another physician-led pediatric option along US-75, especially for those who value continuity, unhurried visits, and a long-term relationship with one pediatrician.',
+      'Luma will offer Sherman-area families another physician-led pediatric option along US-75, with continuity and a long-term relationship with one pediatrician.',
   },
   {
     slug: 'howe',
@@ -174,7 +174,7 @@ export const CITIES: CityPage[] = [
       'New Hope families will be close to Luma Pediatrics at our future location in north McKinney.',
     landmarks: ['New Hope Town Hall', 'FM 1827 corridor', 'East McKinney', 'Collin County communities'],
     whyLuma:
-      'For families in New Hope and east McKinney, Luma is planned as a nearby pediatric home with one physician, unhurried visits, and care from infancy through adolescence.',
+      'For families in New Hope and east McKinney, Luma is planned as a nearby practice with one physician and care from infancy through adolescence.',
   },
   {
     slug: 'lowry-crossing',
@@ -218,7 +218,7 @@ export const CITIES: CityPage[] = [
       'Little Elm families who travel toward McKinney will be welcome at the future Luma Pediatrics practice.',
     landmarks: ['Little Elm Park', 'The Lakefront', 'Lake Lewisville', 'Little Elm ISD schools'],
     whyLuma:
-      'For Little Elm families seeking care in the greater McKinney area, Luma will offer a future pediatric option centered on consistent relationships and thoughtful, unhurried guidance.',
+      'For Little Elm families seeking care in the greater McKinney area, Luma will offer a future pediatric option centered on a consistent physician relationship and clear guidance.',
   },
   {
     slug: 'plano',

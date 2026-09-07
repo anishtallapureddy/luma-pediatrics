@@ -14,7 +14,7 @@ const { variant = 'inline', title, blurb } = Astro.props;
  * Practice-updates signup form.
  *
  * Submits (via AJAX) to a Google Apps Script Web App that appends each signup
- * to a Google Sheet — see docs/waitlist-setup.md. When SITE.forms.waitlistEndpoint
+ * to a Google Sheet - see docs/waitlist-setup.md. When SITE.forms.waitlistEndpoint
  * is empty the form directs visitors to the public email address.
  */
 const endpoint = (SITE.forms.waitlistEndpoint ?? '').trim();
@@ -47,7 +47,7 @@ const inputClass =
     data-email={SITE.contact.email}
     novalidate
   >
-    {/* Honeypot — bots fill this; humans never see it. */}
+    {/* Honeypot - bots fill this; humans never see it. */}
     <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
     <label class="block sm:col-span-1">
@@ -134,7 +134,7 @@ const inputClass =
       }
 
       const data = new FormData(form);
-      if (data.get('botcheck')) return; // honeypot tripped — silently ignore
+      if (data.get('botcheck')) return; // honeypot tripped, silently ignore
 
       const email = (data.get('email') || '').toString().trim();
       if (!EMAIL_RE.test(email)) {

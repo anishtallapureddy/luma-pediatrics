@@ -1,6 +1,6 @@
 ---
 title: "RSV, the flu, and the winter cough: a parent's playbook"
-description: "How to tell the difference between RSV, flu, COVID, and a common cold — what helps at home, what doesn't, and when a cough means call the doctor."
+description: "How to tell the difference between RSV, flu, COVID, and a common cold, what helps at home, what doesn't, and when a cough means call the doctor."
 publishDate: 2026-09-15
 hero: /images/blog-rsv-flu.jpg
 heroAlt: A parent's hand on a child's forehead as the child rests under a blanket
@@ -14,11 +14,11 @@ The honest answer is that most respiratory infections in kids look similar in th
 
 ## The usual suspects
 
-- **Common cold (rhinovirus, adenovirus, parainfluenza, etc.)** — Runny nose, mild cough, mild fever, generally feels okay. Lasts 7–10 days.
-- **RSV (respiratory syncytial virus)** — Starts like a cold; in babies and toddlers, can move into the lungs as **bronchiolitis** with wheezing, fast breathing, poor feeding. Peaks days 3–5.
-- **Flu (influenza)** — Sudden onset, **high fever**, body aches, headache, dry cough. Kids often look more wiped out than with a cold.
-- **COVID-19** — Variable. Can mimic any of the above; sometimes loss of smell, headache, or GI symptoms.
-- **Croup (parainfluenza)** — Barky "seal" cough, hoarse voice, often worse at night.
+- **Common cold (rhinovirus, adenovirus, parainfluenza, etc.)**, Runny nose, mild cough, mild fever, generally feels okay. Lasts 7–10 days.
+- **RSV (respiratory syncytial virus)**, Starts like a cold; in babies and toddlers, can move into the lungs as **bronchiolitis** with wheezing, fast breathing, poor feeding. Peaks days 3–5.
+- **Flu (influenza)**, Sudden onset, **high fever**, body aches, headache, dry cough. Kids often look more wiped out than with a cold.
+- **COVID-19**, Variable. Can mimic any of the above; sometimes loss of smell, headache, or GI symptoms.
+- **Croup (parainfluenza)**, Barky "seal" cough, hoarse voice, often worse at night.
 
 ## What actually helps at home
 
@@ -27,21 +27,21 @@ For colds, RSV, and the flu in kids who are still drinking and breathing comfort
 - **Saline nose drops + a bulb syringe** for babies. Boring but the single most useful tool you own.
 - **Cool-mist humidifier** in the room at night.
 - **Fluids, fluids, fluids.** Small sips, frequently.
-- **Honey** for cough — but **only for children 1 year and older** (never under 1). 1/2 to 1 teaspoon as needed.
+- **Honey** for cough, but **only for children 1 year and older** (never under 1). 1/2 to 1 teaspoon as needed.
 - **Acetaminophen / ibuprofen** for fever and discomfort (ibuprofen only 6 months+). Treat the comfort, not the number.
 - **Rest.** Boring advice, real medicine.
 
-## What doesn't help — and may hurt
+## What doesn't help, and may hurt
 
 - **Over-the-counter cough and cold medicines** are **not recommended under age 6**, and most pediatricians extend that further. They don't work well in kids and have real risks.
 - **Antibiotics** do nothing for viruses. RSV, flu, COVID, and the common cold are all viral.
-- **Steam tents and hot showers** — okay for croup, but won't shorten any of these illnesses.
+- **Steam tents and hot showers**, okay for croup, but won't shorten any of these illnesses.
 
 ## For RSV specifically (the babies, especially)
 
 RSV is the one we worry about most in babies. The fever can be modest while the lungs are working hard. **Watch the breathing, not the thermometer.**
 
-Call us — or 911 — if you see:
+Call us, or 911, if you see:
 
 - **Sucking in between the ribs or at the base of the neck** with each breath
 - Nostrils flaring with each breath
@@ -54,9 +54,9 @@ Call us — or 911 — if you see:
 
 ## For the flu
 
-We will sometimes prescribe **oseltamivir (Tamiflu)** if your child is in a high-risk group or seen within 48 hours of symptom onset. Annual flu shots from age 6 months are the single best protection — please don't skip them.
+We will sometimes prescribe **oseltamivir (Tamiflu)** if your child is in a high-risk group or seen within 48 hours of symptom onset. Annual flu shots from age 6 months are the single best protection, please don't skip them.
 
-## Call us — same day — for any of these
+## Call us, same day, for any of these
 
 - Any of the RSV breathing signs above
 - Fever in a baby **under 3 months** (always)
@@ -68,6 +68,6 @@ We will sometimes prescribe **oseltamivir (Tamiflu)** if your child is in a high
 
 ## A note from us
 
-Most winter coughs run their course at home — and a pediatrician's job is partly to tell you when to relax and partly to catch the one in twenty that needs more. Either way, that's exactly what we're here for.
+Most winter coughs run their course at home, and a pediatrician's job is partly to tell you when to relax and partly to catch the one in twenty that needs more. Either way, that's exactly what we're here for.
 
 *This article is for general educational purposes and is not a substitute for advice from your child's pediatrician.*

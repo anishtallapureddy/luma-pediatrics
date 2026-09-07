@@ -6,8 +6,8 @@
 
 - **Practice name:** Luma Pediatrics
 - **Type:** Independent, physician-led pediatric primary care
-- **Provider:** Praveena Tallapureddy, MD, FAAP — board-certified pediatrician
-- **Languages:** English, Telugu, Hindi, and Urdu
+- **Provider:** Praveena Tallapureddy, MD, FAAP, board-certified pediatrician
+- **Languages:** Fluent in English and Telugu; conversational in Hindi and Urdu
 - **Address:** 3801 North Central Expressway, Suite 302, McKinney, TX 75071
 - **Phone:** (469) 200-1151
 - **Email:** hello@lumapediatrics.com
@@ -39,15 +39,15 @@ McKinney, Prosper, Melissa, Anna, Van Alstyne, Howe, Sherman, Princeton, Farmers
 
 ## Provider background
 
-- Bachelor of Science in Biology — Saint Louis University, St. Louis, MO
-- Doctor of Medicine — Texas A&M College of Medicine, College Station, TX
-- Pediatric Residency — Baylor Scott & White, Temple, TX
+- Bachelor of Science in Biology, Saint Louis University, St. Louis, MO
+- Doctor of Medicine, Texas A&M College of Medicine, College Station, TX
+- Pediatric Residency, Baylor Scott & White, Temple, TX
 
 ## Pages
 
 - [Home](https://www.lumapediatrics.com/): Overview, featured services, practice updates, and commitments.
 - [About](https://www.lumapediatrics.com/about): Practice philosophy, pediatrician bio, and affiliations.
-- [Services](https://www.lumapediatrics.com/services): Full list of pediatric services offered.
+- [Services](https://www.lumapediatrics.com/services): Full list of planned pediatric services.
 - [Vaccine Schedule](https://www.lumapediatrics.com/vaccines): Parent-friendly overview of the CDC/AAP childhood immunization schedule.
 - [New Patients](https://www.lumapediatrics.com/new-patients): Planned first-visit experience, after-hours guidance, and insurance updates.
 - [FAQ](https://www.lumapediatrics.com/faq): Frequently asked questions about insurance, planned same-day visits, telehealth, and scheduling.

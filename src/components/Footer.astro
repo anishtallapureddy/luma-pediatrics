@@ -42,12 +42,32 @@ const cityPageSlugs = new Set(CITIES.map((c) => c.slug));
             {SITE.contact.phone}
           </span>
         </p>
-        <p class="text-sm flex items-center gap-2">
-          <a href={SITE.contact.phoneHref} class="font-semibold no-underline">Call us</a>
-          <span aria-hidden="true">·</span>
-          <a href={SITE.contact.smsHref} class="font-semibold no-underline">Text us</a>
-        </p>
-        <p class="text-sm">
+        <div
+          class="mt-2 inline-flex items-center overflow-hidden rounded-full bg-[var(--color-card)] ring-1 ring-inset ring-[var(--color-border-soft)]"
+          role="group"
+          aria-label="Contact Luma Pediatrics"
+        >
+          <a
+            href={SITE.contact.phoneHref}
+            class="inline-flex min-h-9 items-center gap-1.5 px-3 text-sm font-semibold text-[var(--color-primary)] no-underline hover:bg-[rgba(200,153,90,0.10)]"
+            aria-label={`Call ${SITE.name} at ${SITE.contact.phone}`}
+            title={`Call ${SITE.contact.phone}`}
+          >
+            <Icon name="lucide:phone" class="w-3.5 h-3.5" stroke-width="1.8" aria-hidden="true" />
+            Call us
+          </a>
+          <span class="h-4 w-px bg-[var(--color-border-soft)]" aria-hidden="true"></span>
+          <a
+            href={SITE.contact.smsHref}
+            class="inline-flex min-h-9 items-center gap-1.5 px-3 text-sm font-semibold text-[var(--color-primary)] no-underline hover:bg-[rgba(200,153,90,0.10)]"
+            aria-label={`Text ${SITE.name} at ${SITE.contact.phone}`}
+            title={`Text ${SITE.contact.phone}`}
+          >
+            <Icon name="lucide:message-circle" class="w-3.5 h-3.5" stroke-width="1.8" aria-hidden="true" />
+            Text us
+          </a>
+        </div>
+        <p class="mt-2 text-sm">
           <a href={SITE.contact.emailHref} class="inline-flex items-center gap-1.5 no-underline">
             <Icon name="lucide:mail" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
             {SITE.contact.email}

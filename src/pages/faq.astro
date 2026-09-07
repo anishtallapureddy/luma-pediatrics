@@ -11,8 +11,8 @@ const faqs = [
     a: 'We plan to care for newborns through young adults, typically up to age 21, after the practice opens.',
   },
   {
-    q: 'What insurance do you accept?',
-    a: 'We\'re finalizing our insurance credentialing and will share the full list of accepted plans closer to opening. In the meantime, send us a message or give us a call and we\'ll help however we can.',
+    q: 'Which insurance plans will you accept?',
+    a: 'Insurance credentialing is in progress. The confirmed list will be published before scheduling opens.',
   },
   {
     q: 'Do you offer same-day sick visits?',
@@ -36,7 +36,7 @@ const faqs = [
   },
   {
     q: 'When are you opening?',
-    a: `We're opening ${SITE.openingWindow} in ${SITE.locationShort}. Check back here for updates, or send us a message and we'll let you know as soon as we're seeing patients.`,
+    a: `We're opening ${SITE.openingWindow} in ${SITE.locationShort}. Join the email updates list for general opening news.`,
   },
 ];
 
@@ -51,7 +51,7 @@ const faqJsonLd = {
 };
 ---
 <BaseLayout
-  title="FAQ — Insurance, Same-Day Visits | Luma Pediatrics McKinney"
+  title="FAQ | Luma Pediatrics McKinney"
   path="/faq"
   description="Common questions about Luma Pediatrics in McKinney, TX: insurance, planned same-day visits, first appointments, ages we see, and our November 2026 opening."
   breadcrumbs={[
@@ -59,7 +59,7 @@ const faqJsonLd = {
     { name: 'FAQ', path: '/faq' },
   ]}
 >
-  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
   <section class="page-hero py-14 md:py-20 overflow-hidden">
     <PageDecor />
     <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
@@ -68,10 +68,10 @@ const faqJsonLd = {
         Common questions
       </h1>
       <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
-        Everything you might want to know.
+        About the future practice
       </p>
       <p class="mt-7 text-lg text-[var(--color-foreground)]/80 leading-relaxed">
-        Don't see your question here? <a href="/contact">Send us a message</a> — we usually reply within one business day.
+        Don't see your question here? <a href="/contact">Contact us</a> for general information.
       </p>
     </div>
   </section>

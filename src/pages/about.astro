@@ -12,13 +12,13 @@ const values = [
   { icon: 'lucide:heart',         title: 'Family-centered',  body: 'You know your child best. We listen, explain, and partner with you on every decision.' },
   { icon: 'lucide:shield-check',  title: 'Evidence-based',   body: 'Care guided by current pediatric research, AAP and CDC recommendations.' },
   { icon: 'lucide:clock',         title: 'Easy to access',   body: 'Convenient scheduling, same-day sick visits, and responsive support are planned after opening.' },
-  { icon: 'lucide:users',         title: 'A pediatric home', body: 'One trusted practice for your child — from their very first newborn visit through young adulthood.' },
+  { icon: 'lucide:users',         title: 'A pediatric home', body: 'One practice for care from the newborn years through young adulthood.' },
 ];
 ---
 <BaseLayout
   title="About Luma Pediatrics | McKinney Pediatrician"
   path="/about"
-  description="Luma Pediatrics is a board-certified pediatric practice opening in McKinney, TX. Warm, evidence-based pediatric care for newborns through age 21."
+  description="Luma Pediatrics is a board-certified, physician-led pediatric practice opening in late 2026 in McKinney, TX, with planned care for newborns through age 21."
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
@@ -48,17 +48,16 @@ const values = [
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <span class="eyebrow eyebrow-sun">Our approach</span>
       <h2 class="mt-5 text-3xl md:text-4xl font-extrabold tracking-tight">
-        Modern medicine. Gentle bedside manner.
+        Evidence-based care with time to listen.
       </h2>
       <div class="mt-7 space-y-5 text-lg text-[var(--color-foreground)]/85 leading-relaxed">
         <p>
-          We see every child as a whole person — not a chart, not a checklist. From the very first newborn visit,
-          our goal is to build a trusting relationship that lasts through adolescence and beyond.
+          Children are more than a chart or checklist. Our goal is to build a consistent relationship
+          from the newborn years through adolescence.
         </p>
         <p>
-          That means longer visits, real conversations, and an open line of communication for the questions
-          that always come up between appointments. It means modern, evidence-based care delivered with the kind
-          of warmth that turns a clinic into a place your kids actually like going.
+          We are planning appointments with time for questions, direct explanations, and a clear plan
+          families can follow at home.
         </p>
         <p>
           Our practice is physician-led and independently owned.
@@ -138,8 +137,8 @@ const values = [
               Provider profile coming soon
             </h2>
             <p class="mt-6 text-lg text-[var(--color-foreground)]/82 leading-relaxed max-w-2xl mx-auto">
-              Luma Pediatrics is led by a board-certified pediatrician with a warm,
-              family-centered approach. Full provider profile, photo, and credentials
+              Luma Pediatrics is led by a board-certified pediatrician who works closely
+              with parents. Full provider profile, photo, and credentials
               will be shared on the site closer to opening day.
             </p>
 
@@ -156,7 +155,7 @@ const values = [
     </div>
   </section>
 
-  {/* Inside Luma office gallery — hidden until real clinic photos (SITE.showOfficeGallery) */}
+  {/* Inside Luma office gallery - hidden until real clinic photos (SITE.showOfficeGallery) */}
   {SITE.showOfficeGallery && (
     <section class="py-16 md:py-20 reveal relative overflow-hidden">
       <PageDecor variant="minimal" sparkles={8} />
@@ -167,7 +166,7 @@ const values = [
             A bright, calm place for kids to come.
           </h2>
           <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
-            Warm tones, gentle textures, and kid-friendly details designed to make every visit feel safe.
+            The clinic will use natural light, comfortable seating, and practical details for children and parents.
           </p>
         </div>
         <OfficeGallery />

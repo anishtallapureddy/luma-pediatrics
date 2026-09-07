@@ -1,6 +1,6 @@
 ---
 title: "The newborn's first week: a calm parent's guide"
-description: "A pediatrician's practical guide to feeding, sleep, diapering, and the warning signs that mean it's time to call — for parents in the first 7 days at home."
+description: "A pediatrician's practical guide to feeding, sleep, diapering, and the warning signs that mean it's time to call, for parents in the first 7 days at home."
 publishDate: 2026-10-15
 hero: /images/blog-newborn.jpg
 heroAlt: A newborn baby's tiny hand resting in a parent's finger in soft, warm light
@@ -8,7 +8,7 @@ tags: ["newborn", "first-week", "feeding", "sleep"]
 draft: true
 ---
 
-The first week at home with a newborn is equal parts wonder and worry. You will be tired, your baby will eat and sleep on a clock no one else can read, and almost every parent — even the second- and third-time ones — wonders, *"Is this normal?"*
+The first week at home with a newborn is equal parts wonder and worry. You will be tired, your baby will eat and sleep on a clock no one else can read, and almost every parent, even the second- and third-time ones, wonders, *"Is this normal?"*
 
 The honest answer is: most of it is. Here is what to expect, what to watch for, and when to call.
 
@@ -16,7 +16,7 @@ The honest answer is: most of it is. Here is what to expect, what to watch for, 
 
 **Breastfed babies** typically nurse 8–12 times in 24 hours. Look for at least 15–20 minutes of active sucking per session and 5–6 wet diapers a day by day five.
 
-**Formula-fed babies** usually take 1.5–3 oz every 2–4 hours in the first week. Don't force a schedule — feed when the baby cues (rooting, hand to mouth, fussing).
+**Formula-fed babies** usually take 1.5–3 oz every 2–4 hours in the first week. Don't force a schedule, feed when the baby cues (rooting, hand to mouth, fussing).
 
 A few green flags:
 
@@ -27,7 +27,7 @@ A few green flags:
 
 ## Sleep
 
-Newborns sleep 14–17 hours a day, in stretches of 2–4 hours. They do not yet know night from day — that's a skill that develops over weeks.
+Newborns sleep 14–17 hours a day, in stretches of 2–4 hours. They do not yet know night from day, that's a skill that develops over weeks.
 
 **Safe sleep, every time:**
 
@@ -48,11 +48,11 @@ A diaper count is the easiest at-home check that feeding is on track.
 - **Circumcision:** Petroleum jelly on the gauze with each diaper change for the first 5–7 days.
 - **Peeling skin and tiny white bumps (milia)** are normal and resolve on their own.
 
-## Call us — or 911 — for these
+## Call us, or 911, for these
 
 Some signs need same-day attention. Call us for:
 
-- **Rectal temperature of 100.4°F (38°C) or higher** in a baby under 8 weeks — this is always urgent
+- **Rectal temperature of 100.4°F (38°C) or higher** in a baby under 8 weeks, this is always urgent
 - Difficulty breathing, grunting, or a bluish color around the lips
 - Fewer than 4 wet diapers in 24 hours by day 5
 - Refusing to feed for more than a few hours
@@ -63,7 +63,7 @@ Some signs need same-day attention. Call us for:
 
 ## The most important thing
 
-Trust your gut. You know your baby better than anyone — even at one week old. If something feels off, call us. There is no question too small in the first week.
+Trust your gut. You know your baby better than anyone, even at one week old. If something feels off, call us. There is no question too small in the first week.
 
 We see newborns within the first 48–72 hours after hospital discharge, and again at 1–2 weeks. If your baby was born before Luma opens, we'd love to be your first well-baby visit.
 

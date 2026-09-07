@@ -14,7 +14,7 @@ const navLinks = SITE.nav.filter((n) => n.href !== '/');
       <a
         href="/"
          class="header-logo no-underline [transition:transform_var(--duration-fast)_var(--ease-fluid)] hover:scale-[1.02]"
-         aria-label={`${SITE.name} — Home`}
+         aria-label={`${SITE.name}, Home`}
        >
          <Logo variant="horizontal" size={60} />
       </a>
@@ -72,7 +72,7 @@ const navLinks = SITE.nav.filter((n) => n.href !== '/');
       </div>
     </div>
 
-    <!-- Mobile drawer — slides down below the header when toggled. -->
+    <!-- Mobile drawer - slides down below the header when toggled. -->
     <div id="mobile-menu" class="md:hidden mobile-menu-panel" data-mobile-menu>
       <div class="mobile-menu-inner">
         <nav aria-label="Primary mobile" class="flex flex-col py-2">
@@ -103,7 +103,7 @@ const navLinks = SITE.nav.filter((n) => n.href !== '/');
 </header>
 
 <style>
-  /* Smooth height collapse using grid-template-rows trick — no JS height math needed,
+  /* Smooth height collapse using grid-template-rows trick - no JS height math needed,
      and the panel still measures correctly when content changes. */
   .mobile-menu-panel {
     display: grid;
@@ -118,7 +118,7 @@ const navLinks = SITE.nav.filter((n) => n.href !== '/');
     min-height: 0;
     border-top: 1px solid rgba(11, 29, 58, 0.06);
   }
-  /* Icon swap — show menu icon when closed, X when open. */
+  /* Icon swap - show menu icon when closed, X when open. */
   [data-mobile-menu-toggle] .mobile-menu-icon-close { display: none; }
   [data-mobile-menu-toggle][aria-expanded="true"] .mobile-menu-icon-open { display: none; }
   [data-mobile-menu-toggle][aria-expanded="true"] .mobile-menu-icon-close { display: inline-block; }
@@ -166,7 +166,6 @@ const navLinks = SITE.nav.filter((n) => n.href !== '/');
     // Close when viewport grows past mobile breakpoint
     var mq = window.matchMedia('(min-width: 768px)');
     var onChange = function () { if (mq.matches) setOpen(false); };
-    if (mq.addEventListener) mq.addEventListener('change', onChange);
-    else if (mq.addListener) mq.addListener(onChange);
+    mq.addEventListener('change', onChange);
   })();
 </script>

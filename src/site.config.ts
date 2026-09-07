@@ -8,11 +8,11 @@ export const SITE = {
   tagline: "Where your child's health shines.",
   subtagline: 'Bright beginnings. Healthy futures.',
   status: 'Opening late 2026',
-  /** Opening timeframe phrase — appears in "Opening {openingWindow} in McKinney" copy. */
+  /** Opening timeframe phrase - appears in "Opening {openingWindow} in McKinney" copy. */
   openingWindow: 'late 2026',
   locationShort: 'McKinney, Texas',
   description:
-    "Luma Pediatrics is a board-certified pediatric practice opening in late 2026 in McKinney, Texas, with warm, evidence-based care planned for newborns, children, and teens through every stage of childhood.",
+    "Luma Pediatrics is a board-certified pediatric practice opening in late 2026 in McKinney, Texas, with evidence-based care planned for newborns, children, and teens.",
   domain: 'https://www.lumapediatrics.com',
 
   /**
@@ -44,32 +44,32 @@ export const SITE = {
     /** First-person welcome shown beside the professional headshot. */
     welcome: [
       'Hello, and welcome to Luma Pediatrics!',
-      "I'm Dr. Praveena Tallapureddy—a board-certified pediatrician, mom of two, and proud Aggie.",
-      'As both a doctor and a parent, I know that raising kids is a beautiful, unpredictable, and sometimes overwhelming adventure. I founded Luma Pediatrics to build the exact kind of practice I would want for my own children: a place where medical expertise meets genuine partnership, and where you always feel heard and never rushed.',
-      'My goal is for you to leave every visit with a clear plan, confidence in next steps, and the peace of mind that your voice was truly heard. They say it takes a village to raise a child, and I would be absolutely honored to be a part of yours!',
+      "I'm Dr. Praveena Tallapureddy, a board-certified pediatrician, mom of two, and proud Aggie.",
+      'Being both a doctor and a parent shapes how I care for families. I founded Luma Pediatrics to create a practice where parents have time to ask questions and children can build a lasting relationship with their pediatrician.',
+      'My goal is simple: listen carefully, explain the options, and make sure families leave with a clear plan.',
     ],
     /** Personal note shown beside the casual family photo. */
     lifeOutside:
-      "Outside the office, you'll usually find me chasing my two kids, out on a walk, or with my big extended family—including our monthly cousins' cooking sessions, despite my complete lack of culinary talent. I'm also an avid reader whose knack for remembering every tiny detail has made me the unofficial narrator of my book club.",
+      "Outside the office, I spend time with my two children and extended family, take long walks, read, and join our monthly cousins' cooking sessions. I am also an enthusiastic member of my book club.",
     /** Quick-facts grid rendered under the bio. */
     quickFacts: [
       { label: 'Board Certified', value: 'American Board of Pediatrics' },
       { label: 'Education', value: 'Texas A&M Health Science Center College of Medicine' },
       { label: 'Residency', value: "Baylor Scott & White McLane Children's Hospital" },
       { label: 'Community', value: 'Serving McKinney and North Texas families since 2022' },
-      { label: 'Languages', value: 'Fluent in Telugu; Conversational in Hindi and Urdu' },
+      { label: 'Languages', value: 'Fluent in English and Telugu; conversational in Hindi and Urdu' },
       {
         label: 'Care Scope',
         value:
           'Newborn through young adult care, including well-checks, sick visits, and chronic condition management',
       },
     ],
-    /** Structured fields retained for schema.org (Physician) — mirror Quick Facts. */
+    /** Structured fields retained for schema.org (Physician) - mirror Quick Facts. */
     education: [
       'Texas A&M Health Science Center College of Medicine',
       "Baylor Scott & White McLane Children's Hospital",
     ],
-    languages: ['Telugu', 'Hindi', 'Urdu'],
+    languages: ['English', 'Telugu', 'Hindi', 'Urdu'],
   },
 
   address: {
@@ -120,7 +120,7 @@ export const SITE = {
 
   /**
    * Geo coordinates for the practice (3801 North Central Expressway, Ste 302,
-   * McKinney) — used for the contact-page map pin, the "Get directions" link,
+   * McKinney) - used for the contact-page map pin, the "Get directions" link,
    * and LocalBusiness JSON-LD. Set from a Google Maps dropped pin on the
    * building (west frontage of US-75, just north of Bloomdale); geocoding the
    * highway-frontage street address lands on the wrong side of US-75.
@@ -142,7 +142,7 @@ export const SITE = {
     { icon: 'lucide:shield-check', label: 'Board-Certified Pediatrician' },
     { icon: 'lucide:award',        label: 'Fellow, American Academy of Pediatrics (AAP)' },
     { icon: 'lucide:graduation-cap', label: 'Texas A&M College of Medicine' },
-    { icon: 'lucide:stethoscope',  label: 'Baylor Scott & White — Pediatric Residency' },
+    { icon: 'lucide:stethoscope',  label: 'Pediatric Residency, Baylor Scott & White' },
   ],
 
   /**

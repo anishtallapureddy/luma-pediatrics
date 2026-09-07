@@ -1,19 +1,19 @@
 ---
 title: "The childhood vaccine schedule, explained simply"
-description: "A pediatrician's plain-English walk-through of the CDC/AAP-recommended vaccine schedule from birth through age 18 — what each shot protects against, and why timing matters."
+description: "A pediatrician's plain-English walk-through of the CDC/AAP-recommended vaccine schedule from birth through age 18, what each shot protects against, and why timing matters."
 publishDate: 2026-09-06
 hero: /images/blog-vaccines.jpg
 heroAlt: A pediatrician's gloved hand with a small vaccine syringe near a calendar
 tags: ["vaccines", "schedule", "well-visits", "prevention"]
 ---
 
-Vaccines are one of the most important — and most studied — things we do in pediatric care. They protect your child from diseases that, within living memory, regularly killed or disabled children. They also protect the babies, grandparents, and immunocompromised neighbors around you.
+Vaccines are among the most important and thoroughly studied tools in pediatric care. They protect children from diseases that, within living memory, regularly killed or caused lasting disability. Vaccination also helps protect infants, older adults, and immunocompromised people in the community.
 
 If the schedule feels overwhelming, you are not alone. Here is the short version, the long version, and the answers to the questions parents ask us most.
 
 ## The short version, by age
 
-We follow the [CDC](https://www.cdc.gov/vaccines/schedules/easy-to-read/index.html) and [American Academy of Pediatrics](https://www.aap.org) immunization schedule. Roughly:
+This guide follows the [CDC](https://www.cdc.gov/vaccines/schedules/easy-to-read/index.html) and [American Academy of Pediatrics](https://www.aap.org) immunization schedule. In summary:
 
 - **Birth:** Hepatitis B (#1)
 - **2 months:** DTaP, Hib, IPV (polio), PCV, RV, HepB (#2)
@@ -39,29 +39,29 @@ We follow the [CDC](https://www.cdc.gov/vaccines/schedules/easy-to-read/index.ht
 | **MMR** | Measles, Mumps, Rubella |
 | **Varicella** | Chickenpox (and prevents shingles later) |
 | **HepA** | Hepatitis A |
-| **HPV** | Human papillomavirus — prevents 6 different cancers |
+| **HPV** | Human papillomavirus, prevents 6 different cancers |
 | **MenACWY / MenB** | Meningococcal disease (meningitis, sepsis) |
 | **Flu** | Seasonal influenza |
 | **COVID-19** | SARS-CoV-2 |
 
 ## The questions parents ask us most
 
-**Why so many at once?** The doses are timed to the windows in which your child's immune system can build the strongest, longest-lasting protection — and **before** the ages at which these diseases are most dangerous. Spreading vaccines out delays protection without improving safety.
+**Why so many at once?** The doses are timed to the windows in which your child's immune system can build the strongest, longest-lasting protection, and **before** the ages at which these diseases are most dangerous. Spreading vaccines out delays protection without improving safety.
 
-**Are they safe to give together?** Yes. Decades of studies show that combination visits are safe and that the immune system handles many antigens at once without difficulty (a single common cold exposes the body to far more antigens than a full vaccine visit).
+**Are they safe to give together?** Yes. Decades of research support giving recommended vaccines together. The immune system routinely responds to far more antigens during ordinary daily life.
 
-**What about side effects?** Most kids have a sore arm or leg, mild fussiness, or a low-grade fever for 24–48 hours. Acetaminophen or ibuprofen (if age-appropriate) helps. Severe reactions are extremely rare; we screen for them at every visit.
+**What about side effects?** Most children have a sore arm or leg, mild fussiness, or a low-grade fever for 24–48 hours. Age-appropriate acetaminophen or ibuprofen may help with discomfort. Severe reactions are rare, and healthcare providers screen for relevant risk factors.
 
-**My child missed a dose. Do we start over?** Almost never. We pick up where you left off and catch up on a safe schedule. Bring whatever records you have, and we'll build a plan.
+**My child missed a dose. Do we start over?** Usually not. A healthcare provider can review the record and create an appropriate catch-up schedule.
 
-**HPV at 11–12 feels young.** It works best *before* exposure, and the immune response is strongest at this age (only 2 doses needed instead of 3). It prevents six cancers. We strongly recommend it on schedule.
+**HPV at 11–12 feels young.** The vaccine works best before exposure, and the immune response is strong at this age. Starting on schedule usually requires two doses instead of three and helps prevent six cancers.
 
 ## What to bring
 
-If your child has had any vaccines elsewhere — birth hospital, prior pediatrician, urgent care, school clinic — bring records to your first visit. We'll log them in your chart so you don't have to remember.
+Keep records from the birth hospital, prior pediatrician, urgent care, or school clinic. Share them with your child's current healthcare provider when reviewing the schedule.
 
 ## A note from us
 
-We follow the CDC/AAP schedule because the evidence supporting it is overwhelming, and because we want your child — and every child in our community — to be protected. We're always happy to answer questions, and we will never make you feel rushed through them.
+Luma Pediatrics plans to follow the CDC and AAP immunization schedule after opening. Until then, discuss questions about your child's vaccine schedule with their current healthcare provider.
 
 *This article is for general educational purposes and is not a substitute for advice from your child's pediatrician.*
