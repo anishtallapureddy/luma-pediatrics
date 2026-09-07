@@ -62,11 +62,7 @@ import { SITE } from '../site.config';
           <dl class="mt-5 space-y-2.5 text-base">
             <div class="flex items-start gap-3">
               <Icon name="lucide:phone" class="w-5 h-5 text-[var(--color-primary)] mt-1" stroke-width="1.6" aria-hidden="true" />
-              <a href={SITE.contact.phoneHref} class="font-semibold no-underline">{SITE.contact.phone}</a>
-            </div>
-            <div class="flex items-start gap-3">
-              <Icon name="lucide:message-circle" class="w-5 h-5 text-[var(--color-primary)] mt-1" stroke-width="1.6" aria-hidden="true" />
-              <a href={SITE.contact.smsHref} class="font-semibold no-underline">Text {SITE.contact.phone}</a>
+              <span class="font-semibold">{SITE.contact.phone}</span>
             </div>
             <div class="flex items-start gap-3">
               <Icon name="lucide:mail" class="w-5 h-5 text-[var(--color-primary)] mt-1" stroke-width="1.6" aria-hidden="true" />
@@ -88,6 +84,25 @@ import { SITE } from '../site.config';
               </div>
             </div>
           </dl>
+
+          <div class="mt-6 grid grid-cols-2 gap-3">
+            <a
+              href={SITE.contact.phoneHref}
+              class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[var(--color-primary)] px-4 text-sm font-semibold text-white no-underline"
+              aria-label={`Call ${SITE.name} at ${SITE.contact.phone}`}
+            >
+              <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+              Call us
+            </a>
+            <a
+              href={SITE.contact.smsHref}
+              class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[var(--color-primary)] px-4 text-sm font-semibold text-white no-underline"
+              aria-label={`Text ${SITE.name} at ${SITE.contact.phone}`}
+            >
+              <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+              Text us
+            </a>
+          </div>
 
           <div class="mt-6 overflow-hidden rounded-xl ring-1 ring-inset ring-[rgba(11,29,58,0.08)]">
             <iframe

@@ -16,15 +16,17 @@ import { SITE } from '../site.config';
     <a
       href={SITE.contact.phoneHref}
       class="flex-1 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm"
-      aria-label={`Call ${SITE.name}`}
+      aria-label={`Call ${SITE.name} at ${SITE.contact.phone}`}
+      title={`Call ${SITE.contact.phone}`}
     >
       <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
-      Call {SITE.contact.phone}
+      Call us
     </a>
     <a
       href={SITE.contact.smsHref}
-      class="flex-1 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] no-underline font-semibold text-sm ring-1 ring-inset ring-[var(--color-border-soft)]"
-      aria-label={`Text ${SITE.name}`}
+      class="flex-1 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm"
+      aria-label={`Text ${SITE.name} at ${SITE.contact.phone}`}
+      title={`Text ${SITE.contact.phone}`}
     >
       <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
       Text us

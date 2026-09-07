@@ -37,10 +37,15 @@ const cityPageSlugs = new Set(CITIES.map((c) => c.slug));
           {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}
         </address>
         <p class="mt-3 text-sm">
-          <a href={SITE.contact.phoneHref} class="inline-flex items-center gap-1.5 no-underline">
+          <span class="inline-flex items-center gap-1.5">
             <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
             {SITE.contact.phone}
-          </a>
+          </span>
+        </p>
+        <p class="text-sm flex items-center gap-2">
+          <a href={SITE.contact.phoneHref} class="font-semibold no-underline">Call us</a>
+          <span aria-hidden="true">·</span>
+          <a href={SITE.contact.smsHref} class="font-semibold no-underline">Text us</a>
         </p>
         <p class="text-sm">
           <a href={SITE.contact.emailHref} class="inline-flex items-center gap-1.5 no-underline">
