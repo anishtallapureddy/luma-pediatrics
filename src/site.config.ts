@@ -84,6 +84,7 @@ export const SITE = {
     phone: '(469) 200-1151',
     phoneHref: 'tel:+14692001151',
     smsHref: 'sms:+14692001151',
+    smsDisclosureHref: '/contact/#sms-disclosure',
     email: 'hello@lumapediatrics.com',
     emailHref: 'mailto:hello@lumapediatrics.com',
   },
