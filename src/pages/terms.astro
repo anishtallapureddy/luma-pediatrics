@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const lastUpdated = 'September 2026';
+---
+
+<BaseLayout
+  title="Terms & Conditions | Luma Pediatrics"
+  path="/terms"
+  description="Terms and conditions for SMS customer care communications from Luma Pediatrics in McKinney, TX."
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Terms & Conditions', path: '/terms' },
+  ]}
+>
+  <section class="page-hero py-14 md:py-20 overflow-hidden">
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">Terms &amp; Conditions</span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">Luma Pediatrics SMS Terms</h1>
+      <p class="mt-5 text-sm text-[var(--color-muted-foreground)]">Last updated: {lastUpdated}</p>
+    </div>
+  </section>
+
+  <section class="pb-20 md:pb-28 reveal">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose-luma">
+      <h2>Website Terms &amp; Conditions</h2>
+      <p>
+        These Terms &amp; Conditions govern your use of the Luma Pediatrics website and its public
+        communication channels. By using the website, you agree to these terms.
+      </p>
+
+      <h2>Future practice status</h2>
+      <p>
+        Luma Pediatrics is a future independent pediatric practice planned to open in late 2026 in
+        McKinney, Texas. The practice is not currently open, accepting patients, or scheduling
+        appointments. Descriptions of services, hours, and availability are plans and may change
+        before opening.
+      </p>
+
+      <h2>General information only</h2>
+      <p>
+        Website content is provided for general educational and business information. It is not
+        medical advice and is not a substitute for care from a qualified healthcare provider. Do not
+        use this website, email, or text messaging for diagnosis, treatment, urgent concerns, or
+        emergency care. Contact your current healthcare provider for medical concerns. For a medical
+        emergency, call 911.
+      </p>
+
+      <h2>No physician-patient relationship</h2>
+      <p>
+        Visiting this website, joining the email updates list, or contacting Luma Pediatrics by
+        phone, text, or email does not establish a physician-patient relationship. A relationship can
+        be established only after the practice opens and appropriate registration and care occur.
+      </p>
+
+      <h2>Email updates</h2>
+      <p>
+        Individuals may voluntarily subscribe to occasional email updates about the planned opening
+        and general services. Email updates are not patient registration or appointment requests.
+        Subscribers may unsubscribe at any time.
+      </p>
+
+      <h2>Luma Pediatrics SMS Terms</h2>
+      <p>
+        By opting in to SMS communications from Luma Pediatrics, you agree to receive customer care
+        text messages. Message frequency varies. Message and data rates may apply.
+      </p>
+
+      <p>Reply HELP for help. Reply STOP to opt out at any time.</p>
+
+      <p>
+        SMS communications are not intended for medical advice, diagnosis, treatment, or emergency
+        care. For a medical emergency, call 911.
+      </p>
+
+      <p>
+        See our <a href="/privacy/">Privacy Policy</a> for information about how we handle personal
+        information.
+      </p>
+
+      <h2>Acceptable use</h2>
+      <p>
+        You agree not to misuse the website, interfere with its operation, attempt unauthorized
+        access, submit unlawful or harmful content, or use automated means that place an unreasonable
+        burden on the site.
+      </p>
+
+      <h2>Intellectual property</h2>
+      <p>
+        Website content, branding, graphics, and original materials are owned by or licensed to Luma
+        Pediatrics and may not be reproduced or used commercially without permission, except as
+        allowed by law.
+      </p>
+
+      <h2>Third-party content and links</h2>
+      <p>
+        Links to third-party resources are provided for convenience. Luma Pediatrics does not control
+        and is not responsible for third-party content, availability, security, or privacy practices.
+      </p>
+
+      <h2>No warranties</h2>
+      <p>
+        The website is provided on an "as is" and "as available" basis. To the extent permitted by
+        law, Luma Pediatrics does not warrant that the site will always be available, error-free, or
+        complete. Medical and public-health information can change, so confirm health decisions with
+        your current healthcare provider.
+      </p>
+
+      <h2>Limitation of liability</h2>
+      <p>
+        To the extent permitted by law, Luma Pediatrics is not liable for indirect, incidental,
+        special, or consequential damages arising from use of or reliance on this website or linked
+        third-party resources.
+      </p>
+
+      <h2>Changes to these terms</h2>
+      <p>
+        We may update these terms from time to time. The "Last updated" date above identifies the
+        current version. Continued use of the website after an update constitutes acceptance of the
+        revised terms.
+      </p>
+
+      <h2>Governing law</h2>
+      <p>
+        These terms are governed by the laws of the State of Texas, without regard to conflict-of-law
+        principles. Any applicable rights that cannot legally be limited remain unaffected.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about these terms may be sent to
+        {' '}<a href="mailto:hello@lumapediatrics.com">hello@lumapediatrics.com</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose-luma h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-foreground);
+  }
+  .prose-luma p {
+    color: rgba(11, 29, 58, 0.85);
+    line-height: 1.7;
+    margin-top: 0.75rem;
+  }
+  .prose-luma a {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+</style>

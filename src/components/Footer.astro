@@ -67,6 +67,12 @@ const cityPageSlugs = new Set(CITIES.map((c) => c.slug));
             Text us
           </a>
         </div>
+        <p class="mt-2 text-xs leading-relaxed text-[var(--color-muted-foreground)]">
+          Customer care texts only. Message frequency varies. Message and data rates may apply.
+          <a href="/privacy/" class="font-semibold">Privacy</a>
+          <span aria-hidden="true"> · </span>
+          <a href="/terms/" class="font-semibold">Terms</a>
+        </p>
         <p class="mt-2 text-sm">
           <a href={SITE.contact.emailHref} class="inline-flex items-center gap-1.5 no-underline">
             <Icon name="lucide:mail" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
@@ -99,7 +105,8 @@ const cityPageSlugs = new Set(CITIES.map((c) => c.slug));
           <li><a href="/vaccines" class="no-underline">Vaccine schedule</a></li>
           <li><a href="/faq" class="no-underline">FAQ</a></li>
           <li><a href="/contact" class="no-underline">Contact</a></li>
-          <li><a href="/privacy" class="no-underline">Privacy</a></li>
+          <li><a href="/privacy" class="no-underline">Privacy Policy</a></li>
+          <li><a href="/terms" class="no-underline">Terms &amp; Conditions</a></li>
           <li><a href="/notice-of-privacy-practices" class="no-underline">Notice of Privacy Practices</a></li>
           <li><a href="/accessibility" class="no-underline">Accessibility</a></li>
         </ul>
