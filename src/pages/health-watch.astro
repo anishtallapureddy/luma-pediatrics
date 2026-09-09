@@ -106,6 +106,7 @@ interface Snapshot {
     geography?: string;
     providerNote?: string;
     entries: Array<{
+      key: string;
       name: string;
       category: 'respiratory' | 'gastrointestinal' | 'other-pediatric';
       level: SignalLevel;
@@ -241,64 +242,99 @@ function respiratorySummary(r: Snapshot['respiratoryIllness']) {
   if (r.stale) {
     return {
       tone: 'warn' as const,
-      headline: 'Latest available respiratory report',
-      sub: 'The hospitalization source did not refresh during the latest check. Values shown are the last-known-good regional report.',
+      headline: 'Latest regional respiratory report',
+      sub: 'The hospitalization source did not refresh during the latest check. This summary is showing the last-known-good regional trend.',
     };
   }
-  const concerning =
-    hospitalTrend === 'Rising' ||
-    r.rsvTrend === 'Rising' ||
-    r.fluTrend === 'Rising' ||
-    r.covidTrend === 'Rising';
-
-  if (concerning) {
+  if (hospitalTrend === 'Rising') {
     return {
       tone: 'warn' as const,
-      headline: 'Respiratory hospitalizations are rising regionally',
-      sub: 'Texas DSHS Region 2/3 is reporting an increasing hospitalization rate. This broad regional signal does not predict an individual child’s illness.',
+      headline: 'Regional respiratory pressure is rising',
+      sub: 'Weekly respiratory hospital admissions are increasing across Texas DSHS Region 2/3. This is a community-level signal, not an estimate of your child’s risk.',
+    };
+  }
+  if (hospitalTrend === 'Decreasing') {
+    return {
+      tone: 'ok' as const,
+      headline: 'Regional respiratory pressure is easing',
+      sub: 'Weekly respiratory hospital admissions are decreasing across Texas DSHS Region 2/3.',
     };
   }
   return {
     tone: 'ok' as const,
-    headline: 'Respiratory hospitalizations are stable regionally',
-    sub: 'Texas DSHS Region 2/3 hospitalization rates are not currently increasing. Continue usual healthy habits.',
+    headline: 'Regional respiratory pressure is steady',
+    sub: 'Weekly respiratory hospital admissions are stable across Texas DSHS Region 2/3.',
   };
 }
 
 function vpdSummary(v: Snapshot['vaccinePreventable']) {
-  if (!v) return null;
+  if (!v || v.items.length === 0) return null;
+  const priority = new Map([
+    ['Measles', 0],
+    ['Pertussis (whooping cough)', 1],
+    ['Varicella (chickenpox)', 2],
+  ]);
+  const featuredItems = v.items
+    .slice()
+    .sort(
+      (a, b) =>
+        (priority.get(a.diseaseName) ?? Number.MAX_SAFE_INTEGER) -
+        (priority.get(b.diseaseName) ?? Number.MAX_SAFE_INTEGER),
+    )
+    .slice(0, 3);
+  const notableItems = v.items.filter(
+    (item) =>
+      item.status === 'Above prior-year pace' ||
+      item.status === 'Active outbreak' ||
+      item.status === 'Outbreak watch',
+  );
+  const displayItems =
+    notableItems.length > 0
+      ? [
+          ...notableItems,
+          ...featuredItems.filter(
+            (featured) =>
+              !notableItems.some((notable) => notable.diseaseName === featured.diseaseName),
+          ),
+        ]
+      : featuredItems;
+
   if (v.stale) {
     return {
       tone: 'warn' as const,
       headline: 'Latest available Texas disease reports',
-      sub: 'CDC NNDSS did not refresh during the latest check. The retained statewide totals are not treated as current and do not establish a local outbreak.',
+      sub: 'CDC NNDSS did not refresh during the latest check. These retained statewide reports are not treated as current and do not establish local exposure.',
+      items: displayItems,
+      notable: notableItems.length > 0,
     };
   }
-  const abovePrior = v.items.filter(
-    (i) =>
-      i.status === 'Above prior-year pace' ||
-      i.status === 'Active outbreak' ||
-      i.status === 'Outbreak watch',
+  const activeAlerts = notableItems.filter(
+    (item) => item.status === 'Active outbreak' || item.status === 'Outbreak watch',
   );
-  const unknown = v.items.filter((i) => i.status === 'Unknown');
-  if (abovePrior.length > 0) {
+  if (activeAlerts.length > 0) {
     return {
       tone: 'warn' as const,
-      headline: 'Some Texas reports are above last year’s pace',
-      sub: 'These are provisional statewide counts, not a local outbreak determination. Ask your child’s current healthcare provider to review their vaccine record.',
+      headline: 'A Texas childhood disease alert needs attention',
+      sub: 'This statewide signal does not establish local exposure. Review your child’s vaccine record with their current healthcare provider.',
+      items: displayItems,
+      notable: true,
     };
   }
-  if (unknown.length > 0) {
+  if (notableItems.length > 0) {
     return {
       tone: 'warn' as const,
-      headline: 'Some Texas provisional reports are incomplete',
-      sub: 'One or more statewide disease totals were unavailable in the latest source. No local or statewide outbreak conclusion is inferred.',
+      headline: 'A Texas disease report is above last year’s pace',
+      sub: 'This is a provisional statewide signal, not a local outbreak determination. Review your child’s vaccine record with their current healthcare provider.',
+      items: displayItems,
+      notable: true,
     };
   }
   return {
     tone: 'ok' as const,
-    headline: 'Texas provisional reports are at or below last year’s pace',
-    sub: 'These statewide reports do not establish local exposure. Keep routine immunizations up to date.',
+    headline: 'No unusual statewide increase detected',
+    sub: 'Texas continues to report cases of measles, pertussis, chickenpox, and other vaccine-preventable illnesses. The selected reports are not currently above last year’s pace.',
+    items: featuredItems,
+    notable: false,
   };
 }
 
@@ -307,7 +343,10 @@ const pollen = data ? pollenSummary(data.pollen) : null;
 const respiratory = data ? respiratorySummary(data.respiratoryIllness) : null;
 const vpd = data ? vpdSummary(data.vaccinePreventable) : null;
 
-const virusEntries = data?.communityVirusWatch?.entries ?? [];
+const HIDDEN_PUBLIC_VIRUS_KEYS = new Set(['hfmd', 'fifth-disease']);
+const virusEntries = (data?.communityVirusWatch?.entries ?? []).filter(
+  (entry) => !HIDDEN_PUBLIC_VIRUS_KEYS.has(entry.key),
+);
 const virusByCategory = {
   respiratory: virusEntries.filter((v) => v.category === 'respiratory'),
   gastrointestinal: virusEntries.filter((v) => v.category === 'gastrointestinal'),
@@ -366,6 +405,22 @@ const vpdStatusLabel = (status: VpdStatus): string => {
   if (status === 'Sporadic') return 'reported cases';
   if (status === 'No recent cases') return 'no cases reported';
   return status.toLowerCase();
+};
+const vpdItemLabel = (
+  item: NonNullable<Snapshot['vaccinePreventable']>['items'][number],
+): string => {
+  if (typeof item.recentCases !== 'number') return vpdStatusLabel(item.status);
+  const cases = `${item.recentCases.toLocaleString('en-US')} ${
+    item.recentCases === 1 ? 'case' : 'cases'
+  } reported YTD`;
+  if (
+    item.status === 'Above prior-year pace' ||
+    item.status === 'Active outbreak' ||
+    item.status === 'Outbreak watch'
+  ) {
+    return `${cases} · ${vpdStatusLabel(item.status)}`;
+  }
+  return cases;
 };
 
 const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string; icon: string; text: string }> = {
@@ -505,26 +560,22 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
 
             {/* Respiratory */}
             {respiratory && (
-              <article class={`rounded-[var(--radius-card)] border ${toneClasses[respiratory.tone].bg} ${toneClasses[respiratory.tone].border} p-6 sm:col-span-2`}>
+              <article class={`rounded-[var(--radius-card)] border ${toneClasses[respiratory.tone].bg} ${toneClasses[respiratory.tone].border} p-5 sm:col-span-2`}>
                 <div class="flex items-start gap-4">
-                  <span class={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${toneClasses[respiratory.tone].icon}`}>
+                  <span class={`inline-flex h-10 w-10 items-center justify-center rounded-2xl ${toneClasses[respiratory.tone].icon}`}>
                     <Icon name="lucide:activity" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
                   </span>
                   <div class="min-w-0">
-                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">Respiratory hospital activity</p>
-                    <h2 class="mt-1 text-xl tracking-tight">{respiratory.headline}</h2>
-                    <p class="mt-2 text-sm text-[var(--color-foreground)]/85 leading-relaxed">{respiratory.sub}</p>
+                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">Regional respiratory pressure</p>
+                    <h2 class="mt-1 text-lg tracking-tight">{respiratory.headline}</h2>
+                    <p class="mt-1.5 text-sm text-[var(--color-foreground)]/85 leading-relaxed">{respiratory.sub}</p>
                     {data.respiratoryIllness.currentHospitalizationRates ? (
-                      <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
-                        Weekly admissions per 100,000: RSV {data.respiratoryIllness.currentHospitalizationRates.rsv.toFixed(1)} ·
-                        Influenza {data.respiratoryIllness.currentHospitalizationRates.flu.toFixed(1)} ·
-                        COVID-19 {data.respiratoryIllness.currentHospitalizationRates.covid.toFixed(1)}
+                      <p class="mt-2 text-xs text-[var(--color-muted-foreground)]">
+                        Combined weekly admissions: {data.respiratoryIllness.currentHospitalizationRates.combined.toFixed(1)} per 100,000
                       </p>
                     ) : (
-                      <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
-                        RSV {data.respiratoryIllness.rsvTrend.toLowerCase()} ·
-                        Influenza {data.respiratoryIllness.fluTrend.toLowerCase()} ·
-                        COVID-19 {data.respiratoryIllness.covidTrend.toLowerCase()}
+                      <p class="mt-2 text-xs text-[var(--color-muted-foreground)]">
+                        Hospital admission trend: {(data.respiratoryIllness.hospitalAdmissionTrend ?? data.respiratoryIllness.edRespiratoryVisitTrend ?? 'Stable').toLowerCase()}
                       </p>
                     )}
                     <p class="mt-1 text-[11px] text-[var(--color-muted-foreground)]">
@@ -544,35 +595,35 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
 
             {/* Vaccine-preventable */}
             {vpd && (
-              <article class={`rounded-[var(--radius-card)] border ${toneClasses[vpd.tone].bg} ${toneClasses[vpd.tone].border} p-6 sm:col-span-2`}>
+              <article class={`rounded-[var(--radius-card)] border ${toneClasses[vpd.tone].bg} ${toneClasses[vpd.tone].border} p-5 sm:col-span-2`}>
                 <div class="flex items-start gap-4">
-                  <span class={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${toneClasses[vpd.tone].icon}`}>
-                    <Icon name="lucide:shield-check" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+                  <span class={`inline-flex h-10 w-10 items-center justify-center rounded-2xl ${toneClasses[vpd.tone].icon}`}>
+                    <Icon name="lucide:map-pin" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
                   </span>
                   <div class="min-w-0 flex-1">
-                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">Vaccine-preventable disease watch</p>
-                    <h2 class="mt-1 text-xl tracking-tight">{vpd.headline}</h2>
-                    <p class="mt-2 text-sm text-[var(--color-foreground)]/85 leading-relaxed">{vpd.sub}</p>
-                    {data.vaccinePreventable && (
-                      <ul class="mt-4 flex flex-wrap gap-2">
-                        {data.vaccinePreventable.items.map((d) => (
-                          <li class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-card)] px-3 py-1 text-xs font-medium text-[var(--color-foreground)] ring-1 ring-inset ring-[var(--color-border-soft)]">
-                            <span class={`inline-block w-2 h-2 rounded-full ${
-                              d.status === 'Above prior-year pace' ||
-                              d.status === 'Active outbreak' ||
-                              d.status === 'Outbreak watch' ? 'bg-[var(--color-sun)]' :
-                              d.status === 'Reported cases' ||
-                              d.status === 'Sporadic' ? 'bg-[var(--color-primary)]/60' :
-                              'bg-[var(--color-sage)]'
-                            }`} aria-hidden="true"></span>
-                            {d.diseaseName}: <span class="text-[var(--color-muted-foreground)]">{vpdStatusLabel(d.status)}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">Texas childhood disease watch</p>
+                    <h2 class="mt-1 text-lg tracking-tight">{vpd.headline}</h2>
+                    <p class="mt-1.5 text-sm text-[var(--color-foreground)]/85 leading-relaxed">{vpd.sub}</p>
+                    <ul class="mt-3 flex flex-wrap gap-2">
+                      {vpd.items.map((d) => (
+                        <li class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-card)] px-3 py-1 text-xs font-medium text-[var(--color-foreground)] ring-1 ring-inset ring-[var(--color-border-soft)]">
+                          <span class={`inline-block w-2 h-2 rounded-full ${
+                            vpd.notable ? 'bg-[var(--color-sun)]' : 'bg-[var(--color-sage)]'
+                          }`} aria-hidden="true"></span>
+                          {d.diseaseName}: <span class="text-[var(--color-muted-foreground)]">{vpdItemLabel(d)}</span>
+                        </li>
+                      ))}
+                    </ul>
                     <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
-                      CDC NNDSS · Texas provisional year-to-date reports. These
-                      labels do not declare a local or statewide outbreak.
+                      CDC NNDSS · provisional Texas year-to-date reports.
+                      Counts may change and do not indicate exposure in your
+                      community.
+                    </p>
+                    <p class="mt-2 text-xs text-[var(--color-foreground)]/80 leading-relaxed">
+                      Vaccination is the recommended protection against these
+                      diseases. Questions about benefits, side effects, safety,
+                      or timing are reasonable; your child’s current healthcare
+                      provider can help you make an informed decision.
                     </p>
                     {data.vaccinePreventable?.stale && (
                       <p class="mt-2 text-xs font-semibold text-[#7a5a25]">
@@ -585,7 +636,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
               </article>
             )}
 
-            {/* Community virus watch (full 12-virus grid) */}
+            {/* Community virus watch */}
             {virusEntries.length > 0 && (
               <article class="rounded-[var(--radius-card)] border bg-[var(--color-card)] border-[var(--color-border-soft)] p-6 sm:col-span-2">
                 <div class="flex items-start gap-4">
