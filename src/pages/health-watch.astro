@@ -27,7 +27,16 @@ const SNAPSHOT_SOURCES = [
 
 type SignalLevel = 'Low' | 'Moderate' | 'High' | 'Very High' | 'Unknown';
 type TrendDirection = 'Decreasing' | 'Stable' | 'Rising';
-type VpdStatus = 'Active outbreak' | 'Outbreak watch' | 'Sporadic' | 'No recent cases' | 'Unknown';
+type VpdStatus =
+  | 'No cases reported'
+  | 'Reported cases'
+  | 'Above prior-year pace'
+  | 'Active outbreak'
+  | 'Outbreak watch'
+  | 'Sporadic'
+  | 'No recent cases'
+  | 'Unknown';
+type SurveillanceKind = 'quantitative' | 'regional' | 'seasonal' | 'limited';
 
 interface Snapshot {
   lastRefreshedAt?: string;
@@ -37,12 +46,24 @@ interface Snapshot {
     currentAqi: number;
     category: string;
     primaryPollutant: string;
+    source?: string;
+    geography?: string;
+    reportingDate?: string;
+    lastUpdated?: string;
+    stale?: boolean;
+    staleSince?: string;
   };
   pollen: {
     treeLevel: SignalLevel;
     grassLevel: SignalLevel;
     weedLevel: SignalLevel;
     dominantAllergens: string[];
+    source?: string;
+    geography?: string;
+    reportingDate?: string;
+    lastUpdated?: string;
+    stale?: boolean;
+    staleSince?: string;
   };
   respiratoryIllness: {
     rsvLevel: SignalLevel;
@@ -51,17 +72,37 @@ interface Snapshot {
     fluTrend: TrendDirection;
     covidLevel: SignalLevel;
     covidTrend: TrendDirection;
-    edRespiratoryVisitTrend: TrendDirection;
+    hospitalAdmissionTrend?: TrendDirection;
+    edRespiratoryVisitTrend?: TrendDirection;
+    currentHospitalizationRates?: {
+      rsv: number;
+      flu: number;
+      covid: number;
+      combined: number;
+    };
+    source?: string;
+    geography?: string;
+    reportingDate?: string;
+    metric?: string;
+    lastUpdated?: string;
+    stale?: boolean;
+    staleSince?: string;
   };
   vaccinePreventable?: {
+    source?: string;
+    reportingDate?: string;
+    lastUpdated?: string;
+    stale?: boolean;
+    staleSince?: string;
     items: Array<{
       diseaseName: string;
       status: VpdStatus;
-      recentCases: number;
+      recentCases?: number;
       geography: string;
     }>;
   };
   communityVirusWatch?: {
+    source?: string;
     geography?: string;
     providerNote?: string;
     entries: Array<{
@@ -70,6 +111,20 @@ interface Snapshot {
       level: SignalLevel;
       trend: TrendDirection;
       positivityPct?: number;
+      statusLabel?: string;
+      surveillanceKind?: SurveillanceKind;
+      sourceName?: string;
+      sourceUrl?: string;
+      geography?: string;
+      sourceReportingDate?: string;
+      fetchedAt?: string;
+      metric?: string;
+      weeklyValues?: Array<{
+        weekEnding: string;
+        value: number;
+        weeklyTestsReported?: number;
+      }>;
+      stale?: boolean;
       parentNote?: string;
       providerNote?: string;
     }>;
@@ -133,11 +188,18 @@ const refreshed = data?.lastRefreshedAt
 
 /* -------- Plain-language helpers -------- */
 
-function aqiSummary(aqi: number, cat: string) {
-  if (aqi <= 50) return { tone: 'ok', headline: 'Great air outside', sub: `${cat}. Good day for outdoor play.` };
-  if (aqi <= 100) return { tone: 'warn', headline: 'Air is okay for most kids', sub: `${cat}. Children who are sensitive to air quality may benefit from lighter outdoor play.` };
-  if (aqi <= 150) return { tone: 'warn', headline: 'Tougher air today', sub: `${cat}. Keep prescribed asthma rescue inhalers available.` };
-  return { tone: 'alert', headline: 'Air quality is poor', sub: `${cat}. Limit prolonged outdoor exertion, especially for children with asthma or wheezing.` };
+function aqiSummary(air: Snapshot['airQuality']) {
+  if (air.stale) {
+    return {
+      tone: 'warn' as const,
+      headline: 'Latest available air-quality reading',
+      sub: `AirNow did not refresh during the latest check. The last successful reading was AQI ${air.currentAqi} (${air.category}); verify current conditions with AirNow before planning outdoor activity.`,
+    };
+  }
+  if (air.currentAqi <= 50) return { tone: 'ok' as const, headline: 'Great air outside', sub: `${air.category}. Good day for outdoor play.` };
+  if (air.currentAqi <= 100) return { tone: 'warn' as const, headline: 'Air is okay for most kids', sub: `${air.category}. Children who are sensitive to air quality may benefit from lighter outdoor play.` };
+  if (air.currentAqi <= 150) return { tone: 'warn' as const, headline: 'Tougher air today', sub: `${air.category}. Keep prescribed asthma rescue inhalers available.` };
+  return { tone: 'alert' as const, headline: 'Air quality is poor', sub: `${air.category}. Limit prolonged outdoor exertion, especially for children with asthma or wheezing.` };
 }
 
 function pollenSummary(p: Snapshot['pollen']) {
@@ -147,6 +209,14 @@ function pollenSummary(p: Snapshot['pollen']) {
     'Low',
   );
   const allergens = p.dominantAllergens.slice(0, 3).join(', ');
+  if (p.stale) {
+    return {
+      tone: 'warn' as const,
+      peak,
+      headline: 'Latest available pollen forecast',
+      sub: 'The pollen source did not refresh during the latest check. Treat these levels as the last available forecast, not today’s confirmed conditions.',
+    };
+  }
   if (peak === 'High' || peak === 'Very High') {
     return {
       tone: 'alert' as const,
@@ -167,57 +237,72 @@ function pollenSummary(p: Snapshot['pollen']) {
 }
 
 function respiratorySummary(r: Snapshot['respiratoryIllness']) {
+  const hospitalTrend = r.hospitalAdmissionTrend ?? r.edRespiratoryVisitTrend ?? 'Stable';
+  if (r.stale) {
+    return {
+      tone: 'warn' as const,
+      headline: 'Latest available respiratory report',
+      sub: 'The hospitalization source did not refresh during the latest check. Values shown are the last-known-good regional report.',
+    };
+  }
   const concerning =
-    r.edRespiratoryVisitTrend === 'Rising' ||
-    r.rsvTrend === 'Rising' || r.fluTrend === 'Rising' || r.covidTrend === 'Rising' ||
-    r.rsvLevel === 'High' || r.rsvLevel === 'Very High' ||
-    r.fluLevel === 'High' || r.fluLevel === 'Very High';
-
-  const which: string[] = [];
-  if (r.rsvLevel !== 'Low' && r.rsvLevel !== 'Unknown') which.push('RSV');
-  if (r.fluLevel !== 'Low' && r.fluLevel !== 'Unknown') which.push('flu');
-  if (r.covidLevel !== 'Low' && r.covidLevel !== 'Unknown') which.push('COVID');
+    hospitalTrend === 'Rising' ||
+    r.rsvTrend === 'Rising' ||
+    r.fluTrend === 'Rising' ||
+    r.covidTrend === 'Rising';
 
   if (concerning) {
     return {
       tone: 'warn' as const,
-      headline: `Cough & cold season is active${which.length ? ` (${which.join(', ')})` : ''}`,
-      sub: 'More fever, cough, and congestion in the area. Wash hands often, keep sick kids home, and contact your current healthcare provider for breathing trouble, dehydration, or a fever you cannot manage.',
+      headline: 'Respiratory hospitalizations are rising regionally',
+      sub: 'Texas DSHS Region 2/3 is reporting an increasing hospitalization rate. This broad regional signal does not predict an individual child’s illness.',
     };
   }
   return {
     tone: 'ok' as const,
-    headline: 'Quiet respiratory week',
-    sub: 'Low local activity right now. Continue usual healthy habits.',
+    headline: 'Respiratory hospitalizations are stable regionally',
+    sub: 'Texas DSHS Region 2/3 hospitalization rates are not currently increasing. Continue usual healthy habits.',
   };
 }
 
 function vpdSummary(v: Snapshot['vaccinePreventable']) {
   if (!v) return null;
-  const active = v.items.filter((i) => i.status === 'Active outbreak');
-  const watch = v.items.filter((i) => i.status === 'Outbreak watch');
-  if (active.length > 0) {
-    return {
-      tone: 'alert' as const,
-      headline: `${active.map((i) => i.diseaseName).join(', ')} reported in Texas`,
-      sub: 'Vaccinated children are well protected. If your child may be behind on vaccines, ask their current healthcare provider to review the record.',
-    };
-  }
-  if (watch.length > 0) {
+  if (v.stale) {
     return {
       tone: 'warn' as const,
-      headline: `Watching ${watch.map((i) => i.diseaseName).join(', ')} in the region`,
-      sub: 'Good time to double-check your child\'s vaccine record with their current healthcare provider.',
+      headline: 'Latest available Texas disease reports',
+      sub: 'CDC NNDSS did not refresh during the latest check. The retained statewide totals are not treated as current and do not establish a local outbreak.',
+    };
+  }
+  const abovePrior = v.items.filter(
+    (i) =>
+      i.status === 'Above prior-year pace' ||
+      i.status === 'Active outbreak' ||
+      i.status === 'Outbreak watch',
+  );
+  const unknown = v.items.filter((i) => i.status === 'Unknown');
+  if (abovePrior.length > 0) {
+    return {
+      tone: 'warn' as const,
+      headline: 'Some Texas reports are above last year’s pace',
+      sub: 'These are provisional statewide counts, not a local outbreak determination. Ask your child’s current healthcare provider to review their vaccine record.',
+    };
+  }
+  if (unknown.length > 0) {
+    return {
+      tone: 'warn' as const,
+      headline: 'Some Texas provisional reports are incomplete',
+      sub: 'One or more statewide disease totals were unavailable in the latest source. No local or statewide outbreak conclusion is inferred.',
     };
   }
   return {
     tone: 'ok' as const,
-    headline: 'No vaccine-preventable outbreaks locally',
-    sub: 'Routine immunizations are doing their job. Keep up with the schedule and you\'re set.',
+    headline: 'Texas provisional reports are at or below last year’s pace',
+    sub: 'These statewide reports do not establish local exposure. Keep routine immunizations up to date.',
   };
 }
 
-const aqi = data ? aqiSummary(data.airQuality.currentAqi, data.airQuality.category) : null;
+const aqi = data ? aqiSummary(data.airQuality) : null;
 const pollen = data ? pollenSummary(data.pollen) : null;
 const respiratory = data ? respiratorySummary(data.respiratoryIllness) : null;
 const vpd = data ? vpdSummary(data.vaccinePreventable) : null;
@@ -238,6 +323,49 @@ const virusLevelDot = (lvl: SignalLevel): string => {
   if (lvl === 'Moderate') return 'bg-[var(--color-sun)]';
   if (lvl === 'Low') return 'bg-[var(--color-sage)]';
   return 'bg-[var(--color-muted-foreground)]/50';
+};
+const virusDot = (entry: (typeof virusEntries)[number]): string => {
+  if (entry.surveillanceKind === 'seasonal') return 'bg-[var(--color-sun)]';
+  if (entry.surveillanceKind === 'regional') return 'bg-[var(--color-primary)]/70';
+  if (entry.surveillanceKind === 'limited') return 'bg-[var(--color-muted-foreground)]/50';
+  return virusLevelDot(entry.level);
+};
+const trendLabel = (trend?: TrendDirection): string => {
+  if (trend === 'Rising') return 'rising';
+  if (trend === 'Decreasing') return 'easing';
+  return 'stable';
+};
+const virusStatus = (entry: (typeof virusEntries)[number]): string => {
+  if (entry.statusLabel) return entry.statusLabel.replace(' - ', ' · ');
+  if (typeof entry.positivityPct === 'number') {
+    return `${entry.positivityPct.toFixed(1)}% positive · ${trendLabel(entry.trend)}`;
+  }
+  return 'Surveillance context';
+};
+const formatSourceDate = (value?: string): string | null => {
+  if (!value) return null;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+};
+const lastAvailableDate = (section: {
+  reportingDate?: string;
+  lastUpdated?: string;
+  staleSince?: string;
+}): string | null =>
+  formatSourceDate(
+    section.reportingDate ?? section.lastUpdated ?? section.staleSince,
+  );
+const vpdStatusLabel = (status: VpdStatus): string => {
+  if (status === 'Active outbreak' || status === 'Outbreak watch') return 'provisional reports';
+  if (status === 'Sporadic') return 'reported cases';
+  if (status === 'No recent cases') return 'no cases reported';
+  return status.toLowerCase();
 };
 
 const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string; icon: string; text: string }> = {
@@ -264,7 +392,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
 <BaseLayout
   title="Local Health Watch | Luma Pediatrics McKinney"
   path="/health-watch"
-  description="A general morning snapshot for North Dallas parents covering pollen, air quality, respiratory activity, and vaccine-preventable disease reports around McKinney and nearby communities."
+  description="A source-transparent health snapshot for North Texas families covering air quality, pollen, respiratory hospitalizations, laboratory surveillance, and Texas provisional disease reports."
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'Local Health Watch', path: '/health-watch' },
@@ -273,21 +401,21 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
   <section class="page-hero py-14 md:py-20 overflow-hidden">
     <PageDecor />
     <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
-      <span class="eyebrow">For North Dallas parents</span>
+      <span class="eyebrow">For North Texas families</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
         Local Health Watch
       </h1>
       <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
-        What's in the air around our community today.
+        A clearer view of this week's public-health signals.
       </p>
       <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/80 leading-relaxed">
-        A simple morning snapshot for North DFW families, pollen, air quality,
-        cough &amp; cold activity, and vaccine-preventable disease watch. Updated
-        every day so you can plan ahead.
+        Current respiratory and gastrointestinal virus activity from the best
+        available public-health surveillance relevant to North Texas.
+        Geographic coverage varies by virus.
       </p>
       {refreshed && (
         <p class="mt-3 text-sm text-[var(--color-muted-foreground)]">
-          Refreshed {refreshed} CT
+          Data checked {refreshed} CT; source reporting schedules vary.
         </p>
       )}
     </div>
@@ -301,7 +429,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
           <div>
             <p class="font-semibold text-[var(--color-foreground)]">Snapshot temporarily unavailable</p>
             <p class="mt-1 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
-              We couldn't load today's local snapshot. Please check back later. For current
+              We couldn't load the latest snapshot. Please check back later. For current
               medical concerns, contact your child's existing healthcare provider.
             </p>
           </div>
@@ -331,6 +459,16 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                     <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
                       AQI {data.airQuality.currentAqi} · primary pollutant: {data.airQuality.primaryPollutant}
                     </p>
+                    <p class="mt-1 text-[11px] text-[var(--color-muted-foreground)]">
+                      {[data.airQuality.source, data.airQuality.geography, lastAvailableDate(data.airQuality)]
+                        .filter(Boolean)
+                        .join(' · ')}
+                    </p>
+                    {data.airQuality.stale && (
+                      <p class="mt-2 text-xs font-semibold text-[#7a5a25]">
+                        Showing the last-known-good reading; current conditions may differ.
+                      </p>
+                    )}
                   </div>
                 </div>
               </article>
@@ -350,6 +488,16 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                     <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
                       Trees {data.pollen.treeLevel} · Grass {data.pollen.grassLevel} · Weeds {data.pollen.weedLevel}
                     </p>
+                    <p class="mt-1 text-[11px] text-[var(--color-muted-foreground)]">
+                      {[data.pollen.source, data.pollen.geography, lastAvailableDate(data.pollen)]
+                        .filter(Boolean)
+                        .join(' · ')}
+                    </p>
+                    {data.pollen.stale && (
+                      <p class="mt-2 text-xs font-semibold text-[#7a5a25]">
+                        Showing the last-known-good forecast; current levels may differ.
+                      </p>
+                    )}
                   </div>
                 </div>
               </article>
@@ -363,14 +511,32 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                     <Icon name="lucide:activity" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
                   </span>
                   <div class="min-w-0">
-                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">Cough &amp; cold activity</p>
+                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">Respiratory hospital activity</p>
                     <h2 class="mt-1 text-xl tracking-tight">{respiratory.headline}</h2>
                     <p class="mt-2 text-sm text-[var(--color-foreground)]/85 leading-relaxed">{respiratory.sub}</p>
-                    <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
-                      RSV {data.respiratoryIllness.rsvLevel} ({data.respiratoryIllness.rsvTrend.toLowerCase()}) ·
-                      Flu {data.respiratoryIllness.fluLevel} ({data.respiratoryIllness.fluTrend.toLowerCase()}) ·
-                      COVID {data.respiratoryIllness.covidLevel} ({data.respiratoryIllness.covidTrend.toLowerCase()})
+                    {data.respiratoryIllness.currentHospitalizationRates ? (
+                      <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
+                        Weekly admissions per 100,000: RSV {data.respiratoryIllness.currentHospitalizationRates.rsv.toFixed(1)} ·
+                        Influenza {data.respiratoryIllness.currentHospitalizationRates.flu.toFixed(1)} ·
+                        COVID-19 {data.respiratoryIllness.currentHospitalizationRates.covid.toFixed(1)}
+                      </p>
+                    ) : (
+                      <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
+                        RSV {data.respiratoryIllness.rsvTrend.toLowerCase()} ·
+                        Influenza {data.respiratoryIllness.fluTrend.toLowerCase()} ·
+                        COVID-19 {data.respiratoryIllness.covidTrend.toLowerCase()}
+                      </p>
+                    )}
+                    <p class="mt-1 text-[11px] text-[var(--color-muted-foreground)]">
+                      {[data.respiratoryIllness.source, data.respiratoryIllness.geography, lastAvailableDate(data.respiratoryIllness)]
+                        .filter(Boolean)
+                        .join(' · ')}
                     </p>
+                    {data.respiratoryIllness.stale && (
+                      <p class="mt-2 text-xs font-semibold text-[#7a5a25]">
+                        Showing the last-known-good regional report.
+                      </p>
+                    )}
                   </div>
                 </div>
               </article>
@@ -392,19 +558,28 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                         {data.vaccinePreventable.items.map((d) => (
                           <li class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-card)] px-3 py-1 text-xs font-medium text-[var(--color-foreground)] ring-1 ring-inset ring-[var(--color-border-soft)]">
                             <span class={`inline-block w-2 h-2 rounded-full ${
-                              d.status === 'Active outbreak' ? 'bg-[var(--color-coral)]' :
+                              d.status === 'Above prior-year pace' ||
+                              d.status === 'Active outbreak' ||
                               d.status === 'Outbreak watch' ? 'bg-[var(--color-sun)]' :
-                              d.status === 'Sporadic' ? 'bg-[var(--color-sun)]/60' :
+                              d.status === 'Reported cases' ||
+                              d.status === 'Sporadic' ? 'bg-[var(--color-primary)]/60' :
                               'bg-[var(--color-sage)]'
                             }`} aria-hidden="true"></span>
-                            {d.diseaseName}: <span class="text-[var(--color-muted-foreground)]">{d.status.toLowerCase()}</span>
+                            {d.diseaseName}: <span class="text-[var(--color-muted-foreground)]">{vpdStatusLabel(d.status)}</span>
                           </li>
                         ))}
                       </ul>
                     )}
                     <p class="mt-3 text-xs text-[var(--color-muted-foreground)]">
-                      Statewide activity from CDC NNDSS. Neighborhood-level cases aren't reported publicly.
+                      CDC NNDSS · Texas provisional year-to-date reports. These
+                      labels do not declare a local or statewide outbreak.
                     </p>
+                    {data.vaccinePreventable?.stale && (
+                      <p class="mt-2 text-xs font-semibold text-[#7a5a25]">
+                        Showing the last-known-good statewide report from{' '}
+                        {lastAvailableDate(data.vaccinePreventable) ?? 'the most recent successful refresh'}.
+                      </p>
+                    )}
                   </div>
                 </div>
               </article>
@@ -421,7 +596,10 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                     <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">What's going around</p>
                     <h2 class="mt-1 text-xl tracking-tight">Community virus watch</h2>
                     <p class="mt-2 text-sm text-[var(--color-foreground)]/85 leading-relaxed">
-                      Respiratory and gastrointestinal activity reported in the North Dallas area. Green means low activity, yellow means moderate activity, and red means high activity.
+                      Current respiratory and gastrointestinal virus activity
+                      from the best available public-health surveillance
+                      relevant to North Texas. Geographic coverage varies by
+                      virus.
                     </p>
 
                     {(['respiratory', 'gastrointestinal', 'other-pediatric'] as const).map((cat) => (
@@ -430,15 +608,64 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                           <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">{VIRUS_CATEGORY_LABEL[cat]}</p>
                           <ul class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {virusByCategory[cat].map((v) => (
-                              <li class="flex items-start gap-2.5 rounded-xl bg-[var(--color-background)] px-3 py-2.5 ring-1 ring-inset ring-[var(--color-border-soft)]">
-                                <span class={`inline-block w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${virusLevelDot(v.level)}`} aria-hidden="true"></span>
+                              <li class={`flex items-start gap-2.5 rounded-xl px-3 py-3 ring-1 ring-inset ring-[var(--color-border-soft)] ${
+                                v.surveillanceKind === 'seasonal'
+                                  ? 'bg-[rgba(200,153,90,0.08)]'
+                                  : v.surveillanceKind === 'limited' || v.surveillanceKind === 'regional'
+                                    ? 'bg-[rgba(11,29,58,0.035)]'
+                                    : 'bg-[var(--color-background)]'
+                              }`}>
+                                <span class={`inline-block w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${virusDot(v)}`} aria-hidden="true"></span>
                                 <div class="min-w-0 flex-1">
-                                  <p class="text-sm font-medium text-[var(--color-foreground)]">
-                                    {v.name}
-                                    <span class="text-[var(--color-muted-foreground)] font-normal"> ({v.level === 'Unknown' ? 'data unavailable' : v.level.toLowerCase()}{v.level !== 'Unknown' && v.trend === 'Rising' ? ', rising' : v.level !== 'Unknown' && v.trend === 'Decreasing' ? ', easing' : ''}{typeof v.positivityPct === 'number' ? `, ${v.positivityPct.toFixed(1)}% positive` : ''})</span>
+                                  <p class="text-sm font-semibold text-[var(--color-foreground)]">{v.name}</p>
+                                  <p class="mt-0.5 text-sm font-medium text-[var(--color-foreground)]/85">
+                                    {virusStatus(v)}
                                   </p>
                                   {v.parentNote && (
-                                    <p class="mt-0.5 text-xs text-[var(--color-muted-foreground)] leading-relaxed">{v.parentNote}</p>
+                                    <p class="mt-1 text-xs text-[var(--color-muted-foreground)] leading-relaxed">{v.parentNote}</p>
+                                  )}
+                                  {(v.sourceName || v.geography || v.sourceReportingDate) && (
+                                    <p class="mt-2 text-[10px] text-[var(--color-muted-foreground)] leading-relaxed">
+                                      {v.sourceUrl && v.sourceName ? (
+                                        <a
+                                          href={v.sourceUrl}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          class="underline decoration-transparent hover:decoration-current focus-visible:decoration-current"
+                                        >
+                                          {v.sourceName}
+                                        </a>
+                                      ) : (
+                                        v.sourceName
+                                      )}
+                                      {v.sourceName && v.geography ? ' · ' : ''}
+                                      {v.geography}
+                                      {(v.sourceName || v.geography) && v.sourceReportingDate ? ' · ' : ''}
+                                      {formatSourceDate(v.sourceReportingDate)}
+                                      {v.stale ? ' · showing last-known-good value' : ''}
+                                    </p>
+                                  )}
+                                  {v.metric && (
+                                    <p class="mt-1 text-[10px] text-[var(--color-muted-foreground)] leading-relaxed">
+                                      Metric: {v.metric}
+                                    </p>
+                                  )}
+                                  {v.weeklyValues && v.weeklyValues.length > 1 && (
+                                    <details class="mt-2 text-[11px] text-[var(--color-muted-foreground)]">
+                                      <summary class="cursor-pointer font-medium text-[var(--color-primary)]">
+                                        Recent weekly values
+                                      </summary>
+                                      <div class="mt-2 flex flex-wrap gap-1.5">
+                                        {v.weeklyValues.map((point) => (
+                                          <span class="rounded-full bg-[var(--color-card)] px-2 py-1 ring-1 ring-inset ring-[var(--color-border-soft)]">
+                                            {formatSourceDate(point.weekEnding)}: {point.value.toFixed(1)}%
+                                            {typeof point.weeklyTestsReported === 'number'
+                                              ? ` centered 3-week average · ${point.weeklyTestsReported.toLocaleString('en-US')} tests reported for that week`
+                                              : ''}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    </details>
                                   )}
                                 </div>
                               </li>
@@ -448,7 +675,16 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                       )
                     ))}
                     <p class="mt-4 text-xs text-[var(--color-muted-foreground)]">
-                      Sources: CDC NREVSS, NoroSTAT, and Texas DSHS regional surveillance. Updated daily.{data.communityVirusWatch?.stale ? ' (Showing the most recent available data.)' : ''}
+                      Sources include CDC NREVSS, CDC national respiratory
+                      laboratory surveillance, and Texas public-health
+                      surveillance. Data checked daily; source reporting
+                      schedules vary.{data.communityVirusWatch?.stale ? ' Some cards are showing their last-known-good values.' : ''}
+                    </p>
+                    <p class="mt-2 text-xs text-[var(--color-muted-foreground)]">
+                      Percentages represent laboratory tests, not the percentage
+                      of children who are ill. Community surveillance is
+                      informational and does not predict an individual child’s
+                      illness.
                     </p>
                   </div>
                 </div>
@@ -477,8 +713,10 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
             <Icon name="lucide:info" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-primary)]" stroke-width="1.8" aria-hidden="true" />
             <p class="text-sm text-[var(--color-foreground)]/85 leading-relaxed">
               <strong>This is general guidance for our community, not medical advice for your child.</strong>
-              We use public data from EPA AirNow, Google Pollen, CDC, and Texas DSHS. For concerns
-              specific to your child, contact their current healthcare provider.
+              We use public data from EPA AirNow, Google Pollen, CDC, and Texas
+              DSHS. Geography and reporting dates are shown with each signal.
+              For concerns specific to your child, contact their current
+              healthcare provider.
             </p>
           </div>
         </div>
