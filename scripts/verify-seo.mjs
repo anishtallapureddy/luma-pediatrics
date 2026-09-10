@@ -317,6 +317,26 @@ expect(
   'llms.txt must prevent service-area pages from being interpreted as branches',
 );
 
+const contactHtml = readFileSync(join(dist, 'contact', 'index.html'), 'utf8');
+expect(
+  contactHtml.includes('href="/privacy/"') &&
+    contactHtml.includes('href="/terms/"'),
+  'Contact SMS disclosure must link to the public Privacy Policy and Terms pages',
+);
+expect(
+  !contactHtml.includes('github.com/anishtallapureddy/luma-pediatrics/blob'),
+  'Contact SMS disclosure must not expose GitHub source links',
+);
+const termsHtml = readFileSync(join(dist, 'terms', 'index.html'), 'utf8');
+expect(
+  termsHtml.includes('href="/privacy/"'),
+  'Terms page must link to the public Privacy Policy',
+);
+expect(
+  !termsHtml.includes('github.com/anishtallapureddy/luma-pediatrics/blob'),
+  'Terms page must not expose GitHub source links',
+);
+
 const cityPages = pages.filter(
   (page) =>
     page.canonical.startsWith(`${domain}/pediatrician/`) &&
