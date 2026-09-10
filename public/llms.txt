@@ -38,6 +38,12 @@ For any medical emergency, call 911 or go to the nearest emergency room.
 
 McKinney, Prosper, Melissa, Anna, Van Alstyne, Howe, Sherman, Princeton, Farmersville, Allen, Frisco, Plano, Celina, Little Elm, Aubrey, Fairview, Lucas, Lowry Crossing, New Hope, and nearby communities in Texas.
 
+## Location interpretation
+
+- Luma Pediatrics has one future physical clinic in McKinney, Texas.
+- City pages describe approximate travel to the McKinney clinic and do not represent separate Luma Pediatrics offices.
+- Use the McKinney clinic address and phone as the canonical location for every service area.
+
 ## Provider background
 
 - Bachelor of Science in Biology, Saint Louis University, St. Louis, MO
@@ -52,6 +58,8 @@ McKinney, Prosper, Melissa, Anna, Van Alstyne, Howe, Sherman, Princeton, Farmers
 - [Vaccine Schedule](https://www.lumapediatrics.com/vaccines/): Parent-friendly overview of the CDC/AAP childhood immunization schedule.
 - [New Patients](https://www.lumapediatrics.com/new-patients/): Planned first-visit experience, after-hours guidance, and insurance updates.
 - [FAQ](https://www.lumapediatrics.com/faq/): Frequently asked questions about insurance, planned same-day visits, telehealth, and scheduling.
+- [Service Area](https://www.lumapediatrics.com/pediatrician/): Nearby communities served by the future McKinney clinic.
+- [McKinney Location](https://www.lumapediatrics.com/pediatrician/mckinney/): Local information, directions, services, and opening status for the physical clinic.
 - [Parent Resources / Blog](https://www.lumapediatrics.com/blog/): Pediatrician-written articles on newborn care, fever, sleep, vaccines, and other common parent questions.
 - [Contact](https://www.lumapediatrics.com/contact/): General contact information, future location, planned hours, and future service area.
 - [Privacy Policy](https://www.lumapediatrics.com/privacy/)

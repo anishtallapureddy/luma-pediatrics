@@ -273,6 +273,22 @@ for (const url of sitemapUrls) {
 const robots = readFileSync(join(dist, 'robots.txt'), 'utf8');
 expect(robots.includes('User-agent: *'), 'robots.txt is missing the default user agent');
 expect(robots.includes('Allow: /'), 'robots.txt does not allow public crawling');
+for (const userAgent of [
+  'Googlebot',
+  'Bingbot',
+  'OAI-SearchBot',
+  'ChatGPT-User',
+  'PerplexityBot',
+  'Perplexity-User',
+  'GPTBot',
+  'ClaudeBot',
+  'Google-Extended',
+]) {
+  expect(
+    robots.includes(`User-agent: ${userAgent}`),
+    `robots.txt is missing the explicit ${userAgent} policy`,
+  );
+}
 expect(
   robots.includes(`Sitemap: ${domain}/sitemap-index.xml`),
   'robots.txt sitemap URL is incorrect',
@@ -291,6 +307,47 @@ for (const value of [
   `**Status:** ${contract.status}`,
 ]) {
   expect(llms.includes(value), `llms.txt is missing canonical fact: ${value}`);
+}
+expect(
+  llms.includes('one future physical clinic in McKinney, Texas'),
+  'llms.txt must clarify that Luma has one physical location',
+);
+expect(
+  llms.includes('do not represent separate Luma Pediatrics offices'),
+  'llms.txt must prevent service-area pages from being interpreted as branches',
+);
+
+const cityPages = pages.filter(
+  (page) =>
+    page.canonical.startsWith(`${domain}/pediatrician/`) &&
+    page.canonical !== `${domain}/pediatrician/`,
+);
+expect(cityPages.length === 19, `Expected 19 city pages, found ${cityPages.length}`);
+for (const cityPage of cityPages) {
+  const cityJsonLd = jsonLdObjects(cityPage.html, cityPage.fileLabel);
+  const service = cityJsonLd.find((value) => hasType(value['@type'], 'Service'));
+  const faq = cityJsonLd.find((value) => hasType(value['@type'], 'FAQPage'));
+  expect(service, `${cityPage.fileLabel}: city-specific Service schema is missing`);
+  expect(faq, `${cityPage.fileLabel}: city-specific FAQPage schema is missing`);
+  expect(
+    Array.isArray(faq.mainEntity) && faq.mainEntity.length === 3,
+    `${cityPage.fileLabel}: expected three visible FAQ entries`,
+  );
+  const text = normalizedText(cityPage.html);
+  expect(text.includes('Plan a future visit'), `${cityPage.fileLabel}: travel-planning section is missing`);
+  expect(text.includes('Get directions'), `${cityPage.fileLabel}: directions action is missing`);
+  expect(text.includes('Questions from'), `${cityPage.fileLabel}: local FAQ heading is missing`);
+  expect(text.split(/\s+/).length >= 350, `${cityPage.fileLabel}: page is below the city-page content floor`);
+  expect(
+    cityPage.html.replaceAll('&amp;', '&').includes('&origin='),
+    `${cityPage.fileLabel}: directions URL does not include the city origin`,
+  );
+  if (!cityPage.canonical.endsWith('/mckinney/')) {
+    expect(
+      text.includes('not a separate') && text.includes('office'),
+      `${cityPage.fileLabel}: single-location disclosure is missing`,
+    );
+  }
 }
 
 const textSourceFiles = [

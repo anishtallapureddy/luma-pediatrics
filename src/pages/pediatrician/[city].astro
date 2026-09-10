@@ -5,6 +5,7 @@ import WaitlistForm from '../../components/WaitlistForm.astro';
 import { Icon } from 'astro-icon/components';
 import { CITIES } from '../../data/cities.ts';
 import { featuredServices } from '../../data/services';
+import { GOOGLE_DIRECTIONS_URL, SITE, STRUCTURED_DATA_IDS } from '../../site.config';
 
 export function getStaticPaths() {
   return CITIES.map((c) => ({ params: { city: c.slug }, props: { city: c } }));
@@ -16,6 +17,56 @@ const title = city.slug === 'mckinney'
   ? 'Pediatrician in McKinney, TX'
   : `Pediatrician Near ${city.name}, TX`;
 const description = `${city.intro} Explore Luma's planned services, future McKinney location, and practice updates.`;
+const pageUrl = `${SITE.domain}/pediatrician/${city.slug}/`;
+const directionsUrl =
+  `${GOOGLE_DIRECTIONS_URL}&origin=${encodeURIComponent(`${city.name}, TX`)}`;
+const locationAnswer = city.slug === 'mckinney'
+  ? `${SITE.name} will have one clinic at ${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}.`
+  : `${SITE.name} will have one clinic in McKinney, about ${city.distanceMi} miles from central ${city.name}. This page describes travel to that McKinney location, not a separate ${city.name} office.`;
+const faqItems = [
+  {
+    question: `Where is Luma Pediatrics relative to ${city.name}?`,
+    answer: locationAnswer,
+  },
+  {
+    question: `How long is the drive from ${city.name} to Luma Pediatrics?`,
+    answer:
+      city.distanceMi === 0
+        ? 'The future clinic is in McKinney, just off US-75. Drive time will vary by neighborhood and traffic.'
+        : `The estimated drive from central ${city.name} is ${city.driveMinutes}. Actual travel time will vary by starting point and traffic.`,
+  },
+  {
+    question: 'Is Luma Pediatrics open and scheduling appointments?',
+    answer: `${SITE.status}. The practice is not currently open, accepting patients, or scheduling appointments.`,
+  },
+];
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${pageUrl}#pediatric-primary-care`,
+  name: `Planned pediatric primary care for ${city.name} families`,
+  serviceType: 'Pediatric primary care',
+  provider: { '@id': STRUCTURED_DATA_IDS.clinic },
+  areaServed: {
+    '@type': 'City',
+    name: city.name,
+    containedInPlace: { '@type': 'State', name: 'Texas' },
+  },
+  url: pageUrl,
+  description,
+};
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
 ---
 
 <BaseLayout
@@ -28,6 +79,9 @@ const description = `${city.intro} Explore Luma's planned services, future McKin
     { name: city.name, path: `/pediatrician/${city.slug}/` },
   ]}
 >
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
   <section class="relative bg-gradient-to-b from-sky-50 via-white to-white pt-16 pb-12 md:pt-24 md:pb-16">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <p class="text-sm font-semibold tracking-wider uppercase text-luma-gold mb-3">
@@ -57,18 +111,66 @@ const description = `${city.intro} Explore Luma's planned services, future McKin
   </section>
 
   <section class="py-12 md:py-16">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-2xl md:text-3xl font-display text-luma-ink mb-4">
-        Built for the {city.name} community
-      </h2>
-      <p class="text-luma-ink/80 mb-6 leading-relaxed">{city.whyLuma}</p>
-      <ul class="flex flex-wrap gap-2">
-        {city.landmarks.map((lm) => (
-          <li class="px-3 py-1.5 rounded-full bg-luma-sage/20 text-luma-ink text-sm">
-            {lm}
-          </li>
-        ))}
-      </ul>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.85fr)] lg:items-start">
+      <div>
+        <h2 class="text-2xl md:text-3xl font-display text-luma-ink mb-4">
+          Built for the {city.name} community
+        </h2>
+        <p class="text-luma-ink/80 mb-6 leading-relaxed">{city.whyLuma}</p>
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-luma-ink/60 mb-3">
+          Familiar places near {city.name}
+        </p>
+        <ul class="flex flex-wrap gap-2">
+          {city.landmarks.map((lm) => (
+            <li class="px-3 py-1.5 rounded-full bg-luma-sage/20 text-luma-ink text-sm">
+              {lm}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <aside class="rounded-2xl bg-luma-cream/55 border border-luma-ink/10 p-6">
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-luma-gold">
+          Plan a future visit
+        </p>
+        <h2 class="mt-2 text-2xl font-display text-luma-ink">
+          From {city.name} to McKinney
+        </h2>
+        <p class="mt-3 text-sm text-luma-ink/75 leading-relaxed">
+          {locationAnswer}
+        </p>
+        <dl class="mt-5 grid gap-3 text-sm">
+          <div class="flex items-start justify-between gap-4">
+            <dt class="font-semibold text-luma-ink">Distance</dt>
+            <dd class="text-right text-luma-ink/75">
+              {city.distanceMi === 0 ? 'In McKinney' : `About ${city.distanceMi} miles`}
+            </dd>
+          </div>
+          <div class="flex items-start justify-between gap-4">
+            <dt class="font-semibold text-luma-ink">Typical drive</dt>
+            <dd class="text-right text-luma-ink/75">{city.driveMinutes}</dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-luma-ink">Future clinic</dt>
+            <dd class="mt-1 text-luma-ink/75">
+              <address class="not-italic">
+                {SITE.address.street}<br />
+                {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}
+              </address>
+            </dd>
+          </div>
+        </dl>
+        <a
+          href={directionsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-luma-ink px-5 text-sm font-semibold text-white no-underline hover:bg-luma-ink/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luma-gold focus-visible:ring-offset-2"
+          aria-label={`Get directions from ${city.name} to ${SITE.name}`}
+        >
+          <Icon name="lucide:map-pin" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
+          Get directions
+        </a>
+      </aside>
     </div>
   </section>
 
@@ -88,6 +190,29 @@ const description = `${city.intro} Explore Luma's planned services, future McKin
       <p class="text-center mt-6">
         <a href="/services/" class="text-luma-gold hover:underline font-medium">See all services →</a>
       </p>
+    </div>
+  </section>
+
+  <section class="py-12 md:py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-sm font-semibold uppercase tracking-[0.16em] text-luma-gold">
+        Planning ahead
+      </p>
+      <h2 class="mt-2 text-2xl md:text-3xl font-display text-luma-ink">
+        Questions from {city.name} families
+      </h2>
+      <div class="mt-6 space-y-3">
+        {faqItems.map((item) => (
+          <details class="rounded-2xl border border-luma-ink/10 bg-white p-5">
+            <summary class="cursor-pointer font-semibold text-luma-ink">
+              {item.question}
+            </summary>
+            <p class="mt-3 text-sm text-luma-ink/75 leading-relaxed">
+              {item.answer}
+            </p>
+          </details>
+        ))}
+      </div>
     </div>
   </section>
 

@@ -2,6 +2,35 @@
 # standards-compliant crawlers. Public pages contain general business and
 # educational information only; no patient data is published.
 
+# Search, answer, and user-requested retrieval crawlers.
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Generative-model crawlers are intentionally allowed for maximum discovery.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 User-agent: *
 Allow: /
 
