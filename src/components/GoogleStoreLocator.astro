@@ -1,0 +1,233 @@
+---
+import { SITE } from '../site.config';
+
+/*
+ * Portions adapted from Google LLC's Extended Component Library Quick Builder
+ * sample. Copyright 2023 Google LLC. Licensed under the Apache License, 2.0.
+ */
+const apiKey = (import.meta.env.PUBLIC_GOOGLE_MAPS_API_KEY ?? '').trim();
+const hasEnhancedMap = apiKey.length > 0;
+const configuration = {
+  locations: [
+    {
+      title: SITE.name,
+      address1: SITE.address.street,
+      address2: `${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}, USA`,
+      coords: {
+        lat: SITE.geo.latitude,
+        lng: SITE.geo.longitude,
+      },
+      placeId: SITE.geo.googlePlaceId,
+    },
+  ],
+  mapOptions: {
+    center: {
+      lat: SITE.geo.latitude,
+      lng: SITE.geo.longitude,
+    },
+    fullscreenControl: true,
+    mapTypeControl: false,
+    streetViewControl: false,
+    zoom: 15,
+    zoomControl: true,
+    maxZoom: 17,
+    mapId: 'DEMO_MAP_ID',
+  },
+  mapsApiKey: apiKey,
+  capabilities: {
+    input: false,
+    autocomplete: false,
+    directions: false,
+    distanceMatrix: false,
+    details: false,
+    actions: false,
+  },
+};
+const configurationJson = JSON.stringify(configuration).replaceAll('<', '\\u003c');
+---
+
+<div
+  id="location-map"
+  class="luma-map-shell"
+  data-luma-map-shell
+  role="region"
+  aria-label={`Map of ${SITE.name} in ${SITE.address.city}, ${SITE.address.region}`}
+>
+  {hasEnhancedMap && (
+    <div class="luma-map-enhancement" data-luma-map-enhancement aria-hidden="true">
+      <gmpx-api-loader
+        key={apiKey}
+        solution-channel="GMP_QB_locatorplus_v11_c"
+      ></gmpx-api-loader>
+      <gmpx-store-locator
+        data-luma-store-locator
+        map-id="DEMO_MAP_ID"
+      ></gmpx-store-locator>
+    </div>
+  )}
+
+  <iframe
+    data-luma-map-fallback
+    title={`Map of ${SITE.name} in ${SITE.address.city}, ${SITE.address.region}`}
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    src={`https://www.google.com/maps?q=${SITE.geo.latitude},${SITE.geo.longitude}&z=16&output=embed`}
+    class="luma-map-fallback"
+  ></iframe>
+
+  <p data-luma-map-status class="sr-only" aria-live="polite">
+    Standard map loaded.
+  </p>
+</div>
+
+{hasEnhancedMap && (
+  <>
+    <script
+      is:inline
+      type="application/json"
+      data-luma-store-locator-config
+      set:html={configurationJson}
+    ></script>
+    <script is:inline>
+      (() => {
+        const shell = document.querySelector('[data-luma-map-shell]');
+        if (!shell) return;
+
+        const locator = shell.querySelector('[data-luma-store-locator]');
+        const enhancement = shell.querySelector('[data-luma-map-enhancement]');
+        const fallback = shell.querySelector('[data-luma-map-fallback]');
+        const status = shell.querySelector('[data-luma-map-status]');
+        const configElement = document.querySelector('[data-luma-store-locator-config]');
+
+        const showFallback = (message, error) => {
+          shell.removeAttribute('data-map-ready');
+          enhancement?.setAttribute('aria-hidden', 'true');
+          fallback?.removeAttribute('aria-hidden');
+          if (status) status.textContent = message;
+          if (error) console.error(message, error);
+        };
+
+        window.gm_authFailure = () => {
+          showFallback('Interactive Google Map could not authenticate. Showing the standard map.');
+        };
+
+        const initialize = async () => {
+          if (!locator || !enhancement || !fallback || !configElement) {
+            showFallback('Interactive map configuration is unavailable. Showing the standard map.');
+            return;
+          }
+
+          try {
+            await Promise.race([
+              customElements.whenDefined('gmpx-store-locator'),
+              new Promise((_, reject) => {
+                window.setTimeout(
+                  () => reject(new Error('Timed out loading the Google Maps component.')),
+                  15000,
+                );
+              }),
+            ]);
+
+            const configuration = JSON.parse(configElement.textContent || '{}');
+            locator.configureFromQuickBuilder(configuration);
+
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                shell.setAttribute('data-map-ready', 'true');
+                enhancement.setAttribute('aria-hidden', 'false');
+                fallback.setAttribute('aria-hidden', 'true');
+                if (status) status.textContent = 'Interactive Google Map loaded.';
+              });
+            });
+          } catch (error) {
+            showFallback('Interactive Google Map could not load. Showing the standard map.', error);
+          }
+        };
+
+        void initialize();
+      })();
+    </script>
+    <script
+      is:inline
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/@googlemaps/extended-component-library/0.6.15/index.min.js"
+    ></script>
+  </>
+)}
+
+<style>
+  .luma-map-shell {
+    position: relative;
+    width: 100%;
+    height: clamp(22rem, 58vw, 30rem);
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: var(--color-muted);
+  }
+
+  .luma-map-fallback,
+  .luma-map-enhancement,
+  gmpx-store-locator {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .luma-map-fallback {
+    border: 0;
+    opacity: 1;
+    transition:
+      opacity var(--duration-base) var(--ease-fluid),
+      visibility var(--duration-base) var(--ease-fluid);
+  }
+
+  .luma-map-enhancement {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity var(--duration-base) var(--ease-fluid),
+      visibility var(--duration-base) var(--ease-fluid);
+  }
+
+  .luma-map-shell[data-map-ready='true'] .luma-map-enhancement {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .luma-map-shell[data-map-ready='true'] .luma-map-fallback {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  gmpx-store-locator {
+    --gmpx-color-surface: var(--color-card);
+    --gmpx-color-on-surface: var(--color-foreground);
+    --gmpx-color-on-surface-variant: var(--color-muted-foreground);
+    --gmpx-color-primary: var(--color-primary);
+    --gmpx-color-outline: var(--color-border-soft);
+    --gmpx-fixed-panel-width-row-layout: 18rem;
+    --gmpx-fixed-panel-height-column-layout: 42%;
+    --gmpx-font-family-base: var(--font-body);
+    --gmpx-font-family-headings: var(--font-display);
+    --gmpx-font-size-base: 0.875rem;
+  }
+
+  gmpx-store-locator:not(:defined) {
+    visibility: hidden;
+  }
+
+  @media (max-width: 639px) {
+    .luma-map-shell {
+      height: 26rem;
+    }
+
+    gmpx-store-locator {
+      --gmpx-fixed-panel-height-column-layout: 38%;
+    }
+  }
+</style>

@@ -2,8 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
 import AreasServed from '../components/AreasServed.astro';
+import GoogleStoreLocator from '../components/GoogleStoreLocator.astro';
 import { Icon } from 'astro-icon/components';
-import { SITE } from '../site.config';
+import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 
 /**
  * Pre-opening contact page. Call, text, and email are for general information
@@ -133,20 +134,15 @@ import { SITE } from '../site.config';
             </a>
           </div>
 
-          <div class="mt-6 overflow-hidden rounded-xl ring-1 ring-inset ring-[rgba(11,29,58,0.08)]">
-            <iframe
-              title={`Map of ${SITE.name} in ${SITE.address.city}, ${SITE.address.region}`}
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              src={`https://www.google.com/maps?q=${SITE.geo.latitude},${SITE.geo.longitude}&z=16&output=embed`}
-              class="block w-full h-56 border-0"
-            ></iframe>
+          <div class="mt-6 ring-1 ring-inset ring-[rgba(11,29,58,0.08)] rounded-xl">
+            <GoogleStoreLocator />
           </div>
           <a
-            href={`https://www.google.com/maps/dir/?api=1&destination=${SITE.geo.latitude},${SITE.geo.longitude}`}
+            href={GOOGLE_DIRECTIONS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-primary)] no-underline hover:underline"
+            class="mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[var(--color-primary)] px-5 text-sm font-semibold text-white no-underline hover:bg-[var(--color-primary-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2"
+            aria-label={`Get directions to ${SITE.name}`}
           >
             <Icon name="lucide:map-pin" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
             Get directions

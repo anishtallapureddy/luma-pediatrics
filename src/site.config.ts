@@ -129,6 +129,7 @@ export const SITE = {
   geo: {
     latitude: 33.2354224,
     longitude: -96.6322071,
+    googlePlaceId: 'ChIJay82ghcTTIYRfMrdtqknRvU',
   },
 
   /** External profiles for sameAs structured data (add as they go live). */
@@ -209,3 +210,9 @@ export const SITE = {
     { href: '/contact',       label: 'Contact' },
   ],
 } as const;
+
+const directionsDestination = `${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}`;
+
+export const GOOGLE_DIRECTIONS_URL =
+  `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(directionsDestination)}` +
+  `&destination_place_id=${SITE.geo.googlePlaceId}`;

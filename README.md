@@ -22,6 +22,28 @@ npm run preview  # preview production build locally
 npm run check    # type + content checks
 ```
 
+## Google Maps locator
+
+The Contact page progressively enhances its existing iframe map with Google's
+Extended Component Library store locator. The standard iframe remains visible
+if the JavaScript component or API key is unavailable.
+
+For local development, create `.env.local`:
+
+```sh
+PUBLIC_GOOGLE_MAPS_API_KEY=your_browser_key
+```
+
+For GitHub Pages, add the same browser key as the repository secret
+`GOOGLE_MAPS_BROWSER_API_KEY`. The workflow exposes it to Astro as
+`PUBLIC_GOOGLE_MAPS_API_KEY` during the static build.
+
+Maps JavaScript API keys are visible in browser requests by design. Restrict
+the key to the production website's HTTPS referrers and to the Maps JavaScript
+API. Enable additional APIs only if the locator later adds features that need
+them. Never use a server-side Address Validation or web-service key in this
+client-side variable.
+
 ## Project structure
 
 ```
