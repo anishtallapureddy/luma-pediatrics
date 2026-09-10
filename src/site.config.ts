@@ -5,6 +5,8 @@
 
 export const SITE = {
   name: 'Luma Pediatrics',
+  legalName: 'Luma Physician Group PLLC',
+  organizationNpi: '1689504292',
   tagline: "Where your child's health shines.",
   subtagline: 'Bright beginnings. Healthy futures.',
   status: 'Opening late 2026',
@@ -13,6 +15,8 @@ export const SITE = {
   locationShort: 'McKinney, Texas',
   description:
     'Luma Pediatrics is a board-certified pediatric practice in McKinney, Texas. Opening late 2026, with evidence-based care planned for newborns, children, and teens.',
+  disambiguatingDescription:
+    'Independent pediatric primary care practice in McKinney, Texas, operated by Luma Physician Group PLLC.',
   domain: 'https://www.lumapediatrics.com',
 
   /**
@@ -160,7 +164,15 @@ export const SITE = {
   social: {
     facebook: '',
     instagram: '',
+    linkedin: '',
     googleBusiness: '',
+    appleMaps: '',
+    bingPlaces: '',
+    healthgrades: '',
+    webmd: '',
+    doximity: '',
+    yelp: '',
+    usNews: '',
   },
 
   /** Professional affiliations / credentials surfaced near the provider bio. */

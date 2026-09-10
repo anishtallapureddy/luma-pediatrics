@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "check:seo": "node scripts/verify-seo.mjs"
+    "check:seo": "node scripts/verify-seo.mjs",
+    "search-console:urls": "node scripts/search-console-priority.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

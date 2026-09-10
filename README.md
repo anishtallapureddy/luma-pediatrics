@@ -63,6 +63,8 @@ should count as conversions.
 canonical NAP/status contract is:
 
 - Luma Pediatrics
+- Legal entity: Luma Physician Group PLLC
+- Organization NPI: 1689504292
 - 3801 N Central Expy, Suite 302, McKinney, TX 75071
 - (469) 200-1151
 - https://www.lumapediatrics.com/
@@ -74,6 +76,21 @@ Planned office hours remain excluded from structured data until
 After building, run `npm run check:seo` to verify GA4 hooks, structured data,
 NAP wording, canonical URLs, social metadata, sitemap coverage, and
 `robots.txt`.
+
+### Search Console indexing sprint
+
+Run:
+
+```sh
+npm run build
+npm run search-console:urls
+```
+
+The command verifies and prints the priority URLs for URL Inspection. A Search
+Console owner or full user must paste each URL into **URL Inspection** and
+choose **Request indexing**. Submit
+`https://www.lumapediatrics.com/sitemap-index.xml` once through the Sitemaps
+report. Repeated requests for the same URL do not accelerate crawling.
 
 ## Project structure
 

@@ -57,7 +57,7 @@ const ogImageType = ogImage.endsWith('.png')
 const resolvedOgImageWidth = ogImageWidth ?? (ogImage === '/og-default.png' ? 1200 : undefined);
 const resolvedOgImageHeight = ogImageHeight ?? (ogImage === '/og-default.png' ? 630 : undefined);
 
-const sameAs = [SITE.social.facebook, SITE.social.instagram, SITE.social.googleBusiness].filter(Boolean);
+const sameAs = [GOOGLE_MAP_URL, ...Object.values(SITE.social)].filter(Boolean);
 const openingHoursSpecification = SITE.schema.publishOpeningHours
   ? SITE.hours
       .filter((hours) => hours.opens && hours.closes)
@@ -83,7 +83,14 @@ const businessSchema = {
   '@type': 'MedicalClinic',
   '@id': STRUCTURED_DATA_IDS.clinic,
   name: SITE.name,
+  legalName: SITE.legalName,
+  identifier: {
+    '@type': 'PropertyValue',
+    propertyID: 'NPI',
+    value: SITE.organizationNpi,
+  },
   description: SITE.description,
+  disambiguatingDescription: SITE.disambiguatingDescription,
   url: `${SITE.domain}/`,
   logo: new URL('/images/luma-logo-mark.png', SITE.domain).toString(),
   image: [
@@ -125,6 +132,7 @@ const businessSchema = {
   ...(SITE.showProviderProfile
     ? {
         employee: { '@id': STRUCTURED_DATA_IDS.physician },
+        founder: { '@id': STRUCTURED_DATA_IDS.physician },
       }
     : {}),
 };
@@ -135,6 +143,7 @@ const physicianSchema = SITE.showProviderProfile
       '@id': STRUCTURED_DATA_IDS.physician,
       name: SITE.provider.name,
       url: `${SITE.domain}/about/`,
+      disambiguatingDescription: `Board-certified pediatrician and founder of ${SITE.name} in McKinney, Texas.`,
       image: new URL('/images/provider-headshot.jpg', SITE.domain).toString(),
       medicalSpecialty: 'Pediatric',
       jobTitle: SITE.provider.role,
@@ -213,6 +222,12 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
 
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${SITE.name} Blog & Parent Guides`}
+      href={`${SITE.domain}/rss.xml`}
+    />
     <meta name="theme-color" content="#0B1D3A" />
 
     <!-- Open Graph -->

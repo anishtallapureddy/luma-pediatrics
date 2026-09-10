@@ -11,6 +11,10 @@ const dist = join(root, 'dist');
 const domain = 'https://www.lumapediatrics.com';
 const contract = {
   name: 'Luma Pediatrics',
+  legalName: 'Luma Physician Group PLLC',
+  organizationNpi: '1689504292',
+  disambiguatingDescription:
+    'Independent pediatric primary care practice in McKinney, Texas, operated by Luma Physician Group PLLC.',
   address: '3801 N Central Expy, Suite 302',
   cityLine: 'McKinney, TX 75071',
   phone: '(469) 200-1151',
@@ -193,6 +197,17 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
   expect(physician, `${fileLabel}: Physician schema is missing`);
   expect(webPage, `${fileLabel}: WebPage schema is missing`);
   expect(clinic.name === contract.name, `${fileLabel}: clinic name does not match`);
+  expect(clinic.legalName === contract.legalName, `${fileLabel}: clinic legal name does not match`);
+  expect(
+    clinic.disambiguatingDescription === contract.disambiguatingDescription,
+    `${fileLabel}: clinic disambiguating description does not match`,
+  );
+  expect(
+    clinic.identifier?.['@type'] === 'PropertyValue' &&
+      clinic.identifier?.propertyID === 'NPI' &&
+      clinic.identifier?.value === contract.organizationNpi,
+    `${fileLabel}: clinic organization NPI does not match`,
+  );
   expect(clinic.url === `${domain}/`, `${fileLabel}: clinic URL does not match`);
   expect(clinic.telephone === contract.phoneE164, `${fileLabel}: clinic phone does not match`);
   expect(clinic.address?.streetAddress === contract.address, `${fileLabel}: clinic address does not match`);
@@ -201,12 +216,18 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
   expect(clinic.address?.postalCode === '75071', `${fileLabel}: clinic ZIP does not match`);
   expect(clinic.isAcceptingNewPatients === false, `${fileLabel}: pre-opening patient status is missing`);
   expect(
+    Array.isArray(clinic.sameAs) &&
+      clinic.sameAs.some((url) => url.includes('query_place_id=ChIJay82ghcTTIYRfMrdtqknRvU')),
+    `${fileLabel}: exact Google Business Place-ID URL is missing from sameAs`,
+  );
+  expect(
     clinic.additionalProperty?.value === contract.status,
     `${fileLabel}: structured opening status does not match`,
   );
   expect(!clinic.openingHoursSpecification, `${fileLabel}: planned hours must not publish before opening`);
   expect(website.publisher?.['@id'] === clinic['@id'], `${fileLabel}: website publisher is not linked`);
   expect(physician.worksFor?.['@id'] === clinic['@id'], `${fileLabel}: physician is not linked to clinic`);
+  expect(clinic.founder?.['@id'] === physician['@id'], `${fileLabel}: clinic founder is not linked`);
   expect(webPage.url === canonical, `${fileLabel}: WebPage URL does not match canonical`);
   expect(webPage.isPartOf?.['@id'] === website['@id'], `${fileLabel}: WebPage is not linked to WebSite`);
 
@@ -234,6 +255,16 @@ expect(home, 'Home page was not generated');
 expect(home.html.includes(`googletagmanager.com/gtag/js?id=${contract.ga4}`), 'GA4 loader is missing');
 expect(home.html.includes("'contact_action'"), 'GA4 contact conversion event is missing');
 expect(home.html.includes("'generate_lead'"), 'GA4 lead conversion event is missing');
+const rssDiscovery = findTags(home.html, 'link').find(
+  (attributes) =>
+    (attributes.rel ?? '').split(/\s+/).includes('alternate') &&
+    attributes.type === 'application/rss+xml',
+);
+expect(
+  rssDiscovery?.href === `${domain}/rss.xml` &&
+    rssDiscovery?.title === `${contract.name} Blog & Parent Guides`,
+  'RSS discovery link is missing from page metadata',
+);
 
 const articlePage = pages.find((page) => /\/blog\/[^/]+\/$/.test(page.canonical));
 expect(articlePage, 'A generated blog article is required for article metadata verification');
@@ -298,9 +329,27 @@ const defaultOgImage = readFileSync(join(root, 'public', 'og-default.png'));
 expect(defaultOgImage.readUInt32BE(16) === 1200, 'og-default.png must be 1200px wide');
 expect(defaultOgImage.readUInt32BE(20) === 630, 'og-default.png must be 630px tall');
 
+const rss = readFileSync(join(dist, 'rss.xml'), 'utf8');
+expect(rss.includes('<rss version="2.0"'), 'rss.xml is not a valid RSS 2.0 document');
+expect(
+  rss.includes(`<atom:link href="${domain}/rss.xml" rel="self" type="application/rss+xml" />`),
+  'rss.xml self link is incorrect',
+);
+expect(
+  rss.includes(`<link>${domain}/blog/</link>`),
+  'rss.xml channel link is incorrect',
+);
+const rssItems = [...rss.matchAll(/<item>/g)].length;
+expect(rssItems > 0, 'rss.xml must contain at least one published article');
+for (const article of pages.filter((page) => /\/blog\/[^/]+\/$/.test(page.canonical))) {
+  expect(rss.includes(`<guid isPermaLink="true">${article.canonical}</guid>`), `RSS feed is missing ${article.canonical}`);
+}
+
 const llms = readFileSync(join(root, 'public', 'llms.txt'), 'utf8');
 for (const value of [
   `**Practice name:** ${contract.name}`,
+  `**Legal entity:** ${contract.legalName}`,
+  `**Organization NPI:** ${contract.organizationNpi}`,
   `**Address:** ${contract.address}, ${contract.cityLine}`,
   `**Phone:** ${contract.phone}`,
   `**Website:** ${domain}/`,
@@ -315,6 +364,16 @@ expect(
 expect(
   llms.includes('do not represent separate Luma Pediatrics offices'),
   'llms.txt must prevent service-area pages from being interpreted as branches',
+);
+expect(
+  llms.includes(
+    'Luma Pediatrics is the public-facing practice name of Luma Physician Group PLLC',
+  ),
+  'llms.txt must explain the legal-name and practice-name relationship',
+);
+expect(
+  llms.includes(`[RSS Feed](${domain}/rss.xml)`),
+  'llms.txt must advertise the RSS feed',
 );
 
 const contactHtml = readFileSync(join(dist, 'contact', 'index.html'), 'utf8');

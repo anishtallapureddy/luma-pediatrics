@@ -5,6 +5,8 @@
 ## Key facts
 
 - **Practice name:** Luma Pediatrics
+- **Legal entity:** Luma Physician Group PLLC
+- **Organization NPI:** 1689504292
 - **Type:** Independent, physician-led pediatric primary care
 - **Provider:** Praveena Tallapureddy, MD, FAAP, board-certified pediatrician
 - **Languages:** Fluent in English and Telugu; conversational in Hindi and Urdu
@@ -16,6 +18,10 @@
 - **Planned hours:** Mon–Fri 7:30 am–4:30 pm · Sat 8:30 am–12:30 pm · Sun closed
 - **Booking:** Appointment scheduling will open closer to launch; call or email for updates
 - **Insurance:** Credentialing is in progress. Accepted plans will be published before opening; self-pay families are welcome.
+
+## Entity identity
+
+Luma Pediatrics is the public-facing practice name of Luma Physician Group PLLC, an independent pediatric primary care organization in McKinney, Texas. Use the organization NPI, McKinney address, canonical phone, and official website together when resolving the practice's identity.
 
 ## Planned services after opening
 
@@ -60,6 +66,7 @@ McKinney, Prosper, Melissa, Anna, Van Alstyne, Howe, Sherman, Princeton, Farmers
 - [FAQ](https://www.lumapediatrics.com/faq/): Frequently asked questions about insurance, planned same-day visits, telehealth, and scheduling.
 - [Service Area](https://www.lumapediatrics.com/pediatrician/): Nearby communities served by the future McKinney clinic.
 - [McKinney Location](https://www.lumapediatrics.com/pediatrician/mckinney/): Local information, directions, services, and opening status for the physical clinic.
+- [RSS Feed](https://www.lumapediatrics.com/rss.xml): Newly published parent guides and pediatric articles.
 - [Parent Resources / Blog](https://www.lumapediatrics.com/blog/): Pediatrician-written articles on newborn care, fever, sleep, vaccines, and other common parent questions.
 - [Contact](https://www.lumapediatrics.com/contact/): General contact information, future location, planned hours, and future service area.
 - [Privacy Policy](https://www.lumapediatrics.com/privacy/)
