@@ -20,6 +20,7 @@ npm run dev      # http://localhost:4321
 npm run build    # production build → dist/
 npm run preview  # preview production build locally
 npm run check    # type + content checks
+npm run check:seo # verify GA4, schema, NAP, social metadata, sitemap, and robots after a build
 ```
 
 ## Google Maps locator
@@ -43,6 +44,36 @@ the key to the production website's HTTPS referrers and to the Maps JavaScript
 API. Enable additional APIs only if the locator later adds features that need
 them. Never use a server-side Address Validation or web-service key in this
 client-side variable.
+
+## Analytics and search metadata
+
+GA4 loads only in production using the measurement ID in `src/site.config.ts`.
+The site records:
+
+- standard GA4 page views
+- `generate_lead` after a successful practice-updates signup
+- `contact_action` with `contact_method` set to `phone`, `sms`, `email`, or
+  `directions`
+
+In GA4 Admin, mark `generate_lead` and `contact_action` as key events when they
+should count as conversions.
+
+`BaseLayout.astro` publishes linked `WebSite`, `MedicalClinic`, `Physician`, and
+`WebPage` JSON-LD plus canonical, Open Graph, and Twitter metadata. The
+canonical NAP/status contract is:
+
+- Luma Pediatrics
+- 3801 N Central Expy, Suite 302, McKinney, TX 75071
+- (469) 200-1151
+- https://www.lumapediatrics.com/
+- Opening late 2026
+
+Planned office hours remain excluded from structured data until
+`SITE.schema.publishOpeningHours` is explicitly enabled after opening.
+
+After building, run `npm run check:seo` to verify GA4 hooks, structured data,
+NAP wording, canonical URLs, social metadata, sitemap coverage, and
+`robots.txt`.
 
 ## Project structure
 

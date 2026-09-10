@@ -14,7 +14,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 <BaseLayout
   title="Contact Luma Pediatrics | McKinney, TX"
   path="/contact"
-  description="General contact information, future location, and planned office hours for Luma Pediatrics, opening late 2026 in McKinney and welcoming nearby North Texas communities."
+  description={`General contact information, future location, and planned office hours for ${SITE.name} in McKinney, TX. ${SITE.status}.`}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'Contact', path: '/contact' },
@@ -26,7 +26,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
       <span class="eyebrow">Contact</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">Stay connected as we prepare to open.</h1>
       <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
-        Future practice opening late 2026 in McKinney.
+        {SITE.status} in McKinney.
       </p>
       <p class="mt-7 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-2xl mx-auto">
         Call, text, or email for general information about the future practice. We are not currently open or scheduling appointments.
@@ -91,7 +91,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
               <h3 id="sms-disclosure-title" class="text-base font-bold">Text Luma Pediatrics</h3>
             </div>
             <p class="mt-3 text-sm leading-relaxed text-[var(--color-foreground)]/85">
-              By texting Luma Pediatrics at 469-200-1151, you agree to receive customer care text
+              By texting Luma Pediatrics at {SITE.contact.phone}, you agree to receive customer care text
               messages from Luma Pediatrics. Message frequency varies. Message and data rates may
               apply. Reply HELP for help or STOP to opt out.
             </p>

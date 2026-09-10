@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site.config';
 
 const lastUpdated = 'September 2026';
 ---
@@ -31,8 +32,8 @@ const lastUpdated = 'September 2026';
 
       <h2>Future practice status</h2>
       <p>
-        Luma Pediatrics is a future independent pediatric practice planned to open in late 2026 in
-        McKinney, Texas. The practice is not currently open, accepting patients, or scheduling
+        Luma Pediatrics is a future independent pediatric practice in McKinney, Texas.
+        <strong>{SITE.status}.</strong> The practice is not currently open, accepting patients, or scheduling
         appointments. Descriptions of services, hours, and availability are plans and may change
         before opening.
       </p>
@@ -155,7 +156,7 @@ const lastUpdated = 'September 2026';
       <h2>Contact</h2>
       <p>
         Questions about these terms may be sent to
-        {' '}<a href="mailto:hello@lumapediatrics.com">hello@lumapediatrics.com</a>.
+        {' '}<a href={SITE.contact.emailHref}>{SITE.contact.email}</a>.
       </p>
     </div>
   </section>

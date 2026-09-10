@@ -24,7 +24,7 @@ const faqs = [
   },
   {
     q: 'How do I book an appointment?',
-    a: "We're opening in late 2026 in McKinney and are not scheduling appointments yet. Join the independent email updates list for general opening news.",
+    a: `${SITE.status} in McKinney. We are not scheduling appointments yet. Join the independent email updates list for general opening news.`,
   },
   {
     q: 'What should I bring to a first visit?',
@@ -36,7 +36,7 @@ const faqs = [
   },
   {
     q: 'When are you opening?',
-    a: `We're opening ${SITE.openingWindow} in ${SITE.locationShort}. Join the email updates list for general opening news.`,
+    a: `${SITE.status} in ${SITE.locationShort}. Join the email updates list for general opening news.`,
   },
 ];
 
@@ -53,7 +53,7 @@ const faqJsonLd = {
 <BaseLayout
   title="FAQ | Luma Pediatrics McKinney"
   path="/faq"
-  description="Common questions about Luma Pediatrics in McKinney, TX: insurance, planned same-day visits, first appointments, ages we see, and our November 2026 opening."
+  description={`Common questions about ${SITE.name} in McKinney, TX: insurance, planned same-day visits, first appointments, ages we see, and our opening. ${SITE.status}.`}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'FAQ', path: '/faq' },

@@ -22,7 +22,7 @@ const endpoint = (SITE.forms.waitlistEndpoint ?? '').trim();
 const headline = title ?? 'Stay Updated on Luma';
 const intro =
   blurb ??
-  'Luma Pediatrics is a future practice opening in late 2026. Sign up to receive occasional email updates about our planned opening and general services.';
+  `${SITE.name} — ${SITE.status}. Sign up to receive occasional email updates about our planned opening and general services.`;
 
 const isHero = variant === 'hero';
 const inputClass =
@@ -163,6 +163,12 @@ const inputClass =
         // Apps Script Web Apps don't return CORS headers, so we fire-and-forget
         // with no-cors; the row is still written to the Sheet.
         await fetch(endpoint, { method: 'POST', mode: 'no-cors', body: data });
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'generate_lead', {
+            lead_source: 'practice_updates',
+            page_path: window.location.pathname,
+          });
+        }
         form.classList.add('hidden');
         if (successEl) {
           successEl.classList.remove('hidden');

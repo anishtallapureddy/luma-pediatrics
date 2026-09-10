@@ -12,7 +12,7 @@ export const SITE = {
   openingWindow: 'late 2026',
   locationShort: 'McKinney, Texas',
   description:
-    "Luma Pediatrics is a board-certified pediatric practice opening in late 2026 in McKinney, Texas, with evidence-based care planned for newborns, children, and teens.",
+    'Luma Pediatrics is a board-certified pediatric practice in McKinney, Texas. Opening late 2026, with evidence-based care planned for newborns, children, and teens.',
   domain: 'https://www.lumapediatrics.com',
 
   /**
@@ -73,7 +73,7 @@ export const SITE = {
   },
 
   address: {
-    street: '3801 North Central Expressway, Ste 302',
+    street: '3801 N Central Expy, Suite 302',
     city: 'McKinney',
     region: 'TX',
     postalCode: '75071',
@@ -82,6 +82,7 @@ export const SITE = {
 
   contact: {
     phone: '(469) 200-1151',
+    phoneE164: '+14692001151',
     phoneHref: 'tel:+14692001151',
     smsHref: 'sms:+14692001151',
     smsDisclosureHref: '/contact/#sms-disclosure',
@@ -90,10 +91,33 @@ export const SITE = {
   },
 
   hours: [
-    { day: 'Mon–Fri',  time: '7:30 am – 4:30 pm' },
-    { day: 'Saturday', time: '8:30 am – 12:30 pm' },
-    { day: 'Sunday',   time: 'Closed' },
+    {
+      day: 'Mon–Fri',
+      time: '7:30 am – 4:30 pm',
+      schemaDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '07:30',
+      closes: '16:30',
+    },
+    {
+      day: 'Saturday',
+      time: '8:30 am – 12:30 pm',
+      schemaDays: ['Saturday'],
+      opens: '08:30',
+      closes: '12:30',
+    },
+    {
+      day: 'Sunday',
+      time: 'Closed',
+      schemaDays: [],
+      opens: '',
+      closes: '',
+    },
   ],
+
+  schema: {
+    /** Flip only after the practice is open and these hours are operational. */
+    publishOpeningHours: false,
+  },
 
   /** Surrounding cities the practice serves. */
   areasServed: [
@@ -120,7 +144,7 @@ export const SITE = {
   areasServedTagline: 'and nearby communities',
 
   /**
-   * Geo coordinates for the practice (3801 North Central Expressway, Ste 302,
+   * Geo coordinates for the practice (3801 N Central Expy, Suite 302,
    * McKinney) - used for the contact-page map pin, the "Get directions" link,
    * and LocalBusiness JSON-LD. Set from a Google Maps dropped pin on the
    * building (west frontage of US-75, just north of Bloomdale); geocoding the
@@ -216,3 +240,13 @@ const directionsDestination = `${SITE.address.street}, ${SITE.address.city}, ${S
 export const GOOGLE_DIRECTIONS_URL =
   `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(directionsDestination)}` +
   `&destination_place_id=${SITE.geo.googlePlaceId}`;
+
+export const GOOGLE_MAP_URL =
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(directionsDestination)}` +
+  `&query_place_id=${SITE.geo.googlePlaceId}`;
+
+export const STRUCTURED_DATA_IDS = {
+  clinic: `${SITE.domain}/#medical-clinic`,
+  website: `${SITE.domain}/#website`,
+  physician: `${SITE.domain}/about/#physician`,
+} as const;

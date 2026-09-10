@@ -1,6 +1,6 @@
 # Luma Pediatrics
 
-> Luma Pediatrics is a board-certified pediatric practice opening in late 2026 in McKinney, Texas. Planned services include primary pediatric care for newborns through age 21, well-child visits, same-day sick visits, vaccinations, school and sports physicals, ADHD and behavioral care, and newborn/lactation support.
+> Luma Pediatrics is a board-certified pediatric practice in McKinney, Texas. Opening late 2026. Planned services include primary pediatric care for newborns through age 21, well-child visits, same-day sick visits, vaccinations, school and sports physicals, ADHD and behavioral care, and newborn/lactation support.
 
 ## Key facts
 
@@ -8,10 +8,11 @@
 - **Type:** Independent, physician-led pediatric primary care
 - **Provider:** Praveena Tallapureddy, MD, FAAP, board-certified pediatrician
 - **Languages:** Fluent in English and Telugu; conversational in Hindi and Urdu
-- **Address:** 3801 North Central Expressway, Suite 302, McKinney, TX 75071
+- **Address:** 3801 N Central Expy, Suite 302, McKinney, TX 75071
 - **Phone:** (469) 200-1151
 - **Email:** hello@lumapediatrics.com
-- **Status:** Opening late 2026 in McKinney
+- **Website:** https://www.lumapediatrics.com/
+- **Status:** Opening late 2026
 - **Planned hours:** Mon–Fri 7:30 am–4:30 pm · Sat 8:30 am–12:30 pm · Sun closed
 - **Booking:** Appointment scheduling will open closer to launch; call or email for updates
 - **Insurance:** Credentialing is in progress. Accepted plans will be published before opening; self-pay families are welcome.
@@ -46,17 +47,17 @@ McKinney, Prosper, Melissa, Anna, Van Alstyne, Howe, Sherman, Princeton, Farmers
 ## Pages
 
 - [Home](https://www.lumapediatrics.com/): Overview, featured services, practice updates, and commitments.
-- [About](https://www.lumapediatrics.com/about): Practice philosophy, pediatrician bio, and affiliations.
-- [Services](https://www.lumapediatrics.com/services): Full list of planned pediatric services.
-- [Vaccine Schedule](https://www.lumapediatrics.com/vaccines): Parent-friendly overview of the CDC/AAP childhood immunization schedule.
-- [New Patients](https://www.lumapediatrics.com/new-patients): Planned first-visit experience, after-hours guidance, and insurance updates.
-- [FAQ](https://www.lumapediatrics.com/faq): Frequently asked questions about insurance, planned same-day visits, telehealth, and scheduling.
+- [About](https://www.lumapediatrics.com/about/): Practice philosophy, pediatrician bio, and affiliations.
+- [Services](https://www.lumapediatrics.com/services/): Full list of planned pediatric services.
+- [Vaccine Schedule](https://www.lumapediatrics.com/vaccines/): Parent-friendly overview of the CDC/AAP childhood immunization schedule.
+- [New Patients](https://www.lumapediatrics.com/new-patients/): Planned first-visit experience, after-hours guidance, and insurance updates.
+- [FAQ](https://www.lumapediatrics.com/faq/): Frequently asked questions about insurance, planned same-day visits, telehealth, and scheduling.
 - [Parent Resources / Blog](https://www.lumapediatrics.com/blog/): Pediatrician-written articles on newborn care, fever, sleep, vaccines, and other common parent questions.
-- [Contact](https://www.lumapediatrics.com/contact): General contact information, future location, planned hours, and future service area.
-- [Privacy Policy](https://www.lumapediatrics.com/privacy)
-- [Terms & Conditions](https://www.lumapediatrics.com/terms)
-- [Notice of Privacy Practices (HIPAA)](https://www.lumapediatrics.com/notice-of-privacy-practices)
-- [Accessibility Statement](https://www.lumapediatrics.com/accessibility)
+- [Contact](https://www.lumapediatrics.com/contact/): General contact information, future location, planned hours, and future service area.
+- [Privacy Policy](https://www.lumapediatrics.com/privacy/)
+- [Terms & Conditions](https://www.lumapediatrics.com/terms/)
+- [Notice of Privacy Practices (HIPAA)](https://www.lumapediatrics.com/notice-of-privacy-practices/)
+- [Accessibility Statement](https://www.lumapediatrics.com/accessibility/)
 
 ## Citation guidance
 

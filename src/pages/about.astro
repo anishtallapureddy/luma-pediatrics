@@ -18,7 +18,7 @@ const values = [
 <BaseLayout
   title="About Luma Pediatrics | McKinney Pediatrician"
   path="/about"
-  description="Luma Pediatrics is a board-certified, physician-led pediatric practice opening in late 2026 in McKinney, TX, with planned care for newborns through age 21."
+  description={`${SITE.name} is a board-certified, physician-led pediatric practice in McKinney, TX. ${SITE.status}, with planned care for newborns through age 21.`}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
@@ -35,8 +35,8 @@ const values = [
         {SITE.tagline}
       </p>
       <p class="mt-7 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-2xl mx-auto">
-        Luma Pediatrics is a board-certified, physician-led pediatric practice opening in
-        {' '}{SITE.locationShort}. We will provide primary pediatric care for newborns through age 21,
+        Luma Pediatrics is a board-certified, physician-led pediatric practice in
+        {' '}{SITE.locationShort}. {SITE.status}. We will provide primary pediatric care for newborns through age 21,
         including well-child visits, same-day sick care, vaccinations, and more.
       </p>
     </div>

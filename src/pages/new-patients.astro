@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
 import AfterHoursCard from '../components/AfterHoursCard.astro';
 import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
 
 /**
  * First-visit walkthrough. Photos are intentionally omitted for now; the
@@ -13,7 +14,7 @@ const steps = [
   {
     n: '1',
     t: 'Stay connected',
-    d: "Join our practice updates or contact the office with general questions. Scheduling will open closer to our November 2026 opening.",
+    d: `Join our practice updates or contact the office with general questions. ${SITE.status}. Scheduling will open closer to opening.`,
     img: '/images/journey-1.jpg',
     alt: 'A parent booking a pediatric visit online from a warm, sunlit home',
   },
@@ -52,7 +53,7 @@ const bringList = [
 <BaseLayout
   title="New Patients | Luma Pediatrics in McKinney, TX"
   path="/new-patients"
-  description="Learn about the planned first-visit experience at Luma Pediatrics in McKinney, TX. The future practice opens in late 2026; scheduling and insurance participation are not yet available."
+  description={`Learn about the planned first-visit experience at ${SITE.name} in McKinney, TX. ${SITE.status}; scheduling and insurance participation are not yet available.`}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'New Patients', path: '/new-patients' },

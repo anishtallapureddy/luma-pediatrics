@@ -5,7 +5,7 @@ import PageDecor from '../../components/PageDecor.astro';
 import Picture from '../../components/Picture.astro';
 import Button from '../../components/Button.astro';
 import { Icon } from 'astro-icon/components';
-import { SITE } from '../../site.config';
+import { SITE, STRUCTURED_DATA_IDS } from '../../site.config';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -24,29 +24,34 @@ const date = post.data.publishDate.toLocaleDateString('en-US', {
 const updated = post.data.updatedDate?.toLocaleDateString('en-US', {
   year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
 });
+const articleUrl = `${SITE.domain}/blog/${post.id}/`;
+const articleImage = post.data.hero ? `${SITE.domain}${post.data.hero}` : `${SITE.domain}/og-default.png`;
 
 const articleSchema = {
   '@context': 'https://schema.org',
-  '@type': 'MedicalWebPage',
+  '@type': 'Article',
+  '@id': `${articleUrl}#article`,
   headline: post.data.title,
   description: post.data.description,
   datePublished: post.data.publishDate.toISOString(),
   ...(post.data.updatedDate && { dateModified: post.data.updatedDate.toISOString() }),
-  author: {
-    '@type': 'Physician',
-    name: post.data.author,
-    medicalSpecialty: 'Pediatrics',
+  author: SITE.showProviderProfile
+    ? { '@id': STRUCTURED_DATA_IDS.physician }
+    : {
+        '@type': 'Organization',
+        '@id': STRUCTURED_DATA_IDS.clinic,
+        name: SITE.name,
+      },
+  publisher: { '@id': STRUCTURED_DATA_IDS.clinic },
+  image: {
+    '@type': 'ImageObject',
+    url: articleImage,
+    width: 1200,
+    height: post.data.hero ? 900 : 630,
   },
-  publisher: {
-    '@type': 'Organization',
-    name: SITE.name,
-    logo: {
-      '@type': 'ImageObject',
-      url: `${SITE.domain}/favicon.png`,
-    },
-  },
-  image: post.data.hero ? `${SITE.domain}${post.data.hero}` : undefined,
-  mainEntityOfPage: `${SITE.domain}/blog/${post.id}/`,
+  mainEntityOfPage: { '@id': `${articleUrl}#webpage` },
+  articleSection: 'Pediatric health',
+  inLanguage: 'en-US',
 };
 ---
 <BaseLayout
@@ -54,6 +59,12 @@ const articleSchema = {
   description={post.data.description}
   path={`/blog/${post.id}/`}
   ogImage={post.data.hero}
+  ogImageAlt={post.data.heroAlt ?? post.data.title}
+  ogImageWidth={1200}
+  ogImageHeight={post.data.hero ? 900 : 630}
+  ogType="article"
+  publishedTime={post.data.publishDate.toISOString()}
+  modifiedTime={post.data.updatedDate?.toISOString()}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'Parent Resources', path: '/blog/' },
@@ -103,7 +114,7 @@ const articleSchema = {
         Looking for future-practice information?
       </p>
       <p class="mt-2 text-[var(--color-muted-foreground)] leading-relaxed">
-        Luma Pediatrics opens {SITE.openingWindow} in {SITE.locationShort}.
+        {SITE.status} in {SITE.locationShort}.
         Contact us for general information about the planned practice.
       </p>
       <div class="mt-5 flex flex-wrap gap-3">
