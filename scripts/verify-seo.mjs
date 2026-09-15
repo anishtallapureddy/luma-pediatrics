@@ -346,8 +346,8 @@ expect(!home.html.includes('/images/warm-family.'), 'Home page must not include 
 expect(!home.html.includes('hero-status-pill'), 'Home page must not repeat the opening-status pill');
 expect(
   home.html.includes('class="hero-credibility-ribbon"') &&
-    /hero-credibility-ribbon[\s\S]*Board-certified pediatric care/.test(
-      home.html,
+    homeText.includes(
+      'Board-certified pediatric care for North Texas families, guided by AAP and CDC recommendations.',
     ),
   'Board-certified care must appear inside the hero credential ribbon',
 );
@@ -820,10 +820,16 @@ expect(
   'Mobile gallery scroll-snap styling is missing',
 );
 expect(
-  /\.hero-credibility-ribbon\s*\{[\s\S]*?background:\s*var\(--color-sage-hover\)/.test(
+  /\.hero-credibility-ribbon\s*\{[\s\S]*?background:\s*var\(--color-sage-light\)/.test(
     globalCss,
   ),
-  'Hero credential ribbon must use one high-contrast sage treatment',
+  'Hero credential ribbon must match the footer sage band',
+);
+expect(
+  /@media \(min-width: 900px\)\s*\{[\s\S]*?\.hero-credibility-copy\s*\{[\s\S]*?white-space:\s*nowrap/.test(
+    globalCss,
+  ),
+  'Hero credential ribbon copy must remain on one line at desktop widths',
 );
 expect(
   /\.home-section-nav\s*\{[\s\S]*?background:\s*var\(--color-card\)/.test(

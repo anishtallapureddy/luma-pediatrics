@@ -677,8 +677,8 @@
   .hero-credibility-ribbon {
     position: relative;
     z-index: 2;
-    background: var(--color-sage-hover);
-    color: var(--color-sage-foreground);
+    background: var(--color-sage-light);
+    color: var(--color-primary);
   }
 
   .hero-credibility-inner {
@@ -686,10 +686,10 @@
     align-items: center;
     justify-content: center;
     gap: 0.85rem;
-    min-height: 4.75rem;
-    max-width: 72rem;
+    min-height: 3.75rem;
+    max-width: 80rem;
     margin-inline: auto;
-    padding: 0.85rem 1.5rem;
+    padding: 0.7rem 1.5rem;
   }
 
   .hero-credibility-icon {
@@ -706,11 +706,10 @@
   }
 
   .hero-credibility-copy {
-    max-width: 64rem;
     margin: 0;
     color: inherit;
-    font-size: clamp(0.88rem, 1.15vw, 1.02rem);
-    line-height: 1.5;
+    font-size: clamp(0.84rem, 1vw, 0.95rem);
+    line-height: 1.4;
     text-align: center;
   }
 
@@ -723,6 +722,12 @@
     padding-block: 1.25rem;
     background: var(--color-card);
     border-bottom: 1px solid var(--color-border-soft);
+  }
+
+  @media (min-width: 900px) {
+    .hero-credibility-copy {
+      white-space: nowrap;
+    }
   }
 
   @media (max-width: 640px) {
