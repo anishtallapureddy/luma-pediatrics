@@ -826,6 +826,12 @@ expect(
   'Hero credential ribbon must match the footer sage band',
 );
 expect(
+  /\.hero-credibility-ribbon\s*\{[\s\S]*?color:\s*var\(--color-sage-foreground\)/.test(
+    globalCss,
+  ),
+  'Hero credential ribbon must use the footer white text treatment',
+);
+expect(
   /@media \(min-width: 900px\)\s*\{[\s\S]*?\.hero-credibility-copy\s*\{[\s\S]*?white-space:\s*nowrap/.test(
     globalCss,
   ),

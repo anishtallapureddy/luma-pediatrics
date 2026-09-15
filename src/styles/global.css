@@ -678,7 +678,7 @@
     position: relative;
     z-index: 2;
     background: var(--color-sage-light);
-    color: var(--color-primary);
+    color: var(--color-sage-foreground);
   }
 
   .hero-credibility-inner {
@@ -709,6 +709,7 @@
     margin: 0;
     color: inherit;
     font-size: clamp(0.84rem, 1vw, 0.95rem);
+    font-weight: 500;
     line-height: 1.4;
     text-align: center;
   }
