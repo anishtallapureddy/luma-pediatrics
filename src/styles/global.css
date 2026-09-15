@@ -562,23 +562,6 @@
     letter-spacing: 0.01em;
   }
 
-  .hero-status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.4rem 0.85rem;
-    border-radius: 9999px;
-    background: rgba(123, 143, 112, 0.12);
-    border: 1px solid rgba(123, 143, 112, 0.32);
-    color: var(--color-sage-light);
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  }
-  .hero-status-pill svg { color: var(--color-sun); }
-
   .service-badge {
     display: inline-flex;
     align-items: center;

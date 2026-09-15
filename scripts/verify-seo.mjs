@@ -307,8 +307,19 @@ for (const service of [
 ]) {
   expect(homeText.includes(service), `Home page is missing restored service: ${service}`);
 }
+for (const serviceGroup of [
+  'Getting started',
+  'Everyday pediatric care',
+  'Growing years and follow-up',
+]) {
+  expect(
+    homeText.includes(serviceGroup),
+    `Home page is missing service group: ${serviceGroup}`,
+  );
+}
 expect(home.html.includes('/images/hero-poster.webp'), 'Home page must use the approved poster hero');
 expect(!home.html.includes('/images/warm-family.'), 'Home page must not include the unused family-photo hero');
+expect(!home.html.includes('hero-status-pill'), 'Home page must not repeat the opening-status pill');
 expect(
   !homeText.includes('Meet Dr. Tallapureddy'),
   'Provider spotlight must remain off the homepage',
@@ -316,6 +327,29 @@ expect(
 expect(
   !homeText.includes('We typically respond within one business day'),
   'Home page must not publish an unverified response-time promise',
+);
+for (const value of [
+  'Why Luma',
+  'Practical details for future Luma families.',
+  'Stay Updated on Luma',
+]) {
+  expect(homeText.includes(value), `Home page is missing restructured content: ${value}`);
+}
+const homeSectionOrder = [
+  ...home.html.matchAll(/data-home-section="([^"]+)"/g),
+].map((match) => match[1]);
+expect(
+  JSON.stringify(homeSectionOrder) ===
+    JSON.stringify([
+      'hero',
+      'credibility',
+      'services',
+      'why-luma',
+      'practical',
+      'updates',
+      'final',
+    ]),
+  `Home page section order is incorrect: ${homeSectionOrder.join(', ')}`,
 );
 for (const city of ['mckinney', 'allen', 'frisco', 'prosper', 'melissa', 'princeton', 'anna', 'fairview']) {
   expect(
