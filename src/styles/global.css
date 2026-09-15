@@ -948,7 +948,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 32rem;
+    min-height: 0;
   }
   .provider-photo-stack img {
     position: relative;

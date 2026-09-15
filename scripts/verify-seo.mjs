@@ -472,6 +472,7 @@ expect(
 
 const aboutPage = pages.find((page) => page.canonical === `${domain}/about/`);
 expect(aboutPage, 'About page was not generated');
+const aboutText = normalizedText(aboutPage.html);
 expect(
   findTags(aboutPage.html, 'a').some(
     (attributes) =>
@@ -481,10 +482,47 @@ expect(
   'About page must mark the active primary navigation item',
 );
 expect(
-  normalizedText(aboutPage.html).includes(
+  aboutText.includes(
     'Caring for children and families in North Texas since 2022',
   ),
   'About page must clarify that the 2022 date refers to provider experience',
+);
+for (const value of [
+  'Your pediatrician',
+  'Praveena Tallapureddy, MD',
+  'Board certified by the American Board of Pediatrics',
+  'Outside the office',
+  'Credentials & background',
+  'How we care',
+  'Family partnership',
+  'Evidence-based decisions',
+  'Accessible, continuous care',
+  'Learn more about our future practice',
+]) {
+  expect(aboutText.includes(value), `About page is missing restructured content: ${value}`);
+}
+expect(
+  aboutPage.html.indexOf('provider-spotlight') <
+    aboutPage.html.indexOf('How we care'),
+  'About page must introduce the pediatrician before the care principles',
+);
+for (const redundantText of [
+  'Meet your pediatrician',
+  'Meet Praveena Tallapureddy',
+  'Our approach',
+  'including well-child visits, same-day sick care, vaccinations, and more',
+]) {
+  expect(
+    !aboutText.includes(redundantText),
+    `About page still contains redundant copy: ${redundantText}`,
+  );
+}
+const aboutHeadshot = findTags(aboutPage.html, 'img').find(
+  (attributes) => attributes.src === '/images/provider-headshot.jpg',
+);
+expect(
+  aboutHeadshot?.width === '1003' && aboutHeadshot?.height === '1254',
+  'About provider headshot must publish intrinsic dimensions',
 );
 
 const newPatientsPage = pages.find(

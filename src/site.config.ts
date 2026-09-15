@@ -49,8 +49,8 @@ export const SITE = {
     /** First-person welcome shown beside the professional headshot. */
     welcome: [
       'Hello, and welcome to Luma Pediatrics!',
-      "I'm Dr. Praveena Tallapureddy, a board-certified pediatrician, mom of two, and proud Aggie.",
-      'Being both a doctor and a parent shapes how I care for families. I founded Luma Pediatrics to create a practice where parents have time to ask questions and children can build a lasting relationship with their pediatrician.',
+      "I'm Dr. Praveena Tallapureddy, a mom of two and proud Aggie. Being both a doctor and a parent shapes how I care for families.",
+      'I founded Luma Pediatrics to create a practice where parents have time to ask questions and children can build a lasting relationship with their pediatrician.',
       'My goal is simple: listen carefully, explain the options, and make sure families leave with a clear plan.',
     ],
     /** Personal note shown beside the casual family photo. */

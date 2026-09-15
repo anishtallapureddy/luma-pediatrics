@@ -8,12 +8,32 @@ import Picture from '../components/Picture.astro';
 import { Icon } from 'astro-icon/components';
 import { SITE } from '../site.config';
 
-const values = [
-  { icon: 'lucide:heart',         title: 'Family-centered',  body: 'You know your child best. We listen, explain, and partner with you on every decision.' },
-  { icon: 'lucide:shield-check',  title: 'Evidence-based',   body: 'Care guided by current pediatric research, AAP and CDC recommendations.' },
-  { icon: 'lucide:clock',         title: 'Easy to access',   body: 'Convenient scheduling, same-day sick visits, and responsive support are planned after opening.' },
-  { icon: 'lucide:users',         title: 'A pediatric home', body: 'One practice for care from the newborn years through young adulthood.' },
+const principles = [
+  {
+    icon: 'lucide:heart',
+    title: 'Family partnership',
+    body: 'Children are more than a chart or checklist. We listen to the people who know them best, answer questions, and agree on a clear plan together.',
+  },
+  {
+    icon: 'lucide:shield-check',
+    title: 'Evidence-based decisions',
+    body: 'Care is guided by current pediatric research and AAP and CDC recommendations, with options explained in plain language.',
+  },
+  {
+    icon: 'lucide:users',
+    title: 'Accessible, continuous care',
+    body: 'Convenient scheduling, same-day sick visits, and responsive support are planned within one pediatric home from the newborn years through young adulthood.',
+  },
 ];
+const boardCertification = SITE.provider.quickFacts.find(
+  ({ label }) => label === 'Board Certified',
+);
+const credentialFacts = SITE.provider.quickFacts.filter(
+  ({ label }) => !['Board Certified', 'Care Scope'].includes(label),
+);
+const careScope = SITE.provider.quickFacts.find(
+  ({ label }) => label === 'Care Scope',
+);
 ---
 <BaseLayout
   title="About Luma Pediatrics | McKinney Pediatrician"
@@ -24,7 +44,7 @@ const values = [
     { name: 'About', path: '/about' },
   ]}
 >
-  <section class="page-hero py-14 md:py-20 overflow-hidden">
+  <section class="page-hero py-12 md:py-16 overflow-hidden">
     <PageDecor />
     <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
       <span class="eyebrow">About</span>
@@ -35,60 +55,14 @@ const values = [
         {SITE.tagline}
       </p>
       <p class="mt-7 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-2xl mx-auto">
-        Luma Pediatrics is a board-certified, physician-led pediatric practice in
-        {' '}{SITE.locationShort}. {SITE.status}. We will provide primary pediatric care for newborns through age 21,
-        including well-child visits, same-day sick care, vaccinations, and more.
+        Luma Pediatrics is an independent, physician-led practice in {SITE.locationShort},
+        designed for thoughtful pediatric care from the newborn years through young adulthood.
       </p>
     </div>
   </section>
 
-  <!-- OUR APPROACH -->
-  <section class="py-20 md:py-28 bg-[var(--color-muted)] reveal relative overflow-hidden">
-    <PageDecor variant="soft" sparkles={8} />
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <span class="eyebrow eyebrow-sun">Our approach</span>
-      <h2 class="mt-5 text-3xl md:text-4xl font-extrabold tracking-tight">
-        Evidence-based care with time to listen.
-      </h2>
-      <div class="mt-7 space-y-5 text-lg text-[var(--color-foreground)]/85 leading-relaxed">
-        <p>
-          Children are more than a chart or checklist. Our goal is to build a consistent relationship
-          from the newborn years through adolescence.
-        </p>
-        <p>
-          We are planning appointments with time for questions, direct explanations, and a clear plan
-          families can follow at home.
-        </p>
-        <p>
-          Our practice is physician-led and independently owned.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- VALUES -->
-  <section class="py-16 md:py-20 reveal relative overflow-hidden">
-    <PageDecor variant="minimal" sparkles={6} />
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {values.map(({ icon, title, body }) => (
-          <article class="card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] p-6">
-            <span
-               class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-muted)] text-[var(--color-primary)] mb-5 ring-1 ring-inset ring-[rgba(11,29,58,0.08)]"
-              style="box-shadow: inset 0 1px 1px rgba(255,255,255,0.6);"
-            >
-              <Icon name={icon} class="w-6 h-6" stroke-width="1.6" aria-hidden="true" />
-            </span>
-            <h2 class="text-lg font-bold">{title}</h2>
-            <p class="mt-2 text-[var(--color-foreground)]/80 leading-relaxed">{body}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!-- MEET THE PEDIATRICIAN -->
-  <section class="provider-spotlight py-20 md:py-28 reveal relative overflow-hidden">
+  <section class="provider-spotlight pt-6 pb-20 md:pt-10 md:pb-24 reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={6} />
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       {SITE.showProviderProfile ? (
@@ -96,37 +70,67 @@ const values = [
           <!-- Intro: professional headshot + first-person welcome + personal note -->
           <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] items-start">
             <div class="provider-photo-stack" aria-label={`Portrait of ${SITE.provider.name}`}>
-              <Picture src="/images/provider-headshot.jpg" alt={`${SITE.provider.name}, ${SITE.provider.role} at Luma Pediatrics`} loading="lazy" />
+              <Picture
+                src="/images/provider-headshot.jpg"
+                alt={`${SITE.provider.name}, ${SITE.provider.role} at Luma Pediatrics`}
+                width={1003}
+                height={1254}
+                loading="lazy"
+              />
             </div>
 
             <div>
-              <span class="eyebrow">Meet your pediatrician</span>
-              <h2 class="mt-5 text-2xl md:text-3xl lg:text-4xl tracking-tight">Meet {SITE.provider.displayName}</h2>
-              <p class="mt-3 text-lg font-semibold text-[var(--color-sage-light)]">{SITE.provider.role}</p>
+              <span class="eyebrow">Your pediatrician</span>
+              <h2 class="mt-5 text-2xl md:text-3xl lg:text-4xl tracking-tight">{SITE.provider.displayName}</h2>
+              <p class="mt-3 text-lg font-semibold text-[var(--color-sage-hover)]">
+                Founder and pediatrician
+              </p>
+              {boardCertification && (
+                <p class="mt-4 inline-flex items-center gap-2 rounded-full bg-[var(--color-muted)] px-3 py-2 text-sm font-semibold text-[var(--color-primary)] ring-1 ring-inset ring-[var(--color-border-soft)]">
+                  <Icon name="lucide:shield-check" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+                  Board certified by the {boardCertification.value}
+                </p>
+              )}
               <div class="mt-6 space-y-4 text-lg text-[var(--color-foreground)]/82 leading-relaxed">
-                {SITE.provider.welcome.map((para) => (
+                <p class="text-xl font-medium text-[var(--color-primary)]" style="font-family: var(--font-display);">
+                  {SITE.provider.welcome[0]}
+                </p>
+                {SITE.provider.welcome.slice(1).map((para) => (
                   <p>{para}</p>
                 ))}
-                <p>{SITE.provider.lifeOutside}</p>
               </div>
 
-              <div class="mt-8 flex flex-wrap gap-3">
-              <Button href="/contact/" variant="primary">Get in touch</Button>
-            </div>
+              <aside class="mt-7 flex items-start gap-3 rounded-2xl bg-[var(--color-muted)] p-5 ring-1 ring-inset ring-[var(--color-border-soft)]">
+                <Icon name="lucide:book-open" class="mt-1 w-5 h-5 shrink-0 text-[var(--color-sage-hover)]" stroke-width="1.7" aria-hidden="true" />
+                <div>
+                  <h3 class="text-base font-bold">Outside the office</h3>
+                  <p class="mt-2 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
+                    {SITE.provider.lifeOutside}
+                  </p>
+                </div>
+              </aside>
             </div>
           </div>
 
-          <!-- Quick facts -->
+          <!-- Credentials and background -->
           <div class="provider-divider mt-12 pt-12">
-            <span class="eyebrow">Quick facts</span>
+            <span class="eyebrow">Credentials &amp; background</span>
             <dl class="provider-facts mt-6">
-              {SITE.provider.quickFacts.map((fact) => (
+              {credentialFacts.map((fact) => (
                 <div class="provider-fact">
                   <dt>{fact.label}</dt>
                   <dd>{fact.value}</dd>
                 </div>
               ))}
             </dl>
+            {careScope && (
+              <dl class="mt-4">
+                <div class="provider-fact">
+                  <dt>{careScope.label}</dt>
+                  <dd>{careScope.value}</dd>
+                </div>
+              </dl>
+            )}
           </div>
         </div>
       ) : (
@@ -155,6 +159,37 @@ const values = [
     </div>
   </section>
 
+  <!-- CARE PRINCIPLES -->
+  <section class="py-16 md:py-20 bg-[var(--color-muted)] reveal relative overflow-hidden">
+    <PageDecor variant="soft" sparkles={8} />
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="max-w-3xl mx-auto text-center">
+        <span class="eyebrow eyebrow-sun">How we care</span>
+        <h2 class="mt-5 text-3xl md:text-4xl font-extrabold tracking-tight">
+          Thoughtful care built around your family.
+        </h2>
+        <p class="mt-5 text-lg text-[var(--color-foreground)]/80 leading-relaxed">
+          Luma is being designed around three commitments that guide each visit and every stage of childhood.
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-5 md:grid-cols-3">
+        {principles.map(({ icon, title, body }) => (
+          <article class="card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] p-7">
+            <span
+              class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-background)] text-[var(--color-primary)] mb-5 ring-1 ring-inset ring-[var(--color-border-soft)]"
+              aria-hidden="true"
+            >
+              <Icon name={icon} class="w-6 h-6" stroke-width="1.6" />
+            </span>
+            <h3 class="text-xl font-bold">{title}</h3>
+            <p class="mt-3 text-[var(--color-foreground)]/80 leading-relaxed">{body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
   {/* Inside Luma office gallery - hidden until real clinic photos (SITE.showOfficeGallery) */}
   {SITE.showOfficeGallery && (
     <section class="py-16 md:py-20 reveal relative overflow-hidden">
@@ -173,4 +208,20 @@ const values = [
       </div>
     </section>
   )}
+
+  <section class="py-16 md:py-20 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={5} />
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="eyebrow">Questions about Luma?</span>
+      <h2 class="mt-5 text-3xl md:text-4xl tracking-tight">
+        Learn more about our future practice.
+      </h2>
+      <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
+        We’re happy to answer general questions about our planned care, location, and opening updates.
+      </p>
+      <div class="mt-7 flex justify-center">
+        <Button href="/contact/" variant="primary">Get in touch</Button>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
