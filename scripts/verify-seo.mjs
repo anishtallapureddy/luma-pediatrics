@@ -285,34 +285,34 @@ expect(home.html.includes("'generate_lead'"), 'GA4 lead conversion event is miss
 const homeText = normalizedText(home.html);
 for (const value of [
   'Board-certified',
-  'One consistent physician',
-  'McKinney, Texas',
-  'Calm care, clear guidance, and one trusted relationship.',
-  'Meet Dr. Tallapureddy',
-  'Relationship-centered care from newborns through young adulthood',
+  'A calm place for children and parents.',
+  'Family centered',
+  'Kid-friendly visits',
+  'Clear guidance',
+  'Made for children',
+  'The standards we hold ourselves to',
 ]) {
-  expect(homeText.includes(value), `Home page is missing current hierarchy content: ${value}`);
+  expect(homeText.includes(value), `Home page is missing restored content: ${value}`);
 }
 for (const service of [
+  'Free Meet & Greet',
+  'Newborn Rounds at BSW McKinney',
   'Newborn Care',
   'Well-Child Visits',
   'Sick Visits',
   'Vaccinations',
-  'ADHD, Behavior & Developmental Care',
-  'Teen & Adolescent Health',
-]) {
-  expect(homeText.includes(service), `Home page is missing focused service: ${service}`);
-}
-for (const removedService of [
-  'Free Meet & Greet',
-  'Newborn Rounds at BSW McKinney',
   'School, Sports & Camp Physicals',
+  'Teen & Adolescent Health',
   'Telehealth / Virtual Visits',
 ]) {
-  expect(!homeText.includes(removedService), `Home preview still includes secondary service: ${removedService}`);
+  expect(homeText.includes(service), `Home page is missing restored service: ${service}`);
 }
-expect(home.html.includes('/images/warm-family.webp'), 'Home page must use the photo-only family hero');
-expect(!home.html.includes('/images/hero-poster.'), 'Home page must not use the text-heavy legacy poster');
+expect(home.html.includes('/images/hero-poster.webp'), 'Home page must use the approved poster hero');
+expect(!home.html.includes('/images/warm-family.'), 'Home page must not include the unused family-photo hero');
+expect(
+  !homeText.includes('Meet Dr. Tallapureddy'),
+  'Provider spotlight must remain off the homepage',
+);
 expect(
   !homeText.includes('We typically respond within one business day'),
   'Home page must not publish an unverified response-time promise',
@@ -451,16 +451,8 @@ expect(appleTouchIcon.readUInt32BE(16) === 512, 'apple-touch-icon.png must be 51
 expect(appleTouchIcon.readUInt32BE(20) === 512, 'apple-touch-icon.png must be 512px tall');
 for (const removedAsset of [
   'favicon.svg',
-  'images/hero-poster.jpg',
-  'images/hero-poster.webp',
-  'images/trust-family.jpg',
-  'images/trust-family.webp',
-  'images/trust-checkup.jpg',
-  'images/trust-checkup.webp',
-  'images/trust-gentle.jpg',
-  'images/trust-gentle.webp',
-  'images/trust-playful.jpg',
-  'images/trust-playful.webp',
+  'images/warm-family.jpg',
+  'images/warm-family.webp',
   'images/clinic-welcome.jpg',
   'images/clinic-welcome.webp',
   'images/doctor-child.jpg',
