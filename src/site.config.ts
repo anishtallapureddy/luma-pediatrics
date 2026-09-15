@@ -240,11 +240,11 @@ export const SITE = {
 
   nav: [
     { href: '/',              label: 'Home' },
-    { href: '/about',         label: 'About' },
-    { href: '/services',      label: 'Services' },
-    { href: '/resources',     label: 'Resources' },
-    { href: '/faq',           label: 'FAQ' },
-    { href: '/contact',       label: 'Contact' },
+    { href: '/about/',        label: 'About' },
+    { href: '/services/',     label: 'Services' },
+    { href: '/resources/',    label: 'Resources' },
+    { href: '/faq/',          label: 'FAQ' },
+    { href: '/contact/',      label: 'Contact' },
   ],
 } as const;
 

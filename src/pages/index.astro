@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import StarDivider from '../components/StarDivider.astro';
-import SageWave from '../components/SageWave.astro';
 import SparkleField from '../components/SparkleField.astro';
 import WaitlistForm from '../components/WaitlistForm.astro';
 import { Icon } from 'astro-icon/components';
@@ -97,11 +96,12 @@ const trustPhotos = [
   socialTitle="Luma Pediatrics | McKinney, TX"
   socialDescription={`Expert pediatric care that feels like family. ${SITE.status} in McKinney, Texas.`}
   ogImageAlt={`Luma Pediatrics. Expert pediatric care that feels like family. ${SITE.status} in McKinney, Texas.`}
+  preloadImage="/images/hero-poster.webp"
 >
 
   <!-- ====================================================================
        HERO - elegant brand vibe: centered logo + serif wordmark + italic
-       gold tagline, gold sparkles scattered, sage-curved transition below.
+       gold tagline, gold sparkles, and one clear credential ribbon below.
        ==================================================================== -->
   <section class="brand-hero overflow-hidden" data-home-section="hero">
     <div class="brand-cloud cloud-left" aria-hidden="true"></div>
@@ -131,42 +131,71 @@ const trustPhotos = [
           </p>
 
           <div class="mt-6 flex flex-wrap justify-center lg:justify-start gap-3">
-            <Button href="/services" variant="primary">
+            <Button href="/services/" variant="primary">
               Explore services
               <span class="btn-icon-circle" aria-hidden="true">
                 <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
               </span>
             </Button>
-            <Button href="/contact" variant="secondary">Get in touch</Button>
+            <Button href="/contact/" variant="secondary">Get in touch</Button>
           </div>
         </div>
 
         <figure class="hero-poster-image">
-          <Picture src="/images/hero-poster.jpg" alt="Luma Pediatrics. Opening late 2026 in McKinney, TX. Where your child's health shines." loading="eager" fetchpriority="high" />
+          <Picture
+            src="/images/hero-poster.jpg"
+            alt="Luma Pediatrics. Opening late 2026 in McKinney, TX. Where your child's health shines."
+            width={1122}
+            height={1402}
+            loading="eager"
+            fetchpriority="high"
+          />
         </figure>
       </div>
     </div>
 
-    <div class="sage-sweep" aria-hidden="true"></div>
-    <!-- Sage wave transition into the next section -->
-    <SageWave direction="down" height={38} />
+    <div class="hero-credibility-ribbon">
+      <div class="hero-credibility-inner">
+        <span class="hero-credibility-icon" aria-hidden="true">
+          <Icon name="lucide:award" class="w-5 h-5" stroke-width="1.8" />
+        </span>
+        <p class="hero-credibility-copy">
+          <strong>Board-certified pediatric care</strong>
+          backed by years of experience caring for North Texas families and guided by the latest AAP and CDC recommendations.
+        </p>
+      </div>
+    </div>
   </section>
 
   <section
-    class="py-10 md:py-12 bg-[var(--color-sage-light)]/40 border-y border-[var(--color-border-soft)] reveal"
+    class="home-section-nav reveal"
     data-home-section="credibility"
   >
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <p class="text-base md:text-lg text-luma-ink/85 leading-relaxed">
-        <Icon name="lucide:award" class="inline w-5 h-5 -mt-1 text-luma-gold" />
-        {' '}<strong class="font-semibold">Board-certified pediatric care</strong> backed by years of experience caring for North Texas families and guided by the latest AAP and CDC recommendations.
-      </p>
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav
+        class="flex flex-wrap justify-center gap-2"
+        aria-label="Explore homepage sections"
+      >
+        {[
+          { href: '#services', label: 'Care' },
+          { href: '#why-luma', label: 'Why Luma' },
+          { href: '#plan-ahead', label: 'Plan ahead' },
+          { href: '#practice-updates', label: 'Get updates' },
+        ].map((item) => (
+          <a
+            href={item.href}
+            class="inline-flex min-h-9 items-center rounded-full bg-[var(--color-card)] px-3.5 text-sm font-semibold text-[var(--color-primary)] no-underline ring-1 ring-inset ring-[var(--color-border-soft)] hover:bg-[var(--color-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
     </div>
   </section>
 
   <section
     id="services"
-    class="py-20 md:py-28 reveal relative"
+    class="scroll-mt-32 py-20 md:py-28 reveal relative"
     data-home-section="services"
   >
     <SparkleField count={6} />
@@ -189,8 +218,12 @@ const trustPhotos = [
               </p>
             </div>
             <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {group.services.map(({ icon, title, short, badge }) => (
-                <article class="card-lift group rounded-[var(--radius-card)] bg-[var(--color-card)] p-7">
+              {group.services.map(({ slug, icon, title, short, badge }) => (
+                <a
+                  href={`/services/#${slug}`}
+                  class="card-lift group flex h-full flex-col rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 text-[var(--color-foreground)] no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2"
+                  aria-label={`Learn more about ${title}`}
+                >
                   <span
                     class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-5 ring-1 ring-inset ring-[rgba(200, 153, 90,0.30)]"
                     style="box-shadow: inset 0 1px 1px rgba(255,255,255,0.6);"
@@ -204,7 +237,11 @@ const trustPhotos = [
                     )}
                   </div>
                   <p class="mt-2.5 text-[var(--color-foreground)]/80 leading-relaxed">{short}</p>
-                </article>
+                  <span class="mt-auto pt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)]">
+                    Learn more
+                    <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+                  </span>
+                </a>
               ))}
             </div>
           </section>
@@ -212,7 +249,7 @@ const trustPhotos = [
       </div>
 
       <div class="mt-12 text-center">
-        <Button href="/services" variant="secondary">
+        <Button href="/services/" variant="secondary">
           See all services
           <span class="btn-icon-circle" aria-hidden="true">
             <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
@@ -224,7 +261,7 @@ const trustPhotos = [
 
   <section
     id="why-luma"
-    class="trust-gallery py-20 md:py-28 reveal"
+    class="trust-gallery scroll-mt-32 py-20 md:py-28 reveal"
     data-home-section="why-luma"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -238,10 +275,20 @@ const trustPhotos = [
         </p>
       </div>
 
-      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div
+        class="trust-photo-grid grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+        tabindex="0"
+        aria-label="Family-centered practice gallery"
+      >
         {trustPhotos.map(({ src, alt, title, body }) => (
           <figure class="photo-trust-card card-lift">
-            <Picture src={src} alt={alt} loading="lazy" />
+            <Picture
+              src={src}
+              alt={alt}
+              width={1200}
+              height={1005}
+              loading="lazy"
+            />
             <figcaption>
               <h3>{title}</h3>
               <p>{body}</p>
@@ -280,7 +327,7 @@ const trustPhotos = [
 
   <section
     id="plan-ahead"
-    class="py-20 md:py-24 bg-[var(--color-muted)] reveal"
+    class="scroll-mt-32 py-20 md:py-24 bg-[var(--color-muted)] reveal"
     data-home-section="practical"
   >
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -300,7 +347,7 @@ const trustPhotos = [
           <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
             We're completing insurance credentialing now, the full list of accepted plans is coming soon. Self-pay families are welcome across North Texas communities, and we're glad to answer questions in the meantime.
           </p>
-          <a href="/contact" class="mt-6 inline-flex font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
+          <a href="/contact/" class="mt-6 inline-flex font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
             Have insurance questions? Get in touch →
           </a>
         </article>
@@ -370,11 +417,11 @@ const trustPhotos = [
           Browse our FAQs for quick answers, or reach out for general information about the future practice.
         </p>
         <div class="mt-9 flex flex-wrap justify-center gap-3">
-          <Button href="/faq" variant="primary">
+          <Button href="/faq/" variant="primary">
             <Icon name="lucide:info" class="w-5 h-5" stroke-width="1.6" />
             Browse FAQs
           </Button>
-          <Button href="/contact" variant="secondary">
+          <Button href="/contact/" variant="secondary">
             Contact us
             <span class="btn-icon-circle" aria-hidden="true">
               <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />

@@ -26,6 +26,18 @@ const contract = {
   homeSocialDescription:
     'Expert pediatric care that feels like family. Opening late 2026 in McKinney, Texas.',
 };
+const serviceSlugs = [
+  'free-meet-and-greet',
+  'newborn-rounds-bsw-mckinney',
+  'newborn-care',
+  'well-child-visits',
+  'sick-visits',
+  'vaccinations',
+  'school-sports-camp-physicals',
+  'adhd-behavior-developmental-care',
+  'teen-adolescent-health',
+  'telehealth-virtual-visits',
+];
 
 function expect(condition, message) {
   if (!condition) throw new Error(message);
@@ -282,6 +294,17 @@ expect(
 expect(home.html.includes(`googletagmanager.com/gtag/js?id=${contract.ga4}`), 'GA4 loader is missing');
 expect(home.html.includes("'contact_action'"), 'GA4 contact conversion event is missing');
 expect(home.html.includes("'generate_lead'"), 'GA4 lead conversion event is missing');
+const heroPreload = findTags(home.html, 'link').find(
+  (attributes) =>
+    (attributes.rel ?? '').split(/\s+/).includes('preload') &&
+    attributes.as === 'image',
+);
+expect(
+  heroPreload?.href === `${domain}/images/hero-poster.webp` &&
+    heroPreload?.type === 'image/webp' &&
+    heroPreload?.fetchpriority === 'high',
+  'Home page must preload the poster WebP',
+);
 const homeText = normalizedText(home.html);
 for (const value of [
   'Board-certified',
@@ -321,6 +344,39 @@ expect(home.html.includes('/images/hero-poster.webp'), 'Home page must use the a
 expect(!home.html.includes('/images/warm-family.'), 'Home page must not include the unused family-photo hero');
 expect(!home.html.includes('hero-status-pill'), 'Home page must not repeat the opening-status pill');
 expect(
+  home.html.includes('class="hero-credibility-ribbon"') &&
+    /hero-credibility-ribbon[\s\S]*Board-certified pediatric care/.test(
+      home.html,
+    ),
+  'Board-certified care must appear inside the hero credential ribbon',
+);
+expect(
+  !home.html.includes('class="sage-sweep"'),
+  'Home hero must not stack a second sage transition behind the credential ribbon',
+);
+const homeImages = findTags(home.html, 'img');
+const heroImage = homeImages.find(
+  (attributes) => attributes.src === '/images/hero-poster.jpg',
+);
+expect(
+  heroImage?.width === '1122' && heroImage?.height === '1402',
+  'Home poster must publish intrinsic dimensions',
+);
+for (const trustImage of [
+  'trust-family.jpg',
+  'trust-checkup.jpg',
+  'trust-gentle.jpg',
+  'trust-playful.jpg',
+]) {
+  const image = homeImages.find(
+    (attributes) => attributes.src === `/images/${trustImage}`,
+  );
+  expect(
+    image?.width === '1200' && image?.height === '1005',
+    `Trust image must publish intrinsic dimensions: ${trustImage}`,
+  );
+}
+expect(
   !homeText.includes('Meet Dr. Tallapureddy'),
   'Provider spotlight must remain off the homepage',
 );
@@ -334,6 +390,30 @@ for (const value of [
   'Stay Updated on Luma',
 ]) {
   expect(homeText.includes(value), `Home page is missing restructured content: ${value}`);
+}
+for (const href of [
+  '#services',
+  '#why-luma',
+  '#plan-ahead',
+  '#practice-updates',
+]) {
+  expect(
+    home.html.includes(`href="${href}"`),
+    `Home section navigation is missing ${href}`,
+  );
+}
+expect(
+  home.html.includes('class="trust-photo-grid') &&
+    home.html.includes('aria-label="Family-centered practice gallery"'),
+  'Home gallery must retain the accessible mobile scroll region',
+);
+for (const slug of serviceSlugs.filter(
+  (slug) => slug !== 'adhd-behavior-developmental-care',
+)) {
+  expect(
+    home.html.includes(`href="/services/#${slug}"`),
+    `Home service card is missing deep link: ${slug}`,
+  );
 }
 const homeSectionOrder = [
   ...home.html.matchAll(/data-home-section="([^"]+)"/g),
@@ -392,6 +472,14 @@ expect(
 const aboutPage = pages.find((page) => page.canonical === `${domain}/about/`);
 expect(aboutPage, 'About page was not generated');
 expect(
+  findTags(aboutPage.html, 'a').some(
+    (attributes) =>
+      attributes.href === '/about/' &&
+      attributes['aria-current'] === 'page',
+  ),
+  'About page must mark the active primary navigation item',
+);
+expect(
   normalizedText(aboutPage.html).includes(
     'Caring for children and families in North Texas since 2022',
   ),
@@ -409,6 +497,14 @@ expect(
 
 const blogIndex = pages.find((page) => page.canonical === `${domain}/blog/`);
 expect(blogIndex, 'Blog index was not generated');
+expect(
+  findTags(blogIndex.html, 'a').some(
+    (attributes) =>
+      attributes.href === '/resources/' &&
+      attributes['aria-current'] === 'page',
+  ),
+  'Blog page must mark Resources as the active primary navigation item',
+);
 expect(
   normalizedText(blogIndex.html).includes(
     'Start with our current physician-reviewed guide.',
@@ -548,6 +644,17 @@ expect(
 );
 
 const contactHtml = readFileSync(join(dist, 'contact', 'index.html'), 'utf8');
+const contactText = normalizedText(contactHtml);
+expect(
+  contactHtml.includes('class="contact-card-grid"') &&
+    contactText.includes('Contact us') &&
+    contactText.includes('Future McKinney location'),
+  'Contact page must separate communication and location details into focused cards',
+);
+expect(
+  !contactText.includes('General information and future location'),
+  'Contact page must not restore the overloaded combined-card heading',
+);
 expect(
   contactHtml.includes('href="/privacy/"') &&
     contactHtml.includes('href="/terms/"'),
@@ -570,6 +677,13 @@ for (const bannerAsset of [
     `Contact opening banner asset is missing: ${bannerAsset}`,
   );
 }
+const contactBanner = findTags(contactHtml, 'img').find(
+  (attributes) => attributes.src === '/images/luma-opening-banner.jpg',
+);
+expect(
+  contactBanner?.width === '1440' && contactBanner?.height === '756',
+  'Contact opening banner must publish intrinsic dimensions',
+);
 const termsHtml = readFileSync(join(dist, 'terms', 'index.html'), 'utf8');
 expect(
   termsHtml.includes('href="/privacy/"'),
@@ -633,25 +747,71 @@ for (const file of textSourceFiles) {
   for (const pattern of forbidden) {
     expect(!pattern.test(content), `${relative(root, file)} contains inconsistent NAP/status text: ${pattern}`);
   }
-
-  const vaccinesHtml = readFileSync(join(dist, 'vaccines', 'index.html'), 'utf8');
-  expect(
-    vaccinesHtml.includes(
-      'https://www.cdc.gov/vaccines/imz-schedules/child-easyread.html',
-    ),
-    'Vaccines page must link to the current CDC parent-friendly schedule',
-  );
-  const dosingHtml = readFileSync(join(dist, 'dosing-charts', 'index.html'), 'utf8');
-  for (const sourceUrl of [
-    'https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Acetaminophen-for-Fever-and-Pain.aspx',
-    'https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Ibuprofen-for-Fever-and-Pain.aspx',
-  ]) {
-    expect(
-      dosingHtml.includes(sourceUrl),
-      `Dosing page is missing current AAP source: ${sourceUrl}`,
-    );
+  if (extname(file) === '.astro') {
+    for (const match of content.matchAll(/href=(?:"(\/[^"#?]*?)"|'(\/[^'#?]*?)')/g)) {
+      const href = match[1] ?? match[2];
+      if (href === '/' || href.endsWith('/') || href.includes('.')) continue;
+      throw new Error(
+        `${relative(root, file)} contains noncanonical internal link: ${href}`,
+      );
+    }
   }
 }
+
+const vaccinesHtml = readFileSync(join(dist, 'vaccines', 'index.html'), 'utf8');
+expect(
+  vaccinesHtml.includes(
+    'https://www.cdc.gov/vaccines/imz-schedules/child-easyread.html',
+  ),
+  'Vaccines page must link to the current CDC parent-friendly schedule',
+);
+const dosingHtml = readFileSync(join(dist, 'dosing-charts', 'index.html'), 'utf8');
+for (const sourceUrl of [
+  'https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Acetaminophen-for-Fever-and-Pain.aspx',
+  'https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Ibuprofen-for-Fever-and-Pain.aspx',
+]) {
+  expect(
+    dosingHtml.includes(sourceUrl),
+    `Dosing page is missing current AAP source: ${sourceUrl}`,
+  );
+}
+
+const servicesHtml = readFileSync(join(dist, 'services', 'index.html'), 'utf8');
+for (const slug of serviceSlugs) {
+  expect(
+    servicesHtml.includes(`id="${slug}"`),
+    `Services page is missing deep-link target: ${slug}`,
+  );
+}
+const globalCss = readFileSync(join(root, 'src', 'styles', 'global.css'), 'utf8');
+expect(
+  /\.eyebrow-sun\s*\{[\s\S]*?color:\s*var\(--color-sage-hover\)/.test(globalCss),
+  'Light-background eyebrow text must use the darker sage token',
+);
+expect(
+  /\.tagline-italic-sage\s*\{[\s\S]*?color:\s*var\(--color-sage-hover\)/.test(globalCss),
+  'Sage tagline text must use the darker sage token',
+);
+expect(
+  /\.trust-photo-grid\s*\{[\s\S]*?scroll-snap-type:\s*inline mandatory/.test(globalCss),
+  'Mobile gallery scroll-snap styling is missing',
+);
+expect(
+  /\.hero-credibility-ribbon\s*\{[\s\S]*?background:\s*var\(--color-sage-hover\)/.test(
+    globalCss,
+  ),
+  'Hero credential ribbon must use one high-contrast sage treatment',
+);
+expect(
+  /\.home-section-nav\s*\{[\s\S]*?background:\s*var\(--color-card\)/.test(
+    globalCss,
+  ),
+  'Home section navigation must use a neutral surface below the sage ribbon',
+);
+expect(
+  homeText.includes('Texting info') && !homeText.includes('Text us'),
+  'Disclosure-first texting links must use the Texting info label on Home',
+);
 
 console.log(
   `SEO verification passed for ${pages.length} canonical pages and ${sitemapUrls.size} sitemap URLs.`,

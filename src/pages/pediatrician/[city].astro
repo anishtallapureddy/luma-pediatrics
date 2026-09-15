@@ -181,7 +181,7 @@ const faqSchema = {
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {featuredServices.slice(0, 6).map((svc) => (
-          <a href="/services/" class="block p-5 rounded-2xl bg-white border border-luma-ink/10 hover:border-luma-gold/50 hover:shadow-md transition">
+          <a href={`/services/#${svc.slug}`} class="block p-5 rounded-2xl bg-white border border-luma-ink/10 hover:border-luma-gold/50 hover:shadow-md transition">
             <h3 class="font-semibold text-luma-ink mb-1">{svc.title}</h3>
             <p class="text-sm text-luma-ink/70">{svc.short}</p>
           </a>

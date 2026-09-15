@@ -20,6 +20,8 @@ interface Props {
   ogImageHeight?: number;
   socialTitle?: string;
   socialDescription?: string;
+  preloadImage?: string;
+  preloadImageType?: string;
   ogType?: 'website' | 'article';
   publishedTime?: string;
   modifiedTime?: string;
@@ -38,6 +40,8 @@ const {
   ogImageHeight,
   socialTitle,
   socialDescription,
+  preloadImage,
+  preloadImageType = 'image/webp',
   ogType = 'website',
   publishedTime,
   modifiedTime,
@@ -55,6 +59,9 @@ const normalizePath = (value: string) => {
 };
 const canonical = new URL(normalizePath(path), Astro.site).toString();
 const ogImageUrl = new URL(ogImage, Astro.site).toString();
+const preloadImageUrl = preloadImage
+  ? new URL(preloadImage, Astro.site).toString()
+  : null;
 const ogImageType = ogImage.endsWith('.png')
   ? 'image/png'
   : ogImage.endsWith('.webp')
@@ -228,6 +235,15 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
 
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {preloadImageUrl && (
+      <link
+        rel="preload"
+        as="image"
+        href={preloadImageUrl}
+        type={preloadImageType}
+        fetchpriority="high"
+      />
+    )}
     <link
       rel="alternate"
       type="application/rss+xml"

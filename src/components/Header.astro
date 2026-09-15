@@ -5,6 +5,26 @@ import { SITE } from '../site.config';
 
 // Hide the "Home" link in the visible nav (the logo is the Home affordance)
 const navLinks = SITE.nav.filter((n) => n.href !== '/');
+const normalizePath = (path: string) => path.replace(/\/+$/, '') || '/';
+const currentPath = normalizePath(Astro.url.pathname);
+const resourcePaths = [
+  '/resources',
+  '/blog',
+  '/health-watch',
+  '/vaccines',
+  '/dosing-charts',
+];
+const isActive = (href: string) => {
+  const path = normalizePath(href);
+  if (path === '/resources') {
+    return resourcePaths.some(
+      (resourcePath) =>
+        currentPath === resourcePath ||
+        currentPath.startsWith(`${resourcePath}/`),
+    );
+  }
+  return currentPath === path || currentPath.startsWith(`${path}/`);
+};
 ---
 <header
   class="sticky top-0 z-40 bg-[var(--color-background)]/88 border-b border-[rgba(200, 153, 90,0.10)] [transition:box-shadow_var(--duration-base)_var(--ease-fluid),border-color_var(--duration-base)_var(--ease-fluid),backdrop-filter_var(--duration-base)_var(--ease-fluid)]"
@@ -23,7 +43,11 @@ const navLinks = SITE.nav.filter((n) => n.href !== '/');
         {navLinks.map(({ href, label }) => (
           <a
             href={href}
-             class="px-3 py-2 rounded-full text-[var(--color-foreground)] no-underline font-medium whitespace-nowrap hover:bg-[rgba(200, 153, 90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid),color_var(--duration-fast)_var(--ease-fluid)]"
+            aria-current={isActive(href) ? 'page' : undefined}
+            class:list={[
+              'px-3 py-2 rounded-full text-[var(--color-foreground)] no-underline font-medium whitespace-nowrap hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid),color_var(--duration-fast)_var(--ease-fluid)]',
+              isActive(href) && 'bg-[rgba(200,153,90,0.14)]',
+            ]}
           >
             {label}
           </a>
@@ -53,7 +77,7 @@ const navLinks = SITE.nav.filter((n) => n.href !== '/');
             title="Texting information"
           >
             <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
-            <span class="hidden lg:inline">Text us</span>
+            <span class="hidden lg:inline">Texting info</span>
           </a>
         </div>
         {/* Book Appointment CTA intentionally omitted until online scheduling is live. */}
@@ -79,7 +103,11 @@ const navLinks = SITE.nav.filter((n) => n.href !== '/');
           {navLinks.map(({ href, label }) => (
             <a
               href={href}
-              class="px-2 py-3 rounded-lg text-base text-[var(--color-foreground)] no-underline font-medium hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
+              aria-current={isActive(href) ? 'page' : undefined}
+              class:list={[
+                'px-2 py-3 rounded-lg text-base text-[var(--color-foreground)] no-underline font-medium hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]',
+                isActive(href) && 'bg-[rgba(200,153,90,0.14)]',
+              ]}
             >
               {label}
             </a>

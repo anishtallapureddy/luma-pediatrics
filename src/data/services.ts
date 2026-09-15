@@ -8,6 +8,7 @@
  */
 
 export interface ServiceItem {
+  slug: string;
   icon: string;
   title: string;
   short: string;
@@ -18,6 +19,7 @@ export interface ServiceItem {
 
 export const services: ServiceItem[] = [
   {
+    slug: 'free-meet-and-greet',
     icon: 'lucide:handshake',
     title: 'Free Meet & Greet',
     short:
@@ -27,6 +29,7 @@ export const services: ServiceItem[] = [
     featured: true,
   },
   {
+    slug: 'newborn-rounds-bsw-mckinney',
     icon: 'lucide:hospital',
     title: 'Newborn Rounds at BSW McKinney',
     short:
@@ -36,6 +39,7 @@ export const services: ServiceItem[] = [
     featured: true,
   },
   {
+    slug: 'newborn-care',
     icon: 'lucide:baby',
     title: 'Newborn Care',
     short:
@@ -45,6 +49,7 @@ export const services: ServiceItem[] = [
     featured: true,
   },
   {
+    slug: 'well-child-visits',
     icon: 'lucide:stethoscope',
     title: 'Well-Child Visits',
     short:
@@ -54,6 +59,7 @@ export const services: ServiceItem[] = [
     featured: true,
   },
   {
+    slug: 'sick-visits',
     icon: 'lucide:heart',
     title: 'Sick Visits',
     short:
@@ -63,6 +69,7 @@ export const services: ServiceItem[] = [
     featured: true,
   },
   {
+    slug: 'vaccinations',
     icon: 'lucide:syringe',
     title: 'Vaccinations',
     short:
@@ -72,6 +79,7 @@ export const services: ServiceItem[] = [
     featured: true,
   },
   {
+    slug: 'school-sports-camp-physicals',
     icon: 'lucide:graduation-cap',
     title: 'School, Sports & Camp Physicals',
     short: 'Physical exams for school, camp, and athletic clearance.',
@@ -80,6 +88,7 @@ export const services: ServiceItem[] = [
     featured: true,
   },
   {
+    slug: 'adhd-behavior-developmental-care',
     icon: 'lucide:sparkles',
     title: 'ADHD, Behavior & Developmental Care',
     short:
@@ -88,6 +97,7 @@ export const services: ServiceItem[] = [
       'Evaluations and ongoing support for ADHD, learning concerns, and behavioral challenges. Early screening for developmental delays, family-centered guidance, and trusted referrals to specialists when more support is needed.',
   },
   {
+    slug: 'teen-adolescent-health',
     icon: 'lucide:users',
     title: 'Teen & Adolescent Health',
     short:
@@ -97,6 +107,7 @@ export const services: ServiceItem[] = [
     featured: true,
   },
   {
+    slug: 'telehealth-virtual-visits',
     icon: 'lucide:video',
     title: 'Telehealth / Virtual Visits',
     short:

@@ -30,8 +30,11 @@ import { services } from '../data/services';
     <PageDecor variant="minimal" sparkles={8} />
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="grid gap-5">
-        {services.map(({ icon, title, full, badge }) => (
-          <article class="card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 flex gap-5">
+        {services.map(({ slug, icon, title, full, badge }) => (
+          <article
+            id={slug}
+            class="card-lift scroll-mt-32 rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 flex gap-5"
+          >
             <span
               class="shrink-0 inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[var(--color-muted)] text-[var(--color-primary)] ring-1 ring-inset ring-[rgba(11,29,58,0.08)]"
               style="box-shadow: inset 0 1px 1px rgba(255,255,255,0.6);"
