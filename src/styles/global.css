@@ -503,7 +503,7 @@
   }
 
   .brand-hero {
-    min-height: calc(100dvh - 9rem);
+    min-height: min(46rem, calc(100dvh - 9rem));
     display: flex;
     flex-direction: column;
     background:
@@ -751,6 +751,8 @@
 
   .hero-poster-image {
     position: relative;
+    width: min(100%, 31rem);
+    margin-inline: auto;
     overflow: hidden;
     border-radius: 1.5rem;
     box-shadow: var(--shadow-elevated);
@@ -760,6 +762,12 @@
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  @media (max-width: 767px) {
+    .hero-poster-image {
+      width: min(78vw, 20rem);
+    }
   }
 
   .hero-family-photo {

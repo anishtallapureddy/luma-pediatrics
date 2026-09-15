@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
 import AreasServed from '../components/AreasServed.astro';
 import GoogleStoreLocator from '../components/GoogleStoreLocator.astro';
+import Picture from '../components/Picture.astro';
 import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 
@@ -140,6 +141,15 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
             Get directions
           </a>
       </article>
+
+      <figure class="mt-8 overflow-hidden rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] shadow-[var(--shadow-soft)]">
+        <Picture
+          src="/images/luma-opening-banner.jpg"
+          alt="Luma Pediatrics, opening late 2026 in McKinney, Texas, with a teddy bear and wooden rainbow in a warm nursery"
+          class="block w-full h-auto"
+          loading="lazy"
+        />
+      </figure>
     </div>
   </section>
 

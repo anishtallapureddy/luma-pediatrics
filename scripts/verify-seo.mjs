@@ -523,6 +523,19 @@ expect(
   !contactHtml.includes('github.com/anishtallapureddy/luma-pediatrics/blob'),
   'Contact SMS disclosure must not expose GitHub source links',
 );
+expect(
+  contactHtml.includes('/images/luma-opening-banner.webp'),
+  'Contact page must include the approved opening/location banner',
+);
+for (const bannerAsset of [
+  'images/luma-opening-banner.jpg',
+  'images/luma-opening-banner.webp',
+]) {
+  expect(
+    existsSync(join(root, 'public', bannerAsset)),
+    `Contact opening banner asset is missing: ${bannerAsset}`,
+  );
+}
 const termsHtml = readFileSync(join(dist, 'terms', 'index.html'), 'utf8');
 expect(
   termsHtml.includes('href="/privacy/"'),
