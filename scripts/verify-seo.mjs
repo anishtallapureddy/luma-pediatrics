@@ -21,6 +21,10 @@ const contract = {
   phoneE164: '+14692001151',
   status: 'Opening late 2026',
   ga4: 'G-QL30ZJXMW8',
+  socialImage: '/og-luma-pediatrics-2026-09.png',
+  homeSocialTitle: 'Luma Pediatrics | McKinney, TX',
+  homeSocialDescription:
+    'Expert pediatric care that feels like family. Opening late 2026 in McKinney, Texas.',
 };
 
 function expect(condition, message) {
@@ -129,6 +133,10 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
   expect(titleMatch, `${fileLabel}: title is missing`);
   const title = decodeHtml(titleMatch[1].trim());
   const description = singleMeta(html, 'name', 'description', fileLabel);
+  const expectedSocialTitle =
+    canonical === `${domain}/` ? contract.homeSocialTitle : title;
+  const expectedSocialDescription =
+    canonical === `${domain}/` ? contract.homeSocialDescription : description;
   const robots = singleMeta(html, 'name', 'robots', fileLabel);
   const noindex = robots.includes('noindex');
 
@@ -138,12 +146,12 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
     `${fileLabel}: og:site_name does not match the NAP contract`,
   );
   expect(
-    singleMeta(html, 'property', 'og:title', fileLabel) === title,
-    `${fileLabel}: og:title does not match title`,
+    singleMeta(html, 'property', 'og:title', fileLabel) === expectedSocialTitle,
+    `${fileLabel}: og:title does not match expected social title`,
   );
   expect(
-    singleMeta(html, 'property', 'og:description', fileLabel) === description,
-    `${fileLabel}: og:description does not match description`,
+    singleMeta(html, 'property', 'og:description', fileLabel) === expectedSocialDescription,
+    `${fileLabel}: og:description does not match expected social description`,
   );
   expect(
     singleMeta(html, 'property', 'og:url', fileLabel) === canonical,
@@ -154,6 +162,10 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
   expect(
     singleMeta(html, 'property', 'og:image:secure_url', fileLabel) === ogImage,
     `${fileLabel}: og:image:secure_url does not match og:image`,
+  );
+  expect(
+    singleMeta(html, 'property', 'og:image:url', fileLabel) === ogImage,
+    `${fileLabel}: og:image:url does not match og:image`,
   );
   expect(singleMeta(html, 'property', 'og:image:type', fileLabel), `${fileLabel}: image type missing`);
   expect(singleMeta(html, 'property', 'og:image:alt', fileLabel), `${fileLabel}: image alt missing`);
@@ -170,12 +182,12 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
     `${fileLabel}: Twitter card type is incorrect`,
   );
   expect(
-    singleMeta(html, 'name', 'twitter:title', fileLabel) === title,
-    `${fileLabel}: twitter:title does not match title`,
+    singleMeta(html, 'name', 'twitter:title', fileLabel) === expectedSocialTitle,
+    `${fileLabel}: twitter:title does not match expected social title`,
   );
   expect(
-    singleMeta(html, 'name', 'twitter:description', fileLabel) === description,
-    `${fileLabel}: twitter:description does not match description`,
+    singleMeta(html, 'name', 'twitter:description', fileLabel) === expectedSocialDescription,
+    `${fileLabel}: twitter:description does not match expected social description`,
   );
   expect(
     singleMeta(html, 'name', 'twitter:image', fileLabel) === ogImage,
@@ -252,6 +264,21 @@ expect(pages.length > 0, 'No canonical Astro pages were found');
 
 const home = pages.find((page) => page.canonical === `${domain}/`);
 expect(home, 'Home page was not generated');
+expect(
+  singleMeta(home.html, 'property', 'og:title', home.fileLabel) ===
+    contract.homeSocialTitle,
+  'Home social title is not the concise messaging-app title',
+);
+expect(
+  singleMeta(home.html, 'property', 'og:description', home.fileLabel) ===
+    contract.homeSocialDescription,
+  'Home social description is not the current brand message',
+);
+expect(
+  singleMeta(home.html, 'property', 'og:image', home.fileLabel) ===
+    `${domain}${contract.socialImage}`,
+  'Home social image is not the current versioned asset',
+);
 expect(home.html.includes(`googletagmanager.com/gtag/js?id=${contract.ga4}`), 'GA4 loader is missing');
 expect(home.html.includes("'contact_action'"), 'GA4 contact conversion event is missing');
 expect(home.html.includes("'generate_lead'"), 'GA4 lead conversion event is missing');
@@ -325,9 +352,22 @@ expect(
   'robots.txt sitemap URL is incorrect',
 );
 
-const defaultOgImage = readFileSync(join(root, 'public', 'og-default.png'));
-expect(defaultOgImage.readUInt32BE(16) === 1200, 'og-default.png must be 1200px wide');
-expect(defaultOgImage.readUInt32BE(20) === 630, 'og-default.png must be 630px tall');
+const currentSocialImage = readFileSync(
+  join(root, 'public', contract.socialImage.replace(/^\//, '')),
+);
+expect(currentSocialImage.readUInt32BE(16) === 1200, 'Current social image must be 1200px wide');
+expect(currentSocialImage.readUInt32BE(20) === 630, 'Current social image must be 630px tall');
+const compatibilitySocialImage = readFileSync(join(root, 'public', 'og-default.png'));
+expect(
+  currentSocialImage.equals(compatibilitySocialImage),
+  'og-default.png must remain a current-brand compatibility alias',
+);
+const favicon = readFileSync(join(root, 'public', 'favicon.png'));
+expect(favicon.readUInt32BE(16) === 256, 'favicon.png must be 256px wide');
+expect(favicon.readUInt32BE(20) === 256, 'favicon.png must be 256px tall');
+const appleTouchIcon = readFileSync(join(root, 'public', 'apple-touch-icon.png'));
+expect(appleTouchIcon.readUInt32BE(16) === 512, 'apple-touch-icon.png must be 512px wide');
+expect(appleTouchIcon.readUInt32BE(20) === 512, 'apple-touch-icon.png must be 512px tall');
 
 const rss = readFileSync(join(dist, 'rss.xml'), 'utf8');
 expect(rss.includes('<rss version="2.0"'), 'rss.xml is not a valid RSS 2.0 document');

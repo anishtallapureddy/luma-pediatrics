@@ -18,6 +18,8 @@ interface Props {
   ogImageAlt?: string;
   ogImageWidth?: number;
   ogImageHeight?: number;
+  socialTitle?: string;
+  socialDescription?: string;
   ogType?: 'website' | 'article';
   publishedTime?: string;
   modifiedTime?: string;
@@ -30,10 +32,12 @@ const {
   title,
   description = SITE.description,
   path = '',
-  ogImage = '/og-default.png',
+  ogImage = SITE.socialImage,
   ogImageAlt = `${SITE.name}: ${SITE.tagline}`,
   ogImageWidth,
   ogImageHeight,
+  socialTitle,
+  socialDescription,
   ogType = 'website',
   publishedTime,
   modifiedTime,
@@ -42,6 +46,8 @@ const {
 } = Astro.props;
 
 const siteTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
+const resolvedSocialTitle = socialTitle ?? siteTitle;
+const resolvedSocialDescription = socialDescription ?? description;
 const normalizePath = (value: string) => {
   const normalized = value.replace(/^\/+|\/+$/g, '');
   if (!normalized) return '/';
@@ -54,8 +60,8 @@ const ogImageType = ogImage.endsWith('.png')
   : ogImage.endsWith('.webp')
     ? 'image/webp'
     : 'image/jpeg';
-const resolvedOgImageWidth = ogImageWidth ?? (ogImage === '/og-default.png' ? 1200 : undefined);
-const resolvedOgImageHeight = ogImageHeight ?? (ogImage === '/og-default.png' ? 630 : undefined);
+const resolvedOgImageWidth = ogImageWidth ?? (ogImage === SITE.socialImage ? 1200 : undefined);
+const resolvedOgImageHeight = ogImageHeight ?? (ogImage === SITE.socialImage ? 630 : undefined);
 
 const sameAs = [GOOGLE_MAP_URL, ...Object.values(SITE.social)].filter(Boolean);
 const openingHoursSpecification = SITE.schema.publishOpeningHours
@@ -96,7 +102,7 @@ const businessSchema = {
   image: [
     new URL('/images/luma-logo-mark.png', SITE.domain).toString(),
     new URL('/images/hero-child.jpg', SITE.domain).toString(),
-    new URL('/og-default.png', SITE.domain).toString(),
+    new URL(SITE.socialImage, SITE.domain).toString(),
   ],
   slogan: SITE.tagline,
   telephone: SITE.contact.phoneE164,
@@ -233,10 +239,11 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={SITE.name} />
-    <meta property="og:title" content={siteTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={resolvedSocialTitle} />
+    <meta property="og:description" content={resolvedSocialDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:url" content={ogImageUrl} />
     <meta property="og:image:secure_url" content={ogImageUrl} />
     <meta property="og:image:type" content={ogImageType} />
     {resolvedOgImageWidth && (
@@ -256,8 +263,8 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={siteTitle} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={resolvedSocialTitle} />
+    <meta name="twitter:description" content={resolvedSocialDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:image:alt" content={ogImageAlt} />
 

@@ -47,7 +47,7 @@ export const GET: APIRoute = async () => {
     `<lastBuildDate>${latestDate.toUTCString()}</lastBuildDate>`,
     `<atom:link href="${escapeXml(`${SITE.domain}/rss.xml`)}" rel="self" type="application/rss+xml" />`,
     '<image>',
-    `<url>${escapeXml(`${SITE.domain}/og-default.png`)}</url>`,
+    `<url>${escapeXml(`${SITE.domain}${SITE.socialImage}`)}</url>`,
     `<title>${escapeXml(SITE.name)}</title>`,
     `<link>${escapeXml(`${SITE.domain}/`)}</link>`,
     '</image>',
