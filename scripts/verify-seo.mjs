@@ -726,6 +726,15 @@ expect(
 
 const contactHtml = readFileSync(join(dist, 'contact', 'index.html'), 'utf8');
 const contactText = normalizedText(contactHtml);
+const contactSource = readFileSync(
+  join(root, 'src', 'pages', 'contact.astro'),
+  'utf8',
+);
+expect(
+  /\.contact-medical-note\s*\{[\s\S]*?flex:\s*1 1 auto/.test(contactSource) &&
+    !contactSource.includes('flex: 1 1 30rem'),
+  'Contact medical note must not reserve desktop-sized vertical space on mobile',
+);
 for (const hoursText of [
   'Mon–Tue, Thu–Fri 7:30 am – 4:30 pm',
   'Wednesday 7:30 am – 11:30 am',
