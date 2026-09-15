@@ -15,7 +15,7 @@ import { SITE } from '../site.config';
   <div class="flex gap-2 rounded-full bg-[var(--color-card)]/95 backdrop-blur ring-1 ring-[var(--color-border-soft)] shadow-[0_-6px_24px_-12px_rgba(11,29,58,0.25)] p-1.5">
     <a
       href={SITE.contact.phoneHref}
-      class="flex-1 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm"
+      class="min-w-0 flex-1 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm"
       aria-label={`Call ${SITE.name} at ${SITE.contact.phone}`}
       title={`Call ${SITE.contact.phone}`}
     >
@@ -23,13 +23,13 @@ import { SITE } from '../site.config';
       Call us
     </a>
     <a
-      href={SITE.contact.smsDisclosureHref}
-      class="flex-1 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm"
-      aria-label={`View texting information for ${SITE.name}`}
-      title="Texting information"
+      href={SITE.contact.smsHref}
+      class="min-w-0 flex-1 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm"
+      aria-label={`Text ${SITE.name} at ${SITE.contact.phone}`}
+      title={`Text ${SITE.contact.phone}`}
     >
       <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
-      Texting info
+      Text us
     </a>
   </div>
 </div>

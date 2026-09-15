@@ -76,13 +76,13 @@ const footerCities = [
           </a>
           <span class="h-4 w-px bg-[var(--color-border-soft)]" aria-hidden="true"></span>
           <a
-            href={SITE.contact.smsDisclosureHref}
+            href={SITE.contact.smsHref}
             class="inline-flex min-h-9 items-center gap-1.5 px-3 text-sm font-semibold text-[var(--color-primary)] no-underline hover:bg-[rgba(200,153,90,0.10)]"
-            aria-label={`View texting information for ${SITE.name}`}
-            title="Texting information"
+            aria-label={`Text ${SITE.name} at ${SITE.contact.phone}`}
+            title={`Text ${SITE.contact.phone}`}
           >
             <Icon name="lucide:message-circle" class="w-3.5 h-3.5" stroke-width="1.8" aria-hidden="true" />
-            Texting info
+            Text us
           </a>
         </div>
         <p class="mt-2 text-xs leading-relaxed text-[var(--color-muted-foreground)]">

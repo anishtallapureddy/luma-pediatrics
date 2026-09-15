@@ -21,113 +21,133 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     { name: 'Contact', path: '/contact' },
   ]}
 >
-  <section class="page-hero py-14 md:py-20 overflow-hidden">
+  <section class="page-hero py-12 md:py-16 overflow-hidden">
     <PageDecor />
     <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
       <span class="eyebrow">Contact</span>
-      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">Stay connected as we prepare to open.</h1>
-      <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
-        {SITE.status} in McKinney.
-      </p>
-      <p class="mt-7 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-2xl mx-auto">
-        Call, text, or email for general information about the future practice. We are not currently open or scheduling appointments.
+      <h1 class="contact-hero-title mt-5 text-4xl md:text-5xl tracking-tight">Contact Luma Pediatrics.</h1>
+      <p class="mt-6 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-2xl mx-auto">
+        Call, text, or email with general questions about planned services, our future McKinney location, or opening updates.
       </p>
     </div>
   </section>
 
-  <!-- General contact and future location -->
-  <section class="pb-16 reveal relative overflow-hidden">
+  <!-- Clear contact choices followed by concise safety and texting guidance. -->
+  <section class="pb-14 reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={6} />
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="contact-card-grid">
-        <article class="contact-card card-lift">
-          <div class="contact-card-heading">
-            <span class="contact-card-icon" aria-hidden="true">
-              <Icon name="lucide:message-circle" class="w-5 h-5" stroke-width="1.7" />
+      <h2 class="sr-only">Ways to contact Luma Pediatrics</h2>
+      <div class="contact-primary-actions">
+        <a
+          href={SITE.contact.phoneHref}
+          class="contact-action card-lift"
+          aria-label={`Call ${SITE.name} at ${SITE.contact.phone}`}
+        >
+          <span class="contact-action-icon" aria-hidden="true">
+            <Icon name="lucide:phone" class="w-5 h-5" stroke-width="1.7" />
+          </span>
+          <span class="contact-action-copy">
+            <span class="contact-action-label">Call us</span>
+            <strong>{SITE.contact.phone}</strong>
+          </span>
+          <Icon name="lucide:arrow-up-right" class="contact-action-arrow w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+        </a>
+
+        <a
+          href={SITE.contact.smsHref}
+          class="contact-action card-lift"
+          aria-label={`Text ${SITE.name} at ${SITE.contact.phone}`}
+        >
+          <span class="contact-action-icon" aria-hidden="true">
+            <Icon name="lucide:message-circle" class="w-5 h-5" stroke-width="1.7" />
+          </span>
+          <span class="contact-action-copy">
+            <span class="contact-action-label">Text us</span>
+            <strong>{SITE.contact.phone}</strong>
+          </span>
+          <Icon name="lucide:arrow-up-right" class="contact-action-arrow w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+        </a>
+      </div>
+
+      <div class="contact-secondary-actions">
+        <a
+          href={SITE.contact.emailHref}
+          class="contact-email-action"
+          aria-label={`Email ${SITE.name} at ${SITE.contact.email}`}
+        >
+          <span class="contact-email-icon" aria-hidden="true">
+            <Icon name="lucide:mail" class="w-5 h-5" stroke-width="1.7" />
+          </span>
+          <span class="contact-email-copy">
+            <span>Email us</span>
+            <strong>{SITE.contact.email}</strong>
+          </span>
+          <Icon name="lucide:arrow-up-right" class="contact-email-arrow w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+        </a>
+      </div>
+
+      <div class="contact-info-grid">
+        <details class="contact-info-disclosure">
+          <summary>
+            <span class="contact-info-icon" aria-hidden="true">
+              <Icon name="lucide:info" class="w-4 h-4" stroke-width="1.8" />
             </span>
-            <div>
-              <p class="contact-card-kicker">General information</p>
-              <h2>Contact us</h2>
-            </div>
-          </div>
-
-          <div class="contact-method-list">
-            <a
-              href={SITE.contact.phoneHref}
-              class="contact-method"
-              aria-label={`Call ${SITE.name} at ${SITE.contact.phone}`}
-            >
-              <Icon name="lucide:phone" class="w-5 h-5" stroke-width="1.7" aria-hidden="true" />
-              <span>
-                <span class="contact-method-label">Call us</span>
-                <strong>{SITE.contact.phone}</strong>
-              </span>
-            </a>
-            <a
-              href={SITE.contact.emailHref}
-              class="contact-method"
-              aria-label={`Email ${SITE.name} at ${SITE.contact.email}`}
-            >
-              <Icon name="lucide:mail" class="w-5 h-5" stroke-width="1.7" aria-hidden="true" />
-              <span>
-                <span class="contact-method-label">Email us</span>
-                <strong>{SITE.contact.email}</strong>
-              </span>
-            </a>
-          </div>
-
-          <div class="contact-care-note">
-            <Icon name="lucide:shield-check" class="w-5 h-5" stroke-width="1.7" aria-hidden="true" />
+            <span>Medical information</span>
+            <Icon name="lucide:chevron-down" class="contact-info-chevron w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+          </summary>
+          <div class="contact-info-content">
+            <h3>For current medical care</h3>
             <p>
-              <strong>For current medical care,</strong> contact your existing healthcare provider.
-              Please don't send medical information.
+              Contact your existing healthcare provider. Please don't send medical information.
             </p>
           </div>
+        </details>
 
-          <section
-            id="sms-disclosure"
-            class="contact-sms"
-            aria-labelledby="sms-disclosure-title"
-          >
-            <div class="contact-sms-heading">
-              <Icon name="lucide:message-circle" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
-              <h3 id="sms-disclosure-title">Text messaging</h3>
-            </div>
-            <p class="contact-sms-copy">
-              By texting {SITE.contact.phone}, you consent to customer-care texts from Luma
-              Pediatrics. Message frequency varies; message and data rates may apply. Reply HELP
-              for help or STOP to opt out.
+        <details
+          id="sms-disclosure"
+          class="contact-info-disclosure scroll-mt-32"
+        >
+          <summary>
+            <span class="contact-info-icon" aria-hidden="true">
+              <Icon name="lucide:info" class="w-4 h-4" stroke-width="1.8" />
+            </span>
+            <span>Text messaging terms</span>
+            <Icon name="lucide:chevron-down" class="contact-info-chevron w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+          </summary>
+          <div class="contact-info-content">
+            <h3>Text messaging consent</h3>
+            <p>
+              By texting {SITE.contact.phone}, you consent to customer-care texts from Luma Pediatrics.
+              Message frequency varies; message and data rates may apply. Reply HELP for help or STOP to opt out.
             </p>
-            <div class="contact-sms-footer">
-              <p class="contact-sms-links">
-                <a href="/privacy/">Privacy Policy</a>
-                <span aria-hidden="true">·</span>
-                <a href="/terms/">Terms &amp; Conditions</a>
-              </p>
-              <a
-                href={SITE.contact.smsHref}
-                class="contact-primary-action"
-                aria-label={`Text ${SITE.name} at ${SITE.contact.phone}`}
-              >
-                Text us
-                <Icon name="lucide:arrow-up-right" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
-              </a>
-            </div>
-          </section>
-        </article>
+            <p class="contact-guidance-links">
+              <a href="/privacy/">Privacy Policy</a>
+              <span aria-hidden="true">·</span>
+              <a href="/terms/">Terms &amp; Conditions</a>
+            </p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
 
-        <article class="contact-card card-lift">
-          <div class="contact-card-heading">
-            <span class="contact-card-icon" aria-hidden="true">
+  <!-- Location, hours, map, and directions are grouped as one visit-planning task. -->
+  <section class="contact-location-section py-14 md:py-16 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <article class="contact-location-layout">
+        <div class="contact-location-details">
+          <div class="contact-location-heading">
+            <span class="contact-location-icon" aria-hidden="true">
               <Icon name="lucide:map-pin" class="w-5 h-5" stroke-width="1.7" />
             </span>
             <div>
-              <p class="contact-card-kicker">Visit us</p>
+              <p class="contact-location-kicker">Visit us</p>
               <h2>Future McKinney location</h2>
             </div>
           </div>
 
-          <div class="contact-location-summary">
+          <div class="contact-address-block">
             <address>
               <strong>{SITE.address.street}</strong>
               <span>{SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}</span>
@@ -136,7 +156,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
           </div>
 
           <div class="contact-hours">
-            <div class="contact-detail-heading">
+            <div class="contact-hours-heading">
               <Icon name="lucide:clock" class="w-5 h-5" stroke-width="1.7" aria-hidden="true" />
               <h3>Planned office hours</h3>
             </div>
@@ -150,23 +170,24 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
             </dl>
           </div>
 
-          <div class="contact-map">
-            <GoogleStoreLocator />
-          </div>
           <a
             href={GOOGLE_DIRECTIONS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            class="contact-primary-action contact-directions"
+            class="contact-directions"
             aria-label={`Get directions to ${SITE.name}`}
           >
             <Icon name="lucide:map-pin" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
             Get directions
           </a>
-        </article>
-      </div>
+        </div>
 
-      <figure class="mt-8 overflow-hidden rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] shadow-[var(--shadow-soft)]">
+        <div class="contact-map">
+          <GoogleStoreLocator />
+        </div>
+      </article>
+
+      <figure class="contact-opening-banner">
         <Picture
           src="/images/luma-opening-banner.jpg"
           alt="Luma Pediatrics, opening late 2026 in McKinney, Texas, with a teddy bear and wooden rainbow in a warm nursery"
@@ -187,44 +208,286 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     </div>
   </section>
 
+  <script is:inline>
+    (() => {
+      const disclosure = document.getElementById('sms-disclosure');
+      if (!disclosure) return;
+
+      const openDisclosure = () => {
+        if (window.location.hash === '#sms-disclosure') {
+          disclosure.open = true;
+        }
+      };
+
+      document
+        .querySelectorAll('a[href="/contact/#sms-disclosure"]')
+        .forEach((link) => link.addEventListener('click', () => {
+          disclosure.open = true;
+        }));
+
+      openDisclosure();
+      window.addEventListener('hashchange', openDisclosure);
+    })();
+  </script>
+
 </BaseLayout>
 
 <style>
-  .contact-card-grid {
-    display: grid;
-    align-items: start;
-    gap: 1.25rem;
+  .contact-hero-title {
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
-  .contact-card {
+  .contact-primary-actions {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .contact-action {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
     min-width: 0;
-    padding: clamp(1.5rem, 3vw, 2rem);
+    padding: 1rem;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-card);
+    background: var(--color-primary);
+    color: var(--color-primary-foreground);
+    box-shadow: var(--shadow-soft);
+    text-decoration: none;
+    transition:
+      transform var(--duration-fast) var(--ease-fluid),
+      border-color var(--duration-fast) var(--ease-fluid),
+      background-color var(--duration-fast) var(--ease-fluid);
+  }
+
+  .contact-action:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary-hover);
+    background: var(--color-primary-hover);
+    color: var(--color-primary-foreground);
+  }
+
+  .contact-action:focus-visible,
+  .contact-email-action:focus-visible,
+  .contact-info-disclosure summary:focus-visible,
+  .contact-directions:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  .contact-action-icon,
+  .contact-location-icon {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 2.65rem;
+    height: 2.65rem;
+    border: 1px solid var(--color-border-soft);
+    border-radius: 0.9rem;
+    background: var(--color-card);
+    color: var(--color-primary);
+  }
+
+  .contact-action-copy {
+    min-width: 0;
+  }
+
+  .contact-action-label {
+    display: block;
+    margin-bottom: 0.12rem;
+    color: var(--color-primary-foreground);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .contact-action strong {
+    display: block;
+    overflow-wrap: anywhere;
+    font-size: 0.93rem;
+  }
+
+  .contact-action-arrow {
+    flex: none;
+    margin-left: auto;
+    color: var(--color-primary-foreground);
+  }
+
+  .contact-secondary-actions {
+    margin-top: 1rem;
+  }
+
+  .contact-email-action {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-width: 0;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--color-border-soft);
+    border-radius: 1rem;
+    background: var(--color-card);
+    color: var(--color-foreground);
+    text-decoration: none;
+    transition:
+      background-color var(--duration-fast) var(--ease-fluid),
+      border-color var(--duration-fast) var(--ease-fluid);
+  }
+
+  .contact-email-action:hover {
+    border-color: var(--color-sun);
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .contact-email-icon,
+  .contact-info-icon {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.75rem;
+    background: var(--color-muted);
+    color: var(--color-primary);
+  }
+
+  .contact-email-copy {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    align-items: baseline;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-email-copy > span {
+    color: var(--color-sage-hover);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .contact-email-copy strong {
+    overflow-wrap: anywhere;
+    font-size: 0.9rem;
+  }
+
+  .contact-email-arrow {
+    flex: none;
+    margin-left: auto;
+    color: var(--color-muted-foreground);
+  }
+
+  .contact-info-grid {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .contact-info-disclosure {
+    min-width: 0;
+  }
+
+  .contact-info-disclosure summary {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 2.75rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--color-border-soft);
+    border-radius: 9999px;
+    background: var(--color-background);
+    color: var(--color-primary);
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 700;
+    list-style: none;
+  }
+
+  .contact-info-disclosure summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .contact-info-icon {
+    width: 1.85rem;
+    height: 1.85rem;
+    border-radius: 9999px;
+    background: var(--color-card);
+    color: var(--color-sage-hover);
+  }
+
+  .contact-info-chevron {
+    flex: none;
+    margin-left: auto;
+    transition: transform var(--duration-fast) var(--ease-fluid);
+  }
+
+  .contact-info-disclosure[open] .contact-info-chevron {
+    transform: rotate(180deg);
+  }
+
+  .contact-info-content {
+    margin-top: 0.5rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--color-border-soft);
+    border-radius: 1rem;
+    background: var(--color-card);
+  }
+
+  .contact-info-content h3 {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .contact-info-content p {
+    margin: 0.35rem 0 0;
+    color: var(--color-muted-foreground);
+    font-size: 0.78rem;
+    line-height: 1.55;
+  }
+
+  .contact-guidance-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .contact-guidance-links a {
+    font-weight: 700;
+  }
+
+  .contact-location-section {
+    background: var(--color-muted);
+  }
+
+  .contact-location-layout {
+    display: grid;
+    overflow: hidden;
     border: 1px solid var(--color-border-soft);
     border-radius: var(--radius-card);
     background: var(--color-card);
     box-shadow: var(--shadow-soft);
   }
 
-  .contact-card-heading {
+  .contact-location-details {
+    min-width: 0;
+    padding: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .contact-location-heading,
+  .contact-hours-heading {
     display: flex;
     align-items: center;
-    gap: 0.85rem;
+    gap: 0.8rem;
   }
 
-  .contact-card-icon {
-    display: inline-flex;
-    flex: none;
-    align-items: center;
-    justify-content: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: 0.9rem;
-    background: var(--color-muted);
-    color: var(--color-primary);
-    border: 1px solid var(--color-border-soft);
-  }
-
-  .contact-card-kicker {
+  .contact-location-kicker {
     margin: 0;
     color: var(--color-sage-hover);
     font-size: 0.7rem;
@@ -234,164 +497,12 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     text-transform: uppercase;
   }
 
-  .contact-card-heading h2 {
+  .contact-location-heading h2 {
     margin: 0.15rem 0 0;
     font-size: clamp(1.55rem, 3vw, 1.9rem);
   }
 
-  .contact-method-list {
-    display: grid;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-  }
-
-  .contact-method {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    min-width: 0;
-    padding: 0.85rem 1rem;
-    border: 1px solid var(--color-border-soft);
-    border-radius: 1rem;
-    background: var(--color-background);
-    color: var(--color-foreground);
-    text-decoration: none;
-    transition:
-      transform var(--duration-fast) var(--ease-fluid),
-      background-color var(--duration-fast) var(--ease-fluid),
-      border-color var(--duration-fast) var(--ease-fluid);
-  }
-
-  .contact-method:hover {
-    transform: translateY(-1px);
-    background: var(--color-muted);
-    border-color: var(--color-sun);
-    color: var(--color-foreground);
-  }
-
-  .contact-method > span {
-    min-width: 0;
-  }
-
-  .contact-method-label {
-    display: block;
-    margin-bottom: 0.1rem;
-    color: var(--color-muted-foreground);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    line-height: 1.2;
-    text-transform: uppercase;
-  }
-
-  .contact-method strong {
-    display: block;
-    overflow-wrap: anywhere;
-    font-size: 0.95rem;
-  }
-
-  .contact-care-note {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.7rem;
-    margin-top: 1.25rem;
-    padding: 0.85rem 1rem;
-    border-left: 3px solid var(--color-sun);
-    border-radius: 0.8rem;
-    background: var(--color-background);
-    color: var(--color-muted-foreground);
-  }
-
-  .contact-care-note svg {
-    flex: none;
-    margin-top: 0.15rem;
-    color: var(--color-sage-hover);
-  }
-
-  .contact-care-note p {
-    margin: 0;
-    font-size: 0.82rem;
-    line-height: 1.55;
-  }
-
-  .contact-care-note strong {
-    color: var(--color-foreground);
-  }
-
-  .contact-sms {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--color-border-soft);
-  }
-
-  .contact-sms-heading,
-  .contact-detail-heading {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    color: var(--color-primary);
-  }
-
-  .contact-sms-heading h3,
-  .contact-detail-heading h3 {
-    margin: 0;
-    font-size: 1.05rem;
-  }
-
-  .contact-sms-copy {
-    margin: 0.8rem 0 0;
-    color: var(--color-muted-foreground);
-    font-size: 0.8rem;
-    line-height: 1.6;
-  }
-
-  .contact-sms-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.9rem;
-    margin-top: 1rem;
-  }
-
-  .contact-sms-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-    margin: 0;
-    font-size: 0.76rem;
-    line-height: 1.5;
-  }
-
-  .contact-sms-links a {
-    font-weight: 600;
-  }
-
-  .contact-primary-action {
-    display: inline-flex;
-    flex: none;
-    align-items: center;
-    justify-content: center;
-    gap: 0.45rem;
-    min-height: 2.75rem;
-    padding: 0.65rem 1rem;
-    border-radius: var(--radius-button);
-    background: var(--color-primary);
-    color: var(--color-primary-foreground);
-    font-size: 0.88rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition:
-      transform var(--duration-fast) var(--ease-fluid),
-      background-color var(--duration-fast) var(--ease-fluid);
-  }
-
-  .contact-primary-action:hover {
-    transform: translateY(-1px);
-    background: var(--color-primary-hover);
-    color: var(--color-primary-foreground);
-  }
-
-  .contact-location-summary {
+  .contact-address-block {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -399,10 +510,10 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     margin-top: 1.5rem;
     padding: 1rem;
     border-radius: 1rem;
-    background: var(--color-muted);
+    background: var(--color-background);
   }
 
-  .contact-location-summary address {
+  .contact-address-block address {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
@@ -411,7 +522,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     line-height: 1.55;
   }
 
-  .contact-location-summary address span {
+  .contact-address-block address span {
     color: var(--color-muted-foreground);
   }
 
@@ -429,6 +540,16 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 
   .contact-hours {
     margin-top: 1.5rem;
+  }
+
+  .contact-hours-heading {
+    gap: 0.55rem;
+    color: var(--color-primary);
+  }
+
+  .contact-hours-heading h3 {
+    margin: 0;
+    font-size: 1.05rem;
   }
 
   .contact-hours dl {
@@ -457,37 +578,87 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     text-align: right;
   }
 
-  .contact-map {
+  .contact-directions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    width: 100%;
+    min-height: 2.75rem;
     margin-top: 1.25rem;
+    padding: 0.65rem 1rem;
+    border-radius: var(--radius-button);
+    background: var(--color-primary);
+    color: var(--color-primary-foreground);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+      transform var(--duration-fast) var(--ease-fluid),
+      background-color var(--duration-fast) var(--ease-fluid);
+  }
+
+  .contact-directions:hover {
+    transform: translateY(-1px);
+    background: var(--color-primary-hover);
+    color: var(--color-primary-foreground);
+  }
+
+  .contact-map {
+    min-width: 0;
+    overflow: hidden;
+    border-top: 1px solid var(--color-border-soft);
+  }
+
+  .contact-opening-banner {
+    margin-top: 2rem;
     overflow: hidden;
     border: 1px solid var(--color-border-soft);
-    border-radius: 1rem;
+    border-radius: var(--radius-card);
+    background: var(--color-card);
+    box-shadow: var(--shadow-soft);
   }
 
-  .contact-directions {
-    width: 100%;
-    margin-top: 1rem;
+  @media (min-width: 720px) {
+    .contact-primary-actions {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .contact-info-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
-  @media (min-width: 960px) {
-    .contact-card-grid {
-      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  @media (min-width: 900px) {
+    .contact-location-layout {
+      grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+      align-items: stretch;
+    }
+
+    .contact-map {
+      border-top: 0;
+      border-left: 1px solid var(--color-border-soft);
     }
   }
 
   @media (max-width: 600px) {
-    .contact-sms-footer,
-    .contact-location-summary {
+    .contact-address-block {
       align-items: stretch;
       flex-direction: column;
     }
 
-    .contact-primary-action {
-      width: 100%;
-    }
-
     .contact-opening-status {
       align-self: flex-start;
+    }
+
+    .contact-hours dl > div {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .contact-hours dd {
+      text-align: left;
     }
   }
 </style>

@@ -97,11 +97,18 @@ export const SITE = {
 
   hours: [
     {
-      day: 'Mon–Fri',
+      day: 'Mon–Tue, Thu–Fri',
       time: '7:30 am – 4:30 pm',
-      schemaDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      schemaDays: ['Monday', 'Tuesday', 'Thursday', 'Friday'],
       opens: '07:30',
       closes: '16:30',
+    },
+    {
+      day: 'Wednesday',
+      time: '7:30 am – 11:30 am',
+      schemaDays: ['Wednesday'],
+      opens: '07:30',
+      closes: '11:30',
     },
     {
       day: 'Saturday',

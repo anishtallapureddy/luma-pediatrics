@@ -19,6 +19,7 @@ const contract = {
   cityLine: 'McKinney, TX 75071',
   phone: '(469) 200-1151',
   phoneE164: '+14692001151',
+  smsHref: 'sms:+14692001151',
   status: 'Opening late 2026',
   ga4: 'G-QL30ZJXMW8',
   socialImage: '/og-luma-pediatrics-2026-09-15.png',
@@ -621,6 +622,7 @@ for (const value of [
   `**Phone:** ${contract.phone}`,
   `**Website:** ${domain}/`,
   `**Status:** ${contract.status}`,
+  '**Planned hours:** Mon–Tue and Thu–Fri 7:30 am–4:30 pm · Wed 7:30 am–11:30 am · Sat 8:30 am–12:30 pm · Sun closed',
 ]) {
   expect(llms.includes(value), `llms.txt is missing canonical fact: ${value}`);
 }
@@ -645,15 +647,31 @@ expect(
 
 const contactHtml = readFileSync(join(dist, 'contact', 'index.html'), 'utf8');
 const contactText = normalizedText(contactHtml);
+for (const hoursText of [
+  'Mon–Tue, Thu–Fri 7:30 am – 4:30 pm',
+  'Wednesday 7:30 am – 11:30 am',
+]) {
+  expect(
+    contactText.includes(hoursText),
+    `Contact page is missing planned hours: ${hoursText}`,
+  );
+}
 expect(
-  contactHtml.includes('class="contact-card-grid"') &&
-    contactText.includes('Contact us') &&
-    contactText.includes('Future McKinney location'),
-  'Contact page must separate communication and location details into focused cards',
+  !contactText.includes('Mon–Fri 7:30 am – 4:30 pm'),
+  'Contact page must not show Wednesday as a full office day',
 );
 expect(
-  !contactText.includes('General information and future location'),
-  'Contact page must not restore the overloaded combined-card heading',
+  contactHtml.includes('class="contact-primary-actions"') &&
+    contactHtml.includes('<details id="sms-disclosure"') &&
+    contactHtml.includes('class="contact-location-layout"') &&
+    contactText.includes('Contact Luma Pediatrics') &&
+    contactText.includes('Future McKinney location'),
+  'Contact page must separate contact actions from visit planning',
+);
+expect(
+  !contactText.includes('General information and future location') &&
+    !contactText.includes('Stay connected as we prepare to open'),
+  'Contact page must not restore the overloaded combined presentation',
 );
 expect(
   contactHtml.includes('href="/privacy/"') &&
@@ -809,8 +827,10 @@ expect(
   'Home section navigation must use a neutral surface below the sage ribbon',
 );
 expect(
-  homeText.includes('Texting info') && !homeText.includes('Text us'),
-  'Disclosure-first texting links must use the Texting info label on Home',
+  homeText.includes('Text us') &&
+    home.html.includes(`href="${contract.smsHref}"`) &&
+    !homeText.includes('Texting info'),
+  'Header and mobile quick actions must provide direct, equally labeled texting access',
 );
 
 console.log(
