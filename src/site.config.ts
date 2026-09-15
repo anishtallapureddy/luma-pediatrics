@@ -18,7 +18,7 @@ export const SITE = {
   disambiguatingDescription:
     'Independent pediatric primary care practice in McKinney, Texas, operated by Luma Physician Group PLLC.',
   domain: 'https://www.lumapediatrics.com',
-  socialImage: '/og-luma-pediatrics-2026-09.png',
+  socialImage: '/og-luma-pediatrics-2026-09-15.png',
 
   /**
    * Provider-detail visibility flag.

@@ -21,7 +21,7 @@ const contract = {
   phoneE164: '+14692001151',
   status: 'Opening late 2026',
   ga4: 'G-QL30ZJXMW8',
-  socialImage: '/og-luma-pediatrics-2026-09.png',
+  socialImage: '/og-luma-pediatrics-2026-09-15.png',
   homeSocialTitle: 'Luma Pediatrics | McKinney, TX',
   homeSocialDescription:
     'Expert pediatric care that feels like family. Opening late 2026 in McKinney, Texas.',
@@ -361,6 +361,13 @@ const compatibilitySocialImage = readFileSync(join(root, 'public', 'og-default.p
 expect(
   currentSocialImage.equals(compatibilitySocialImage),
   'og-default.png must remain a current-brand compatibility alias',
+);
+const previousVersionSocialImage = readFileSync(
+  join(root, 'public', 'og-luma-pediatrics-2026-09.png'),
+);
+expect(
+  currentSocialImage.equals(previousVersionSocialImage),
+  'Previous versioned social image must remain a current-brand compatibility alias',
 );
 const favicon = readFileSync(join(root, 'public', 'favicon.png'));
 expect(favicon.readUInt32BE(16) === 256, 'favicon.png must be 256px wide');
