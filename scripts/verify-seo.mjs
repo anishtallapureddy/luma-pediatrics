@@ -282,6 +282,53 @@ expect(
 expect(home.html.includes(`googletagmanager.com/gtag/js?id=${contract.ga4}`), 'GA4 loader is missing');
 expect(home.html.includes("'contact_action'"), 'GA4 contact conversion event is missing');
 expect(home.html.includes("'generate_lead'"), 'GA4 lead conversion event is missing');
+const homeText = normalizedText(home.html);
+for (const value of [
+  'Board-certified',
+  'One consistent physician',
+  'McKinney, Texas',
+  'Calm care, clear guidance, and one trusted relationship.',
+  'Meet Dr. Tallapureddy',
+  'Relationship-centered care from newborns through young adulthood',
+]) {
+  expect(homeText.includes(value), `Home page is missing current hierarchy content: ${value}`);
+}
+for (const service of [
+  'Newborn Care',
+  'Well-Child Visits',
+  'Sick Visits',
+  'Vaccinations',
+  'ADHD, Behavior & Developmental Care',
+  'Teen & Adolescent Health',
+]) {
+  expect(homeText.includes(service), `Home page is missing focused service: ${service}`);
+}
+for (const removedService of [
+  'Free Meet & Greet',
+  'Newborn Rounds at BSW McKinney',
+  'School, Sports & Camp Physicals',
+  'Telehealth / Virtual Visits',
+]) {
+  expect(!homeText.includes(removedService), `Home preview still includes secondary service: ${removedService}`);
+}
+expect(home.html.includes('/images/warm-family.webp'), 'Home page must use the photo-only family hero');
+expect(!home.html.includes('/images/hero-poster.'), 'Home page must not use the text-heavy legacy poster');
+expect(
+  !homeText.includes('We typically respond within one business day'),
+  'Home page must not publish an unverified response-time promise',
+);
+for (const city of ['mckinney', 'allen', 'frisco', 'prosper', 'melissa', 'princeton', 'anna', 'fairview']) {
+  expect(
+    home.html.includes(`/pediatrician/${city}/`),
+    `Home footer is missing core service-area link: ${city}`,
+  );
+}
+for (const secondaryCity of ['sherman', 'aubrey', 'little-elm']) {
+  expect(
+    !home.html.includes(`/pediatrician/${secondaryCity}/`),
+    `Home footer still exposes the full city list: ${secondaryCity}`,
+  );
+}
 const rssDiscovery = findTags(home.html, 'link').find(
   (attributes) =>
     (attributes.rel ?? '').split(/\s+/).includes('alternate') &&
@@ -306,6 +353,33 @@ expect(
 expect(
   jsonLdObjects(articlePage.html, articlePage.fileLabel).some((value) => hasType(value['@type'], 'Article')),
   `${articlePage.fileLabel}: Article JSON-LD is missing`,
+);
+
+const aboutPage = pages.find((page) => page.canonical === `${domain}/about/`);
+expect(aboutPage, 'About page was not generated');
+expect(
+  normalizedText(aboutPage.html).includes(
+    'Caring for children and families in North Texas since 2022',
+  ),
+  'About page must clarify that the 2022 date refers to provider experience',
+);
+
+const newPatientsPage = pages.find(
+  (page) => page.canonical === `${domain}/new-patients/`,
+);
+expect(newPatientsPage, 'New Patients page was not generated');
+expect(
+  normalizedText(newPatientsPage.html).includes('Leave with a clear plan'),
+  'New Patients page must use the distinct fourth-step title',
+);
+
+const blogIndex = pages.find((page) => page.canonical === `${domain}/blog/`);
+expect(blogIndex, 'Blog index was not generated');
+expect(
+  normalizedText(blogIndex.html).includes(
+    'Start with our current physician-reviewed guide.',
+  ),
+  'Blog index must accurately describe the current single published guide',
 );
 
 const sitemapIndex = readFileSync(join(dist, 'sitemap-index.xml'), 'utf8');
@@ -375,6 +449,30 @@ expect(favicon.readUInt32BE(20) === 256, 'favicon.png must be 256px tall');
 const appleTouchIcon = readFileSync(join(root, 'public', 'apple-touch-icon.png'));
 expect(appleTouchIcon.readUInt32BE(16) === 512, 'apple-touch-icon.png must be 512px wide');
 expect(appleTouchIcon.readUInt32BE(20) === 512, 'apple-touch-icon.png must be 512px tall');
+for (const removedAsset of [
+  'favicon.svg',
+  'images/hero-poster.jpg',
+  'images/hero-poster.webp',
+  'images/trust-family.jpg',
+  'images/trust-family.webp',
+  'images/trust-checkup.jpg',
+  'images/trust-checkup.webp',
+  'images/trust-gentle.jpg',
+  'images/trust-gentle.webp',
+  'images/trust-playful.jpg',
+  'images/trust-playful.webp',
+  'images/clinic-welcome.jpg',
+  'images/clinic-welcome.webp',
+  'images/doctor-child.jpg',
+  'images/doctor-child.webp',
+  'images/happy-baby.jpg',
+  'images/happy-baby.webp',
+]) {
+  expect(
+    !existsSync(join(root, 'public', removedAsset)),
+    `Legacy asset should be removed: ${removedAsset}`,
+  );
+}
 
 const rss = readFileSync(join(dist, 'rss.xml'), 'utf8');
 expect(rss.includes('<rss version="2.0"'), 'rss.xml is not a valid RSS 2.0 document');
@@ -487,11 +585,32 @@ const forbidden = [
   /469-200-1151/,
   /November 2026/i,
   /Fall 2026/i,
+  /vaccines\/schedules\/parents\/index\.html/i,
+  /Acetaminophen-Dosage-Table\.aspx/i,
+  /Ibuprofen-for-Children-Dosage-Table\.aspx/i,
 ];
 for (const file of textSourceFiles) {
   const content = readFileSync(file, 'utf8');
   for (const pattern of forbidden) {
     expect(!pattern.test(content), `${relative(root, file)} contains inconsistent NAP/status text: ${pattern}`);
+  }
+
+  const vaccinesHtml = readFileSync(join(dist, 'vaccines', 'index.html'), 'utf8');
+  expect(
+    vaccinesHtml.includes(
+      'https://www.cdc.gov/vaccines/imz-schedules/child-easyread.html',
+    ),
+    'Vaccines page must link to the current CDC parent-friendly schedule',
+  );
+  const dosingHtml = readFileSync(join(dist, 'dosing-charts', 'index.html'), 'utf8');
+  for (const sourceUrl of [
+    'https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Acetaminophen-for-Fever-and-Pain.aspx',
+    'https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Ibuprofen-for-Fever-and-Pain.aspx',
+  ]) {
+    expect(
+      dosingHtml.includes(sourceUrl),
+      `Dosing page is missing current AAP source: ${sourceUrl}`,
+    );
   }
 }
 

@@ -7,8 +7,20 @@ import SparkleField from '../components/SparkleField.astro';
 import WaitlistForm from '../components/WaitlistForm.astro';
 import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
-import { featuredServices as services } from '../data/services';
+import { services as serviceCatalog } from '../data/services';
 import Picture from '../components/Picture.astro';
+
+const homeServiceTitles = new Set([
+  'Newborn Care',
+  'Well-Child Visits',
+  'Sick Visits',
+  'Vaccinations',
+  'ADHD, Behavior & Developmental Care',
+  'Teen & Adolescent Health',
+]);
+const homeServices = serviceCatalog.filter((service) =>
+  homeServiceTitles.has(service.title),
+);
 
 const promises = [
   {
@@ -28,32 +40,6 @@ const promises = [
   },
 ];
 
-const trustPhotos = [
-  {
-    src: '/images/trust-family.jpg',
-    alt: 'A mother cuddling her happy laughing baby in a soft, sunlit nursery',
-    title: 'Family centered',
-    body: 'Care built around the people who know your child best.',
-  },
-  {
-    src: '/images/trust-checkup.jpg',
-    alt: 'A pediatrician using a stethoscope on a smiling girl held by her mother',
-    title: 'Kid-friendly visits',
-    body: 'A calm setting designed to help children feel comfortable.',
-  },
-  {
-    src: '/images/trust-gentle.jpg',
-    alt: 'A smiling young girl using a stethoscope to listen to her teddy bear',
-    title: 'Clear guidance',
-    body: 'Evidence-based recommendations explained in plain language.',
-  },
-  {
-    src: '/images/trust-playful.jpg',
-    alt: 'A happy toddler sitting on a rug, surrounded by a teddy bear, bunny, and stacking toys',
-    title: 'Made for children',
-    body: 'A practical, welcoming environment for children and parents.',
-  },
-];
 ---
 <BaseLayout
   title="Luma Pediatrics | Pediatric Primary Care in McKinney, TX"
@@ -77,16 +63,12 @@ const trustPhotos = [
     <div class="botanical-spray leaf-right" aria-hidden="true">
       <span></span><span></span><span></span><span></span><span></span>
     </div>
-    <SparkleField count={12} class="z-0" />
+    <SparkleField count={8} class="z-0" />
 
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 flex-1 flex items-center">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 flex-1 flex items-center">
       <div class="fade-up grid gap-8 lg:grid-cols-[0.92fr_1.08fr] items-center w-full">
         <div class="text-center lg:text-left">
-          <p class="hero-status-pill">
-            <Icon name="lucide:sparkles" class="w-3.5 h-3.5" stroke-width="2" aria-hidden="true" />
-            <span>Opening {SITE.openingWindow} in {SITE.locationShort.split(',')[0]}</span>
-          </p>
-          <h1 class="mt-4 text-4xl md:text-6xl font-semibold tracking-tight leading-[0.98]" style="font-family: var(--font-display);">
+          <h1 class="text-4xl md:text-6xl font-semibold tracking-tight leading-[0.98]" style="font-family: var(--font-display);">
             Expert pediatric care that feels like family.
           </h1>
           <div class="mt-5 lg:max-w-xs">
@@ -108,10 +90,43 @@ const trustPhotos = [
             </Button>
             <Button href="/contact" variant="secondary">Get in touch</Button>
           </div>
+
+          <dl class="mt-8 grid gap-3 border-t border-[var(--color-border-soft)] pt-5 text-left sm:grid-cols-3">
+            <div>
+              <dt class="sr-only">Credential</dt>
+              <dd class="flex items-center gap-2 text-sm font-semibold text-[var(--color-foreground)]">
+                <Icon name="lucide:award" class="w-4 h-4 text-[var(--color-sun)]" stroke-width="1.8" aria-hidden="true" />
+                Board-certified
+              </dd>
+            </div>
+            <div>
+              <dt class="sr-only">Continuity</dt>
+              <dd class="flex items-center gap-2 text-sm font-semibold text-[var(--color-foreground)]">
+                <Icon name="lucide:users" class="w-4 h-4 text-[var(--color-sage)]" stroke-width="1.8" aria-hidden="true" />
+                One consistent physician
+              </dd>
+            </div>
+            <div>
+              <dt class="sr-only">Location</dt>
+              <dd class="flex items-center gap-2 text-sm font-semibold text-[var(--color-foreground)]">
+                <Icon name="lucide:map-pin" class="w-4 h-4 text-[var(--color-sun)]" stroke-width="1.8" aria-hidden="true" />
+                McKinney, Texas
+              </dd>
+            </div>
+          </dl>
         </div>
 
-        <figure class="hero-poster-image">
-          <Picture src="/images/hero-poster.jpg" alt="Luma Pediatrics. Opening late 2026 in McKinney, TX. Where your child's health shines." loading="eager" fetchpriority="high" />
+        <figure class="hero-family-photo">
+          <Picture
+            src="/images/warm-family.jpg"
+            alt="A mother holding her smiling baby in a warm nursery"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <figcaption>
+            <Icon name="lucide:heart" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
+            Relationship-centered care from newborns through young adulthood
+          </figcaption>
         </figure>
       </div>
     </div>
@@ -122,30 +137,50 @@ const trustPhotos = [
   </section>
 
   <!-- ====================================================================
-       TRUST-BUILDING PHOTO STRIP, warm faces and safe, happy care moments.
+       WHY LUMA, one visual and three clear principles.
        ==================================================================== -->
   <section class="trust-gallery py-20 md:py-28 reveal">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-3xl mx-auto text-center mb-12">
-        <span class="eyebrow eyebrow-sun">A space for families</span>
-        <h2 class="mt-5 text-4xl md:text-6xl tracking-tight">
-          A calm place for children and parents.
-        </h2>
-        <p class="mt-6 text-lg text-[var(--color-foreground)]/78 leading-relaxed max-w-2xl mx-auto">
-          The future clinic is being planned so children can feel comfortable and parents have room to ask questions.
-        </p>
-      </div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+      <figure class="overflow-hidden rounded-[2rem] bg-[var(--color-card)] shadow-[var(--shadow-elevated)]">
+        <Picture
+          src="/images/hero-child.jpg"
+          alt="A young child hugging a teddy bear in a warm, calm room"
+          class="block w-full aspect-[4/3] object-cover"
+          loading="lazy"
+        />
+      </figure>
 
-      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {trustPhotos.map(({ src, alt, title, body }) => (
-          <figure class="photo-trust-card card-lift">
-            <Picture src={src} alt={alt} loading="lazy" />
-            <figcaption>
-              <h3>{title}</h3>
-              <p>{body}</p>
-            </figcaption>
-          </figure>
-        ))}
+      <div>
+        <span class="eyebrow eyebrow-sun">A space for families</span>
+        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight">
+          Calm care, clear guidance, and one trusted relationship.
+        </h2>
+        <p class="mt-5 text-lg text-[var(--color-foreground)]/78 leading-relaxed">
+          The future clinic is being designed around the people who know each child best, with thoughtful visits and room for questions.
+        </p>
+
+        <div class="mt-8 space-y-6">
+          {promises.map(({ icon, title, body }) => (
+            <div class="flex items-start gap-4">
+              <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] ring-1 ring-inset ring-[rgba(200,153,90,0.28)]" aria-hidden="true">
+                <Icon name={icon} class="w-5 h-5" stroke-width="1.7" />
+              </span>
+              <div>
+                <h3 class="text-xl font-semibold">{title}</h3>
+                <p class="mt-1 text-[var(--color-foreground)]/75 leading-relaxed">{body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-8">
+          <Button href="/about/" variant="secondary">
+            Learn about our approach
+            <span class="btn-icon-circle" aria-hidden="true">
+              <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
+            </span>
+          </Button>
+        </div>
       </div>
     </div>
   </section>
@@ -154,18 +189,18 @@ const trustPhotos = [
        SERVICES preview
        ==================================================================== -->
   <section id="services" class="py-20 md:py-28 reveal relative">
-    <SparkleField count={6} />
+    <SparkleField count={4} />
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mx-auto text-center mb-14">
         <span class="eyebrow">Planned care</span>
         <h2 class="mt-5 text-3xl md:text-5xl tracking-tight lg:whitespace-nowrap">Care from infancy through adolescence.</h2>
         <p class="mt-5 tagline-italic-sage text-lg md:text-xl">
-          Planned pediatric services from your baby's first days through young adulthood.
+          A focused preview of the care families will find at Luma.
         </p>
       </div>
 
       <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {services.map(({ icon, title, short, badge }) => (
+        {homeServices.map(({ icon, title, short, badge }) => (
           <article class="card-lift group rounded-[var(--radius-card)] bg-[var(--color-card)] p-7">
             <span
               class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-5 ring-1 ring-inset ring-[rgba(200, 153, 90,0.30)]"
@@ -195,17 +230,54 @@ const trustPhotos = [
     </div>
   </section>
 
-  <!-- ====================================================================
-       EXPERIENCE, generic trust band (employer-safe pre-launch)
-       ==================================================================== -->
-  <section class="py-10 md:py-12 bg-[var(--color-sage-light)]/40 border-y border-[var(--color-border-soft)] reveal">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <p class="text-base md:text-lg text-luma-ink/85 leading-relaxed">
-        <Icon name="lucide:award" class="inline w-5 h-5 -mt-1 text-luma-gold" />
-        {' '}<strong class="font-semibold">Board-certified pediatric care</strong> backed by years of experience caring for North Texas families and guided by the latest AAP and CDC recommendations.
-      </p>
-    </div>
-  </section>
+  {SITE.showProviderProfile && (
+    <section class="py-20 md:py-28 reveal relative navy-campaign">
+      <SparkleField count={4} />
+      <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-center">
+        <figure class="overflow-hidden rounded-[2rem] border border-white/15 bg-white/5 shadow-[0_22px_55px_-30px_rgba(0,0,0,0.65)]">
+          <Picture
+            src="/images/provider-headshot.jpg"
+            alt={`${SITE.provider.name}, ${SITE.provider.role} at ${SITE.name}`}
+            class="block w-full aspect-[4/5] object-cover object-top"
+            loading="lazy"
+          />
+        </figure>
+
+        <div>
+          <span class="eyebrow eyebrow-sun">Meet your pediatrician</span>
+          <h2 class="mt-5 text-3xl md:text-5xl tracking-tight text-white">
+            {SITE.provider.displayName}
+          </h2>
+          <p class="mt-3 text-lg font-semibold text-[var(--color-sun)]">
+            {SITE.provider.role}
+          </p>
+          <p class="mt-5 max-w-2xl text-lg text-white/85 leading-relaxed">
+            {SITE.provider.shortName} is building Luma around continuity, thoughtful visits, and clear guidance that respects each family’s questions and goals.
+          </p>
+
+          <dl class="mt-8 grid gap-4 sm:grid-cols-2">
+            <div class="rounded-2xl border border-white/15 bg-white/5 p-4">
+              <dt class="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">Board certification</dt>
+              <dd class="mt-2 text-base font-semibold text-white">American Board of Pediatrics</dd>
+            </div>
+            <div class="rounded-2xl border border-white/15 bg-white/5 p-4">
+              <dt class="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">Languages</dt>
+              <dd class="mt-2 text-base font-semibold text-white">English, Telugu, Hindi &amp; Urdu</dd>
+            </div>
+          </dl>
+
+          <div class="mt-8">
+            <Button href="/about/" variant="secondary">
+              Meet Dr. Tallapureddy
+              <span class="btn-icon-circle" aria-hidden="true">
+                <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
+              </span>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
 
   <!-- Practice updates, independent email opt-in -->
   <section class="py-16 md:py-20 reveal">
@@ -235,39 +307,9 @@ const trustPhotos = [
     </div>
   </section>
 
-  <!-- ====================================================================
-       OUR PROMISE, values-led block (replaces testimonials pre-launch;
-       we'll add real, attributed reviews after launch with consent).
-       ==================================================================== -->
-  <section aria-label="Our promise to your family" class="py-20 md:py-28 reveal relative navy-campaign">
-    <SparkleField count={8} />
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mx-auto text-center mb-14">
-        <span class="eyebrow eyebrow-sun">Our commitment</span>
-        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight text-white">The standards we hold ourselves to</h2>
-        <p class="mt-5 text-white/85 leading-relaxed text-lg">
-          As a future practice, we are building around a clear standard of care.
-          These are the standards we plan to bring to patient care after opening.
-        </p>
-      </div>
-
-      <div class="grid gap-6 md:grid-cols-3">
-        {promises.map(({ icon, title, body }) => (
-          <article class="card-lift navy-card rounded-[var(--radius-card)] p-8">
-            <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/15 text-[var(--color-sun)] mb-5" aria-hidden="true">
-              <Icon name={icon} class="w-6 h-6" stroke-width="1.6" />
-            </span>
-            <h3 class="text-xl font-semibold text-white mb-3" style="font-family: var(--font-display);">{title}</h3>
-            <p class="text-white/85 leading-relaxed">{body}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!-- Visit us -->
   <section id="visit-us" aria-labelledby="visit-us-title" class="py-16 md:py-20 reveal relative">
-    <SparkleField count={6} />
+    <SparkleField count={4} />
     <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-7 md:p-9 grid gap-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
         <div class="flex items-start gap-4">
@@ -311,7 +353,7 @@ const trustPhotos = [
     <div class="botanical-spray leaf-right" aria-hidden="true">
       <span></span><span></span><span></span><span></span><span></span>
     </div>
-    <SparkleField count={10} />
+    <SparkleField count={6} />
 
     <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
       <div class="campaign-card px-5 py-12 md:p-14">
@@ -321,7 +363,7 @@ const trustPhotos = [
         </h2>
         <StarDivider class="mt-7" span="3rem" />
         <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/78 max-w-2xl mx-auto leading-relaxed">
-          Browse our FAQs for quick answers, or reach out to our team. We typically respond within one business day.
+          Browse our FAQs for quick answers, or reach out for general information about the future practice.
         </p>
         <div class="mt-9 flex flex-wrap justify-center gap-3">
           <Button href="/faq" variant="primary">

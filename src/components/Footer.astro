@@ -8,6 +8,16 @@ import { CITIES } from '../data/cities.ts';
 const year = new Date().getFullYear();
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 const cityPageSlugs = new Set(CITIES.map((c) => c.slug));
+const footerCities = [
+  'McKinney',
+  'Allen',
+  'Frisco',
+  'Prosper',
+  'Melissa',
+  'Princeton',
+  'Anna',
+  'Fairview',
+];
 ---
 <footer class="mt-24 border-t border-[rgba(200, 153, 90,0.18)] bg-[var(--color-background)]">
   <div class="bg-[var(--color-sage-light)]">
@@ -125,14 +135,17 @@ const cityPageSlugs = new Set(CITIES.map((c) => c.slug));
     <div class="mt-10 pt-6 border-t border-[var(--color-border-soft)] text-xs text-[var(--color-muted-foreground)] space-y-2">
       <p>
         <strong class="text-[var(--color-foreground)]">Serving</strong>{' '}
-        {SITE.areasServed.map((city) =>
+        {footerCities.map((city, index) =>
           cityPageSlugs.has(slugify(city)) ? (
-            <><a href={`/pediatrician/${slugify(city)}/`} class="text-inherit underline-offset-2 hover:underline">{city}</a>{', '}</>
+            <>
+              <a href={`/pediatrician/${slugify(city)}/`} class="text-inherit underline-offset-2 hover:underline">{city}</a>
+              {index < footerCities.length - 1 ? ', ' : ''}
+            </>
           ) : (
-            <>{city}{', '}</>
+            <>{city}{index < footerCities.length - 1 ? ', ' : ''}</>
           )
-        )}
-        <a href="/pediatrician/" class="text-inherit underline-offset-2 hover:underline">{SITE.areasServedTagline}</a>.
+        )}{' '}and
+        {' '}<a href="/pediatrician/" class="text-inherit underline-offset-2 hover:underline">nearby service areas</a>.
       </p>
       <p>
         <strong>Not medical advice.</strong> This website is for informational purposes only and is not a substitute

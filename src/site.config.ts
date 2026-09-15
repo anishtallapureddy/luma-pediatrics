@@ -61,7 +61,7 @@ export const SITE = {
       { label: 'Board Certified', value: 'American Board of Pediatrics' },
       { label: 'Education', value: 'Texas A&M Health Science Center College of Medicine' },
       { label: 'Residency', value: "Baylor Scott & White McLane Children's Hospital" },
-      { label: 'Community', value: 'Serving McKinney and North Texas families since 2022' },
+      { label: 'North Texas Experience', value: 'Caring for children and families in North Texas since 2022' },
       { label: 'Languages', value: 'Fluent in English and Telugu; conversational in Hindi and Urdu' },
       {
         label: 'Care Scope',
