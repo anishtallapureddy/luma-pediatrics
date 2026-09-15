@@ -20,15 +20,30 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     { name: 'Home', path: '/' },
     { name: 'Contact', path: '/contact' },
   ]}
+  preloadImage="/images/luma-opening-banner.webp"
 >
-  <section class="page-hero py-12 md:py-16 overflow-hidden">
+  <section class="page-hero py-10 md:py-14 overflow-hidden">
     <PageDecor />
-    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
-      <span class="eyebrow">Contact</span>
-      <h1 class="contact-hero-title mt-5 text-4xl md:text-5xl tracking-tight">Contact Luma Pediatrics.</h1>
-      <p class="mt-6 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-2xl mx-auto">
-        Call, text, or email with general questions about planned services, our future McKinney location, or opening updates.
-      </p>
+    <div class="contact-hero-layout relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 fade-up">
+      <div class="contact-hero-copy">
+        <span class="eyebrow">Contact</span>
+        <h1 class="contact-hero-title mt-5 text-4xl md:text-5xl tracking-tight">Contact Luma Pediatrics.</h1>
+        <p class="mt-6 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-xl mx-auto">
+          Call, text, or email with general questions about planned services, our future McKinney location, or opening updates.
+        </p>
+      </div>
+
+      <figure class="contact-hero-image">
+        <Picture
+          src="/images/luma-opening-banner.jpg"
+          alt="Luma Pediatrics, opening late 2026 in McKinney, Texas, with a teddy bear and wooden rainbow in a warm nursery"
+          class="block w-full h-auto"
+          width={1440}
+          height={756}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
     </div>
   </section>
 
@@ -86,35 +101,23 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
         </a>
       </div>
 
-      <div class="contact-info-grid">
-        <details class="contact-info-disclosure">
-          <summary>
-            <span class="contact-info-icon" aria-hidden="true">
-              <Icon name="lucide:info" class="w-4 h-4" stroke-width="1.8" />
-            </span>
-            <span>Medical information</span>
-            <Icon name="lucide:chevron-down" class="contact-info-chevron w-4 h-4" stroke-width="1.8" aria-hidden="true" />
-          </summary>
-          <div class="contact-info-content">
-            <h3>For current medical care</h3>
-            <p>
-              Contact your existing healthcare provider. Please don't send medical information.
-            </p>
-          </div>
-        </details>
-
+      <div class="contact-notes">
+        <p class="contact-medical-note">
+          <Icon name="lucide:shield-check" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+          <span>
+            <strong>For current medical care,</strong> contact your existing healthcare provider.
+            Please don't send medical information by email or text.
+          </span>
+        </p>
         <details
           id="sms-disclosure"
-          class="contact-info-disclosure scroll-mt-32"
+          class="contact-sms-disclosure scroll-mt-32"
         >
           <summary>
-            <span class="contact-info-icon" aria-hidden="true">
-              <Icon name="lucide:info" class="w-4 h-4" stroke-width="1.8" />
-            </span>
+            <Icon name="lucide:info" class="w-3.5 h-3.5" stroke-width="1.8" aria-hidden="true" />
             <span>Text messaging terms</span>
-            <Icon name="lucide:chevron-down" class="contact-info-chevron w-4 h-4" stroke-width="1.8" aria-hidden="true" />
           </summary>
-          <div class="contact-info-content">
+          <div class="contact-sms-content">
             <h3>Text messaging consent</h3>
             <p>
               By texting {SITE.contact.phone}, you consent to customer-care texts from Luma Pediatrics.
@@ -187,16 +190,6 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
         </div>
       </article>
 
-      <figure class="contact-opening-banner">
-        <Picture
-          src="/images/luma-opening-banner.jpg"
-          alt="Luma Pediatrics, opening late 2026 in McKinney, Texas, with a teddy bear and wooden rainbow in a warm nursery"
-          class="block w-full h-auto"
-          width={1440}
-          height={756}
-          loading="lazy"
-        />
-      </figure>
     </div>
   </section>
 
@@ -233,9 +226,33 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 </BaseLayout>
 
 <style>
+  .contact-hero-layout {
+    display: grid;
+    align-items: center;
+    gap: clamp(1.75rem, 4vw, 3.25rem);
+  }
+
+  .contact-hero-copy {
+    text-align: center;
+  }
+
   .contact-hero-title {
     max-width: 100%;
     overflow-wrap: anywhere;
+  }
+
+  .contact-hero-image {
+    overflow: hidden;
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-card);
+    background: var(--color-card);
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .contact-hero-image img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   .contact-primary-actions {
@@ -270,7 +287,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 
   .contact-action:focus-visible,
   .contact-email-action:focus-visible,
-  .contact-info-disclosure summary:focus-visible,
+  .contact-sms-disclosure summary:focus-visible,
   .contact-directions:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 3px;
@@ -343,8 +360,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     color: var(--color-foreground);
   }
 
-  .contact-email-icon,
-  .contact-info-icon {
+  .contact-email-icon {
     display: inline-flex;
     flex: none;
     align-items: center;
@@ -384,68 +400,78 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     color: var(--color-muted-foreground);
   }
 
-  .contact-info-grid {
-    display: grid;
-    gap: 0.75rem;
-    margin-top: 1rem;
-  }
-
-  .contact-info-disclosure {
-    min-width: 0;
-  }
-
-  .contact-info-disclosure summary {
+  .contact-notes {
     display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    min-height: 2.75rem;
-    padding: 0.45rem 0.75rem;
-    border: 1px solid var(--color-border-soft);
-    border-radius: 9999px;
-    background: var(--color-background);
-    color: var(--color-primary);
-    cursor: pointer;
-    font-size: 0.82rem;
-    font-weight: 700;
-    list-style: none;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem 1.25rem;
+    margin-top: 0.85rem;
+    padding-inline: 0.25rem;
   }
 
-  .contact-info-disclosure summary::-webkit-details-marker {
-    display: none;
+  .contact-medical-note {
+    display: flex;
+    flex: 1 1 30rem;
+    align-items: flex-start;
+    gap: 0.45rem;
+    margin: 0;
+    color: var(--color-muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1.55;
   }
 
-  .contact-info-icon {
-    width: 1.85rem;
-    height: 1.85rem;
-    border-radius: 9999px;
-    background: var(--color-card);
+  .contact-medical-note svg {
+    flex: none;
+    margin-top: 0.15rem;
     color: var(--color-sage-hover);
   }
 
-  .contact-info-chevron {
+  .contact-medical-note strong {
+    color: var(--color-foreground);
+  }
+
+  .contact-sms-disclosure {
     flex: none;
-    margin-left: auto;
-    transition: transform var(--duration-fast) var(--ease-fluid);
+    max-width: 30rem;
   }
 
-  .contact-info-disclosure[open] .contact-info-chevron {
-    transform: rotate(180deg);
+  .contact-sms-disclosure summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--color-muted-foreground);
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.5;
+    list-style: none;
+    text-decoration: underline;
+    text-underline-offset: 0.18rem;
   }
 
-  .contact-info-content {
-    margin-top: 0.5rem;
-    padding: 0.9rem 1rem;
+  .contact-sms-disclosure summary:hover {
+    color: var(--color-primary);
+  }
+
+  .contact-sms-disclosure summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .contact-sms-content {
+    margin-top: 0.55rem;
+    padding: 0.85rem 1rem;
     border: 1px solid var(--color-border-soft);
     border-radius: 1rem;
     background: var(--color-card);
+    box-shadow: var(--shadow-soft);
   }
 
-  .contact-info-content h3 {
+  .contact-sms-content h3 {
     margin: 0;
     font-size: 0.95rem;
   }
 
-  .contact-info-content p {
+  .contact-sms-content p {
     margin: 0.35rem 0 0;
     color: var(--color-muted-foreground);
     font-size: 0.78rem;
@@ -610,26 +636,25 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     border-top: 1px solid var(--color-border-soft);
   }
 
-  .contact-opening-banner {
-    margin-top: 2rem;
-    overflow: hidden;
-    border: 1px solid var(--color-border-soft);
-    border-radius: var(--radius-card);
-    background: var(--color-card);
-    box-shadow: var(--shadow-soft);
-  }
-
   @media (min-width: 720px) {
     .contact-primary-actions {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .contact-info-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   @media (min-width: 900px) {
+    .contact-hero-layout {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    }
+
+    .contact-hero-copy {
+      text-align: left;
+    }
+
+    .contact-hero-copy p {
+      margin-inline: 0;
+    }
+
     .contact-location-layout {
       grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
       align-items: stretch;
@@ -642,6 +667,15 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
   }
 
   @media (max-width: 600px) {
+    .contact-notes {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .contact-sms-disclosure {
+      max-width: none;
+    }
+
     .contact-address-block {
       align-items: stretch;
       flex-direction: column;

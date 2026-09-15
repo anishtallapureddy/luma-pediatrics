@@ -663,6 +663,7 @@ expect(
 expect(
   contactHtml.includes('class="contact-primary-actions"') &&
     contactHtml.includes('<details id="sms-disclosure"') &&
+    contactHtml.includes('class="contact-hero-image"') &&
     contactHtml.includes('class="contact-location-layout"') &&
     contactText.includes('Contact Luma Pediatrics') &&
     contactText.includes('Future McKinney location'),
@@ -670,7 +671,8 @@ expect(
 );
 expect(
   !contactText.includes('General information and future location') &&
-    !contactText.includes('Stay connected as we prepare to open'),
+    !contactText.includes('Stay connected as we prepare to open') &&
+    !contactHtml.includes('class="contact-opening-banner"'),
   'Contact page must not restore the overloaded combined presentation',
 );
 expect(
