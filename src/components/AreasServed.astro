@@ -16,20 +16,22 @@ const { compact = false } = Astro.props;
     {' '}{SITE.areasServed.join(', ')}, {SITE.areasServedTagline}.
   </div>
 ) : (
-  <div class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 md:p-8 ring-1 ring-[var(--color-border-soft)]">
-    <div class="flex items-center gap-2 text-[var(--color-primary)]">
-      <Icon name="lucide:map-pin" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
-      <span class="eyebrow eyebrow-sun">Future service area</span>
+  <div class="areas-served-card">
+    <div class="areas-served-heading">
+      <span class="areas-served-icon" aria-hidden="true">
+        <Icon name="lucide:map-pin" class="w-5 h-5" stroke-width="1.8" />
+      </span>
+      <div>
+        <p class="areas-served-kicker">Future service area</p>
+        <h2>Planning to welcome families across North Texas.</h2>
+      </div>
     </div>
-    <h3 class="mt-4 text-2xl font-extrabold tracking-tight">
-      Planning to welcome families across North Texas.
-    </h3>
-    <p class="mt-3 text-[var(--color-foreground)]/80 leading-relaxed">
-      Our planned service area includes {SITE.areasServed.join(', ')}, {SITE.areasServedTagline}.
+    <p class="areas-served-intro">
+      Our future McKinney practice plans to welcome families from communities across Collin and southern Grayson counties.
     </p>
-    <ul class="mt-5 flex flex-wrap gap-2">
+    <ul class="areas-served-grid" aria-label="Communities in the future Luma Pediatrics service area">
       {SITE.areasServed.map((city) => (
-        <li class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-muted)] px-3 py-1.5 text-sm font-semibold text-[var(--color-primary)] ring-1 ring-inset ring-[rgba(200,153,90,0.25)]">
+        <li class="areas-served-city">
           <Icon name="lucide:map-pin" class="w-3.5 h-3.5" stroke-width="2" aria-hidden="true" />
           {city}
         </li>
@@ -37,3 +39,92 @@ const { compact = false } = Astro.props;
     </ul>
   </div>
 )}
+
+<style>
+  .areas-served-card {
+    padding: clamp(1.5rem, 3vw, 2rem);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-card);
+    background: var(--color-card);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .areas-served-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .areas-served-icon {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 2.65rem;
+    height: 2.65rem;
+    border: 1px solid var(--color-border-soft);
+    border-radius: 0.9rem;
+    background: var(--color-muted);
+    color: var(--color-primary);
+  }
+
+  .areas-served-kicker {
+    margin: 0;
+    color: var(--color-sage-hover);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .areas-served-heading h2 {
+    margin: 0.15rem 0 0;
+    font-size: clamp(1.45rem, 3vw, 1.8rem);
+  }
+
+  .areas-served-intro {
+    max-width: 48rem;
+    margin: 1.25rem 0 0;
+    color: var(--color-muted-foreground);
+    line-height: 1.65;
+  }
+
+  .areas-served-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.35rem 1rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .areas-served-city {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-width: 0;
+    padding-block: 0.45rem;
+    border-bottom: 1px solid var(--color-border-soft);
+    color: var(--color-foreground);
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+
+  .areas-served-city svg {
+    flex: none;
+    color: var(--color-sage-hover);
+  }
+
+  @media (min-width: 640px) {
+    .areas-served-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 900px) {
+    .areas-served-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

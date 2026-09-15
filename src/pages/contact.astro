@@ -135,7 +135,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
   </section>
 
   <!-- Location, hours, map, and directions are grouped as one visit-planning task. -->
-  <section class="contact-location-section py-14 md:py-16 reveal relative overflow-hidden">
+  <section class="contact-planning-section py-14 md:py-16 reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={6} />
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <article class="contact-location-layout">
@@ -190,14 +190,9 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
         </div>
       </article>
 
-    </div>
-  </section>
-
-  <!-- AREAS WE SERVE -->
-  <section class="pb-16 reveal relative overflow-hidden">
-    <PageDecor variant="minimal" sparkles={6} />
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <AreasServed />
+      <div class="contact-service-area">
+        <AreasServed />
+      </div>
     </div>
   </section>
 
@@ -488,10 +483,6 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     font-weight: 700;
   }
 
-  .contact-location-section {
-    background: var(--color-muted);
-  }
-
   .contact-location-layout {
     display: grid;
     overflow: hidden;
@@ -634,6 +625,10 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     min-width: 0;
     overflow: hidden;
     border-top: 1px solid var(--color-border-soft);
+  }
+
+  .contact-service-area {
+    margin-top: clamp(2rem, 5vw, 3.5rem);
   }
 
   @media (min-width: 720px) {
