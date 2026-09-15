@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/Button.astro';
+import PageDecor from '../../components/PageDecor.astro';
 import WaitlistForm from '../../components/WaitlistForm.astro';
 import { Icon } from 'astro-icon/components';
 import { CITIES } from '../../data/cities.ts';
@@ -82,26 +83,27 @@ const faqSchema = {
   <script is:inline type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
-  <section class="relative bg-gradient-to-b from-sky-50 via-white to-white pt-16 pb-12 md:pt-24 md:pb-16">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <p class="text-sm font-semibold tracking-wider uppercase text-luma-gold mb-3">
+  <section class="page-hero py-12 md:py-16 overflow-hidden">
+    <PageDecor />
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">
         Future service area · {city.name}, TX
-      </p>
-      <h1 class="text-4xl md:text-5xl font-display text-luma-ink mb-5 leading-tight">
+      </span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
         {city.slug === 'mckinney'
           ? 'A future pediatric home in McKinney'
           : `A future pediatric option for ${city.name} families`}
       </h1>
-      <p class="text-lg md:text-xl text-luma-ink/80 max-w-2xl mx-auto mb-2">
+      <p class="mt-6 text-lg md:text-xl text-[var(--color-foreground)]/80 max-w-2xl mx-auto">
         {city.intro}
       </p>
       {city.distanceMi > 0 && (
-        <p class="text-sm text-luma-ink/60 mb-8">
+        <p class="mt-3 text-sm text-[var(--color-muted-foreground)]">
           <Icon name="lucide:map-pin" class="inline w-4 h-4 -mt-0.5" />
           About {city.distanceMi} miles from central {city.name} · {city.driveMinutes} drive to our future McKinney clinic
         </p>
       )}
-      <div class="flex flex-wrap justify-center gap-3">
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
         <Button href="#practice-updates" variant="primary">
           Get Luma updates
         </Button>
@@ -110,49 +112,50 @@ const faqSchema = {
     </div>
   </section>
 
-  <section class="py-12 md:py-16">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.85fr)] lg:items-start">
+  <section class="py-12 md:py-16 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={5} />
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.85fr)] lg:items-start">
       <div>
-        <h2 class="text-2xl md:text-3xl font-display text-luma-ink mb-4">
+        <h2 class="text-2xl md:text-3xl font-display text-[var(--color-foreground)] mb-4">
           Built for the {city.name} community
         </h2>
-        <p class="text-luma-ink/80 mb-6 leading-relaxed">{city.whyLuma}</p>
-        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-luma-ink/60 mb-3">
+        <p class="text-[var(--color-foreground)]/80 mb-6 leading-relaxed">{city.whyLuma}</p>
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--color-muted-foreground)] mb-3">
           Familiar places near {city.name}
         </p>
         <ul class="flex flex-wrap gap-2">
           {city.landmarks.map((lm) => (
-            <li class="px-3 py-1.5 rounded-full bg-luma-sage/20 text-luma-ink text-sm">
+            <li class="px-3 py-1.5 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] text-sm">
               {lm}
             </li>
           ))}
         </ul>
       </div>
 
-      <aside class="rounded-2xl bg-luma-cream/55 border border-luma-ink/10 p-6">
-        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-luma-gold">
+      <aside class="rounded-[var(--radius-card)] bg-[var(--color-card)] border border-[var(--color-border-soft)] p-6 shadow-[var(--shadow-soft)]">
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--color-sage-hover)]">
           Plan a future visit
         </p>
-        <h2 class="mt-2 text-2xl font-display text-luma-ink">
+        <h2 class="mt-2 text-2xl font-display text-[var(--color-foreground)]">
           From {city.name} to McKinney
         </h2>
-        <p class="mt-3 text-sm text-luma-ink/75 leading-relaxed">
+        <p class="mt-3 text-sm text-[var(--color-foreground)]/75 leading-relaxed">
           {locationAnswer}
         </p>
         <dl class="mt-5 grid gap-3 text-sm">
           <div class="flex items-start justify-between gap-4">
-            <dt class="font-semibold text-luma-ink">Distance</dt>
-            <dd class="text-right text-luma-ink/75">
+            <dt class="font-semibold text-[var(--color-foreground)]">Distance</dt>
+            <dd class="text-right text-[var(--color-foreground)]/75">
               {city.distanceMi === 0 ? 'In McKinney' : `About ${city.distanceMi} miles`}
             </dd>
           </div>
           <div class="flex items-start justify-between gap-4">
-            <dt class="font-semibold text-luma-ink">Typical drive</dt>
-            <dd class="text-right text-luma-ink/75">{city.driveMinutes}</dd>
+            <dt class="font-semibold text-[var(--color-foreground)]">Typical drive</dt>
+            <dd class="text-right text-[var(--color-foreground)]/75">{city.driveMinutes}</dd>
           </div>
           <div>
-            <dt class="font-semibold text-luma-ink">Future clinic</dt>
-            <dd class="mt-1 text-luma-ink/75">
+            <dt class="font-semibold text-[var(--color-foreground)]">Future clinic</dt>
+            <dd class="mt-1 text-[var(--color-foreground)]/75">
               <address class="not-italic">
                 {SITE.address.street}<br />
                 {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}
@@ -164,7 +167,7 @@ const faqSchema = {
           href={directionsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-luma-ink px-5 text-sm font-semibold text-white no-underline hover:bg-luma-ink/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-luma-gold focus-visible:ring-offset-2"
+          class="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[var(--color-primary)] px-5 text-sm font-semibold text-white no-underline hover:bg-[var(--color-primary-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2"
           aria-label={`Get directions from ${city.name} to ${SITE.name}`}
         >
           <Icon name="lucide:map-pin" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
@@ -174,40 +177,40 @@ const faqSchema = {
     </div>
   </section>
 
-  <section class="py-12 md:py-16 bg-luma-cream/40">
+  <section class="py-12 md:py-16 bg-[var(--color-muted)]">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-2xl md:text-3xl font-display text-luma-ink mb-8 text-center">
+      <h2 class="text-2xl md:text-3xl font-display text-[var(--color-foreground)] mb-8 text-center">
         Care we'll offer {city.name} families
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {featuredServices.slice(0, 6).map((svc) => (
-          <a href={`/services/#${svc.slug}`} class="block p-5 rounded-2xl bg-white border border-luma-ink/10 hover:border-luma-gold/50 hover:shadow-md transition">
-            <h3 class="font-semibold text-luma-ink mb-1">{svc.title}</h3>
-            <p class="text-sm text-luma-ink/70">{svc.short}</p>
+          <a href={`/services/#${svc.slug}`} class="card-lift block p-5 rounded-[var(--radius-card)] bg-[var(--color-card)] text-[var(--color-foreground)] no-underline">
+            <h3 class="font-semibold text-[var(--color-foreground)] mb-1">{svc.title}</h3>
+            <p class="text-sm text-[var(--color-foreground)]/70">{svc.short}</p>
           </a>
         ))}
       </div>
       <p class="text-center mt-6">
-        <a href="/services/" class="text-luma-gold hover:underline font-medium">See all services →</a>
+        <a href="/services/" class="text-[var(--color-primary)] hover:underline font-medium">See all services →</a>
       </p>
     </div>
   </section>
 
   <section class="py-12 md:py-16">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="text-sm font-semibold uppercase tracking-[0.16em] text-luma-gold">
+      <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--color-sage-hover)]">
         Planning ahead
       </p>
-      <h2 class="mt-2 text-2xl md:text-3xl font-display text-luma-ink">
+      <h2 class="mt-2 text-2xl md:text-3xl font-display text-[var(--color-foreground)]">
         Questions from {city.name} families
       </h2>
       <div class="mt-6 space-y-3">
         {faqItems.map((item) => (
-          <details class="rounded-2xl border border-luma-ink/10 bg-white p-5">
-            <summary class="cursor-pointer font-semibold text-luma-ink">
+          <details class="rounded-[var(--radius-card)] border border-[var(--color-border-soft)] bg-[var(--color-card)] p-5">
+            <summary class="cursor-pointer font-semibold text-[var(--color-foreground)]">
               {item.question}
             </summary>
-            <p class="mt-3 text-sm text-luma-ink/75 leading-relaxed">
+            <p class="mt-3 text-sm text-[var(--color-foreground)]/75 leading-relaxed">
               {item.answer}
             </p>
           </details>

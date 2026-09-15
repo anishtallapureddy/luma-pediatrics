@@ -23,31 +23,33 @@ const intro = posts.length === 1
     { name: 'Blog & Parent Guides', path: '/blog/' },
   ]}
 >
-  <PageDecor />
-
-  <section class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-10">
-    <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-accent)]">
-      Blog & Parent Guides
-    </p>
-    <h1 class="mt-3 font-display text-4xl sm:text-5xl text-[var(--color-primary)]">
-      Practical pediatric information
-    </h1>
-    <p class="mt-4 max-w-2xl text-lg text-[var(--color-muted-foreground)] leading-relaxed">
-      {intro}
-    </p>
-    <a
-      href="/rss.xml"
-      class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-primary)] no-underline hover:underline"
-    >
-      Subscribe to the RSS feed
-    </a>
+  <section class="page-hero py-12 md:py-16 overflow-hidden">
+    <PageDecor />
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">Blog &amp; Parent Guides</span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
+        Practical pediatric information
+      </h1>
+      <p class="mt-6 max-w-2xl mx-auto text-lg text-[var(--color-muted-foreground)] leading-relaxed">
+        {intro}
+      </p>
+      <a
+        href="/rss.xml"
+        class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-primary)] no-underline hover:underline"
+      >
+        Subscribe to the RSS feed
+      </a>
+    </div>
   </section>
 
   <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
     {posts.length === 0 ? (
       <p class="text-[var(--color-muted-foreground)]">Posts coming soon.</p>
     ) : (
-      <ul class="grid gap-8 sm:grid-cols-2">
+      <ul class:list={[
+        'grid gap-8',
+        posts.length > 1 ? 'sm:grid-cols-2' : 'max-w-xl mx-auto',
+      ]}>
         {posts.map((post) => {
           const date = post.data.publishDate.toLocaleDateString('en-US', {
             year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
@@ -60,6 +62,8 @@ const intro = posts.length === 1
                     <Picture
                       src={post.data.hero}
                       alt={post.data.heroAlt ?? post.data.title}
+                      width={1200}
+                      height={900}
                       loading="lazy"
                     />
                   </figure>
@@ -74,7 +78,7 @@ const intro = posts.length === 1
                   <p class="mt-2 text-sm text-[var(--color-muted-foreground)] leading-relaxed">
                     {post.data.description}
                   </p>
-                  <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-accent)]">
+                  <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)]">
                     Read article
                     <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
                   </span>
@@ -98,14 +102,16 @@ const intro = posts.length === 1
   .blog-card {
     border-radius: 1.25rem;
     overflow: hidden;
-    background: var(--color-background);
-    border: 1px solid rgba(11, 29, 58, 0.08);
-    box-shadow: 0 6px 18px rgba(11, 29, 58, 0.05);
-    transition: transform 250ms ease, box-shadow 250ms ease;
+    background: var(--color-card);
+    border: 1px solid var(--color-border-soft);
+    box-shadow: var(--shadow-soft);
+    transition:
+      transform var(--duration-base) var(--ease-fluid),
+      box-shadow var(--duration-base) var(--ease-fluid);
   }
   .blog-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 30px rgba(11, 29, 58, 0.10);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft-hover);
   }
   .blog-card-figure {
     aspect-ratio: 4 / 3;
@@ -116,7 +122,7 @@ const intro = posts.length === 1
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 600ms ease;
+    transition: transform var(--duration-emphasized) var(--ease-fluid);
   }
   .blog-card:hover .blog-card-figure :global(img) {
     transform: scale(1.04);

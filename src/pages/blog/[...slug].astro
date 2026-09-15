@@ -76,7 +76,7 @@ const articleSchema = {
   <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 
   <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20 pb-20">
-    <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+    <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-primary)]">
       <a href="/blog/" class="no-underline hover:underline">← Parent Resources</a>
     </p>
 
@@ -99,6 +99,8 @@ const articleSchema = {
         <Picture
           src={post.data.hero}
           alt={post.data.heroAlt ?? post.data.title}
+          width={1200}
+          height={900}
           loading="eager"
           fetchpriority="high"
         />
@@ -172,13 +174,13 @@ const articleSchema = {
   .prose-luma strong { color: var(--color-primary); font-weight: 600; }
   .prose-luma em { font-style: italic; }
   .prose-luma a {
-    color: var(--color-accent);
+    color: var(--color-primary);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
   .prose-luma a:hover { text-decoration-thickness: 2px; }
   .prose-luma blockquote {
-    border-left: 3px solid var(--color-accent);
+    border-left: 3px solid var(--color-sun);
     padding-left: 1rem;
     color: var(--color-muted-foreground);
     font-style: italic;

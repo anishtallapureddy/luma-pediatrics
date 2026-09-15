@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageDecor from '../../components/PageDecor.astro';
 import { Icon } from 'astro-icon/components';
 import { CITIES } from '../../data/cities.ts';
 import { SITE } from '../../site.config';
@@ -17,38 +18,38 @@ const description = `Luma Pediatrics plans to welcome families from McKinney and
     { name: 'Service area', path: '/pediatrician/' },
   ]}
 >
-  <section class="pt-16 pb-10 md:pt-24 md:pb-14 text-center">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="text-sm font-semibold tracking-wider uppercase text-luma-gold mb-3">
-        North Texas
-      </p>
-      <h1 class="text-4xl md:text-5xl font-display text-luma-ink mb-5 leading-tight">
+  <section class="page-hero py-12 md:py-16 overflow-hidden">
+    <PageDecor />
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">North Texas</span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
         Pediatric care for your neighborhood
       </h1>
-      <p class="text-lg text-luma-ink/80">
+      <p class="mt-6 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-2xl mx-auto">
         Our future McKinney practice plans to welcome families from across the area. Choose your city to learn more.
       </p>
     </div>
   </section>
 
-  <section class="pb-20">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section class="pb-20 md:pb-24 reveal relative overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {CITIES.map((c) => (
           <a
             href={`/pediatrician/${c.slug}/`}
-            class="block p-6 rounded-2xl bg-white border border-luma-ink/10 hover:border-luma-gold hover:shadow-lg transition group"
+            class="card-lift group block rounded-[var(--radius-card)] bg-[var(--color-card)] p-6 text-[var(--color-foreground)] no-underline"
           >
             <div class="flex items-start justify-between mb-2">
-              <h2 class="text-2xl font-display text-luma-ink group-hover:text-luma-gold transition">
+              <h2 class="text-2xl text-[var(--color-foreground)]">
                 {c.name}
               </h2>
-              <Icon name="lucide:arrow-up-right" class="w-5 h-5 text-luma-ink/40 group-hover:text-luma-gold transition" />
+              <Icon name="lucide:arrow-up-right" class="w-5 h-5 text-[var(--color-muted-foreground)] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </div>
-            <p class="text-sm text-luma-ink/60 mb-3">
+            <p class="text-sm text-[var(--color-sage-hover)] font-semibold mb-3">
               {c.distanceMi === 0 ? 'In town' : `${c.distanceMi} mi · ${c.driveMinutes}`}
             </p>
-            <p class="text-luma-ink/80 text-sm leading-relaxed">{c.intro}</p>
+            <p class="text-[var(--color-foreground)]/80 text-sm leading-relaxed">{c.intro}</p>
           </a>
         ))}
       </div>

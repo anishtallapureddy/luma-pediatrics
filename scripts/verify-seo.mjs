@@ -469,6 +469,13 @@ expect(
   jsonLdObjects(articlePage.html, articlePage.fileLabel).some((value) => hasType(value['@type'], 'Article')),
   `${articlePage.fileLabel}: Article JSON-LD is missing`,
 );
+const articleHero = findTags(articlePage.html, 'img').find(
+  (attributes) => attributes.src === '/images/blog-vaccines.jpg',
+);
+expect(
+  articleHero?.width === '1200' && articleHero?.height === '900',
+  `${articlePage.fileLabel}: article hero must publish intrinsic dimensions`,
+);
 
 const aboutPage = pages.find((page) => page.canonical === `${domain}/about/`);
 expect(aboutPage, 'About page was not generated');
@@ -550,6 +557,40 @@ expect(
   ),
   'Blog index must accurately describe the current single published guide',
 );
+expect(
+  blogIndex.html.includes('max-w-xl mx-auto'),
+  'A single Blog article card must be centered',
+);
+const blogCardImage = findTags(blogIndex.html, 'img').find(
+  (attributes) => attributes.src === '/images/blog-vaccines.jpg',
+);
+expect(
+  blogCardImage?.width === '1200' && blogCardImage?.height === '900',
+  'Blog card image must publish intrinsic dimensions',
+);
+
+for (const path of [
+  '/services/',
+  '/faq/',
+  '/new-patients/',
+  '/terms/',
+  '/privacy/',
+  '/notice-of-privacy-practices/',
+  '/accessibility/',
+  '/vaccines/',
+  '/dosing-charts/',
+  '/health-watch/',
+  '/resources/',
+  '/blog/',
+  '/pediatrician/',
+]) {
+  const page = pages.find((candidate) => candidate.canonical === `${domain}${path}`);
+  expect(page, `Expected generated page for continuity check: ${path}`);
+  expect(
+    page.html.includes('page-hero py-12 md:py-16'),
+    `${path}: standard page hero spacing is inconsistent`,
+  );
+}
 
 const sitemapIndex = readFileSync(join(dist, 'sitemap-index.xml'), 'utf8');
 expect(
@@ -775,6 +816,14 @@ for (const cityPage of cityPages) {
   expect(text.includes('Plan a future visit'), `${cityPage.fileLabel}: travel-planning section is missing`);
   expect(text.includes('Get directions'), `${cityPage.fileLabel}: directions action is missing`);
   expect(text.includes('Questions from'), `${cityPage.fileLabel}: local FAQ heading is missing`);
+  expect(
+    cityPage.html.includes('page-hero py-12 md:py-16'),
+    `${cityPage.fileLabel}: city hero must use the shared page treatment`,
+  );
+  expect(
+    !cityPage.html.includes('from-sky-50'),
+    `${cityPage.fileLabel}: legacy blue city-page styling must not return`,
+  );
   expect(text.split(/\s+/).length >= 350, `${cityPage.fileLabel}: page is below the city-page content floor`);
   expect(
     cityPage.html.replaceAll('&amp;', '&').includes('&origin='),
@@ -802,6 +851,8 @@ const forbidden = [
   /vaccines\/schedules\/parents\/index\.html/i,
   /Acetaminophen-Dosage-Table\.aspx/i,
   /Ibuprofen-for-Children-Dosage-Table\.aspx/i,
+  /--color-accent/,
+  /(?:text|bg|border|ring)-luma-/,
 ];
 for (const file of textSourceFiles) {
   const content = readFileSync(file, 'utf8');
@@ -845,6 +896,24 @@ for (const slug of serviceSlugs) {
   );
 }
 const globalCss = readFileSync(join(root, 'src', 'styles', 'global.css'), 'utf8');
+const baseLayoutSource = readFileSync(
+  join(root, 'src', 'layouts', 'BaseLayout.astro'),
+  'utf8',
+);
+expect(
+  baseLayoutSource.includes(
+    "threshold: 0.02, rootMargin: '0px 0px -24px 0px'",
+  ),
+  'Reveal animation must trigger early enough for tall mobile sections',
+);
+const footerSource = readFileSync(
+  join(root, 'src', 'components', 'Footer.astro'),
+  'utf8',
+);
+expect(
+  footerSource.includes('footer class="mt-16 md:mt-20'),
+  'Footer spacing must use the restrained shared rhythm',
+);
 expect(
   /\.eyebrow-sun\s*\{[\s\S]*?color:\s*var\(--color-sage-hover\)/.test(globalCss),
   'Light-background eyebrow text must use the darker sage token',
