@@ -21,6 +21,14 @@ const sections = [
     icon: 'lucide:pill',
   },
   {
+    href: '/vaccines/',
+    eyebrow: 'Prevention',
+    title: 'Vaccine Schedule',
+    body:
+      'A parent-friendly view of the CDC and AAP childhood immunization schedule from birth through adolescence.',
+    icon: 'lucide:syringe',
+  },
+  {
     href: '/blog/',
     eyebrow: 'Articles',
     title: 'Blog & Parent Guides',
@@ -53,7 +61,7 @@ const sections = [
   </section>
 
   <section class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 md:pb-24">
-    <div class="grid gap-6 md:grid-cols-3">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {sections.map(({ href, eyebrow, title, body, icon }) => (
         <a
           href={href}
@@ -72,5 +80,26 @@ const sections = [
         </a>
       ))}
     </div>
+
+    <a
+      href="/new-patients/"
+      class="group mt-6 flex items-center gap-4 rounded-[var(--radius-card)] bg-[var(--color-card)] p-5 card-lift no-underline border border-[var(--color-border-soft)]"
+    >
+      <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--color-muted)] text-[var(--color-primary)]" aria-hidden="true">
+        <Icon name="lucide:clipboard-check" class="w-5 h-5" stroke-width="1.7" />
+      </span>
+      <span class="min-w-0 flex-1">
+        <span class="block text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-sage-hover)]">
+          Planning ahead
+        </span>
+        <strong class="mt-1 block text-lg text-[var(--color-foreground)]">
+          Future new-patient guide
+        </strong>
+        <span class="mt-1 block text-sm text-[var(--color-muted-foreground)]">
+          What families can expect and bring when scheduling opens.
+        </span>
+      </span>
+      <Icon name="lucide:arrow-right" class="w-5 h-5 shrink-0 text-[var(--color-primary)] transition-transform group-hover:translate-x-0.5" stroke-width="1.8" aria-hidden="true" />
+    </a>
   </section>
 </BaseLayout>

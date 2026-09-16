@@ -20,10 +20,15 @@ const contract = {
   phone: '(469) 200-1151',
   phoneE164: '+14692001151',
   smsHref: 'sms:+14692001151',
+  physicianName: 'Praveena Tallapureddy',
+  physicianHonorificPrefix: 'Dr.',
+  physicianHonorificSuffix: 'M.D., F.A.A.P.',
   status: 'Opening late 2026',
   ga4: 'G-QL30ZJXMW8',
   socialImage: '/og-luma-pediatrics-2026-09-15.png',
   homeSocialTitle: 'Luma Pediatrics | McKinney, TX',
+  homeDescription:
+    'Board-certified pediatric care planned for newborns through teens in McKinney, TX. Luma Pediatrics opens late 2026 with well visits, sick care, vaccines, and more.',
   homeSocialDescription:
     'Expert pediatric care that feels like family. Opening late 2026 in McKinney, Texas.',
 };
@@ -158,6 +163,13 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
     canonical === `${domain}/` ? contract.homeSocialDescription : description;
   const robots = singleMeta(html, 'name', 'robots', fileLabel);
   const noindex = robots.includes('noindex');
+  if (!noindex) {
+    expect(title.length <= 70, `${fileLabel}: title is unnecessarily long (${title.length} characters)`);
+    expect(
+      description.length <= 180,
+      `${fileLabel}: meta description is unnecessarily long (${description.length} characters)`,
+    );
+  }
 
   expect(singleMeta(html, 'property', 'og:type', fileLabel), `${fileLabel}: og:type missing`);
   expect(
@@ -246,6 +258,12 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
   expect(clinic.address?.addressRegion === 'TX', `${fileLabel}: clinic state does not match`);
   expect(clinic.address?.postalCode === '75071', `${fileLabel}: clinic ZIP does not match`);
   expect(clinic.isAcceptingNewPatients === false, `${fileLabel}: pre-opening patient status is missing`);
+  expect(physician.name === contract.physicianName, `${fileLabel}: physician schema name is not plain text`);
+  expect(
+    physician.honorificPrefix === contract.physicianHonorificPrefix &&
+      physician.honorificSuffix === contract.physicianHonorificSuffix,
+    `${fileLabel}: physician credentials must use honorific fields`,
+  );
   expect(
     Array.isArray(clinic.sameAs) &&
       clinic.sameAs.some((url) => url.includes('query_place_id=ChIJay82ghcTTIYRfMrdtqknRvU')),
@@ -276,13 +294,29 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
   const imagePath = new URL(ogImage).pathname.replace(/^\//, '');
   expect(existsSync(join(root, 'public', imagePath)), `${fileLabel}: OG image file is missing: ${imagePath}`);
 
-  pages.push({ canonical, fileLabel, html, noindex });
+  pages.push({ canonical, fileLabel, html, noindex, title, description });
 }
 
 expect(pages.length > 0, 'No canonical Astro pages were found');
+for (const field of ['title', 'description']) {
+  const seen = new Map();
+  for (const page of pages.filter((candidate) => !candidate.noindex)) {
+    const existing = seen.get(page[field]);
+    expect(
+      !existing,
+      `${page.fileLabel}: duplicate ${field} also used by ${existing?.fileLabel}`,
+    );
+    seen.set(page[field], page);
+  }
+}
 
 const home = pages.find((page) => page.canonical === `${domain}/`);
 expect(home, 'Home page was not generated');
+expect(
+  singleMeta(home.html, 'name', 'description', home.fileLabel) ===
+    contract.homeDescription,
+  'Home meta description does not match the concise search contract',
+);
 expect(
   singleMeta(home.html, 'property', 'og:title', home.fileLabel) ===
     contract.homeSocialTitle,
@@ -313,6 +347,12 @@ expect(
   'Home page must preload the poster WebP',
 );
 const homeText = normalizedText(home.html);
+expect(
+  findTags(home.html, 'a').some(
+    (attributes) => attributes.href === '/new-patients/',
+  ),
+  'Home Plan Ahead section must link to the new-patient guide',
+);
 for (const value of [
   'Board-certified',
   'A calm place for children and parents.',
@@ -472,8 +512,60 @@ expect(
   `${articlePage.fileLabel}: article publish time is missing`,
 );
 expect(
-  jsonLdObjects(articlePage.html, articlePage.fileLabel).some((value) => hasType(value['@type'], 'Article')),
-  `${articlePage.fileLabel}: Article JSON-LD is missing`,
+  singleMeta(
+    articlePage.html,
+    'property',
+    'article:modified_time',
+    articlePage.fileLabel,
+  ).startsWith('2026-09-16'),
+  `${articlePage.fileLabel}: article modified time is missing or stale`,
+);
+expect(
+  normalizedText(articlePage.html).includes(
+    'The childhood vaccine schedule, explained',
+  ),
+  `${articlePage.fileLabel}: article title is not the concise published version`,
+);
+const articleStructuredData = jsonLdObjects(
+  articlePage.html,
+  articlePage.fileLabel,
+).find((value) => hasType(value['@type'], 'BlogPosting'));
+expect(articleStructuredData, `${articlePage.fileLabel}: BlogPosting JSON-LD is missing`);
+expect(
+  articleStructuredData.dateModified?.startsWith('2026-09-16'),
+  `${articlePage.fileLabel}: BlogPosting dateModified is missing or stale`,
+);
+expect(
+  articleStructuredData.author?.['@type'] === 'Person' &&
+    articleStructuredData.author?.name === contract.physicianName &&
+    articleStructuredData.author?.url === `${domain}/about/`,
+  `${articlePage.fileLabel}: physician author markup is incomplete`,
+);
+expect(
+  Array.isArray(articleStructuredData.image) &&
+    articleStructuredData.image.length === 3 &&
+    articleStructuredData.image.some(
+      (image) => image.width === 1200 && image.height === 900,
+    ) &&
+    articleStructuredData.image.some(
+      (image) => image.width === 1200 && image.height === 675,
+    ) &&
+    articleStructuredData.image.some(
+      (image) => image.width === 900 && image.height === 900,
+    ),
+  `${articlePage.fileLabel}: article schema must publish 4:3, 16:9, and 1:1 images`,
+);
+expect(
+  findTags(articlePage.html, 'a').some(
+    (attributes) =>
+      attributes.href === '/about/' &&
+      (attributes.rel ?? '').split(/\s+/).includes('author'),
+  ),
+  `${articlePage.fileLabel}: visible author must link to the provider profile`,
+);
+expect(
+  normalizedText(articlePage.html).includes('Updated September 16, 2026'),
+  `${articlePage.fileLabel}: visible updated date must match structured data`,
 );
 const articleHero = findTags(articlePage.html, 'img').find(
   (attributes) => attributes.src === '/images/blog-vaccines.jpg',
@@ -482,6 +574,15 @@ expect(
   articleHero?.width === '1200' && articleHero?.height === '900',
   `${articlePage.fileLabel}: article hero must publish intrinsic dimensions`,
 );
+for (const articleImage of [
+  'images/blog-vaccines-16x9.jpg',
+  'images/blog-vaccines-1x1.jpg',
+]) {
+  expect(
+    existsSync(join(root, 'public', articleImage)),
+    `${articlePage.fileLabel}: article schema image is missing: ${articleImage}`,
+  );
+}
 
 const aboutPage = pages.find((page) => page.canonical === `${domain}/about/`);
 expect(aboutPage, 'About page was not generated');
@@ -574,6 +675,18 @@ expect(
   blogCardImage?.width === '1200' && blogCardImage?.height === '900',
   'Blog card image must publish intrinsic dimensions',
 );
+const resourcesPage = pages.find(
+  (page) => page.canonical === `${domain}/resources/`,
+);
+expect(resourcesPage, 'Resources page was not generated');
+for (const href of ['/vaccines/', '/new-patients/']) {
+  expect(
+    findTags(resourcesPage.html, 'a').some(
+      (attributes) => attributes.href === href,
+    ),
+    `Resources page must link to ${href}`,
+  );
+}
 
 for (const path of [
   '/services/',
@@ -660,6 +773,35 @@ for (const url of indexableUrls) {
 for (const url of sitemapUrls) {
   expect(indexableUrls.has(url), `Sitemap contains unexpected URL ${url}`);
 }
+const inboundLinks = new Map(
+  [...sitemapUrls].map((url) => [new URL(url).pathname, new Set()]),
+);
+for (const page of pages.filter((candidate) => !candidate.noindex)) {
+  const sourcePath = new URL(page.canonical).pathname;
+  for (const attributes of findTags(page.html, 'a')) {
+    const href = attributes.href;
+    if (
+      !href ||
+      href.startsWith('#') ||
+      /^(?:mailto:|tel:|sms:|javascript:)/i.test(href)
+    ) {
+      continue;
+    }
+    const target = new URL(href, domain);
+    if (target.origin !== domain) continue;
+    const targetSources = inboundLinks.get(target.pathname);
+    if (targetSources && target.pathname !== sourcePath) {
+      targetSources.add(sourcePath);
+    }
+  }
+}
+for (const [pathname, sources] of inboundLinks) {
+  if (pathname === '/') continue;
+  expect(
+    sources.size > 0,
+    `Sitemap page has no internal discovery link: ${pathname}`,
+  );
+}
 
 const robots = readFileSync(join(dist, 'robots.txt'), 'utf8');
 expect(robots.includes('User-agent: *'), 'robots.txt is missing the default user agent');
@@ -684,6 +826,37 @@ expect(
   robots.includes(`Sitemap: ${domain}/sitemap-index.xml`),
   'robots.txt sitemap URL is incorrect',
 );
+const indexNowKey = '68a3f60f6888a5a9ed55db78c80dda34';
+expect(
+  readFileSync(join(root, 'public', `${indexNowKey}.txt`), 'utf8').trim() ===
+    indexNowKey,
+  'IndexNow verification key file is missing or incorrect',
+);
+const deployWorkflow = readFileSync(
+  join(root, '.github', 'workflows', 'deploy.yml'),
+  'utf8',
+);
+expect(
+  deployWorkflow.includes('https://api.indexnow.org/indexnow') &&
+    deployWorkflow.includes('sitemap-0.xml') &&
+    deployWorkflow.includes('"urlList": urls'),
+  'Deployment workflow must notify IndexNow with every sitemap URL',
+);
+const searchConsolePrioritySource = readFileSync(
+  join(root, 'scripts', 'search-console-priority.mjs'),
+  'utf8',
+);
+for (const priorityPath of [
+  '/resources/',
+  '/dosing-charts/',
+  '/blog/',
+  '/pediatrician/',
+]) {
+  expect(
+    searchConsolePrioritySource.includes(`'${priorityPath}'`),
+    `Search Console priority list is missing ${priorityPath}`,
+  );
+}
 
 const currentSocialImage = readFileSync(
   join(root, 'public', contract.socialImage.replace(/^\//, '')),

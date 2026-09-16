@@ -17,7 +17,9 @@ const { city } = Astro.props;
 const title = city.slug === 'mckinney'
   ? 'Pediatrician in McKinney, TX'
   : `Pediatrician Near ${city.name}, TX`;
-const description = `${city.intro} Explore Luma's planned services, future McKinney location, and practice updates.`;
+const description = city.slug === 'mckinney'
+  ? "Explore Luma Pediatrics' future McKinney practice, planned services for newborns through teens, location details, and opening updates."
+  : `Pediatrician near ${city.name}, TX: Luma Pediatrics' future McKinney clinic is about ${city.distanceMi} miles away. Explore planned services, travel details, and updates.`;
 const pageUrl = `${SITE.domain}/pediatrician/${city.slug}/`;
 const directionsUrl =
   `${GOOGLE_DIRECTIONS_URL}&origin=${encodeURIComponent(`${city.name}, TX`)}`;

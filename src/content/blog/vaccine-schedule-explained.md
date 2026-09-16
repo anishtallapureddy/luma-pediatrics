@@ -1,8 +1,11 @@
 ---
-title: "The childhood vaccine schedule, explained simply"
-description: "A pediatrician's plain-English walk-through of the CDC/AAP-recommended vaccine schedule from birth through age 18, what each shot protects against, and why timing matters."
+title: "The childhood vaccine schedule, explained"
+description: "A pediatrician's plain-English guide to the CDC/AAP childhood vaccine schedule, what each vaccine protects against, and why timing matters."
 publishDate: 2026-09-06
+updatedDate: 2026-09-16
 hero: /images/blog-vaccines.jpg
+heroWide: /images/blog-vaccines-16x9.jpg
+heroSquare: /images/blog-vaccines-1x1.jpg
 heroAlt: A pediatrician's gloved hand with a small vaccine syringe near a calendar
 tags: ["vaccines", "schedule", "well-visits", "prevention"]
 ---

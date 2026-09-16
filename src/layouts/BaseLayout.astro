@@ -154,7 +154,9 @@ const physicianSchema = SITE.showProviderProfile
   ? {
       '@type': 'Physician',
       '@id': STRUCTURED_DATA_IDS.physician,
-      name: SITE.provider.name,
+      name: SITE.provider.schemaName,
+      honorificPrefix: SITE.provider.honorificPrefix,
+      honorificSuffix: SITE.provider.honorificSuffix,
       url: `${SITE.domain}/about/`,
       disambiguatingDescription: `Board-certified pediatrician and founder of ${SITE.name} in McKinney, Texas.`,
       image: new URL('/images/provider-headshot.jpg', SITE.domain).toString(),

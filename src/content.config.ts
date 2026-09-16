@@ -11,6 +11,8 @@ const blog = defineCollection({
     author: z.string().default('Praveena Tallapureddy, MD'),
     authorTitle: z.string().default('Board-Certified Pediatrician at Luma Pediatrics'),
     hero: z.string().optional(),
+    heroWide: z.string().optional(),
+    heroSquare: z.string().optional(),
     heroAlt: z.string().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),

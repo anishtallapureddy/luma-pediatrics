@@ -42,6 +42,9 @@ export const SITE = {
 
   provider: {
     name: 'Praveena Tallapureddy, M.D., F.A.A.P.',
+    schemaName: 'Praveena Tallapureddy',
+    honorificPrefix: 'Dr.',
+    honorificSuffix: 'M.D., F.A.A.P.',
     /** Visible heading form on the About page ("Meet {displayName}"). */
     displayName: 'Praveena Tallapureddy, MD',
     shortName: 'Dr. Tallapureddy',

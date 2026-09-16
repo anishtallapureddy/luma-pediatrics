@@ -25,29 +25,60 @@ const updated = post.data.updatedDate?.toLocaleDateString('en-US', {
 });
 const articleUrl = `${SITE.domain}/blog/${post.id}/`;
 const articleImage = post.data.hero ? `${SITE.domain}${post.data.hero}` : `${SITE.domain}${SITE.socialImage}`;
+const articleImages = post.data.hero
+  ? [
+      {
+        '@type': 'ImageObject',
+        url: articleImage,
+        width: 1200,
+        height: 900,
+      },
+      ...(post.data.heroWide
+        ? [{
+            '@type': 'ImageObject',
+            url: `${SITE.domain}${post.data.heroWide}`,
+            width: 1200,
+            height: 675,
+          }]
+        : []),
+      ...(post.data.heroSquare
+        ? [{
+            '@type': 'ImageObject',
+            url: `${SITE.domain}${post.data.heroSquare}`,
+            width: 900,
+            height: 900,
+          }]
+        : []),
+    ]
+  : [{
+      '@type': 'ImageObject',
+      url: articleImage,
+      width: 1200,
+      height: 630,
+    }];
 
 const articleSchema = {
   '@context': 'https://schema.org',
-  '@type': 'Article',
+  '@type': 'BlogPosting',
   '@id': `${articleUrl}#article`,
   headline: post.data.title,
   description: post.data.description,
   datePublished: post.data.publishDate.toISOString(),
   ...(post.data.updatedDate && { dateModified: post.data.updatedDate.toISOString() }),
   author: SITE.showProviderProfile
-    ? { '@id': STRUCTURED_DATA_IDS.physician }
+    ? {
+        '@type': 'Person',
+        '@id': STRUCTURED_DATA_IDS.physician,
+        name: SITE.provider.schemaName,
+        url: `${SITE.domain}/about/`,
+      }
     : {
         '@type': 'Organization',
         '@id': STRUCTURED_DATA_IDS.clinic,
         name: SITE.name,
       },
   publisher: { '@id': STRUCTURED_DATA_IDS.clinic },
-  image: {
-    '@type': 'ImageObject',
-    url: articleImage,
-    width: 1200,
-    height: post.data.hero ? 900 : 630,
-  },
+  image: articleImages,
   mainEntityOfPage: { '@id': `${articleUrl}#webpage` },
   articleSection: 'Pediatric health',
   inLanguage: 'en-US',
@@ -82,7 +113,12 @@ const articleSchema = {
     </h1>
 
     <div class="mt-4 text-sm text-[var(--color-muted-foreground)]">
-      <p class="font-semibold text-[var(--color-foreground)]">By {post.data.author}</p>
+      <p class="font-semibold text-[var(--color-foreground)]">
+        By
+        {' '}<a href="/about/" rel="author" class="text-inherit underline-offset-4 hover:underline">
+          {post.data.author}
+        </a>
+      </p>
       <p class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
         <span>{post.data.authorTitle}</span>
         <span aria-hidden="true">·</span>

@@ -7,18 +7,18 @@ const priorityPaths = [
   '/about/',
   '/contact/',
   '/services/',
+  '/resources/',
   '/new-patients/',
   '/health-watch/',
+  '/dosing-charts/',
   '/vaccines/',
+  '/blog/',
   '/blog/vaccine-schedule-explained/',
+  '/pediatrician/',
   '/pediatrician/mckinney/',
   '/pediatrician/allen/',
-  '/pediatrician/melissa/',
   '/pediatrician/frisco/',
   '/pediatrician/prosper/',
-  '/pediatrician/princeton/',
-  '/pediatrician/anna/',
-  '/pediatrician/fairview/',
 ];
 
 const sitemapPath = join(process.cwd(), 'dist', 'sitemap-0.xml');
