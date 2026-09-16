@@ -987,6 +987,13 @@ expect(
   'Footer spacing must use the restrained shared rhythm',
 );
 expect(
+  footerSource.includes(
+    'lg:grid-cols-[1.35fr_1fr_1.6fr_0.9fr]',
+  ) &&
+    footerSource.includes('whitespace-nowrap text-right'),
+  'Footer office hours must reserve enough width to keep time ranges intact',
+);
+expect(
   /\.eyebrow-sun\s*\{[\s\S]*?color:\s*var\(--color-sage-hover\)/.test(globalCss),
   'Light-background eyebrow text must use the darker sage token',
 );
