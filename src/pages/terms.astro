@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageDecor from '../components/PageDecor.astro';
 import { SITE } from '../site.config';
 
 const lastUpdated = 'September 2026';
@@ -15,6 +16,7 @@ const lastUpdated = 'September 2026';
   ]}
 >
   <section class="page-hero py-12 md:py-16 overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
     <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
       <span class="eyebrow">Terms &amp; Conditions</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">Luma Pediatrics SMS Terms</h1>

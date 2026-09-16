@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageDecor from '../../components/PageDecor.astro';
 import Picture from '../../components/Picture.astro';
 import Button from '../../components/Button.astro';
 import { Icon } from 'astro-icon/components';
@@ -71,8 +70,6 @@ const articleSchema = {
     { name: post.data.title, path: `/blog/${post.id}/` },
   ]}
 >
-  <PageDecor />
-
   <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 
   <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20 pb-20">

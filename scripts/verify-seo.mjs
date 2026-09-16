@@ -78,6 +78,12 @@ function findTags(html, tagName) {
   );
 }
 
+function hasElementClass(html, className, tagName = 'div') {
+  return findTags(html, tagName).some((attributes) =>
+    (attributes.class ?? '').split(/\s+/).includes(className),
+  );
+}
+
 function singleMeta(html, key, value, file) {
   const matches = findTags(html, 'meta').filter((attributes) => attributes[key] === value);
   expect(matches.length === 1, `${file}: expected one ${key}="${value}" meta tag`);
@@ -592,6 +598,49 @@ for (const path of [
   );
 }
 
+for (const path of [
+  '/about/',
+  '/contact/',
+  '/services/',
+  '/faq/',
+  '/new-patients/',
+  '/resources/',
+  '/blog/',
+  '/vaccines/',
+  '/dosing-charts/',
+  '/health-watch/',
+  '/pediatrician/',
+]) {
+  const page = pages.find((candidate) => candidate.canonical === `${domain}${path}`);
+  expect(page, `Expected generated page for decoration check: ${path}`);
+  expect(
+    hasElementClass(page.html, 'page-decor--soft') &&
+      hasElementClass(page.html, 'brand-cloud') &&
+      hasElementClass(page.html, 'botanical-spray'),
+    `${path}: primary hero must use the soft Luma decoration motif`,
+  );
+}
+
+for (const path of [
+  '/privacy/',
+  '/terms/',
+  '/accessibility/',
+  '/notice-of-privacy-practices/',
+]) {
+  const page = pages.find((candidate) => candidate.canonical === `${domain}${path}`);
+  expect(page, `Expected generated legal page for decoration check: ${path}`);
+  expect(
+    hasElementClass(page.html, 'page-decor--minimal') &&
+      !hasElementClass(page.html, 'brand-cloud') &&
+      !hasElementClass(page.html, 'botanical-spray'),
+    `${path}: legal hero must use minimal star decoration only`,
+  );
+}
+expect(
+  !hasElementClass(articlePage.html, 'page-decor'),
+  `${articlePage.fileLabel}: long-form reading content must remain undecorated`,
+);
+
 const sitemapIndex = readFileSync(join(dist, 'sitemap-index.xml'), 'utf8');
 expect(
   sitemapIndex.includes(`<loc>${domain}/sitemap-0.xml</loc>`),
@@ -830,6 +879,10 @@ for (const cityPage of cityPages) {
     `${cityPage.fileLabel}: city hero must use the shared page treatment`,
   );
   expect(
+    hasElementClass(cityPage.html, 'page-decor--soft'),
+    `${cityPage.fileLabel}: city hero must use the soft Luma decoration motif`,
+  );
+  expect(
     !cityPage.html.includes('from-sky-50'),
     `${cityPage.fileLabel}: legacy blue city-page styling must not return`,
   );
@@ -905,6 +958,16 @@ for (const slug of serviceSlugs) {
   );
 }
 const globalCss = readFileSync(join(root, 'src', 'styles', 'global.css'), 'utf8');
+const pageDecorSource = readFileSync(
+  join(root, 'src', 'components', 'PageDecor.astro'),
+  'utf8',
+);
+expect(
+  pageDecorSource.includes('page-decor--${variant}') &&
+    pageDecorSource.includes('opacity: 0.46') &&
+    pageDecorSource.includes('opacity: 0.34'),
+  'Page decorations must be bounded and subdued on mobile',
+);
 const baseLayoutSource = readFileSync(
   join(root, 'src', 'layouts', 'BaseLayout.astro'),
   'utf8',

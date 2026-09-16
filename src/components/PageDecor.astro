@@ -8,9 +8,11 @@
  * absolutely positioned and aria-hidden.
  *
  * Variants control density:
- *  - "soft"  (default) : subtle, for inner page heroes
+ *  - "soft"  (default) : clouds, leaves, and stars for primary page heroes
  *  - "lush"            : more decoration, for the homepage hero
- *  - "minimal"         : just sparkles, no clouds/leaves
+ *  - "minimal"         : adds stars only; page heroes retain their shared rings
+ *
+ * Keep dense reading surfaces undecorated.
  */
 import SparkleField from './SparkleField.astro';
 
@@ -24,20 +26,42 @@ const sparkleCount = sparkles ?? (variant === 'lush' ? 12 : variant === 'minimal
 const showClouds = variant !== 'minimal';
 const showLeaves = variant !== 'minimal';
 ---
-{showClouds && (
-  <>
-    <div class="brand-cloud cloud-left" aria-hidden="true"></div>
-    <div class="brand-cloud cloud-right" aria-hidden="true"></div>
-  </>
-)}
-{showLeaves && (
-  <>
-    <div class="botanical-spray leaf-left" aria-hidden="true">
-      <span></span><span></span><span></span><span></span><span></span>
-    </div>
-    <div class="botanical-spray leaf-right" aria-hidden="true">
-      <span></span><span></span><span></span><span></span><span></span>
-    </div>
-  </>
-)}
-<SparkleField count={sparkleCount} class="z-0" />
+<div class={`page-decor page-decor--${variant}`} aria-hidden="true">
+  {showClouds && (
+    <>
+      <div class="brand-cloud cloud-left"></div>
+      <div class="brand-cloud cloud-right"></div>
+    </>
+  )}
+  {showLeaves && (
+    <>
+      <div class="botanical-spray leaf-left">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="botanical-spray leaf-right">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </>
+  )}
+  <SparkleField count={sparkleCount} class="z-0" />
+</div>
+
+<style>
+  .page-decor {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  @media (max-width: 639px) {
+    .page-decor--soft :global(.brand-cloud) {
+      opacity: 0.46;
+    }
+
+    .page-decor--soft :global(.botanical-spray) {
+      opacity: 0.34;
+    }
+  }
+</style>
