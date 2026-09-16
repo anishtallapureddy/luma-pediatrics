@@ -993,6 +993,22 @@ expect(
     footerSource.includes('whitespace-nowrap text-right'),
   'Footer office hours must reserve enough width to keep time ranges intact',
 );
+for (const link of [
+  '<li><a href="/about/"',
+  '<li><a href="/services/"',
+  '<li><a href="/resources/"',
+  '<li><a href="/faq/"',
+  '<li><a href="/contact/"',
+]) {
+  expect(footerSource.includes(link), `Footer Explore navigation is missing ${link}`);
+}
+expect(
+  !footerSource.includes('<li><a href="/vaccines/"') &&
+    !footerSource.includes('<li><a href="/rss.xml"') &&
+    footerSource.includes('aria-label="Legal"') &&
+    footerSource.includes('>HIPAA Notice</a>'),
+  'Footer utility and legal links must use the compact secondary navigation',
+);
 expect(
   /\.eyebrow-sun\s*\{[\s\S]*?color:\s*var\(--color-sage-hover\)/.test(globalCss),
   'Light-background eyebrow text must use the darker sage token',
