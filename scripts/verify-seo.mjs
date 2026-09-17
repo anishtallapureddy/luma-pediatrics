@@ -341,7 +341,7 @@ const heroPreload = findTags(home.html, 'link').find(
     attributes.as === 'image',
 );
 expect(
-  heroPreload?.href === `${domain}/images/luma-opening-banner.webp` &&
+  heroPreload?.href === `${domain}/images/luma-hero-banner.webp` &&
     heroPreload?.type === 'image/webp' &&
     heroPreload?.fetchpriority === 'high',
   'Home page must preload the poster WebP',
@@ -388,8 +388,8 @@ for (const serviceGroup of [
   );
 }
 expect(
-  home.html.includes('/images/luma-opening-banner.webp'),
-  'Home page must use the approved opening-banner hero',
+  home.html.includes('/images/luma-hero-banner.webp'),
+  'Home page must use the approved hero banner',
 );
 expect(!home.html.includes('/images/warm-family.'), 'Home page must not include the unused family-photo hero');
 expect(!home.html.includes('hero-status-pill'), 'Home page must not repeat the opening-status pill');
@@ -406,12 +406,21 @@ expect(
 );
 const homeImages = findTags(home.html, 'img');
 const heroImage = homeImages.find(
-  (attributes) => attributes.src === '/images/luma-opening-banner.jpg',
+  (attributes) => attributes.src === '/images/luma-hero-banner.jpg',
 );
 expect(
-  heroImage?.width === '1440' && heroImage?.height === '756',
+  heroImage?.width === '1440' && heroImage?.height === '753',
   'Home hero banner must publish intrinsic dimensions',
 );
+for (const bannerAsset of [
+  'images/luma-hero-banner.jpg',
+  'images/luma-hero-banner.webp',
+]) {
+  expect(
+    existsSync(join(root, 'public', bannerAsset)),
+    `Home hero banner asset is missing: ${bannerAsset}`,
+  );
+}
 for (const trustImage of [
   'trust-family.jpg',
   'trust-checkup.jpg',
@@ -1015,11 +1024,10 @@ expect(
 expect(
   contactHtml.includes('class="contact-primary-actions"') &&
     contactHtml.includes('<details id="sms-disclosure"') &&
-    contactHtml.includes('class="contact-hero-image"') &&
     contactHtml.includes('class="contact-planning-section') &&
     contactHtml.includes('class="contact-location-layout"') &&
     contactHtml.includes('class="areas-served-card"') &&
-    contactText.includes('Contact Luma Pediatrics') &&
+    contactText.includes('Get in touch') &&
     contactText.includes('Future McKinney location'),
   'Contact page must separate contact actions from visit planning',
 );
@@ -1040,24 +1048,9 @@ expect(
   'Contact SMS disclosure must not expose GitHub source links',
 );
 expect(
-  contactHtml.includes('/images/luma-opening-banner.webp'),
-  'Contact page must include the approved opening/location banner',
-);
-for (const bannerAsset of [
-  'images/luma-opening-banner.jpg',
-  'images/luma-opening-banner.webp',
-]) {
-  expect(
-    existsSync(join(root, 'public', bannerAsset)),
-    `Contact opening banner asset is missing: ${bannerAsset}`,
-  );
-}
-const contactBanner = findTags(contactHtml, 'img').find(
-  (attributes) => attributes.src === '/images/luma-opening-banner.jpg',
-);
-expect(
-  contactBanner?.width === '1440' && contactBanner?.height === '756',
-  'Contact opening banner must publish intrinsic dimensions',
+  !contactHtml.includes('luma-hero-banner') &&
+    !contactHtml.includes('luma-opening-banner'),
+  'Contact hero must stay text-only; the banner now leads the home page',
 );
 const termsHtml = readFileSync(join(dist, 'terms', 'index.html'), 'utf8');
 expect(

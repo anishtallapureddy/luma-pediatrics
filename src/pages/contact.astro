@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
 import AreasServed from '../components/AreasServed.astro';
 import GoogleStoreLocator from '../components/GoogleStoreLocator.astro';
-import Picture from '../components/Picture.astro';
 import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 
@@ -20,30 +19,15 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     { name: 'Home', path: '/' },
     { name: 'Contact', path: '/contact' },
   ]}
-  preloadImage="/images/luma-opening-banner.webp"
 >
   <section class="page-hero py-10 md:py-14 overflow-hidden">
     <PageDecor />
-    <div class="contact-hero-layout relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 fade-up">
-      <div class="contact-hero-copy">
-        <span class="eyebrow">Contact</span>
-        <h1 class="contact-hero-title mt-5 text-4xl md:text-5xl tracking-tight">Contact Luma Pediatrics.</h1>
-        <p class="mt-6 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-xl mx-auto">
-          Call, text, or email with general questions about planned services, our future McKinney location, or opening updates.
-        </p>
-      </div>
-
-      <figure class="contact-hero-image">
-        <Picture
-          src="/images/luma-opening-banner.jpg"
-          alt="Luma Pediatrics, opening late 2026 in McKinney, Texas, with a teddy bear and wooden rainbow in a warm nursery"
-          class="block w-full h-auto"
-          width={1440}
-          height={756}
-          loading="eager"
-          fetchpriority="high"
-        />
-      </figure>
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+      <span class="eyebrow">Contact</span>
+      <h1 class="contact-hero-title mt-5 text-4xl md:text-5xl tracking-tight">Get in touch.</h1>
+      <p class="mt-6 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-xl mx-auto">
+        Call, text, or email with general questions about planned services, our future McKinney location, or opening updates.
+      </p>
     </div>
   </section>
 
@@ -221,33 +205,9 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 </BaseLayout>
 
 <style>
-  .contact-hero-layout {
-    display: grid;
-    align-items: center;
-    gap: clamp(1.75rem, 4vw, 3.25rem);
-  }
-
-  .contact-hero-copy {
-    text-align: center;
-  }
-
   .contact-hero-title {
     max-width: 100%;
     overflow-wrap: anywhere;
-  }
-
-  .contact-hero-image {
-    overflow: hidden;
-    border: 1px solid var(--color-border-soft);
-    border-radius: var(--radius-card);
-    background: var(--color-card);
-    box-shadow: var(--shadow-elevated);
-  }
-
-  .contact-hero-image img {
-    display: block;
-    width: 100%;
-    height: auto;
   }
 
   .contact-primary-actions {
@@ -639,18 +599,6 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
   }
 
   @media (min-width: 900px) {
-    .contact-hero-layout {
-      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-    }
-
-    .contact-hero-copy {
-      text-align: left;
-    }
-
-    .contact-hero-copy p {
-      margin-inline: 0;
-    }
-
     .contact-location-layout {
       grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
       align-items: stretch;
