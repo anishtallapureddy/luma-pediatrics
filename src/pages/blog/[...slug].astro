@@ -20,9 +20,10 @@ const { Content } = await render(post);
 const date = post.data.publishDate.toLocaleDateString('en-US', {
   year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
 });
-const updated = post.data.updatedDate?.toLocaleDateString('en-US', {
+const updatedLabel = post.data.updatedDate?.toLocaleDateString('en-US', {
   year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
 });
+const updated = updatedLabel === date ? undefined : updatedLabel;
 const articleUrl = `${SITE.domain}/blog/${post.id}/`;
 const articleImage = post.data.hero ? `${SITE.domain}${post.data.hero}` : `${SITE.domain}${SITE.socialImage}`;
 const articleImages = post.data.hero

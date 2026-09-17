@@ -501,87 +501,116 @@ expect(
   'RSS discovery link is missing from page metadata',
 );
 
-const articlePage = pages.find((page) => /\/blog\/[^/]+\/$/.test(page.canonical));
-expect(articlePage, 'A generated blog article is required for article metadata verification');
+const articlePages = pages.filter((page) => /\/blog\/[^/]+\/$/.test(page.canonical));
 expect(
-  singleMeta(articlePage.html, 'property', 'og:type', articlePage.fileLabel) === 'article',
-  `${articlePage.fileLabel}: article og:type is missing`,
+  articlePages.length > 0,
+  'A generated blog article is required for article metadata verification',
 );
-expect(
-  singleMeta(articlePage.html, 'property', 'article:published_time', articlePage.fileLabel),
-  `${articlePage.fileLabel}: article publish time is missing`,
-);
-expect(
-  singleMeta(
+const articleHeroPaths = [];
+for (const articlePage of articlePages) {
+  expect(
+    singleMeta(articlePage.html, 'property', 'og:type', articlePage.fileLabel) === 'article',
+    `${articlePage.fileLabel}: article og:type is missing`,
+  );
+  const publishedTime = singleMeta(
+    articlePage.html,
+    'property',
+    'article:published_time',
+    articlePage.fileLabel,
+  );
+  expect(publishedTime, `${articlePage.fileLabel}: article publish time is missing`);
+  const modifiedTime = singleMeta(
     articlePage.html,
     'property',
     'article:modified_time',
     articlePage.fileLabel,
-  ).startsWith('2026-09-16'),
-  `${articlePage.fileLabel}: article modified time is missing or stale`,
-);
-expect(
-  normalizedText(articlePage.html).includes(
-    'The childhood vaccine schedule, explained',
-  ),
-  `${articlePage.fileLabel}: article title is not the concise published version`,
-);
-const articleStructuredData = jsonLdObjects(
-  articlePage.html,
-  articlePage.fileLabel,
-).find((value) => hasType(value['@type'], 'BlogPosting'));
-expect(articleStructuredData, `${articlePage.fileLabel}: BlogPosting JSON-LD is missing`);
-expect(
-  articleStructuredData.dateModified?.startsWith('2026-09-16'),
-  `${articlePage.fileLabel}: BlogPosting dateModified is missing or stale`,
-);
-expect(
-  articleStructuredData.author?.['@type'] === 'Person' &&
-    articleStructuredData.author?.name === contract.physicianName &&
-    articleStructuredData.author?.url === `${domain}/about/`,
-  `${articlePage.fileLabel}: physician author markup is incomplete`,
-);
-expect(
-  Array.isArray(articleStructuredData.image) &&
-    articleStructuredData.image.length === 3 &&
-    articleStructuredData.image.some(
-      (image) => image.width === 1200 && image.height === 900,
-    ) &&
-    articleStructuredData.image.some(
-      (image) => image.width === 1200 && image.height === 675,
-    ) &&
-    articleStructuredData.image.some(
-      (image) => image.width === 900 && image.height === 900,
-    ),
-  `${articlePage.fileLabel}: article schema must publish 4:3, 16:9, and 1:1 images`,
-);
-expect(
-  findTags(articlePage.html, 'a').some(
-    (attributes) =>
-      attributes.href === '/about/' &&
-      (attributes.rel ?? '').split(/\s+/).includes('author'),
-  ),
-  `${articlePage.fileLabel}: visible author must link to the provider profile`,
-);
-expect(
-  normalizedText(articlePage.html).includes('Updated September 16, 2026'),
-  `${articlePage.fileLabel}: visible updated date must match structured data`,
-);
-const articleHero = findTags(articlePage.html, 'img').find(
-  (attributes) => attributes.src === '/images/blog-vaccines.jpg',
-);
-expect(
-  articleHero?.width === '1200' && articleHero?.height === '900',
-  `${articlePage.fileLabel}: article hero must publish intrinsic dimensions`,
-);
-for (const articleImage of [
-  'images/blog-vaccines-16x9.jpg',
-  'images/blog-vaccines-1x1.jpg',
-]) {
-  expect(
-    existsSync(join(root, 'public', articleImage)),
-    `${articlePage.fileLabel}: article schema image is missing: ${articleImage}`,
   );
+  expect(
+    /^\d{4}-\d{2}-\d{2}T/.test(modifiedTime ?? ''),
+    `${articlePage.fileLabel}: article modified time is missing or not an ISO timestamp`,
+  );
+  const conciseTitle = articlePage.title.split(' | ')[0].trim();
+  expect(
+    conciseTitle.length > 0 && normalizedText(articlePage.html).includes(conciseTitle),
+    `${articlePage.fileLabel}: article title is not the concise published version`,
+  );
+  const articleStructuredData = jsonLdObjects(
+    articlePage.html,
+    articlePage.fileLabel,
+  ).find((value) => hasType(value['@type'], 'BlogPosting'));
+  expect(articleStructuredData, `${articlePage.fileLabel}: BlogPosting JSON-LD is missing`);
+  expect(
+    articleStructuredData.dateModified === modifiedTime,
+    `${articlePage.fileLabel}: BlogPosting dateModified must match article:modified_time`,
+  );
+  expect(
+    articleStructuredData.author?.['@type'] === 'Person' &&
+      articleStructuredData.author?.name === contract.physicianName &&
+      articleStructuredData.author?.url === `${domain}/about/`,
+    `${articlePage.fileLabel}: physician author markup is incomplete`,
+  );
+  const requiredRatios = [
+    [1200, 900],
+    [1200, 675],
+    [900, 900],
+  ];
+  expect(
+    Array.isArray(articleStructuredData.image) &&
+      articleStructuredData.image.length === requiredRatios.length &&
+      requiredRatios.every(([width, height]) =>
+        articleStructuredData.image.some(
+          (image) => image.width === width && image.height === height,
+        ),
+      ),
+    `${articlePage.fileLabel}: article schema must publish 4:3, 16:9, and 1:1 images`,
+  );
+  expect(
+    findTags(articlePage.html, 'a').some(
+      (attributes) =>
+        attributes.href === '/about/' &&
+        (attributes.rel ?? '').split(/\s+/).includes('author'),
+    ),
+    `${articlePage.fileLabel}: visible author must link to the provider profile`,
+  );
+  const asVisibleDate = (value) =>
+    new Date(value).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'UTC',
+    });
+  const visibleUpdated = asVisibleDate(modifiedTime);
+  const articleText = normalizedText(articlePage.html);
+  if (visibleUpdated === asVisibleDate(publishedTime)) {
+    expect(
+      !articleText.includes('Updated '),
+      `${articlePage.fileLabel}: byline must omit a redundant updated date that matches the publish date`,
+    );
+  } else {
+    expect(
+      articleText.includes(`Updated ${visibleUpdated}`),
+      `${articlePage.fileLabel}: visible updated date must match structured data`,
+    );
+  }
+  const heroEntry = articleStructuredData.image.find(
+    (image) => image.width === 1200 && image.height === 900,
+  );
+  const heroPath = String(heroEntry.url).replace(domain, '');
+  articleHeroPaths.push(heroPath);
+  const articleHero = findTags(articlePage.html, 'img').find(
+    (attributes) => attributes.src === heroPath,
+  );
+  expect(
+    articleHero?.width === '1200' && articleHero?.height === '900',
+    `${articlePage.fileLabel}: article hero must publish intrinsic dimensions`,
+  );
+  for (const image of articleStructuredData.image) {
+    const imagePath = String(image.url).replace(domain, '').replace(/^\//, '');
+    expect(
+      existsSync(join(root, 'public', imagePath)),
+      `${articlePage.fileLabel}: article schema image is missing: ${imagePath}`,
+    );
+  }
 }
 
 const aboutPage = pages.find((page) => page.canonical === `${domain}/about/`);
@@ -660,21 +689,29 @@ expect(
 );
 expect(
   normalizedText(blogIndex.html).includes(
-    'Start with our current physician-reviewed guide.',
+    articlePages.length === 1
+      ? 'Start with our current physician-reviewed guide.'
+      : 'Articles on fevers, sleep, newborn care, vaccines, and when to contact a healthcare provider.',
   ),
-  'Blog index must accurately describe the current single published guide',
+  'Blog index intro must accurately describe the number of published guides',
 );
 expect(
-  blogIndex.html.includes('max-w-xl mx-auto'),
-  'A single Blog article card must be centered',
+  articlePages.length === 1
+    ? blogIndex.html.includes('max-w-xl mx-auto')
+    : blogIndex.html.includes('sm:grid-cols-2'),
+  articlePages.length === 1
+    ? 'A single Blog article card must be centered'
+    : 'Multiple Blog article cards must use the two-column grid',
 );
-const blogCardImage = findTags(blogIndex.html, 'img').find(
-  (attributes) => attributes.src === '/images/blog-vaccines.jpg',
-);
-expect(
-  blogCardImage?.width === '1200' && blogCardImage?.height === '900',
-  'Blog card image must publish intrinsic dimensions',
-);
+for (const heroPath of articleHeroPaths) {
+  const blogCardImage = findTags(blogIndex.html, 'img').find(
+    (attributes) => attributes.src === heroPath,
+  );
+  expect(
+    blogCardImage?.width === '1200' && blogCardImage?.height === '900',
+    `Blog card image must publish intrinsic dimensions: ${heroPath}`,
+  );
+}
 const resourcesPage = pages.find(
   (page) => page.canonical === `${domain}/resources/`,
 );
@@ -749,10 +786,12 @@ for (const path of [
     `${path}: legal hero must use minimal star decoration only`,
   );
 }
-expect(
-  !hasElementClass(articlePage.html, 'page-decor'),
-  `${articlePage.fileLabel}: long-form reading content must remain undecorated`,
-);
+for (const articlePage of articlePages) {
+  expect(
+    !hasElementClass(articlePage.html, 'page-decor'),
+    `${articlePage.fileLabel}: long-form reading content must remain undecorated`,
+  );
+}
 
 const sitemapIndex = readFileSync(join(dist, 'sitemap-index.xml'), 'utf8');
 expect(

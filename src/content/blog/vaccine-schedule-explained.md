@@ -10,9 +10,9 @@ heroAlt: A pediatrician's gloved hand with a small vaccine syringe near a calend
 tags: ["vaccines", "schedule", "well-visits", "prevention"]
 ---
 
-Vaccines are among the most important and thoroughly studied tools in pediatric care. They protect children from diseases that, within living memory, regularly killed or caused lasting disability. Vaccination also helps protect infants, older adults, and immunocompromised people in the community.
+Vaccines are among the most important and thoroughly studied tools in pediatric care. They protect children from diseases that, within living memory, regularly killed or caused lasting disability. They also help protect the people around your child: newborn siblings, grandparents, and neighbors going through treatment that leaves them vulnerable.
 
-If the schedule feels overwhelming, you are not alone. Here is the short version, the long version, and the answers to the questions parents ask us most.
+And if the schedule looks like an overwhelming wall of acronyms, you are in very good company. Almost every parent feels that way the first time they see it. Here is the short version, the longer version, and honest answers to the questions parents ask most.
 
 ## The short version, by age
 
@@ -31,6 +31,8 @@ This guide follows the [CDC](https://www.cdc.gov/vaccines/schedules/easy-to-read
 
 ## What each one protects against
 
+Those acronyms are much less intimidating once you know what each one is quietly preventing.
+
 | Vaccine | Protects against |
 | --- | --- |
 | **HepB** | Hepatitis B (liver infection, can cause liver cancer) |
@@ -47,7 +49,9 @@ This guide follows the [CDC](https://www.cdc.gov/vaccines/schedules/easy-to-read
 | **Flu** | Seasonal influenza |
 | **COVID-19** | SARS-CoV-2 |
 
-## The questions parents ask us most
+## The questions parents ask most
+
+These come up constantly, and they are all good questions. Asking them is part of being a thoughtful parent, not a sign of doubt.
 
 **Why so many at once?** The doses are timed to the windows in which your child's immune system can build the strongest, longest-lasting protection, and **before** the ages at which these diseases are most dangerous. Spreading vaccines out delays protection without improving safety.
 
@@ -55,16 +59,18 @@ This guide follows the [CDC](https://www.cdc.gov/vaccines/schedules/easy-to-read
 
 **What about side effects?** Most children have a sore arm or leg, mild fussiness, or a low-grade fever for 24–48 hours. Age-appropriate acetaminophen or ibuprofen may help with discomfort. Severe reactions are rare, and healthcare providers screen for relevant risk factors.
 
-**My child missed a dose. Do we start over?** Usually not. A healthcare provider can review the record and create an appropriate catch-up schedule.
+**My child missed a dose. Do we start over?** Usually not, and this worries parents far more than it needs to. A healthcare provider can review the record and create an appropriate catch-up schedule.
 
-**HPV at 11–12 feels young.** The vaccine works best before exposure, and the immune response is strong at this age. Starting on schedule usually requires two doses instead of three and helps prevent six cancers.
+**HPV at 11–12 feels young.** It is a common reaction, and the timing is deliberate. The vaccine works best before exposure, and the immune response is strong at this age. Starting on schedule usually requires two doses instead of three and helps prevent six cancers.
 
-## What to bring
+## Keeping track of records
 
-Keep records from the birth hospital, prior pediatrician, urgent care, or school clinic. Share them with your child's current healthcare provider when reviewing the schedule.
+Vaccine records have a way of scattering across every place a child has ever been seen. Keep whatever you have from the birth hospital, a prior pediatrician, urgent care, or a school clinic, and share it with your child's current healthcare provider when reviewing the schedule.
 
 ## A note from us
 
 Luma Pediatrics plans to follow the CDC and AAP immunization schedule after opening. Until then, discuss questions about your child's vaccine schedule with their current healthcare provider.
+
+We know this topic carries more questions than most, and none of them deserve to be rushed. Making the schedule feel understandable, rather than overwhelming, is one of the things we care about most.
 
 *This article is for general educational purposes and is not a substitute for advice from your child's pediatrician.*
