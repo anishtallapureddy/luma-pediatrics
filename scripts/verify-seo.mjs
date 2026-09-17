@@ -30,7 +30,7 @@ const contract = {
   homeDescription:
     'Board-certified pediatric care planned for newborns through teens in McKinney, TX. Luma Pediatrics opens late 2026 with well visits, sick care, vaccines, and more.',
   homeSocialDescription:
-    'Expert pediatric care that feels like family. Opening late 2026 in McKinney, Texas.',
+    'Care for your child. Time for you. Board-certified pediatric care planned for newborns to teens. Opening late 2026 in McKinney, Texas.',
 };
 const serviceSlugs = [
   'free-meet-and-greet',
