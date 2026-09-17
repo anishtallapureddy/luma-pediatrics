@@ -817,9 +817,16 @@
     height: auto;
   }
 
+  .hero-poster-image--wide {
+    width: 100%;
+  }
+
   @media (max-width: 767px) {
     .hero-poster-image {
       width: min(78vw, 20rem);
+    }
+    .hero-poster-image--wide {
+      width: 100%;
     }
   }
 

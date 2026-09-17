@@ -341,7 +341,7 @@ const heroPreload = findTags(home.html, 'link').find(
     attributes.as === 'image',
 );
 expect(
-  heroPreload?.href === `${domain}/images/hero-poster.webp` &&
+  heroPreload?.href === `${domain}/images/luma-opening-banner.webp` &&
     heroPreload?.type === 'image/webp' &&
     heroPreload?.fetchpriority === 'high',
   'Home page must preload the poster WebP',
@@ -387,7 +387,10 @@ for (const serviceGroup of [
     `Home page is missing service group: ${serviceGroup}`,
   );
 }
-expect(home.html.includes('/images/hero-poster.webp'), 'Home page must use the approved poster hero');
+expect(
+  home.html.includes('/images/luma-opening-banner.webp'),
+  'Home page must use the approved opening-banner hero',
+);
 expect(!home.html.includes('/images/warm-family.'), 'Home page must not include the unused family-photo hero');
 expect(!home.html.includes('hero-status-pill'), 'Home page must not repeat the opening-status pill');
 expect(
@@ -403,11 +406,11 @@ expect(
 );
 const homeImages = findTags(home.html, 'img');
 const heroImage = homeImages.find(
-  (attributes) => attributes.src === '/images/hero-poster.jpg',
+  (attributes) => attributes.src === '/images/luma-opening-banner.jpg',
 );
 expect(
-  heroImage?.width === '1122' && heroImage?.height === '1402',
-  'Home poster must publish intrinsic dimensions',
+  heroImage?.width === '1440' && heroImage?.height === '756',
+  'Home hero banner must publish intrinsic dimensions',
 );
 for (const trustImage of [
   'trust-family.jpg',
