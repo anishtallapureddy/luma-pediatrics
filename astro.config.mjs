@@ -20,7 +20,6 @@ export default defineConfig({
           'heart',
           'calendar',
           'calendar-check',
-          'clipboard-check',
           'syringe',
           'phone',
           'mail',

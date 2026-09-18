@@ -739,7 +739,7 @@ const resourcesPage = pages.find(
   (page) => page.canonical === `${domain}/resources/`,
 );
 expect(resourcesPage, 'Resources page was not generated');
-for (const href of ['/vaccines/', '/new-patients/']) {
+for (const href of ['/vaccines/']) {
   expect(
     findTags(resourcesPage.html, 'a').some(
       (attributes) => attributes.href === href,
@@ -747,6 +747,12 @@ for (const href of ['/vaccines/', '/new-patients/']) {
     `Resources page must link to ${href}`,
   );
 }
+expect(
+  !findTags(resourcesPage.html, 'a').some(
+    (attributes) => attributes.href === '/new-patients/',
+  ),
+  'Resources page must not restore the removed future new-patient card',
+);
 
 for (const path of [
   '/services/',
