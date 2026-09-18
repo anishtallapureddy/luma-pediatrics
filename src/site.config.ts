@@ -173,9 +173,10 @@ export const SITE = {
 
   /** External profiles for sameAs structured data (add as they go live). */
   social: {
-    facebook: '',
-    instagram: '',
-    linkedin: '',
+    facebook: 'https://www.facebook.com/people/Luma-Pediatrics/61589364039396/',
+    instagram: 'https://www.instagram.com/luma.pediatrics/',
+    linkedin: 'https://www.linkedin.com/company/lumapediatrics/',
+    tiktok: 'https://www.tiktok.com/@lumapediatrics/',
     googleBusiness: '',
     appleMaps: '',
     bingPlaces: '',

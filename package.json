@@ -28,6 +28,7 @@
     "typescript": "^5.7.0"
   },
   "devDependencies": {
+    "@iconify-json/simple-icons": "^1.2.95",
     "@types/node": "^22.0.0"
   }
 }

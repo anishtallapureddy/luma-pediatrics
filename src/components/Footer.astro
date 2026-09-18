@@ -18,6 +18,13 @@ const footerCities = [
   'Anna',
   'Fairview',
 ];
+
+const socialLinks = [
+  { key: 'instagram', label: 'Instagram', icon: 'simple-icons:instagram' },
+  { key: 'facebook', label: 'Facebook', icon: 'simple-icons:facebook' },
+  { key: 'tiktok', label: 'TikTok', icon: 'simple-icons:tiktok' },
+  { key: 'linkedin', label: 'LinkedIn', icon: 'simple-icons:linkedin' },
+].filter((item) => Boolean(SITE.social[item.key as keyof typeof SITE.social]));
 ---
 <footer class="mt-16 md:mt-20 border-t border-[rgba(200, 153, 90,0.18)] bg-[var(--color-background)]">
   <div class="bg-[var(--color-sage-light)]">
@@ -36,6 +43,32 @@ const footerCities = [
           <Icon name="lucide:sparkles" class="w-3.5 h-3.5" stroke-width="1.8" aria-hidden="true" />
           {SITE.status} · {SITE.locationShort}
         </p>
+        {socialLinks.length > 0 && (
+          <div class="mt-5">
+            <h3 class="text-sm font-bold uppercase tracking-wide text-[var(--color-muted-foreground)]">
+              Follow Along
+            </h3>
+            <p class="mt-2 text-sm text-[var(--color-muted-foreground)] max-w-xs leading-relaxed">
+              Updates on our opening, plus everyday pediatric tips.
+            </p>
+            <ul class="mt-3 flex flex-wrap items-center gap-2 list-none p-0">
+              {socialLinks.map((item) => (
+                <li>
+                  <a
+                    href={SITE.social[item.key as keyof typeof SITE.social]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-card)] text-[var(--color-primary)] no-underline ring-1 ring-inset ring-[var(--color-border-soft)] transition-colors hover:bg-[rgba(200,153,90,0.10)] focus-visible:bg-[rgba(200,153,90,0.10)]"
+                    aria-label={`${SITE.name} on ${item.label} (opens in a new tab)`}
+                    title={item.label}
+                  >
+                    <Icon name={item.icon} class="w-[18px] h-[18px]" aria-hidden="true" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div>

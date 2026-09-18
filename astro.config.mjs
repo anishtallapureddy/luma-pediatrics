@@ -63,6 +63,7 @@ export default defineConfig({
           'pill',
           'book-open',
         ],
+        'simple-icons': ['instagram', 'facebook', 'linkedin', 'tiktok'],
       },
     }),
   ],

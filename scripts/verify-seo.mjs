@@ -269,6 +269,17 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
       clinic.sameAs.some((url) => url.includes('query_place_id=ChIJay82ghcTTIYRfMrdtqknRvU')),
     `${fileLabel}: exact Google Business Place-ID URL is missing from sameAs`,
   );
+  for (const profile of [
+    'instagram.com/luma.pediatrics',
+    'facebook.com/people/Luma-Pediatrics/61589364039396',
+    'linkedin.com/company/lumapediatrics',
+    'tiktok.com/@lumapediatrics',
+  ]) {
+    expect(
+      Array.isArray(clinic.sameAs) && clinic.sameAs.some((url) => url.includes(profile)),
+      `${fileLabel}: social profile is missing from sameAs: ${profile}`,
+    );
+  }
   expect(
     clinic.additionalProperty?.value === contract.status,
     `${fileLabel}: structured opening status does not match`,
@@ -1216,6 +1227,19 @@ expect(
     footerSource.includes('aria-label="Legal"') &&
     footerSource.includes('>HIPAA Notice</a>'),
   'Footer utility and legal links must use the compact secondary navigation',
+);
+expect(
+  footerSource.includes('Follow Along') &&
+    footerSource.includes("simple-icons:instagram") &&
+    footerSource.includes("simple-icons:facebook") &&
+    footerSource.includes("simple-icons:tiktok") &&
+    footerSource.includes("simple-icons:linkedin"),
+  'Footer must surface the social profile row with all four brand icons',
+);
+expect(
+  footerSource.includes('rel="noopener noreferrer"') &&
+    footerSource.includes('(opens in a new tab)'),
+  'Footer social links must open safely and announce the new tab to screen readers',
 );
 expect(
   /\.eyebrow-sun\s*\{[\s\S]*?color:\s*var\(--color-sage-hover\)/.test(globalCss),
