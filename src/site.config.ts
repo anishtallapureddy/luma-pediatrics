@@ -134,7 +134,7 @@ export const SITE = {
     publishOpeningHours: false,
   },
 
-  /** Surrounding cities the practice serves. */
+  /** Surrounding cities the practice serves. Feeds areaServed JSON-LD on every page. */
   areasServed: [
     'McKinney',
     'Prosper',
@@ -156,7 +156,6 @@ export const SITE = {
     'New Hope',
     'Sherman',
   ],
-  areasServedTagline: 'and nearby communities',
 
   /**
    * Geo coordinates for the practice (3801 N Central Expy, Suite 302,

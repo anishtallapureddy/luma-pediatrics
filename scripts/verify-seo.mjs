@@ -1043,10 +1043,13 @@ expect(
     contactHtml.includes('<details id="sms-disclosure"') &&
     contactHtml.includes('class="contact-planning-section') &&
     contactHtml.includes('class="contact-location-layout"') &&
-    contactHtml.includes('class="areas-served-card"') &&
     contactText.includes('Get in touch') &&
     contactText.includes('Future McKinney location'),
   'Contact page must separate contact actions from visit planning',
+);
+expect(
+  !contactHtml.includes('class="areas-served-card"'),
+  'Contact page must not restore the removed service-area city list',
 );
 expect(
   !contactText.includes('General information and future location') &&

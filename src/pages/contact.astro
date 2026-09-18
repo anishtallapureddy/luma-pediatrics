@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
-import AreasServed from '../components/AreasServed.astro';
 import GoogleStoreLocator from '../components/GoogleStoreLocator.astro';
 import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
@@ -173,10 +172,6 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
           <GoogleStoreLocator />
         </div>
       </article>
-
-      <div class="contact-service-area">
-        <AreasServed />
-      </div>
     </div>
   </section>
 
@@ -586,10 +581,6 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
     min-width: 0;
     overflow: hidden;
     border-top: 1px solid var(--color-border-soft);
-  }
-
-  .contact-service-area {
-    margin-top: clamp(2rem, 5vw, 3.5rem);
   }
 
   @media (min-width: 720px) {
