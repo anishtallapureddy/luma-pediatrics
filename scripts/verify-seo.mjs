@@ -1154,9 +1154,9 @@ for (const file of textSourceFiles) {
 const vaccinesHtml = readFileSync(join(dist, 'vaccines', 'index.html'), 'utf8');
 expect(
   vaccinesHtml.includes(
-    'https://www.cdc.gov/vaccines/imz-schedules/child-easyread.html',
+    'https://www.healthychildren.org/English/safety-prevention/immunizations/Pages/Recommended-Immunization-Schedules.aspx',
   ),
-  'Vaccines page must link to the current CDC parent-friendly schedule',
+  'Vaccines page must link to the current AAP parent-friendly schedule',
 );
 const dosingHtml = readFileSync(join(dist, 'dosing-charts', 'index.html'), 'utf8');
 for (const sourceUrl of [

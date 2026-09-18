@@ -75,7 +75,7 @@ export const services: ServiceItem[] = [
     short:
       'Keeping your child protected with recommended vaccines based on the latest AAP guidelines.',
     full:
-      'Luma plans to offer the recommended childhood vaccine schedule aligned with CDC and AAP guidance. Questions about timing and catch-up schedules will be discussed during visits.',
+      'Luma plans to offer the recommended childhood vaccine schedule aligned with AAP guidance. Questions about timing and catch-up schedules will be discussed during visits.',
     featured: true,
   },
   {

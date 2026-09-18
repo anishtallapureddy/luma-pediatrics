@@ -1,6 +1,6 @@
 ---
 title: "The childhood vaccine schedule, explained"
-description: "A pediatrician's plain-English guide to the CDC/AAP childhood vaccine schedule, what each vaccine protects against, and why timing matters."
+description: "A pediatrician's plain-English guide to the AAP childhood vaccine schedule, what each vaccine protects against, and why timing matters."
 publishDate: 2026-09-06
 updatedDate: 2026-09-16
 hero: /images/blog-vaccines.jpg
@@ -16,7 +16,7 @@ And if the schedule looks like an overwhelming wall of acronyms, you are in very
 
 ## The short version, by age
 
-This guide follows the [CDC](https://www.cdc.gov/vaccines/schedules/easy-to-read/index.html) and [American Academy of Pediatrics](https://www.aap.org) immunization schedule. In summary:
+This guide follows the [American Academy of Pediatrics](https://www.healthychildren.org/English/safety-prevention/immunizations/Pages/Recommended-Immunization-Schedules.aspx) immunization schedule. In summary:
 
 - **Birth:** Hepatitis B (#1)
 - **2 months:** DTaP, Hib, IPV (polio), PCV, RV, HepB (#2)
@@ -69,7 +69,7 @@ Vaccine records have a way of scattering across every place a child has ever bee
 
 ## A note from us
 
-Luma Pediatrics plans to follow the CDC and AAP immunization schedule after opening. Until then, discuss questions about your child's vaccine schedule with their current healthcare provider.
+Luma Pediatrics plans to follow the AAP immunization schedule after opening. Until then, discuss questions about your child's vaccine schedule with their current healthcare provider.
 
 We know this topic carries more questions than most, and none of them deserve to be rushed. Making the schedule feel understandable, rather than overwhelming, is one of the things we care about most.
 

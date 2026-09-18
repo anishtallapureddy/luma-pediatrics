@@ -5,7 +5,7 @@ import { Icon } from 'astro-icon/components';
 
 /**
  * Simplified childhood vaccine schedule (for parent reference only).
- * Source: CDC & AAP recommended childhood immunization schedules.
+ * Source: AAP recommended childhood and adolescent immunization schedule.
  * Always confirm with your pediatrician - this is a quick parent overview.
  */
 const schedule = [
@@ -20,13 +20,13 @@ const schedule = [
   { age: '4–6 years',       shots: ['DTaP', 'IPV', 'MMR', 'Varicella'] },
   { age: '11–12 years',     shots: ['Tdap booster', 'HPV (2-dose series)', 'Meningococcal (MenACWY)'] },
   { age: '16 years',        shots: ['Meningococcal booster', 'Meningococcal B (shared decision)'] },
-  { age: 'Annual (all ages 6 mo+)', shots: ['Influenza (flu)', 'COVID-19 (per current CDC recommendation)'] },
+  { age: 'Annual (all ages 6 mo+)', shots: ['Influenza (flu)', 'COVID-19 (per current AAP recommendation)'] },
 ];
 ---
 <BaseLayout
   title="Childhood Vaccine Schedule | Luma Pediatrics McKinney"
   path="/vaccines"
-  description="A parent-friendly overview of the CDC and AAP recommended childhood vaccine schedule, prepared by Luma Pediatrics in McKinney, TX."
+  description="A parent-friendly overview of the AAP recommended childhood vaccine schedule, prepared by Luma Pediatrics in McKinney, TX."
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
@@ -41,10 +41,10 @@ const schedule = [
         Childhood vaccine schedule
       </h1>
       <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
-        Aligned with current CDC and AAP recommendations.
+        Aligned with current AAP recommendations.
       </p>
       <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/80 leading-relaxed">
-        At Luma Pediatrics we follow the immunization schedule published by the CDC and
+        At Luma Pediatrics we follow the immunization schedule published by the
         American Academy of Pediatrics. We're happy to walk through it with you in detail,
         your questions are always welcome.
       </p>
@@ -98,14 +98,14 @@ const schedule = [
           </p>
         </a>
         <a
-          href="https://www.cdc.gov/vaccines/imz-schedules/child-easyread.html"
+          href="https://www.healthychildren.org/English/safety-prevention/immunizations/Pages/Recommended-Immunization-Schedules.aspx"
           target="_blank"
           rel="noopener"
           class="card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] p-5 ring-1 ring-[var(--color-border-soft)] no-underline"
         >
-          <p class="text-sm font-semibold text-[var(--color-foreground)]">CDC official schedule →</p>
+          <p class="text-sm font-semibold text-[var(--color-foreground)]">AAP official schedule →</p>
           <p class="mt-1 text-sm text-[var(--color-foreground)]/70 leading-relaxed">
-            The latest CDC immunization schedule for parents.
+            The latest AAP immunization schedule for parents, on HealthyChildren.org.
           </p>
         </a>
         <a
