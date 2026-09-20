@@ -18,15 +18,19 @@ And if the schedule looks like an overwhelming wall of acronyms, you are in very
 
 This guide follows the [American Academy of Pediatrics](https://www.healthychildren.org/English/safety-prevention/immunizations/Pages/Recommended-Immunization-Schedules.aspx) immunization schedule. In summary:
 
-- **Birth:** Hepatitis B (#1)
-- **2 months:** DTaP, Hib, IPV (polio), PCV, RV, HepB (#2)
-- **4 months:** DTaP, Hib, IPV, PCV, RV
-- **6 months:** DTaP, Hib, PCV, RV, HepB (#3), flu (annually starting now)
-- **12–15 months:** MMR, Varicella (chickenpox), Hib booster, PCV booster, HepA (#1)
-- **18 months:** DTaP booster, HepA (#2)
+- **Birth:** Hepatitis B
+- **1 month:** Hepatitis B
+- **2 months:** DTaP, Hib, IPV (polio), PCV15, Rotavirus (oral)
+- **4 months:** DTaP, Hib, IPV (polio), PCV15, Rotavirus (oral)
+- **6 months:** DTaP, Hib, IPV (polio), PCV15, Rotavirus (oral)
+- **9 months:** Hepatitis B
+- **12 months:** MMR, PCV15
+- **15 months:** Varicella (chickenpox), Hepatitis A
+- **18 months:** Hib, DTaP
+- **24 months:** Hepatitis A
 - **4–6 years:** DTaP, IPV, MMR, Varicella boosters before kindergarten
-- **9–12 years:** HPV (2 doses), which can begin at age 9
-- **11–12 years:** Tdap, Meningococcal (MenACWY) (#1)
+- **9–12 years:** HPV, which can begin at age 9
+- **11–12 years:** Tdap, Meningococcal (MenACWY)
 - **16 years:** MenACWY booster, MenB (shared decision-making)
 - **RSV season:** RSV antibody (nirsevimab) for infants under 8 months entering their first season
 - **Annually, age 6 months+:** Flu vaccine; COVID-19 based on age and risk
@@ -41,8 +45,8 @@ Those acronyms are much less intimidating once you know what each one is quietly
 | **DTaP / Tdap** | Diphtheria, Tetanus, Pertussis (whooping cough) |
 | **Hib** | Haemophilus influenzae type b (meningitis, epiglottitis) |
 | **IPV** | Polio |
-| **PCV** | Pneumococcal disease (pneumonia, meningitis, ear infections) |
-| **RV** | Rotavirus (severe dehydrating diarrhea) |
+| **PCV15** | Pneumococcal disease (pneumonia, meningitis, ear infections) |
+| **Rotavirus** | Severe dehydrating diarrhea (given by mouth, not as a shot) |
 | **RSV** | Respiratory syncytial virus (a seasonal antibody, not a vaccine) |
 | **MMR** | Measles, Mumps, Rubella |
 | **Varicella** | Chickenpox (and prevents shingles later) |

@@ -9,28 +9,37 @@ import { Icon } from 'astro-icon/components';
  * United States, 2026 (published Jan 26, 2026). The AAP now publishes this
  * schedule independently of the CDC/ACIP schedule.
  *
+ * Ages below are the specific visit timings Luma Pediatrics uses, chosen
+ * within the AAP's recommended ranges, and reviewed by the clinical team.
+ * Dose numbers are intentionally omitted; catch-up and combination-product
+ * timing vary by child, so the row is the visit rather than the dose count.
+ *
  * Notable 2026 points reflected below:
  *   - Routine infant pneumococcal series is PCV15 or PCV20; Luma Pediatrics
- *     uses PCV15. PCV13 is no
- *     longer recommended for routine infant vaccination.
+ *     uses PCV15. PCV13 is no longer recommended for routine infant
+ *     vaccination.
  *   - RSV immunisation (nirsevimab) is part of the routine schedule, but it
  *     is a seasonal monoclonal antibody, not a vaccine, and is not needed
  *     when the birthing parent had the RSV vaccine in pregnancy.
  *   - HPV may begin at age 9; AAP prefers starting earlier than 11-12.
+ *   - Rotavirus is given by mouth, so it renders with a droplet icon and an
+ *     "(oral)" label rather than the default syringe.
  *
  * Always confirm with your pediatrician - this is a quick parent overview.
  */
 const schedule = [
-  { age: 'Birth',           shots: ['Hepatitis B (1st dose)'] },
-  { age: '1–2 months',      shots: ['Hepatitis B (2nd dose)'] },
-  { age: '2 months',        shots: ['DTaP', 'Hib', 'IPV (polio)', 'PCV15', 'Rotavirus'] },
-  { age: '4 months',        shots: ['DTaP', 'Hib', 'IPV', 'PCV15', 'Rotavirus'] },
-  { age: '6 months',        shots: ['DTaP', 'Hib (if needed)', 'IPV', 'PCV15', 'Rotavirus (if needed)', 'Hep B (3rd dose)', 'Flu (annual, starting at 6 mo)'] },
-  { age: '12–15 months',    shots: ['MMR', 'Varicella (chickenpox)', 'Hib', 'PCV15', 'Hepatitis A (1st dose)'] },
-  { age: '15–18 months',    shots: ['DTaP'] },
-  { age: '18–24 months',    shots: ['Hepatitis A (2nd dose)'] },
-  { age: '4–6 years',       shots: ['DTaP', 'IPV', 'MMR', 'Varicella'] },
-  { age: '9–12 years',      shots: ['HPV (2-dose series, may start at age 9)'] },
+  { age: 'Birth',           shots: ['Hepatitis B'] },
+  { age: '1 month',         shots: ['Hepatitis B'] },
+  { age: '2 months',        shots: ['DTaP', 'Hib', 'IPV (polio)', 'PCV15', 'Rotavirus (oral)'] },
+  { age: '4 months',        shots: ['DTaP', 'Hib', 'IPV (polio)', 'PCV15', 'Rotavirus (oral)'] },
+  { age: '6 months',        shots: ['DTaP', 'Hib', 'IPV (polio)', 'PCV15', 'Rotavirus (oral)'] },
+  { age: '9 months',        shots: ['Hepatitis B'] },
+  { age: '12 months',       shots: ['MMR', 'PCV15'] },
+  { age: '15 months',       shots: ['Varicella (chickenpox)', 'Hepatitis A'] },
+  { age: '18 months',       shots: ['Hib', 'DTaP'] },
+  { age: '24 months',       shots: ['Hepatitis A'] },
+  { age: '4–6 years',       shots: ['DTaP', 'IPV (polio)', 'MMR', 'Varicella'] },
+  { age: '9–12 years',      shots: ['HPV (may start at age 9)'] },
   { age: '11–12 years',     shots: ['Tdap booster', 'Meningococcal (MenACWY)'] },
   { age: '16 years',        shots: ['Meningococcal booster', 'Meningococcal B (shared decision)'] },
   { age: 'RSV season',      shots: ['RSV antibody (nirsevimab)'] },
@@ -38,6 +47,9 @@ const schedule = [
   { age: '6–23 months',     shots: ['COVID-19 (routine)'] },
   { age: '2–18 years',      shots: ['COVID-19 (based on risk)'] },
 ];
+
+/** Oral vaccines get a droplet icon instead of the default syringe. */
+const isOral = (shot: string) => shot.includes('(oral)');
 
 const lastReviewed = 'September 20, 2026';
 ---
@@ -85,7 +97,7 @@ const lastReviewed = 'September 20, 2026';
               <ul class="flex flex-wrap gap-2">
                 {shots.map((s) => (
                   <li class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-muted)] px-3 py-1 text-xs font-semibold text-[var(--color-primary)] ring-1 ring-inset ring-[rgba(200,153,90,0.20)]">
-                    <Icon name="lucide:syringe" class="w-3.5 h-3.5" stroke-width="2" aria-hidden="true" />
+                    <Icon name={isOral(s) ? 'lucide:droplet' : 'lucide:syringe'} class="w-3.5 h-3.5" stroke-width="2" aria-hidden="true" />
                     {s}
                   </li>
                 ))}

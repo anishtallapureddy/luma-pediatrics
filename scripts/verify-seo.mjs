@@ -1180,6 +1180,10 @@ expect(
   'Vaccines page must keep its clinical review attestation',
 );
 expect(
+  /Rotavirus \(oral\)/.test(vaccinesHtml) && vaccinesHtml.includes('ai:lucide:droplet'),
+  'Rotavirus must stay labelled oral with the droplet icon, not the default syringe',
+);
+expect(
   vaccinesHtml.includes('COVID-19 (routine)') && vaccinesHtml.includes('COVID-19 (based on risk)'),
   'Vaccines schedule must scope COVID-19 by age (routine 6-23 mo, risk-based 2+), not as blanket annual dosing',
 );

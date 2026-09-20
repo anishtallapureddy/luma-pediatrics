@@ -21,6 +21,7 @@ export default defineConfig({
           'calendar',
           'calendar-check',
           'syringe',
+          'droplet',
           'phone',
           'mail',
           'map-pin',
