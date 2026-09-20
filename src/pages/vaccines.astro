@@ -5,22 +5,37 @@ import { Icon } from 'astro-icon/components';
 
 /**
  * Simplified childhood vaccine schedule (for parent reference only).
- * Source: AAP recommended childhood and adolescent immunization schedule.
+ * Source: AAP Recommended Childhood and Adolescent Immunization Schedule,
+ * United States, 2026 (published Jan 26, 2026). The AAP now publishes this
+ * schedule independently of the CDC/ACIP schedule.
+ *
+ * Notable 2026 points reflected below:
+ *   - Routine infant pneumococcal series is PCV15 or PCV20. PCV13 is no
+ *     longer recommended for routine infant vaccination.
+ *   - RSV immunisation (nirsevimab) is part of the routine schedule, but it
+ *     is a seasonal monoclonal antibody, not a vaccine, and is not needed
+ *     when the birthing parent had the RSV vaccine in pregnancy.
+ *   - HPV may begin at age 9; AAP prefers starting earlier than 11-12.
+ *
  * Always confirm with your pediatrician - this is a quick parent overview.
  */
 const schedule = [
   { age: 'Birth',           shots: ['Hepatitis B (1st dose)'] },
   { age: '1–2 months',      shots: ['Hepatitis B (2nd dose)'] },
-  { age: '2 months',        shots: ['DTaP', 'Hib', 'IPV (polio)', 'PCV13', 'Rotavirus'] },
-  { age: '4 months',        shots: ['DTaP', 'Hib', 'IPV', 'PCV13', 'Rotavirus'] },
-  { age: '6 months',        shots: ['DTaP', 'Hib (if needed)', 'IPV', 'PCV13', 'Rotavirus (if needed)', 'Hep B (3rd dose)', 'Flu (annual, starting at 6 mo)'] },
-  { age: '12–15 months',    shots: ['MMR', 'Varicella (chickenpox)', 'Hib', 'PCV13', 'Hepatitis A (1st dose)'] },
+  { age: '2 months',        shots: ['DTaP', 'Hib', 'IPV (polio)', 'PCV15 or PCV20', 'Rotavirus'] },
+  { age: '4 months',        shots: ['DTaP', 'Hib', 'IPV', 'PCV15 or PCV20', 'Rotavirus'] },
+  { age: '6 months',        shots: ['DTaP', 'Hib (if needed)', 'IPV', 'PCV15 or PCV20', 'Rotavirus (if needed)', 'Hep B (3rd dose)', 'Flu (annual, starting at 6 mo)'] },
+  { age: '12–15 months',    shots: ['MMR', 'Varicella (chickenpox)', 'Hib', 'PCV15 or PCV20', 'Hepatitis A (1st dose)'] },
   { age: '15–18 months',    shots: ['DTaP'] },
   { age: '18–24 months',    shots: ['Hepatitis A (2nd dose)'] },
   { age: '4–6 years',       shots: ['DTaP', 'IPV', 'MMR', 'Varicella'] },
-  { age: '11–12 years',     shots: ['Tdap booster', 'HPV (2-dose series)', 'Meningococcal (MenACWY)'] },
+  { age: '9–12 years',      shots: ['HPV (2-dose series, may start at age 9)'] },
+  { age: '11–12 years',     shots: ['Tdap booster', 'Meningococcal (MenACWY)'] },
   { age: '16 years',        shots: ['Meningococcal booster', 'Meningococcal B (shared decision)'] },
-  { age: 'Annual (all ages 6 mo+)', shots: ['Influenza (flu)', 'COVID-19 (per current AAP recommendation)'] },
+  { age: 'RSV season',      shots: ['RSV antibody (nirsevimab)'] },
+  { age: 'Annual (6 months+)', shots: ['Influenza (flu)'] },
+  { age: '6–23 months',     shots: ['COVID-19 (routine)'] },
+  { age: '2–18 years',      shots: ['COVID-19 (based on risk)'] },
 ];
 ---
 <BaseLayout
@@ -75,6 +90,45 @@ const schedule = [
             </li>
           ))}
         </ul>
+      </div>
+
+      </div>
+
+      <div class="mt-8 rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-5">
+        <h2 class="font-display text-xl text-[var(--color-primary)]">A few notes on the newer recommendations</h2>
+        <dl class="mt-4 space-y-4 text-sm leading-relaxed text-[var(--color-foreground)]/90">
+          <div>
+            <dt class="font-semibold text-[var(--color-foreground)]">RSV protection is seasonal, and it is an antibody rather than a vaccine.</dt>
+            <dd class="mt-1 text-[var(--color-muted-foreground)]">
+              Nirsevimab is given during RSV season (roughly fall through spring) to infants under
+              8 months entering their first season. It is usually not needed when the birthing parent
+              received the RSV vaccine during pregnancy. Some children aged 8–19 months with higher-risk
+              conditions are also protected for a second season.
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-[var(--color-foreground)]">Pneumococcal protection now uses PCV15 or PCV20.</dt>
+            <dd class="mt-1 text-[var(--color-muted-foreground)]">
+              These replaced PCV13 for the routine infant series. A child who began the series with
+              PCV13 does not need to start over, and can finish with PCV15 or PCV20.
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-[var(--color-foreground)]">HPV vaccination can begin at age 9.</dt>
+            <dd class="mt-1 text-[var(--color-muted-foreground)]">
+              The AAP now prefers starting between ages 9 and 12 rather than waiting until 11–12.
+              Starting before the 15th birthday means two doses instead of three.
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-[var(--color-foreground)]">COVID-19 depends on your child's age and health.</dt>
+            <dd class="mt-1 text-[var(--color-muted-foreground)]">
+              The AAP recommends it routinely for children 6–23 months. For ages 2 and up, it is based
+              on your child's risk factors and your family's preference. This is a good conversation
+              to have with your child's healthcare provider.
+            </dd>
+          </div>
+        </dl>
       </div>
 
       <div class="mt-8 rounded-xl bg-[rgba(231,108,112,0.10)] border border-[rgba(231,108,112,0.40)] p-4 flex items-start gap-3">

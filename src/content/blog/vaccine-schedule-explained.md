@@ -2,7 +2,7 @@
 title: "The childhood vaccine schedule, explained"
 description: "A pediatrician's plain-English guide to the AAP childhood vaccine schedule, what each vaccine protects against, and why timing matters."
 publishDate: 2026-09-06
-updatedDate: 2026-09-16
+updatedDate: 2026-09-18
 hero: /images/blog-vaccines.jpg
 heroWide: /images/blog-vaccines-16x9.jpg
 heroSquare: /images/blog-vaccines-1x1.jpg
@@ -25,9 +25,11 @@ This guide follows the [American Academy of Pediatrics](https://www.healthychild
 - **12–15 months:** MMR, Varicella (chickenpox), Hib booster, PCV booster, HepA (#1)
 - **18 months:** DTaP booster, HepA (#2)
 - **4–6 years:** DTaP, IPV, MMR, Varicella boosters before kindergarten
-- **11–12 years:** Tdap, HPV (2 doses), Meningococcal (MenACWY) (#1)
+- **9–12 years:** HPV (2 doses), which can begin at age 9
+- **11–12 years:** Tdap, Meningococcal (MenACWY) (#1)
 - **16 years:** MenACWY booster, MenB (shared decision-making)
-- **Annually, age 6 months+:** Flu vaccine; COVID-19 per current recommendations
+- **RSV season:** RSV antibody (nirsevimab) for infants under 8 months entering their first season
+- **Annually, age 6 months+:** Flu vaccine; COVID-19 based on age and risk
 
 ## What each one protects against
 
@@ -41,6 +43,7 @@ Those acronyms are much less intimidating once you know what each one is quietly
 | **IPV** | Polio |
 | **PCV** | Pneumococcal disease (pneumonia, meningitis, ear infections) |
 | **RV** | Rotavirus (severe dehydrating diarrhea) |
+| **RSV** | Respiratory syncytial virus (a seasonal antibody, not a vaccine) |
 | **MMR** | Measles, Mumps, Rubella |
 | **Varicella** | Chickenpox (and prevents shingles later) |
 | **HepA** | Hepatitis A |
@@ -61,7 +64,7 @@ These come up constantly, and they are all good questions. Asking them is part o
 
 **My child missed a dose. Do we start over?** Usually not, and this worries parents far more than it needs to. A healthcare provider can review the record and create an appropriate catch-up schedule.
 
-**HPV at 11–12 feels young.** It is a common reaction, and the timing is deliberate. The vaccine works best before exposure, and the immune response is strong at this age. Starting on schedule usually requires two doses instead of three and helps prevent six cancers.
+**HPV at 9–12 feels young.** It is a common reaction, and the timing is deliberate. The vaccine works best before exposure, and the immune response is strong at this age. The AAP now prefers starting at 9 rather than waiting until 11–12, because earlier starts improve the odds of finishing the series. Starting before the 15th birthday usually requires two doses instead of three and helps prevent six cancers.
 
 ## Keeping track of records
 

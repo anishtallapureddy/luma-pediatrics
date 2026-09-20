@@ -1167,6 +1167,18 @@ expect(
   ),
   'Vaccines page must link to the current AAP parent-friendly schedule',
 );
+expect(
+  !/>\s*PCV13\s*</.test(vaccinesHtml),
+  'Vaccines schedule must not list PCV13 as a routine infant dose (AAP 2026 uses PCV15/PCV20)',
+);
+expect(
+  vaccinesHtml.includes('PCV15 or PCV20') && vaccinesHtml.includes('nirsevimab'),
+  'Vaccines page must reflect the AAP 2026 pneumococcal and RSV recommendations',
+);
+expect(
+  vaccinesHtml.includes('COVID-19 (routine)') && vaccinesHtml.includes('COVID-19 (based on risk)'),
+  'Vaccines schedule must scope COVID-19 by age (routine 6-23 mo, risk-based 2+), not as blanket annual dosing',
+);
 const dosingHtml = readFileSync(join(dist, 'dosing-charts', 'index.html'), 'utf8');
 for (const sourceUrl of [
   'https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Acetaminophen-for-Fever-and-Pain.aspx',
