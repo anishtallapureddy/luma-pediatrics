@@ -1172,8 +1172,12 @@ expect(
   'Vaccines schedule must not list PCV13 as a routine infant dose (AAP 2026 uses PCV15/PCV20)',
 );
 expect(
-  vaccinesHtml.includes('PCV15 or PCV20') && vaccinesHtml.includes('nirsevimab'),
-  'Vaccines page must reflect the AAP 2026 pneumococcal and RSV recommendations',
+  />\s*PCV15\s*</.test(vaccinesHtml) && vaccinesHtml.includes('nirsevimab'),
+  'Vaccines schedule must list PCV15 for the infant series and reflect the AAP 2026 RSV recommendation',
+);
+expect(
+  /Last reviewed by the Luma Pediatrics clinical team/.test(vaccinesHtml),
+  'Vaccines page must keep its clinical review attestation',
 );
 expect(
   vaccinesHtml.includes('COVID-19 (routine)') && vaccinesHtml.includes('COVID-19 (based on risk)'),

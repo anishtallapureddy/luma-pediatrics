@@ -10,7 +10,8 @@ import { Icon } from 'astro-icon/components';
  * schedule independently of the CDC/ACIP schedule.
  *
  * Notable 2026 points reflected below:
- *   - Routine infant pneumococcal series is PCV15 or PCV20. PCV13 is no
+ *   - Routine infant pneumococcal series is PCV15 or PCV20; Luma Pediatrics
+ *     uses PCV15. PCV13 is no
  *     longer recommended for routine infant vaccination.
  *   - RSV immunisation (nirsevimab) is part of the routine schedule, but it
  *     is a seasonal monoclonal antibody, not a vaccine, and is not needed
@@ -22,10 +23,10 @@ import { Icon } from 'astro-icon/components';
 const schedule = [
   { age: 'Birth',           shots: ['Hepatitis B (1st dose)'] },
   { age: '1–2 months',      shots: ['Hepatitis B (2nd dose)'] },
-  { age: '2 months',        shots: ['DTaP', 'Hib', 'IPV (polio)', 'PCV15 or PCV20', 'Rotavirus'] },
-  { age: '4 months',        shots: ['DTaP', 'Hib', 'IPV', 'PCV15 or PCV20', 'Rotavirus'] },
-  { age: '6 months',        shots: ['DTaP', 'Hib (if needed)', 'IPV', 'PCV15 or PCV20', 'Rotavirus (if needed)', 'Hep B (3rd dose)', 'Flu (annual, starting at 6 mo)'] },
-  { age: '12–15 months',    shots: ['MMR', 'Varicella (chickenpox)', 'Hib', 'PCV15 or PCV20', 'Hepatitis A (1st dose)'] },
+  { age: '2 months',        shots: ['DTaP', 'Hib', 'IPV (polio)', 'PCV15', 'Rotavirus'] },
+  { age: '4 months',        shots: ['DTaP', 'Hib', 'IPV', 'PCV15', 'Rotavirus'] },
+  { age: '6 months',        shots: ['DTaP', 'Hib (if needed)', 'IPV', 'PCV15', 'Rotavirus (if needed)', 'Hep B (3rd dose)', 'Flu (annual, starting at 6 mo)'] },
+  { age: '12–15 months',    shots: ['MMR', 'Varicella (chickenpox)', 'Hib', 'PCV15', 'Hepatitis A (1st dose)'] },
   { age: '15–18 months',    shots: ['DTaP'] },
   { age: '18–24 months',    shots: ['Hepatitis A (2nd dose)'] },
   { age: '4–6 years',       shots: ['DTaP', 'IPV', 'MMR', 'Varicella'] },
@@ -37,6 +38,8 @@ const schedule = [
   { age: '6–23 months',     shots: ['COVID-19 (routine)'] },
   { age: '2–18 years',      shots: ['COVID-19 (based on risk)'] },
 ];
+
+const lastReviewed = 'September 20, 2026';
 ---
 <BaseLayout
   title="Childhood Vaccine Schedule | Luma Pediatrics McKinney"
@@ -92,8 +95,6 @@ const schedule = [
         </ul>
       </div>
 
-      </div>
-
       <div class="mt-8 rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-5">
         <h2 class="font-display text-xl text-[var(--color-primary)]">A few notes on the newer recommendations</h2>
         <dl class="mt-4 space-y-4 text-sm leading-relaxed text-[var(--color-foreground)]/90">
@@ -107,10 +108,11 @@ const schedule = [
             </dd>
           </div>
           <div>
-            <dt class="font-semibold text-[var(--color-foreground)]">Pneumococcal protection now uses PCV15 or PCV20.</dt>
+            <dt class="font-semibold text-[var(--color-foreground)]">We use PCV15 for pneumococcal protection.</dt>
             <dd class="mt-1 text-[var(--color-muted-foreground)]">
-              These replaced PCV13 for the routine infant series. A child who began the series with
-              PCV13 does not need to start over, and can finish with PCV15 or PCV20.
+              PCV15 and PCV20 both replaced PCV13 for the routine infant series, and the AAP accepts
+              either one. Luma Pediatrics uses PCV15. A child who started the series elsewhere on
+              PCV13 or PCV20 does not need to start over.
             </dd>
           </div>
           <div>
@@ -130,6 +132,12 @@ const schedule = [
           </div>
         </dl>
       </div>
+
+      <p class="mt-4 text-xs text-[var(--color-muted-foreground)] leading-relaxed">
+        Based on the AAP Recommended Childhood and Adolescent Immunization Schedule
+        (United States, 2026). Last reviewed by the Luma Pediatrics clinical team:
+        <strong>{lastReviewed}</strong>.
+      </p>
 
       <div class="mt-8 rounded-xl bg-[rgba(231,108,112,0.10)] border border-[rgba(231,108,112,0.40)] p-4 flex items-start gap-3">
         <Icon name="lucide:info" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-coral)]" stroke-width="1.8" aria-hidden="true" />
