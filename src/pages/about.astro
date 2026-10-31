@@ -10,19 +10,29 @@ import { SITE } from '../site.config';
 
 const principles = [
   {
-    icon: 'lucide:heart',
-    title: 'Family partnership',
-    body: 'Children are more than a chart or checklist. We listen to the people who know them best, answer questions, and agree on a clear plan together.',
+    icon: 'lucide:shield-check',
+    title: 'Exceptional Care, Always',
+    body: 'We are committed to thoughtful, evidence-based medicine and the highest standards of pediatric care. Every recommendation begins with one question: What is best for this child?',
   },
   {
-    icon: 'lucide:shield-check',
-    title: 'Evidence-based decisions',
-    body: 'Care is guided by current pediatric research and AAP and CDC recommendations, with options explained in plain language.',
+    icon: 'lucide:heart',
+    title: 'Relationships Matter',
+    body: 'The best pediatric care is built over time. We take the time to know our patients and their families, listen to their concerns, and build relationships grounded in trust and mutual respect.',
   },
   {
     icon: 'lucide:users',
-    title: 'Accessible, continuous care',
-    body: 'Convenient scheduling, same-day sick visits, and responsive support are planned within one pediatric home from the newborn years through young adulthood.',
+    title: 'Parents Are Partners',
+    body: 'Parents know their children better than anyone. We believe the best decisions are made together through open conversation, clear guidance, and shared decision-making.',
+  },
+  {
+    icon: 'lucide:calendar-check',
+    title: 'Care Should Be Accessible',
+    body: 'Families shouldn’t have to struggle to reach their pediatrician when their child needs care. We prioritize timely appointments, responsive communication, and access to trusted pediatric care when it matters.',
+  },
+  {
+    icon: 'lucide:sparkles',
+    title: 'We Make Healthcare Easier',
+    body: 'Taking care of a child is complicated enough. Getting pediatric care shouldn’t be. We thoughtfully use technology, efficient systems, and family-friendly processes to make accessing and navigating care as simple and convenient as possible.',
   },
 ];
 const boardCertification = SITE.provider.quickFacts.find(
@@ -164,18 +174,18 @@ const careScope = SITE.provider.quickFacts.find(
     <PageDecor variant="minimal" sparkles={8} />
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="max-w-3xl mx-auto text-center">
-        <span class="eyebrow eyebrow-sun">How we care</span>
+        <span class="eyebrow eyebrow-sun">Luma Pediatrics Core Values</span>
         <h2 class="mt-5 text-3xl md:text-4xl font-extrabold tracking-tight">
-          Thoughtful care built around your family.
+          Our promises to your family.
         </h2>
         <p class="mt-5 text-lg text-[var(--color-foreground)]/80 leading-relaxed">
-          Luma is being designed around three commitments that guide each visit and every stage of childhood.
+          Five commitments that guide the care we are building for every child and family.
         </p>
       </div>
 
-      <div class="mt-10 grid gap-5 md:grid-cols-3">
+      <div class="mt-10 grid gap-5 md:grid-cols-2">
         {principles.map(({ icon, title, body }) => (
-          <article class="card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] p-7">
+          <article class="card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 last:md:col-span-2">
             <span
               class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-background)] text-[var(--color-primary)] mb-5 ring-1 ring-inset ring-[var(--color-border-soft)]"
               aria-hidden="true"
