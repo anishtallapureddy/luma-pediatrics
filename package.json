@@ -21,9 +21,9 @@
   "dependencies": {
     "@astrojs/check": "^0.9.12",
     "@astrojs/sitemap": "3.7.4",
-    "@fontsource/cormorant-garamond": "^5.1.0",
-    "@fontsource/plus-jakarta-sans": "^5.1.0",
-    "@iconify-json/lucide": "^1.2.18",
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/plus-jakarta-sans": "^5.3.0",
+    "@iconify-json/lucide": "^1.2.147",
     "@tailwindcss/oxide": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.4.1",
