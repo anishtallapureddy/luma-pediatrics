@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
 import AfterHoursCard from '../components/AfterHoursCard.astro';
 import { Icon } from 'astro-icon/components';
-import { SITE } from '../site.config';
+import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 
 interface FaqItem {
   id: string;
@@ -13,6 +13,7 @@ interface FaqItem {
 }
 
 const saturdayHours = SITE.hours.find(({ day }) => day === 'Saturday');
+const languages = SITE.provider.quickFacts.find(({ label }) => label === 'Languages');
 const faqs: FaqItem[] = [
   {
     id: 'opening',
@@ -26,10 +27,16 @@ const faqs: FaqItem[] = [
     a: 'Appointments are not available yet. We will publish scheduling information before the practice opens.',
     link: { href: '/new-patients/', label: 'Read the first-visit guide' },
   },
+  ...(SITE.showProviderProfile ? [{
+    id: 'pediatrician',
+    q: 'Who is the pediatrician at Luma?',
+    a: `${SITE.provider.name} is Luma’s founder and a board-certified pediatrician. She trained at ${SITE.provider.education[0]} and ${SITE.provider.education[1]}, and has cared for North Texas families since 2022.`,
+    link: { href: '/about/', label: 'Get to know our pediatrician' },
+  }] : []),
   {
     id: 'ages',
-    q: 'What ages will you see?',
-    a: 'We plan to care for newborns through young adults, typically up to age 21, after the practice opens.',
+    q: 'What ages will Luma see?',
+    a: 'Newborns through young adults, typically up to age 21, after the practice opens.',
   },
   {
     id: 'insurance',
@@ -38,9 +45,15 @@ const faqs: FaqItem[] = [
     link: { href: '/new-patients/#insurance', label: 'Check insurance status' },
   },
   {
+    id: 'self-pay',
+    q: 'Will Luma see self-pay patients?',
+    a: 'Self-pay care is planned after opening. Appointments and fee information are not available yet.',
+    link: { href: '/new-patients/#insurance', label: 'Read about insurance and self-pay' },
+  },
+  {
     id: 'same-day-visits',
     q: 'Do you offer same-day sick visits?',
-    a: 'After opening, we plan to offer same-day sick visits whenever capacity allows. Scheduling details will be published before appointments open.',
+    a: 'Same-day sick visits are planned after opening, when capacity allows, for fevers, infections, and minor injuries. Scheduling details are not available yet.',
   },
   {
     id: 'telehealth',
@@ -49,10 +62,39 @@ const faqs: FaqItem[] = [
   },
   ...(saturdayHours ? [{
     id: 'saturday-hours',
-    q: 'Will you be open on Saturdays?',
-    a: `Saturday hours are planned for ${saturdayHours.time} after opening. Appointments are not available yet.`,
+    q: 'Is Luma open on Saturdays?',
+    a: `Not yet. Saturday hours are planned for ${saturdayHours.time} after opening. Appointments are not available yet.`,
     link: { href: '/contact/#planned-hours', label: 'View planned office hours' },
   }] : []),
+  {
+    id: 'hospital-newborn-care',
+    q: 'Will Luma see my newborn in the hospital?',
+    a: 'Newborn rounds at Baylor Scott & White Medical Center in McKinney are planned after opening and completion of hospital arrangements. Clinic newborn visits are planned for feeding support, growth tracking, and jaundice screening.',
+    link: { href: '/services/#newborn-rounds-bsw-mckinney', label: 'Read about planned newborn care' },
+  },
+  {
+    id: 'meet-and-greet',
+    q: 'What is the free Meet & Greet?',
+    a: 'A complimentary visit to see the office and meet the pediatrician before choosing a practice. Meet-and-greets are planned after opening; booking is not available yet.',
+    link: { href: '/about/', label: 'Learn about the pediatrician and practice' },
+  },
+  ...(SITE.showProviderProfile && languages ? [{
+    id: 'languages',
+    q: 'Does the pediatrician speak Telugu, Hindi, or Urdu?',
+    a: `${SITE.provider.shortName}: ${languages.value}.`,
+  }] : []),
+  {
+    id: 'location',
+    q: 'Where will the office be?',
+    a: `${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}, just off US-75. The practice is not currently open.`,
+    link: { href: GOOGLE_DIRECTIONS_URL, label: 'Get directions to the future office' },
+  },
+  {
+    id: 'service-area',
+    q: 'Which communities will Luma serve?',
+    a: 'The future practice is intended for families in McKinney and nearby communities, including Allen, Frisco, Prosper, Melissa, Princeton, Anna, and Fairview. Luma will have one clinic in McKinney.',
+    link: { href: '/pediatrician/', label: 'Explore the McKinney location and service area' },
+  },
   {
     id: 'first-visit',
     q: 'What should I bring to a first visit?',
