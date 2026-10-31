@@ -4,7 +4,7 @@ Public website for Luma Pediatrics, deployed to GitHub Pages at **https://www.lu
 
 ## Stack
 
-- **[Astro 5](https://astro.build/)** — static site generator
+- **[Astro 7](https://astro.build/)** — static site generator
 - **[Tailwind CSS v4](https://tailwindcss.com/)** — styling
 - **[Decap CMS](https://decapcms.org/)** — visual content editor at `/admin` (added in a later phase)
 - **[Lucide](https://lucide.dev/)** icons via `astro-icon`
@@ -13,6 +13,8 @@ Public website for Luma Pediatrics, deployed to GitHub Pages at **https://www.lu
 - **GitHub Actions** — CI/CD (added in a later phase)
 
 ## Local development
+
+Use Node.js 22.22.0 or newer.
 
 ```sh
 npm install
@@ -127,3 +129,26 @@ The visual design (colors, type, spacing, components, anti-patterns) is document
 - **No patient intake before opening.** Scheduling, insurance verification, patient forms, and clinical messaging are not offered through the site.
 - **WCAG 2.1 AA** target; Lighthouse a11y score 100.
 - **State medical-advertising rules** vary; have the practice's attorney review before launch.
+
+## Repository and deployment security
+
+- Changes to `main` go through pull requests with the `build` check passing.
+  The solo-maintainer policy does not require a separate approving reviewer.
+- PR builds run Astro diagnostics, the production build, and the SEO contract
+  without the Maps key. They cannot deploy to Pages. Production deployments
+  remain limited to `main` and the `github-pages` environment.
+- Actions are pinned to full commit SHAs. Only the deployment job receives
+  Pages-write and OIDC permissions; checkout does not persist Git credentials.
+- Dependabot proposes weekly npm and Actions updates. Minor/patch npm updates
+  are grouped; major upgrades remain separate for review.
+- Keep secret scanning, push protection, Dependabot alerts, and security updates
+  enabled in repository settings. Never commit credentials or patient data.
+- Protect the owner account and domain registrar with strong 2FA/passkeys and
+  securely stored recovery methods. Confirm `lumapediatrics.com` is verified
+  under the owner's GitHub account Settings → Pages; a DNS challenge record
+  alone is not proof that verification has completed.
+- Browser Maps keys are intentionally public and must be restricted in Google
+  Cloud to the production HTTPS referrers and the required Maps APIs.
+- The public signup remains for general practice updates only. Clinical
+  messages, documents, and patient intake belong in a separately secured
+  patient portal, not this website or GitHub.
