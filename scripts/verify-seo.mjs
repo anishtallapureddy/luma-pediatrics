@@ -407,7 +407,7 @@ expect(!home.html.includes('hero-status-pill'), 'Home page must not repeat the o
 expect(
   home.html.includes('class="hero-credibility-ribbon"') &&
     homeText.includes(
-      'Board-certified pediatric care for North Texas families, guided by AAP and CDC recommendations.',
+      'Board-certified pediatric care for North Texas families, guided by AAP recommendations.',
     ),
   'Board-certified care must appear inside the hero credential ribbon',
 );
@@ -659,17 +659,19 @@ for (const value of [
   'Board certified by the American Board of Pediatrics',
   'Outside the office',
   'Credentials & background',
-  'How we care',
-  'Family partnership',
-  'Evidence-based decisions',
-  'Accessible, continuous care',
+  'Luma Pediatrics Core Values',
+  'Exceptional Care, Always',
+  'Relationships Matter',
+  'Parents Are Partners',
+  'Care Should Be Accessible',
+  'We Make Healthcare Easier',
   'Learn more about our future practice',
 ]) {
   expect(aboutText.includes(value), `About page is missing restructured content: ${value}`);
 }
 expect(
   aboutPage.html.indexOf('provider-spotlight') <
-    aboutPage.html.indexOf('How we care'),
+    aboutPage.html.indexOf('Luma Pediatrics Core Values'),
   'About page must introduce the pediatrician before the care principles',
 );
 for (const redundantText of [

@@ -152,3 +152,46 @@ The visual design (colors, type, spacing, components, anti-patterns) is document
 - The public signup remains for general practice updates only. Clinical
   messages, documents, and patient intake belong in a separately secured
   patient portal, not this website or GitHub.
+
+## Children's dosing calculator
+
+`/dosing-charts/#dosage-calculator` provides a browser-only product-label lookup
+for children's acetaminophen (160 mg/5 mL) and ibuprofen (100 mg/5 mL).
+It requires age, current weight, explicit units, and confirmation of the bottle
+strength. Ages outside 2–11 and weights outside the supported chart receive
+provider guidance, not extrapolated doses. Changing medicine resets strength
+confirmation; changing units clears the weight; all edits clear previous results.
+
+No age, weight, or medication selection is stored or submitted. The tool is not
+patient intake or individualized prescribing. Its source references are the
+manufacturer Drug Facts labels hosted by DailyMed. Source-check dates are not
+represented as clinical sign-off.
+
+Run `npm run test:run` for dose-band, unit-conversion, invalid-input and
+out-of-range tests. These tests also run in the required PR build.
+
+## Meet-and-greet scheduling investigation
+
+GoTo's official athenaOne integration pages describe AI-receptionist appointment
+booking, rescheduling, and cancellation. They do not establish that Luma can
+embed a website calendar or book a prospective-family meet-and-greet without
+patient demographics or registration. The referenced clinic's public scheduling
+page also does not prove that specific GoTo workflow.
+
+Before enabling a booking link, request a vendor demonstration that:
+
+- A dedicated nonclinical Meet & Greet appointment type reads actual athenaOne
+  availability and prevents double bookings.
+- Prospective parents can book with minimal contact information, without child
+  date of birth, insurance details, patient-portal signup, or unintended patient
+  chart creation.
+- The flow supports confirmations, cancellations, rescheduling, and the
+  America/Chicago timezone, without triggering clinical billing.
+- A public booking link/widget is supported, and required licensing, practice
+  permissions, and agreements are approved.
+
+References:
+- https://www.goto.com/integrations/connect/athenaone
+- https://support.goto.com/connect/help/set-up-athenaone-scheduling-ai-receptionist
+
+No GoTo service, paid plan, Athena access, or booking endpoint was configured.

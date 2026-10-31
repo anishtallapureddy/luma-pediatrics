@@ -30,7 +30,7 @@ Luma Pediatrics is the public-facing practice name of Luma Physician Group PLLC,
 - Newborn rounds at Baylor Scott & White McKinney, subject to completion of hospital arrangements
 - Well-child visits (head-to-toe exam, developmental screening, milestone guidance)
 - Planned same-day sick visits after opening (fevers, infections, ear pain, stomach bugs, injuries)
-- Vaccinations (full CDC/AAP-aligned childhood schedule)
+- Vaccinations (AAP-aligned childhood schedule)
 - School, sports, and camp physicals
 - ADHD, behavior, and developmental care
 - Teen and adolescent health (confidential, age-appropriate care)
@@ -61,13 +61,14 @@ McKinney, Prosper, Melissa, Anna, Van Alstyne, Howe, Sherman, Princeton, Farmers
 - [Home](https://www.lumapediatrics.com/): Overview, featured services, practice updates, and commitments.
 - [About](https://www.lumapediatrics.com/about/): Practice philosophy, pediatrician bio, and affiliations.
 - [Services](https://www.lumapediatrics.com/services/): Full list of planned pediatric services.
-- [Vaccine Schedule](https://www.lumapediatrics.com/vaccines/): Parent-friendly overview of the CDC/AAP childhood immunization schedule.
+- [Vaccine Schedule](https://www.lumapediatrics.com/vaccines/): Parent-friendly overview of the AAP childhood immunization schedule.
 - [New Patients](https://www.lumapediatrics.com/new-patients/): Planned first-visit experience, after-hours guidance, and insurance updates.
 - [FAQ](https://www.lumapediatrics.com/faq/): Frequently asked questions about insurance, planned same-day visits, telehealth, and scheduling.
 - [Service Area](https://www.lumapediatrics.com/pediatrician/): Nearby communities served by the future McKinney clinic.
 - [McKinney Location](https://www.lumapediatrics.com/pediatrician/mckinney/): Local information, directions, services, and opening status for the physical clinic.
 - [RSS Feed](https://www.lumapediatrics.com/rss.xml): Newly published parent guides and pediatric articles.
 - [Parent Resources / Blog](https://www.lumapediatrics.com/blog/): Pediatrician-written articles on newborn care, fever, sleep, vaccines, and other common parent questions.
+- [Children's Dosing Calculator & Charts](https://www.lumapediatrics.com/dosing-charts/#dosage-calculator): Browser-only label lookup for children's acetaminophen and ibuprofen liquids, limited to ages 2–11 and supported weight bands. No age or weight information is saved or submitted.
 - [Contact](https://www.lumapediatrics.com/contact/): General contact information, future location, planned hours, and future service area.
 - [Privacy Policy](https://www.lumapediatrics.com/privacy/)
 - [Terms & Conditions](https://www.lumapediatrics.com/terms/)
