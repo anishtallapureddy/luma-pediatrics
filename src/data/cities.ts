@@ -64,7 +64,7 @@ export const CITIES: CityPage[] = [
       'Prosper families will find the future Luma Pediatrics practice just down 380 in McKinney, with planned newborn and primary pediatric care.',
     landmarks: ['Windsong Ranch', 'Light Farms', 'Prosper ISD schools', 'Gates of Prosper'],
     whyLuma:
-      'For Prosper families delivering at Baylor Scott & White Medical Center in McKinney, Luma plans to offer in-hospital newborn rounds and coordinated outpatient follow-up after opening.',
+      'For Prosper families delivering at Baylor Scott & White Medical Center in McKinney, newborn rounds and outpatient follow-up are planned after opening, subject to hospital arrangements.',
   },
   {
     slug: 'melissa',

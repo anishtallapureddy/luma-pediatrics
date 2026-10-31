@@ -55,29 +55,31 @@ const isActive = (href: string) => {
       </nav>
 
       <div class="flex items-center gap-2">
-        <div
-          class="hidden md:inline-flex items-center overflow-hidden rounded-full bg-[var(--color-card)] ring-1 ring-inset ring-[var(--color-border-soft)]"
-          role="group"
-          aria-label="Contact Luma Pediatrics"
-        >
+        <div class="hidden md:flex flex-col items-end gap-1">
+          <p class="text-xs text-[var(--color-muted-foreground)]">General questions only</p>
+          <div
+            class="inline-flex items-center overflow-hidden rounded-full bg-[var(--color-card)] ring-1 ring-inset ring-[var(--color-border-soft)]"
+            role="group"
+            aria-label="Contact Luma Pediatrics for general questions, not medical advice"
+          >
           <a
             href={SITE.contact.phoneHref}
             class="inline-flex min-h-10 items-center gap-2 px-3 text-[var(--color-foreground)] no-underline font-medium whitespace-nowrap hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
-            aria-label={`Call ${SITE.name} at ${SITE.contact.phone}`}
-            title={`Call ${SITE.contact.phone}`}
+            aria-label={`Call ${SITE.name} for general questions at ${SITE.contact.phone}`}
+            title={`General questions only: call ${SITE.contact.phone}`}
           >
             <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
-            <span class="hidden lg:inline">Call us</span>
+            <span class="hidden lg:inline">Call office</span>
           </a>
           <span class="h-5 w-px bg-[var(--color-border-soft)]" aria-hidden="true"></span>
           <a
             href={SITE.contact.smsHref}
             class="inline-flex min-h-10 items-center gap-2 px-3 text-[var(--color-foreground)] no-underline font-medium whitespace-nowrap hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
-            aria-label={`Text ${SITE.name} at ${SITE.contact.phone}`}
-            title={`Text ${SITE.contact.phone}`}
+            aria-label={`Text ${SITE.name} for general questions at ${SITE.contact.phone}`}
+            title={`General questions only: text ${SITE.contact.phone}`}
           >
             <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
-            <span class="hidden lg:inline">Text us</span>
+            <span class="hidden lg:inline">Text office</span>
           </a>
           <a
             href={SITE.contact.smsDisclosureHref}
@@ -87,6 +89,7 @@ const isActive = (href: string) => {
           >
             <Icon name="lucide:info" class="w-4 h-4" stroke-width="1.7" aria-hidden="true" />
           </a>
+          </div>
         </div>
         {/* Book Appointment CTA intentionally omitted until online scheduling is live. */}
 

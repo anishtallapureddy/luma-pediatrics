@@ -10,27 +10,30 @@ import { SITE } from '../site.config';
 <div
   class="mobile-cta-bar md:hidden fixed bottom-0 inset-x-0 z-40 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2"
   role="region"
-  aria-label="Quick contact"
+  aria-label="Quick contact for general questions, not medical advice"
 >
-  <div class="flex gap-2 rounded-full bg-[var(--color-card)]/95 backdrop-blur ring-1 ring-[var(--color-border-soft)] shadow-[0_-6px_24px_-12px_rgba(11,29,58,0.25)] p-1.5">
+  <div class="rounded-2xl bg-[var(--color-card)]/95 backdrop-blur ring-1 ring-[var(--color-border-soft)] shadow-[0_-6px_24px_-12px_rgba(11,29,58,0.25)] p-1.5">
+    <p class="pb-1.5 text-center text-xs text-[var(--color-muted-foreground)]">General questions only. No medical advice.</p>
+    <div class="flex gap-2">
     <a
       href={SITE.contact.phoneHref}
       class="min-w-0 flex-1 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm"
-      aria-label={`Call ${SITE.name} at ${SITE.contact.phone}`}
-      title={`Call ${SITE.contact.phone}`}
+      aria-label={`Call ${SITE.name} for general questions at ${SITE.contact.phone}`}
+      title={`General questions only: call ${SITE.contact.phone}`}
     >
       <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
-      Call us
+      Call office
     </a>
     <a
       href={SITE.contact.smsHref}
-      class="min-w-0 flex-1 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm"
-      aria-label={`Text ${SITE.name} at ${SITE.contact.phone}`}
-      title={`Text ${SITE.contact.phone}`}
+      class="min-w-0 flex-1 inline-flex items-center justify-center gap-1.5 min-h-11 px-3 rounded-full border border-[var(--color-primary)] text-[var(--color-primary)] no-underline font-semibold text-sm"
+      aria-label={`Text ${SITE.name} for general questions at ${SITE.contact.phone}`}
+      title={`General questions only: text ${SITE.contact.phone}`}
     >
       <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
-      Text us
+      Text office
     </a>
+    </div>
   </div>
 </div>
 
@@ -38,7 +41,7 @@ import { SITE } from '../site.config';
   /* Add bottom padding to main on mobile so the sticky bar never covers content */
   @media (max-width: 767px) {
     :global(main) {
-      padding-bottom: 5rem;
+      padding-bottom: calc(7rem + env(safe-area-inset-bottom));
     }
   }
 </style>

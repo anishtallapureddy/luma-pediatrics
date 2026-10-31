@@ -2,8 +2,6 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Picture from '../../components/Picture.astro';
-import Button from '../../components/Button.astro';
-import { Icon } from 'astro-icon/components';
 import { SITE, STRUCTURED_DATA_IDS } from '../../site.config';
 
 export async function getStaticPaths() {
@@ -98,7 +96,8 @@ const articleSchema = {
   modifiedTime={post.data.updatedDate?.toISOString()}
   breadcrumbs={[
     { name: 'Home', path: '/' },
-    { name: 'Parent Resources', path: '/blog/' },
+    { name: 'Resources', path: '/resources/' },
+    { name: 'Parent Guides', path: '/blog/' },
     { name: post.data.title, path: `/blog/${post.id}/` },
   ]}
 >
@@ -106,7 +105,7 @@ const articleSchema = {
 
   <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20 pb-20">
     <p class="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--color-primary)]">
-      <a href="/blog/" class="no-underline hover:underline">← Parent Resources</a>
+      <a href="/resources/" class="no-underline hover:underline">← Parent Resources</a>
     </p>
 
     <h1 class="mt-4 font-display text-4xl sm:text-5xl text-[var(--color-primary)] leading-tight">
@@ -147,25 +146,29 @@ const articleSchema = {
 
     <aside class="mt-14 rounded-2xl bg-[var(--color-sage-light)] p-6 sm:p-8 border border-[rgba(11,29,58,0.06)]">
       <p class="font-display text-2xl text-[var(--color-primary)]">
-        Looking for future-practice information?
+        More parent resources
       </p>
-      <p class="mt-2 text-[var(--color-primary)] leading-relaxed">
-        {SITE.status} in {SITE.locationShort}.
-        Contact us for general information about the planned practice.
-      </p>
-      <div class="mt-5 flex flex-wrap gap-3">
-        <Button href="/contact/" variant="primary">
-          <Icon slot="icon-left" name="lucide:mail" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
-          Contact us
-        </Button>
-      </div>
       {post.id === 'vaccine-schedule-explained' && (
         <p class="mt-5 text-sm">
-          <a href="/vaccines/" class="font-semibold">
+          <a href="/vaccines/" class="inline-flex min-h-11 items-center font-semibold">
             See the vaccine schedule at a glance →
           </a>
         </p>
       )}
+      {post.id === 'newborn-first-week' && (
+        <p class="mt-5 text-sm">
+          <a href="/services/#newborn-care" class="inline-flex min-h-11 items-center font-semibold">
+            Explore Luma’s planned newborn care →
+          </a>
+        </p>
+      )}
+      <p class="mt-3 text-sm">
+        <a href="/resources/" class="inline-flex min-h-11 items-center font-semibold">Browse all parent resources →</a>
+      </p>
+      <p class="mt-5 text-sm text-[var(--color-primary)] leading-relaxed">
+        {SITE.status} in {SITE.locationShort}.
+        <a href="/contact/" class="underline underline-offset-4">General questions about Luma?</a>
+      </p>
     </aside>
 
     <p class="mt-10 text-xs text-[var(--color-muted-foreground)] leading-relaxed">

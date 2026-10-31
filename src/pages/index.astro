@@ -42,7 +42,7 @@ const serviceGroups = [
     description: 'Preventive care, sick visits, and recommended protection as children grow.',
     serviceTitles: [
       'Well-Child Visits',
-      'Sick Visits',
+      'Same-Day Sick Visits',
       'Vaccinations',
     ],
   },
@@ -66,26 +66,18 @@ const trustPhotos = [
   {
     src: '/images/trust-family.jpg',
     alt: 'A mother cuddling her happy laughing baby in a soft, sunlit nursery',
-    title: 'Family centered',
-    body: 'Care built around the people who know your child best.',
   },
   {
     src: '/images/trust-checkup.jpg',
     alt: 'A pediatrician using a stethoscope on a smiling girl held by her mother',
-    title: 'Kid-friendly visits',
-    body: 'A calm setting designed to help children feel comfortable.',
   },
   {
     src: '/images/trust-gentle.jpg',
     alt: 'A smiling young girl using a stethoscope to listen to her teddy bear',
-    title: 'Clear guidance',
-    body: 'Evidence-based recommendations explained in plain language.',
   },
   {
     src: '/images/trust-playful.jpg',
     alt: 'A happy toddler sitting on a rug, surrounded by a teddy bear, bunny, and stacking toys',
-    title: 'Made for children',
-    body: 'A practical, welcoming environment for children and parents.',
   },
 ];
 ---
@@ -128,13 +120,13 @@ const trustPhotos = [
           </p>
 
           <div class="mt-6 flex flex-wrap justify-center lg:justify-start gap-3">
-            <Button href="/services/" variant="primary">
-              Explore services
+            <Button href="#practice-updates" variant="primary">
+              Get opening updates
               <span class="btn-icon-circle" aria-hidden="true">
                 <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
               </span>
             </Button>
-            <Button href="/contact/" variant="secondary">Get in touch</Button>
+            <Button href="/services/" variant="secondary">Explore pediatric care</Button>
           </div>
         </div>
 
@@ -199,9 +191,9 @@ const trustPhotos = [
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mx-auto text-center mb-14">
         <span class="eyebrow">Planned care</span>
-        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight lg:whitespace-nowrap">Care from infancy through adolescence.</h2>
+        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight">Checkups, sick care, and growing up.</h2>
         <p class="mt-5 tagline-italic-sage text-lg md:text-xl">
-          Planned pediatric services from your baby's first days through young adulthood.
+          Find the care you’re looking for and see what we’re planning.
         </p>
       </div>
 
@@ -268,7 +260,7 @@ const trustPhotos = [
           A calm place for children and parents.
         </h2>
         <p class="mt-6 text-lg text-[var(--color-foreground)]/78 leading-relaxed max-w-2xl mx-auto">
-          The future clinic is being planned so children can feel comfortable and parents have room to ask questions.
+          We’re planning a clinic where children can feel comfortable.
         </p>
       </div>
 
@@ -277,7 +269,7 @@ const trustPhotos = [
         tabindex="0"
         aria-label="Family-centered practice gallery"
       >
-        {trustPhotos.map(({ src, alt, title, body }) => (
+        {trustPhotos.map(({ src, alt }) => (
           <figure class="photo-trust-card card-lift">
             <Picture
               src={src}
@@ -286,13 +278,15 @@ const trustPhotos = [
               height={1005}
               loading="lazy"
             />
-            <figcaption>
-              <h3>{title}</h3>
-              <p>{body}</p>
-            </figcaption>
           </figure>
         ))}
       </div>
+
+      <p class="mt-6 text-center">
+        <a href="/about/" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">
+          Get to know our pediatrician →
+        </a>
+      </p>
 
       <div class="mt-16 overflow-hidden rounded-[2rem] navy-campaign relative p-8 md:p-12">
         <SparkleField count={8} />
@@ -300,10 +294,6 @@ const trustPhotos = [
           <div class="max-w-2xl mx-auto text-center mb-12">
             <span class="eyebrow eyebrow-sun">Our commitment</span>
             <h2 class="mt-5 text-3xl md:text-5xl tracking-tight text-white">The standards we hold ourselves to</h2>
-            <p class="mt-5 text-white/85 leading-relaxed text-lg">
-              As a future practice, we are building around a clear standard of care.
-              These are the standards we plan to bring to patient care after opening.
-            </p>
           </div>
 
           <div class="grid gap-6 md:grid-cols-3">
@@ -331,7 +321,7 @@ const trustPhotos = [
       <div class="max-w-2xl mx-auto text-center mb-12">
         <span class="eyebrow eyebrow-sun">Plan ahead</span>
         <h2 class="mt-5 text-3xl md:text-4xl tracking-tight">
-          Practical details for future Luma families.
+          Before your first visit
         </h2>
       </div>
 
@@ -339,13 +329,13 @@ const trustPhotos = [
         <article class="rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-7 md:p-9">
           <span class="eyebrow eyebrow-sun">Insurance</span>
           <h3 class="mt-5 text-2xl md:text-3xl tracking-tight">
-            Care within reach for every family.
+            Will Luma accept my insurance?
           </h3>
           <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
-            We're completing insurance credentialing now, the full list of accepted plans is coming soon. Self-pay families are welcome across North Texas communities, and we're glad to answer questions in the meantime.
+            Insurance credentialing is in progress. We’ll publish confirmed plans before scheduling opens. Self-pay options are also planned.
           </p>
-          <a href="/contact/" class="mt-6 inline-flex font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
-            Have insurance questions? Get in touch →
+          <a href="/new-patients/#insurance" class="mt-6 inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
+            See insurance and first-visit details →
           </a>
         </article>
 
@@ -413,11 +403,11 @@ const trustPhotos = [
       <div class="campaign-card px-5 py-12 md:p-14">
         <span class="eyebrow eyebrow-sun">Have a question?</span>
         <h2 class="mt-5 text-3xl md:text-5xl tracking-tight" style="font-family: var(--font-display);">
-          We’re here to help your family feel informed, supported, and at ease.
+          Still have a question?
         </h2>
         <StarDivider class="mt-7" span="3rem" />
         <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/78 max-w-2xl mx-auto leading-relaxed">
-          Browse our FAQs for quick answers, or reach out for general information about the future practice.
+          Find answers about insurance, planned hours, and first visits. Contact us for general questions not covered there.
         </p>
         <div class="mt-9 flex flex-wrap justify-center gap-3">
           <Button href="/faq/" variant="primary">

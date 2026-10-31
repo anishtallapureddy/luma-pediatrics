@@ -13,6 +13,7 @@ export interface ServiceItem {
   title: string;
   short: string;
   full: string;
+  nextStep: { href: string; label: string };
   featured?: boolean;
   badge?: string;
 }
@@ -25,7 +26,8 @@ export const services: ServiceItem[] = [
     short:
       'After opening, families may schedule a complimentary visit to see the practice and meet the pediatrician.',
     full:
-      'After opening, Luma plans to offer free, no-pressure Meet & Greet sessions so families can tour the practice, meet the pediatrician, and ask questions before a first appointment.',
+      'Meet the pediatrician, see the office, and ask questions before choosing a practice. Complimentary meet-and-greets are planned after opening; booking is not available yet.',
+    nextStep: { href: '/about/', label: 'Get to know our pediatrician' },
     featured: true,
   },
   {
@@ -33,9 +35,10 @@ export const services: ServiceItem[] = [
     icon: 'lucide:hospital',
     title: 'Newborn Rounds at BSW McKinney',
     short:
-      'Planned in-hospital newborn visits at Baylor Scott & White McKinney.',
+      'Newborn hospital visits at Baylor Scott & White McKinney are planned, subject to hospital arrangements.',
     full:
       'After opening and completion of hospital arrangements, Luma plans to provide newborn rounding at Baylor Scott & White Medical Center in McKinney, supporting the transition from hospital to outpatient pediatric care.',
+    nextStep: { href: '/new-patients/#what-to-bring', label: 'See what to bring after discharge' },
     featured: true,
   },
   {
@@ -46,6 +49,7 @@ export const services: ServiceItem[] = [
       'Feeding support, growth tracking, jaundice screening, and newborn visits.',
     full:
       'Planned newborn visits include breast and bottle-feeding support, growth and weight monitoring, jaundice screening, and time to discuss sleep, crying, and the first weeks at home.',
+    nextStep: { href: '/new-patients/#first-visit', label: 'See what a first visit involves' },
     featured: true,
   },
   {
@@ -56,16 +60,18 @@ export const services: ServiceItem[] = [
       'Routine checkups, developmental screening, and age-specific guidance.',
     full:
       'Planned well-child visits follow the recommended schedule from infancy through adolescence. Visits include a physical exam, developmental and behavioral screening, growth tracking, age-specific guidance, and time for questions.',
+    nextStep: { href: '/new-patients/#first-visit', label: 'Plan your child’s first visit' },
     featured: true,
   },
   {
     slug: 'sick-visits',
     icon: 'lucide:heart',
-    title: 'Sick Visits',
+    title: 'Same-Day Sick Visits',
     short:
       'Planned same-day appointments for fevers, infections, injuries, and the unexpected.',
     full:
-      'After opening, we plan to offer same-day appointments for fevers, coughs, ear pain, stomach bugs, rashes, injuries, and the unexpected.',
+      'After opening, we plan to offer same-day appointments for fevers, coughs, ear pain, stomach bugs, rashes, and injuries. Availability will depend on the day’s appointment capacity.',
+    nextStep: { href: '/faq/#same-day-visits', label: 'Read about same-day availability' },
     featured: true,
   },
   {
@@ -76,6 +82,7 @@ export const services: ServiceItem[] = [
       'Keeping your child protected with recommended vaccines based on the latest AAP guidelines.',
     full:
       'Luma plans to offer the recommended childhood vaccine schedule aligned with AAP guidance. Questions about timing and catch-up schedules will be discussed during visits.',
+    nextStep: { href: '/vaccines/', label: 'View the vaccine schedule' },
     featured: true,
   },
   {
@@ -84,7 +91,8 @@ export const services: ServiceItem[] = [
     title: 'School, Sports & Camp Physicals',
     short: 'Physical exams for school, camp, and athletic clearance.',
     full:
-      'Physical exams for school, summer camp, and athletic clearance. Bring the forms with you and we will take care of the rest during the visit.',
+      'Physical exams are planned for school, summer camp, and athletic clearance. Bring the required forms to your visit so we can review and complete them.',
+    nextStep: { href: '/new-patients/#what-to-bring', label: 'Check what to bring' },
     featured: true,
   },
   {
@@ -94,7 +102,8 @@ export const services: ServiceItem[] = [
     short:
       'ADHD evaluations, behavior support, developmental screening, and specialist referrals when needed.',
     full:
-      'Evaluations and ongoing support for ADHD, learning concerns, and behavioral challenges. Early screening for developmental delays, family-centered guidance, and trusted referrals to specialists when more support is needed.',
+      'Planned care includes evaluations and follow-up for ADHD, learning concerns, and behavioral challenges, along with developmental screening and specialist referrals when needed.',
+    nextStep: { href: '/new-patients/#first-visit', label: 'Learn about a first visit' },
   },
   {
     slug: 'teen-adolescent-health',
@@ -104,6 +113,7 @@ export const services: ServiceItem[] = [
       'Support for the physical, emotional, and mental health of tweens and teens.',
     full:
       'Planned care for tweens and teens includes age-appropriate preventive care, mental health screening, sports medicine, and confidential discussions consistent with applicable law.',
+    nextStep: { href: '/new-patients/#first-visit', label: 'Plan your teen’s first visit' },
     featured: true,
   },
   {
@@ -114,6 +124,7 @@ export const services: ServiceItem[] = [
       'Planned virtual follow-up visits for appropriate established-patient needs.',
     full:
       'After opening, Luma plans to offer secure video follow-ups for appropriate established-patient needs, such as selected medication, result, behavioral, or ADHD check-ins when an in-person exam is not required.',
+    nextStep: { href: '/faq/#telehealth', label: 'Read about planned video visits' },
     featured: true,
   },
 ];

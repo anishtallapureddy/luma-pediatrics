@@ -5,38 +5,64 @@ import AfterHoursCard from '../components/AfterHoursCard.astro';
 import { Icon } from 'astro-icon/components';
 import { SITE } from '../site.config';
 
-const faqs = [
+interface FaqItem {
+  id: string;
+  q: string;
+  a: string;
+  link?: { href: string; label: string };
+}
+
+const saturdayHours = SITE.hours.find(({ day }) => day === 'Saturday');
+const faqs: FaqItem[] = [
   {
+    id: 'opening',
+    q: 'When are you opening?',
+    a: `${SITE.status} in ${SITE.locationShort}. Sign up for opening news and updates about our planned services.`,
+    link: { href: '/#practice-updates', label: 'Get opening updates' },
+  },
+  {
+    id: 'booking',
+    q: 'How do I book an appointment?',
+    a: 'Appointments are not available yet. We will publish scheduling information before the practice opens.',
+    link: { href: '/new-patients/', label: 'Read the first-visit guide' },
+  },
+  {
+    id: 'ages',
     q: 'What ages will you see?',
     a: 'We plan to care for newborns through young adults, typically up to age 21, after the practice opens.',
   },
   {
+    id: 'insurance',
     q: 'Which insurance plans will you accept?',
     a: 'Insurance credentialing is in progress. The confirmed list will be published before scheduling opens.',
+    link: { href: '/new-patients/#insurance', label: 'Check insurance status' },
   },
   {
+    id: 'same-day-visits',
     q: 'Do you offer same-day sick visits?',
     a: 'After opening, we plan to offer same-day sick visits whenever capacity allows. Scheduling details will be published before appointments open.',
   },
   {
+    id: 'telehealth',
     q: 'Do you offer telehealth / virtual visits?',
     a: 'After opening, we plan to offer secure telehealth follow-ups for appropriate established-patient needs when an in-person exam is not required.',
   },
+  ...(saturdayHours ? [{
+    id: 'saturday-hours',
+    q: 'Will you be open on Saturdays?',
+    a: `Saturday hours are planned for ${saturdayHours.time} after opening. Appointments are not available yet.`,
+    link: { href: '/contact/#planned-hours', label: 'View planned office hours' },
+  }] : []),
   {
-    q: 'How do I book an appointment?',
-    a: `${SITE.status} in McKinney. We are not scheduling appointments yet. Join the independent email updates list for general opening news.`,
-  },
-  {
+    id: 'first-visit',
     q: 'What should I bring to a first visit?',
     a: 'Bring a photo ID, your insurance card, your child\'s immunization records (if available), and any forms that need to be signed. For newborns, bring the discharge paperwork from the hospital.',
+    link: { href: '/new-patients/#what-to-bring', label: 'See the first-visit checklist' },
   },
   {
+    id: 'physicals',
     q: 'Do you do school, sports, and camp physicals?',
     a: 'After opening, we plan to offer school, sports, and camp physicals as part of appropriate well-child care.',
-  },
-  {
-    q: 'When are you opening?',
-    a: `${SITE.status} in ${SITE.locationShort}. Join the email updates list for general opening news.`,
   },
 ];
 
@@ -65,10 +91,10 @@ const faqJsonLd = {
     <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
       <span class="eyebrow">FAQ</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
-        Common questions
+        Questions before choosing Luma
       </h1>
       <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
-        About the future practice
+        Opening, insurance, appointments, and what to expect.
       </p>
       <p class="mt-7 text-lg text-[var(--color-foreground)]/80 leading-relaxed">
         Don't see your question here? <a href="/contact/">Contact us</a> for general information.
@@ -79,14 +105,16 @@ const faqJsonLd = {
   <section class="pb-20 md:pb-28 reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={8} />
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="mb-10">
+      <div id="after-hours" class="mb-10 scroll-mt-32">
         <AfterHoursCard />
       </div>
 
       <div class="space-y-3">
-        {faqs.map(({ q, a }, idx) => (
+        {faqs.map(({ id, q, a, link }, idx) => (
           <details
-            class="group card-lift rounded-[var(--radius-card)] bg-[var(--color-card)] open:bg-[var(--color-card)] [&[open]_.faq-chevron]:rotate-180"
+            id={id}
+            data-faq-answer
+            class="group card-lift scroll-mt-32 rounded-[var(--radius-card)] bg-[var(--color-card)] open:bg-[var(--color-card)] [&[open]_.faq-chevron]:rotate-180"
             open={idx === 0}
           >
             <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
@@ -100,10 +128,23 @@ const faqJsonLd = {
             </summary>
             <div class="px-6 pb-6 text-[var(--color-foreground)]/85 leading-relaxed">
               <p>{a}</p>
+              {link && (
+                <a href={link.href} class="mt-3 inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">{link.label}</a>
+              )}
             </div>
           </details>
         ))}
       </div>
     </div>
   </section>
+  <script>
+    const openLinkedAnswer = () => {
+      const answer = document.getElementById(window.location.hash.slice(1));
+      if (answer instanceof HTMLDetailsElement && answer.matches('[data-faq-answer]')) {
+        answer.open = true;
+      }
+    };
+    openLinkedAnswer();
+    window.addEventListener('hashchange', openLinkedAnswer);
+  </script>
 </BaseLayout>
