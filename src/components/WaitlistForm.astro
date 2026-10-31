@@ -19,10 +19,10 @@ const { variant = 'inline', title, blurb } = Astro.props;
  */
 const endpoint = (SITE.forms.waitlistEndpoint ?? '').trim();
 
-const headline = title ?? 'Stay Updated on Luma';
+const headline = title ?? 'Get opening updates';
 const intro =
   blurb ??
-  `${SITE.name} — ${SITE.status}. Sign up to receive occasional email updates about our planned opening and general services.`;
+  `${SITE.status} in ${SITE.address.city}. Sign up for opening news and occasional updates about our planned services.`;
 
 const isHero = variant === 'hero';
 const inputClass =

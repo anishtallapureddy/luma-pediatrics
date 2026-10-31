@@ -367,20 +367,21 @@ expect(
 for (const value of [
   'Board-certified',
   'A calm place for children and parents.',
-  'Family centered',
-  'Kid-friendly visits',
-  'Clear guidance',
-  'Made for children',
   'The standards we hold ourselves to',
 ]) {
   expect(homeText.includes(value), `Home page is missing restored content: ${value}`);
 }
+expect(
+  !homeText.includes('Made for children') &&
+    home.html.includes('Get to know our pediatrician'),
+  'Home should remove repetitive gallery captions and connect parents to the pediatrician',
+);
 for (const service of [
   'Free Meet & Greet',
   'Newborn Rounds at BSW McKinney',
   'Newborn Care',
   'Well-Child Visits',
-  'Sick Visits',
+  'Same-Day Sick Visits',
   'Vaccinations',
   'School, Sports & Camp Physicals',
   'Teen & Adolescent Health',
@@ -456,8 +457,8 @@ expect(
 );
 for (const value of [
   'Why Luma',
-  'Practical details for future Luma families.',
-  'Stay Updated on Luma',
+  'Before your first visit',
+  'Get opening updates',
 ]) {
   expect(homeText.includes(value), `Home page is missing restructured content: ${value}`);
 }
@@ -665,7 +666,7 @@ for (const value of [
   'Parents Are Partners',
   'Care Should Be Accessible',
   'We Make Healthcare Easier',
-  'Learn more about our future practice',
+  'See the care we’re planning',
 ]) {
   expect(aboutText.includes(value), `About page is missing restructured content: ${value}`);
 }
@@ -701,6 +702,17 @@ expect(
   normalizedText(newPatientsPage.html).includes('Leave with a clear plan'),
   'New Patients page must use the distinct fourth-step title',
 );
+const firstVisitSteps = [...newPatientsPage.html.matchAll(/<li\b[^>]*class="[^"]*walkthrough-step[^"]*"[^>]*>([\s\S]*?)<\/li>/g)];
+expect(
+  firstVisitSteps.length === 4 &&
+    normalizedText(firstVisitSteps[0][1]).includes('Schedule when appointments open') &&
+    !firstVisitSteps.some((step) => normalizedText(step[1]).includes('Get opening updates')),
+  'Opening-news signup must not be a prerequisite in the first-visit walkthrough',
+);
+expect(
+  newPatientsPage.html.includes('href="/blog/newborn-first-week/"'),
+  'Expecting parents should be able to find the existing newborn guide',
+);
 
 const blogIndex = pages.find((page) => page.canonical === `${domain}/blog/`);
 expect(blogIndex, 'Blog index was not generated');
@@ -714,11 +726,9 @@ expect(
 );
 expect(
   normalizedText(blogIndex.html).includes(
-    articlePages.length === 1
-      ? 'Start with our current physician-reviewed guide.'
-      : 'Articles on fevers, sleep, newborn care, vaccines, and when to contact a healthcare provider.',
+    'Start with our published guides below.',
   ),
-  'Blog index intro must accurately describe the number of published guides',
+  'Blog index intro must describe the available guides without promising unpublished topics',
 );
 expect(
   articlePages.length === 1
@@ -1206,7 +1216,45 @@ for (const slug of serviceSlugs) {
     servicesHtml.includes(`id="${slug}"`),
     `Services page is missing deep-link target: ${slug}`,
   );
+  const card = [...servicesHtml.matchAll(/<article\b[^>]*id="([^"]+)"[^>]*>([\s\S]*?)<\/article>/g)]
+    .find((match) => match[1] === slug);
+  expect(card, `Services page is missing the ${slug} service card`);
+  const nextSteps = findTags(card[2], 'a');
+  expect(nextSteps.length === 1, `${slug}: each service needs one clear next step`);
+  expect(
+    nextSteps[0].href.startsWith('/') && !nextSteps[0].href.startsWith('//'),
+    `${slug}: next step must lead to a Luma page, not an unconfigured booking service`,
+  );
 }
+for (const [path, id] of [
+  ['/new-patients/', 'first-visit'],
+  ['/new-patients/', 'what-to-bring'],
+  ['/new-patients/', 'insurance'],
+  ['/contact/', 'planned-hours'],
+  ['/faq/', 'same-day-visits'],
+  ['/faq/', 'telehealth'],
+  ['/faq/', 'after-hours'],
+]) {
+  const target = pages.find((page) => page.canonical === `${domain}${path}`);
+  expect(target?.html.includes(`id="${id}"`), `Parent guidance link has no target: ${path}#${id}`);
+  expect(
+    [...target.html.matchAll(new RegExp(`\\bid="${id}"`, 'g'))].length === 1,
+    `Parent guidance target must be unique: ${path}#${id}`,
+  );
+  expect(
+    servicesHtml.includes(`href="${path}#${id}"`),
+    `Services page must make parent guidance discoverable: ${path}#${id}`,
+  );
+}
+const faqPage = pages.find((page) => page.canonical === `${domain}/faq/`);
+expect(
+  normalizedText(faqPage.html).includes('Saturday hours are planned for 8:30 am – 12:30 pm after opening.'),
+  'FAQ must describe Saturday hours as planned, not currently available',
+);
+expect(
+  findTags(home.html, 'a').some((attributes) => attributes.href === '/new-patients/#insurance'),
+  'Home insurance question must link directly to insurance status',
+);
 const globalCss = readFileSync(join(root, 'src', 'styles', 'global.css'), 'utf8');
 const pageDecorSource = readFileSync(
   join(root, 'src', 'components', 'PageDecor.astro'),
@@ -1309,11 +1357,34 @@ expect(
   'Home section navigation must use a neutral surface below the sage ribbon',
 );
 expect(
-  homeText.includes('Text us') &&
+  homeText.includes('Text office') &&
     home.html.includes(`href="${contract.smsHref}"`) &&
+    homeText.includes('General questions only. No medical advice.') &&
     !homeText.includes('Texting info'),
-  'Header and mobile quick actions must provide direct, equally labeled texting access',
+  'Header and mobile quick actions must preserve direct texting with a visible general-information boundary',
 );
+for (const page of articlePages) {
+  expect(
+    page.html.includes('href="/resources/"') &&
+      normalizedText(page.html).includes('More parent resources'),
+    `${page.fileLabel}: article navigation must lead to relevant resources`,
+  );
+}
+for (const label of [
+  'Acetaminophen dosing chart',
+  'Ibuprofen dosing chart',
+  'Diphenhydramine dosing chart',
+]) {
+  expect(
+    findTags(dosingHtml, 'div').some(
+      (attributes) =>
+        attributes.role === 'region' &&
+        attributes['aria-label'] === label &&
+        attributes.tabindex === '0',
+    ),
+    `Dosing chart must provide a named keyboard-accessible scroll region: ${label}`,
+  );
+}
 
 console.log(
   `SEO verification passed for ${pages.length} canonical pages and ${sitemapUrls.size} sitemap URLs.`,

@@ -124,7 +124,8 @@ const referencesChecked = 'October 30, 2026';
       the same product since 2011, no separate "infant drops" anymore).
     </p>
 
-    <div class="mt-6 overflow-x-auto rounded-xl border border-[rgba(11,29,58,0.10)]">
+    <p class="mt-5 text-xs text-[var(--color-muted-foreground)] sm:hidden">Swipe or scroll sideways to see every column.</p>
+    <div class="mt-2 sm:mt-6 overflow-x-auto rounded-xl border border-[rgba(11,29,58,0.10)]" role="region" aria-label="Acetaminophen dosing chart" tabindex="0">
       <table class="w-full text-sm dosing-table">
         <thead>
           <tr>
@@ -167,7 +168,8 @@ const referencesChecked = 'October 30, 2026';
       <strong>children's suspension 100 mg/5 mL</strong>.
     </p>
 
-    <div class="mt-6 overflow-x-auto rounded-xl border border-[rgba(11,29,58,0.10)]">
+    <p class="mt-5 text-xs text-[var(--color-muted-foreground)] sm:hidden">Swipe or scroll sideways to see every column.</p>
+    <div class="mt-2 sm:mt-6 overflow-x-auto rounded-xl border border-[rgba(11,29,58,0.10)]" role="region" aria-label="Ibuprofen dosing chart" tabindex="0">
       <table class="w-full text-sm dosing-table">
         <thead>
           <tr>
@@ -212,7 +214,8 @@ const referencesChecked = 'October 30, 2026';
       <strong>12.5 mg per 5 mL</strong>.
     </p>
 
-    <div class="mt-6 overflow-x-auto rounded-xl border border-[rgba(11,29,58,0.10)]">
+    <p class="mt-5 text-xs text-[var(--color-muted-foreground)] sm:hidden">Swipe or scroll sideways to see every column.</p>
+    <div class="mt-2 sm:mt-6 overflow-x-auto rounded-xl border border-[rgba(11,29,58,0.10)]" role="region" aria-label="Diphenhydramine dosing chart" tabindex="0">
       <table class="w-full text-sm dosing-table">
         <thead>
           <tr>
@@ -308,6 +311,20 @@ const referencesChecked = 'October 30, 2026';
     color: var(--color-muted-foreground);
     font-size: 0.75rem;
     font-weight: 400;
+  }
+  @media screen and (max-width: 639px) {
+    .dosing-table th,
+    .dosing-table td {
+      min-width: 150px;
+    }
+    .dosing-table th:first-child,
+    .dosing-table td:first-child {
+      min-width: 110px;
+    }
+    .dosing-table th:nth-child(2),
+    .dosing-table td:nth-child(2) {
+      min-width: 90px;
+    }
   }
   @media print {
     .dosing-table { font-size: 11pt; }

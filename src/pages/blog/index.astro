@@ -10,9 +10,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
 const description =
   'Physician-reviewed pediatric information and parent guides from Luma Pediatrics in McKinney, Texas.';
-const intro = posts.length === 1
-  ? 'Start with our current physician-reviewed guide. Additional articles on fevers, sleep, newborn care, and common parent questions are in development.'
-  : 'Articles on fevers, sleep, newborn care, vaccines, and when to contact a healthcare provider.';
+const intro = 'Start with our published guides below.';
 ---
 <BaseLayout
   title="Blog & Parent Guides"

@@ -93,7 +93,7 @@ const faqSchema = {
       </span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
         {city.slug === 'mckinney'
-          ? 'A future pediatric home in McKinney'
+          ? 'Pediatrician in McKinney'
           : `A future pediatric option for ${city.name} families`}
       </h1>
       <p class="mt-6 text-lg md:text-xl text-[var(--color-foreground)]/80 max-w-2xl mx-auto">
@@ -107,7 +107,7 @@ const faqSchema = {
       )}
       <div class="mt-8 flex flex-wrap justify-center gap-3">
         <Button href="#practice-updates" variant="primary">
-          Get Luma updates
+          Get opening updates
         </Button>
         <Button href="/about/" variant="secondary">About Luma</Button>
       </div>
@@ -119,19 +119,15 @@ const faqSchema = {
     <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.85fr)] lg:items-start">
       <div>
         <h2 class="text-2xl md:text-3xl font-display text-[var(--color-foreground)] mb-4">
-          Built for the {city.name} community
+          Before choosing Luma
         </h2>
-        <p class="text-[var(--color-foreground)]/80 mb-6 leading-relaxed">{city.whyLuma}</p>
-        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--color-muted-foreground)] mb-3">
-          Familiar places near {city.name}
+        <p class="text-[var(--color-foreground)]/80 leading-relaxed">
+          Get to know our pediatrician and explore our planned care. Insurance plans will be published once confirmed.
         </p>
-        <ul class="flex flex-wrap gap-2">
-          {city.landmarks.map((lm) => (
-            <li class="px-3 py-1.5 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] text-sm">
-              {lm}
-            </li>
-          ))}
-        </ul>
+        <div class="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+          <a href="/about/" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">About our pediatrician</a>
+          <a href="/new-patients/#insurance" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Insurance status</a>
+        </div>
       </div>
 
       <aside class="rounded-[var(--radius-card)] bg-[var(--color-card)] border border-[var(--color-border-soft)] p-6 shadow-[var(--shadow-soft)]">
@@ -174,6 +170,9 @@ const faqSchema = {
         >
           <Icon name="lucide:map-pin" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
           Get directions
+        </a>
+        <a href="/contact/#planned-hours" class="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-[var(--color-primary)] underline underline-offset-4">
+          See planned hours, including Saturdays
         </a>
       </aside>
     </div>
