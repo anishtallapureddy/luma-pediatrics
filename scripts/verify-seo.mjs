@@ -366,8 +366,10 @@ expect(
 );
 for (const value of [
   'Board-certified',
-  'A calm place for children and parents.',
-  'The standards we hold ourselves to',
+  'Why consider Luma?',
+  'One board-certified pediatrician',
+  'Newborns through young adults',
+  'Saturday mornings planned',
 ]) {
   expect(homeText.includes(value), `Home page is missing restored content: ${value}`);
 }
@@ -1247,6 +1249,37 @@ for (const [path, id] of [
   );
 }
 const faqPage = pages.find((page) => page.canonical === `${domain}/faq/`);
+const faqSchema = jsonLdObjects(faqPage.html, faqPage.fileLabel)
+  .find((value) => hasType(value['@type'], 'FAQPage'));
+const renderedFaqs = [...faqPage.html.matchAll(/<details\b[^>]*data-faq-answer[^>]*>([\s\S]*?)<\/details>/g)]
+  .map((match) => ({
+    question: normalizedText(match[1].match(/<h2\b[^>]*>[\s\S]*?<\/h2>/)?.[0] ?? ''),
+    answer: normalizedText(match[1].match(/<p\b[^>]*>[\s\S]*?<\/p>/)?.[0] ?? ''),
+  }));
+expect(
+  Array.isArray(faqSchema?.mainEntity) &&
+    faqSchema.mainEntity.length === renderedFaqs.length &&
+    new Set(renderedFaqs.map(({ question }) => question)).size === renderedFaqs.length,
+  'FAQ schema must include each visible question once, without duplicates',
+);
+for (const { question, answer } of renderedFaqs) {
+  expect(
+    faqSchema.mainEntity.some(
+      (entry) => entry.name === question && entry.acceptedAnswer?.text === answer,
+    ),
+    `FAQ structured answer must match visible copy: ${question}`,
+  );
+}
+expect(
+  renderedFaqs.find(({ question }) => question === 'Is Luma open on Saturdays?')
+    ?.answer.startsWith('Not yet.'),
+  'Saturday FAQ must not imply the practice is already open',
+);
+expect(
+  renderedFaqs.find(({ question }) => question === 'Will Luma see my newborn in the hospital?')
+    ?.answer.includes('after opening and completion of hospital arrangements'),
+  'Hospital newborn FAQ must preserve both opening and hospital-arrangement conditions',
+);
 expect(
   normalizedText(faqPage.html).includes('Saturday hours are planned for 8:30 am – 12:30 pm after opening.'),
   'FAQ must describe Saturday hours as planned, not currently available',

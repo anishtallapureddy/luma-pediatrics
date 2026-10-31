@@ -9,22 +9,25 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 import { featuredServices as services } from '../data/services';
 import Picture from '../components/Picture.astro';
 
-const promises = [
+const saturdayHours = SITE.hours.find(({ day }) => day === 'Saturday');
+const practiceFacts = [
   {
-    icon: 'lucide:clock',
-    title: 'Time for questions',
-    body: 'Appointments will be planned with enough time to listen, explain options, and agree on next steps.',
+    icon: 'lucide:award',
+    title: 'One board-certified pediatrician',
+    body: SITE.showProviderProfile
+      ? `${SITE.provider.name} Board certified by the American Board of Pediatrics.`
+      : 'Planned care with the same pediatrician, from routine checkups to follow-up visits.',
   },
   {
-    icon: 'lucide:users',
-    title: 'Continuity of care',
-    body: 'Families will see the same pediatrician and build a consistent relationship over time.',
+    icon: 'lucide:baby',
+    title: 'Newborns through young adults',
+    body: 'Care is planned from birth through young adulthood, typically up to age 21.',
   },
-  {
-    icon: 'lucide:heart',
-    title: 'Partnership with parents',
-    body: 'Parents bring essential knowledge of their child. We provide clear medical guidance and make decisions together.',
-  },
+  ...(saturdayHours ? [{
+    icon: 'lucide:calendar',
+    title: 'Saturday mornings planned',
+    body: `${saturdayHours.time} after opening. Appointments are not available yet.`,
+  }] : []),
 ];
 
 const serviceGroups = [
@@ -257,10 +260,10 @@ const trustPhotos = [
       <div class="max-w-3xl mx-auto text-center mb-12">
         <span class="eyebrow eyebrow-sun">Why Luma</span>
         <h2 class="mt-5 text-4xl md:text-6xl tracking-tight">
-          A calm place for children and parents.
+          Why consider Luma?
         </h2>
         <p class="mt-6 text-lg text-[var(--color-foreground)]/78 leading-relaxed max-w-2xl mx-auto">
-          We’re planning a clinic where children can feel comfortable.
+          A physician-led pediatric practice planned for McKinney, Texas.
         </p>
       </div>
 
@@ -291,13 +294,8 @@ const trustPhotos = [
       <div class="mt-16 overflow-hidden rounded-[2rem] navy-campaign relative p-8 md:p-12">
         <SparkleField count={8} />
         <div class="relative">
-          <div class="max-w-2xl mx-auto text-center mb-12">
-            <span class="eyebrow eyebrow-sun">Our commitment</span>
-            <h2 class="mt-5 text-3xl md:text-5xl tracking-tight text-white">The standards we hold ourselves to</h2>
-          </div>
-
           <div class="grid gap-6 md:grid-cols-3">
-            {promises.map(({ icon, title, body }) => (
+            {practiceFacts.map(({ icon, title, body }) => (
               <article class="card-lift navy-card rounded-[var(--radius-card)] p-8">
                 <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/15 text-[var(--color-sun)] mb-5" aria-hidden="true">
                   <Icon name={icon} class="w-6 h-6" stroke-width="1.6" />
