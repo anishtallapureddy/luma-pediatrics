@@ -27,8 +27,9 @@ Once deployed, paste the Web App URL into
    - **Description:** `Practice updates collector`
    - **Execute as:** **Me** (your Google account).
    - **Who has access:** **Anyone**. *(Required so the public website can post
-     to it. The URL is unguessable and the script only ever appends rows — it
-     never reads or returns your data.)*
+     to it. This endpoint is public, not a secret or authentication boundary.
+     The collector accepts only the approved marketing fields and never returns
+     signup data. Keep the spreadsheet private and limit editor access.)*
    - Click **Deploy**, then **Authorize access** and approve the permissions
      (you may see an "unverified app" screen — click **Advanced → Go to
      &lt;project&gt; (unsafe)**; it's your own script).
