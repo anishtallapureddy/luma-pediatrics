@@ -110,6 +110,7 @@ export const SITE = {
     phoneHref: 'tel:+14692001151',
     smsHref: 'sms:+14692001151',
     smsDisclosureHref: '/contact/#sms-disclosure',
+    textingNote: 'Prefer to message? Text us with nonurgent questions. Replies are not immediate; do not send medical information.',
     email: 'hello@lumapediatrics.com',
     emailHref: 'mailto:hello@lumapediatrics.com',
   },

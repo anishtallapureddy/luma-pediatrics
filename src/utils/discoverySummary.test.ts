@@ -36,7 +36,7 @@ test('insurance summary includes major insurers, additional plans, and plan-spec
   assert(text.includes('Curative; Coventry / First Health (PPO)'));
   assert(text.includes('6 Degrees – Fort Worth Firefighters; QuikTrip (Open Access)'));
   assert(text.includes('Participation varies by specific plan and network.'));
-  assert(text.includes('office at (555) 010-0100 to verify coverage before your appointment.'));
+  assert(text.includes('Call or text our office at (555) 010-0100 to verify coverage before your appointment.'));
   assert(!/Medicaid|Molina|Superior Health Plan|Community Medicaid/i.test(text));
 });
 
@@ -56,7 +56,17 @@ test('self-pay summary shows public visit fees and separate costs, not a billing
   assert(text.includes('These fees apply to visits after the practice opens.'));
   assert(text.includes('Tests, screenings, vaccines, procedures, and applicable add-on charges are billed separately.'));
   assert(text.includes(`${SITE.domain}/new-patients/#self-pay`));
+  assert(text.includes(`Call or text ${SITE.contact.phone} for an estimate before your visit.`));
   assert(!/\bCPT\b|\bHCPCS\b|\bTVFC\b|\.xlsx\b/i.test(text));
+});
+
+test('contact choices include asynchronous texting without changing urgent-care boundaries', () => {
+  const text = renderDiscoverySummary(SITE);
+  assert(text.includes('(call or text for general questions)'));
+  assert(text.includes(SITE.contact.textingNote));
+  assert(text.includes('Replies are not immediate; do not send medical information.'));
+  assert(text.includes("Contact your child's current healthcare provider. For a medical emergency, call 911"));
+  assert(!text.includes('call or text 911'));
 });
 
 test('changed business facts and hours propagate without editing a second summary', () => {

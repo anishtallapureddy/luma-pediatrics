@@ -310,6 +310,12 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
   expect(webPage.isPartOf?.['@id'] === website['@id'], `${fileLabel}: WebPage is not linked to WebSite`);
 
   const text = normalizedText(html);
+  expect(
+    html.includes(`href="${SITE.contact.phoneHref}"`) &&
+      html.includes(`href="${SITE.contact.smsHref}"`) &&
+      text.includes(SITE.contact.textingNote),
+    `${fileLabel}: call and text choices must retain nonurgent, asynchronous messaging guidance`,
+  );
   for (const value of [
     contract.name,
     contract.address,
@@ -1348,6 +1354,8 @@ for (const name of additionalInsurancePlans) {
 expect(
   normalizedText(insuranceSection).includes(insuranceCoverageNote) &&
     insuranceSection.includes(`href="tel:${contract.phoneE164}"`) &&
+    insuranceSection.includes(`href="${contract.smsHref}"`) &&
+    normalizedText(insuranceSection).includes(`Call or text ${contract.phone}`) &&
     normalizedText(insuranceSection).includes('to verify coverage before your visit.'),
   'Insurance must retain plan-specific coverage verification and the office telephone link',
 );
@@ -1375,7 +1383,10 @@ expect(
   normalizedText(selfPaySection).includes(selfPayPricing.visitFeeNote) &&
     normalizedText(selfPaySection).includes(selfPayPricing.additionalCharges) &&
     normalizedText(selfPaySection).includes('after our practice opens') &&
-    selfPaySection.includes(`href="tel:${contract.phoneE164}"`),
+    selfPaySection.includes(`href="tel:${contract.phoneE164}"`) &&
+    selfPaySection.includes(`href="${contract.smsHref}"`) &&
+    normalizedText(selfPaySection).includes(`Call or text ${contract.phone} for an estimate before your visit.`) &&
+    normalizedText(selfPaySection).includes(SITE.contact.textingNote),
   'Self-pay must explain separate charges, pre-opening availability, and how to request an estimate',
 );
 const selfPayFaq = readFileSync(join(dist, 'faq', 'index.html'), 'utf8');
