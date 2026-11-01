@@ -25,7 +25,7 @@ interface DiscoverySite {
     region: string;
     postalCode: string;
   };
-  contact: { phone: string; email: string };
+  contact: { phone: string; email: string; textingNote: string };
   schema: { publishOpeningHours: boolean };
   hours: ReadonlyArray<{ day: string; time: string }>;
   areasServed: readonly string[];
@@ -77,7 +77,8 @@ export function renderDiscoverySummary(site: DiscoverySite) {
       ...(languages ? [`- **Languages:** ${languages.value}`] : []),
     ] : []),
     `- **Address:** ${site.address.street}, ${site.address.city}, ${site.address.region} ${site.address.postalCode}`,
-    `- **Phone:** ${site.contact.phone}`,
+    `- **Phone:** ${site.contact.phone} (call or text for general questions)`,
+    `- **Texting:** ${site.contact.textingNote}`,
     `- **Email:** ${site.contact.email}`,
     `- **Website:** ${link('/')}`,
     `- **Status:** ${site.status}`,
@@ -100,14 +101,14 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     '',
     `- **Major Insurance Plans Accepted:** ${insurancePlans.map(({ name }) => name).join('; ')}.`,
     `- **Additional Commercial Networks & Plans:** ${additionalInsurancePlans.join('; ')}.`,
-    `${site.name} accepts a variety of commercial insurance plans. ${insuranceCoverageNote} Please contact our office at ${site.contact.phone} to verify coverage before your appointment.`,
+    `${site.name} accepts a variety of commercial insurance plans. ${insuranceCoverageNote} Call or text our office at ${site.contact.phone} to verify coverage before your appointment.`,
     '',
     '## Self-pay',
     '',
     'These fees apply to visits after the practice opens.',
     ...selfPayServices.map(({ name, price, detail }) => `- **${name}:** ${price}. ${detail}`),
     `${selfPayPricing.visitFeeNote} ${selfPayPricing.additionalCharges}`,
-    `Contact our office at ${site.contact.phone} for an estimate before your visit. See [self-pay pricing](${link('/new-patients/#self-pay')}).`,
+    `Call or text ${site.contact.phone} for an estimate before your visit. See [self-pay pricing](${link('/new-patients/#self-pay')}).`,
     '',
     '## Planned services',
     '',

@@ -13,7 +13,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 <BaseLayout
   title="Contact Luma Pediatrics | McKinney, TX"
   path="/contact"
-  description={`General contact information, future location, and planned office hours for ${SITE.name} in McKinney, TX. ${SITE.status}.`}
+  description={`Call or text ${SITE.name} in McKinney, TX for general questions, insurance verification, and self-pay estimates. ${SITE.status}.`}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'Contact', path: '/contact' },
@@ -25,7 +25,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
       <span class="eyebrow">Contact</span>
       <h1 class="contact-hero-title mt-5 text-4xl md:text-5xl tracking-tight">Get in touch.</h1>
       <p class="mt-6 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-xl mx-auto">
-        Call, text, or email with general questions about planned services, our future McKinney location, or opening updates.
+        Call or text for general questions, insurance verification, or a self-pay estimate. You can also email us.
       </p>
     </div>
   </section>
@@ -84,6 +84,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
         </a>
       </div>
 
+      <p class="mt-4 text-sm text-[var(--color-muted-foreground)] leading-relaxed">{SITE.contact.textingNote}</p>
       <div class="contact-notes">
         <p class="contact-medical-note">
           <Icon name="lucide:shield-check" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />

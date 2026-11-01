@@ -120,9 +120,9 @@ const topics = [
         : 'Start with the first-visit guide for records, insurance information, and how to prepare.'}</p>
       <div class="service-actions mt-6">
         <Button href={primary.href}>{primary.label}</Button>
-        <Button href={primary.enabled ? SITE.contact.phoneHref : '/contact/'} variant="secondary">{primary.enabled ? 'Call Our Office' : 'Contact Our Office'}</Button>
+        <Button href="/contact/" variant="secondary">Call or Text Our Office</Button>
       </div>
-      <p class="mt-4">Office: {SITE.contact.phone}</p>
+      <p class="mt-4">Call or text {SITE.contact.phone} with general questions about the practice.</p>
     </div>
   </section>
 </ServicePageLayout>

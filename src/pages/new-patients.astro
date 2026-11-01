@@ -171,8 +171,10 @@ const bringList = [
         </ul>
 
         <p class="mt-6 text-[var(--color-foreground)]/85 leading-relaxed">
-          {insuranceCoverageNote} Call{' '}
-          <a href={`tel:${SITE.contact.phoneE164}`} class="font-semibold text-[var(--color-primary)] underline underline-offset-4">{SITE.contact.phone}</a>{' '}
+          {insuranceCoverageNote}{' '}
+          <a href={SITE.contact.phoneHref} class="font-semibold text-[var(--color-primary)] underline underline-offset-4">Call</a>{' or '}
+          <a href={SITE.contact.smsHref} class="font-semibold text-[var(--color-primary)] underline underline-offset-4">text</a>{' '}
+          {SITE.contact.phone}{' '}
           to verify coverage before your visit.
         </p>
       </div>
@@ -206,10 +208,12 @@ const bringList = [
           {selfPayPricing.visitFeeNote}{' '}{selfPayPricing.additionalCharges}
         </p>
         <p class="mt-3 text-[var(--color-foreground)]/85 leading-relaxed">
-          Call{' '}
-          <a href={`tel:${SITE.contact.phoneE164}`} class="font-semibold text-[var(--color-primary)] underline underline-offset-4">{SITE.contact.phone}</a>{' '}
+          <a href={SITE.contact.phoneHref} class="font-semibold text-[var(--color-primary)] underline underline-offset-4">Call</a>{' or '}
+          <a href={SITE.contact.smsHref} class="font-semibold text-[var(--color-primary)] underline underline-offset-4">text</a>{' '}
+          {SITE.contact.phone}{' '}
           for an estimate before your visit.
         </p>
+        <p class="mt-3 text-sm text-[var(--color-foreground)]/80 leading-relaxed">{SITE.contact.textingNote}</p>
       </div>
     </div>
   </section>

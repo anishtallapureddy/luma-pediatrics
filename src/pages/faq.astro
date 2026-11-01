@@ -63,14 +63,20 @@ const faqs: FaqItem[] = [
   {
     id: 'insurance',
     q: 'Which insurance plans will you accept?',
-    a: `${SITE.name} accepts commercial plans from ${insurancePlans.map(({ name }) => name).join(', ')}, with additional commercial networks and employer plans listed on our New Patients page. ${insuranceCoverageNote} Contact our office at ${SITE.contact.phone} to verify coverage before your appointment.`,
+    a: `${SITE.name} accepts commercial plans from ${insurancePlans.map(({ name }) => name).join(', ')}, with additional commercial networks and employer plans listed on our New Patients page. ${insuranceCoverageNote} Call or text our office at ${SITE.contact.phone} to verify coverage before your appointment.`,
     link: { href: '/new-patients/#insurance', label: 'See the accepted insurance list' },
   },
   {
     id: 'self-pay',
     q: 'Will Luma see self-pay patients?',
-    a: `Self-pay care is planned after opening. A sick or well-child office visit is ${selfPayPricing.officeVisit}, and a standalone sports physical is ${selfPayPricing.sportsPhysical}. These are visit fees only. ${selfPayPricing.additionalCharges} ${medicalScheduling.enabled ? 'Booking is available for selected medical visits; confirm fees before booking.' : 'Appointments are not available yet.'}`,
+    a: `Self-pay care is planned after opening. A sick or well-child office visit is ${selfPayPricing.officeVisit}, and a standalone sports physical is ${selfPayPricing.sportsPhysical}. These are visit fees only. ${selfPayPricing.additionalCharges} Call or text ${SITE.contact.phone} for an estimate before your visit. ${medicalScheduling.enabled ? 'Booking is available for selected medical visits; confirm fees before booking.' : 'Appointments are not available yet.'}`,
     link: { href: '/new-patients/#self-pay', label: 'See self-pay pricing' },
+  },
+  {
+    id: 'texting',
+    q: 'Can I text the office instead of calling?',
+    a: `Yes. Call or text ${SITE.contact.phone} for general questions, insurance verification, or self-pay estimates. ${SITE.contact.textingNote} Texting does not book an appointment or establish care. For current medical concerns, contact your existing healthcare provider; for an emergency, call 911.`,
+    link: { href: '/contact/', label: 'Choose call, text, or email' },
   },
   {
     id: 'same-day-visits',
@@ -161,7 +167,7 @@ const faqJsonLd = {
         Opening, insurance, appointments, and what to expect.
       </p>
       <p class="mt-7 text-lg text-[var(--color-foreground)]/80 leading-relaxed">
-        Don't see your question here? <a href="/contact/">Contact us</a> for general information.
+        Don't see your question here? <a href="/contact/">Call or text us</a> for general information.
       </p>
     </div>
   </section>
