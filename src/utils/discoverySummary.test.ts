@@ -25,6 +25,17 @@ test('provider privacy applies to the AI-facing summary as well as HTML', () => 
   assert(text.includes(SITE.address.street));
 });
 
+test('public summary does not announce internal opening or scheduling targets', () => {
+  const text = renderDiscoverySummary(SITE);
+  assert(text.includes(`**Status:** ${SITE.status}`));
+  assert(text.includes('Scheduling details will be shared closer to opening.'));
+  for (const target of [SITE.openingTargetDate, SITE.newbornScheduling.plannedLaunchDate, SITE.wellChildScheduling.plannedLaunchDate]) {
+    assert(!text.includes(target));
+  }
+  assert(!text.includes('Target launch:'));
+  assert(!text.includes('**Opening target:**'));
+});
+
 test('insurance summary includes major insurers, additional plans, and plan-specific verification', () => {
   const text = renderDiscoverySummary({
     ...SITE,

@@ -30,7 +30,7 @@ const isActive = (href: string) => {
 };
 ---
 <header
-  class="sticky top-0 z-40 bg-[var(--color-background)]/88 border-b border-[rgba(200, 153, 90,0.10)] [transition:box-shadow_var(--duration-base)_var(--ease-fluid),border-color_var(--duration-base)_var(--ease-fluid),backdrop-filter_var(--duration-base)_var(--ease-fluid)]"
+  class="sticky top-0 z-40 bg-[var(--color-background)] border-b border-[var(--color-border-soft)] [transition:box-shadow_var(--duration-base)_var(--ease-fluid),border-color_var(--duration-base)_var(--ease-fluid)]"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex min-h-20 items-center justify-between gap-3 py-2">
@@ -42,7 +42,7 @@ const isActive = (href: string) => {
          <Logo variant="horizontal" size={60} />
       </a>
 
-      <nav aria-label="Primary" class="hidden md:flex items-center gap-1">
+      <nav aria-label="Primary" class="hidden lg:flex items-center gap-1">
         {navLinks.map(({ href, label }) => (
           <a
             href={href}
@@ -58,7 +58,7 @@ const isActive = (href: string) => {
       </nav>
 
       <div class="flex items-center gap-2">
-        <div class="hidden md:flex">
+        <div class="hidden lg:flex">
           <div
             class="inline-flex items-center overflow-hidden rounded-full bg-[var(--color-card)] ring-1 ring-inset ring-[var(--color-border-soft)]"
             role="group"
@@ -71,7 +71,7 @@ const isActive = (href: string) => {
             title={`General questions only: call ${SITE.contact.phone}`}
           >
             <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
-            <span class="hidden lg:inline">Call office</span>
+            <span class="hidden xl:inline">Call office</span>
           </a>
           <span class="h-5 w-px bg-[var(--color-border-soft)]" aria-hidden="true"></span>
           <a
@@ -81,7 +81,7 @@ const isActive = (href: string) => {
             title={`General questions only: text ${SITE.contact.phone}`}
           >
             <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
-            <span class="hidden lg:inline">Text office</span>
+            <span class="hidden xl:inline">Text office</span>
           </a>
           <a
             href={SITE.contact.smsDisclosureHref}
@@ -97,7 +97,7 @@ const isActive = (href: string) => {
 
         <button
           type="button"
-          class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-full text-[var(--color-primary)] bg-transparent border border-[var(--color-border-soft)] hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
+          class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full text-[var(--color-primary)] bg-transparent border border-[var(--color-border-soft)] hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
           aria-label="Open menu"
           aria-controls="mobile-menu"
           aria-expanded="false"
@@ -110,7 +110,7 @@ const isActive = (href: string) => {
     </div>
 
     <!-- Mobile drawer - slides down below the header when toggled. -->
-    <div id="mobile-menu" class="md:hidden mobile-menu-panel" data-mobile-menu>
+    <div id="mobile-menu" class="lg:hidden mobile-menu-panel" data-mobile-menu data-open="true">
       <div class="mobile-menu-inner">
         <nav aria-label="Primary mobile" class="flex flex-col py-2">
           {navLinks.map(({ href, label }) => (
@@ -136,12 +136,19 @@ const isActive = (href: string) => {
         <strong>{SITE.status} in McKinney.</strong>
       </span>
       <span>{medicalScheduling.enabled ? 'Not currently open. Online scheduling is available for selected medical visits.' : 'Not currently open or scheduling appointments.'}</span>
-      <a href="/#practice-updates" class="font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
+      <a href="/#practice-updates" class="hidden sm:inline-flex font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
         Get updates
       </a>
     </div>
   </div>
 </header>
+
+<noscript>
+  <style is:inline>
+    [data-mobile-menu-toggle] { display: none !important; }
+    #mobile-menu nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  </style>
+</noscript>
 
 <style>
   /* Smooth height collapse using grid-template-rows trick - no JS height math needed,
@@ -157,7 +164,10 @@ const isActive = (href: string) => {
   }
   .mobile-menu-inner {
     min-height: 0;
-    border-top: 1px solid rgba(11, 29, 58, 0.06);
+    border-top: 1px solid var(--color-border-soft);
+  }
+  @media (min-width: 1024px) {
+    .mobile-menu-panel { display: none; }
   }
   /* Icon swap - show menu icon when closed, X when open. */
   [data-mobile-menu-toggle] .mobile-menu-icon-close { display: none; }
@@ -178,9 +188,11 @@ const isActive = (href: string) => {
     function setOpen(open) {
       toggle.setAttribute('aria-expanded', String(open));
       toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      panel.inert = !open;
       if (open) panel.setAttribute('data-open', 'true');
       else panel.removeAttribute('data-open');
     }
+    setOpen(false);
 
     toggle.addEventListener('click', function () {
       var isOpen = toggle.getAttribute('aria-expanded') === 'true';
@@ -205,8 +217,19 @@ const isActive = (href: string) => {
     });
 
     // Close when viewport grows past mobile breakpoint
-    var mq = window.matchMedia('(min-width: 768px)');
-    var onChange = function () { if (mq.matches) setOpen(false); };
+    var mq = window.matchMedia('(min-width: 1024px)');
+    var onChange = function () {
+      if (!mq.matches) return;
+      var focusedHref = panel.contains(document.activeElement)
+        ? document.activeElement.getAttribute('href') : null;
+      setOpen(false);
+      if (focusedHref) {
+        var destination = Array.from(document.querySelectorAll('nav[aria-label="Primary"] a'))
+          .find(function (link) { return link.getAttribute('href') === focusedHref; })
+          || document.querySelector('.header-logo');
+        if (destination) destination.focus();
+      }
+    };
     mq.addEventListener('change', onChange);
   })();
 </script>

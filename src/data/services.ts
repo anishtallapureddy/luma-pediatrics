@@ -41,7 +41,7 @@ export const services: ServiceItem[] = [
       'Newborn hospital visits at Baylor Scott & White McKinney are planned, subject to hospital arrangements.',
     full:
       'Hospital newborn rounds at Baylor Scott & White Medical Center in McKinney are planned after opening, subject to assignment, privileges, and final hospital arrangements. Hospital care is separate from routine newborn office visits.',
-    nextStep: { href: '/newborn-care/#first-visits', label: 'Explore newborn office follow-up' },
+    nextStep: { href: '/newborn-care/#hospital-care', label: 'Read about planned hospital newborn care' },
     featured: true,
   },
   {
@@ -96,7 +96,7 @@ export const services: ServiceItem[] = [
     title: 'School, Sports & Camp Physicals',
     short: 'Physical exams for school, camp, and athletic clearance.',
     full:
-      'Physical exams are planned for school, summer camp, and athletic clearance. Bring the required forms to your visit so we can review and complete them.',
+      'Physical exams are planned for school, summer camp, and athletic clearance. Bring required forms for review, and ask about completion requirements, timing, and any separate fees before your visit.',
     nextStep: { href: '/new-patients/#what-to-bring', label: 'Check what to bring' },
     featured: true,
   },

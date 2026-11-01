@@ -13,6 +13,12 @@ const root = process.cwd();
 const dist = join(root, 'dist');
 const domain = 'https://www.lumapediatrics.com';
 const medicalBookingEnabled = SITE.newbornScheduling.enabled || SITE.wellChildScheduling.enabled;
+const unannouncedDates = [...new Set([
+  SITE.openingTargetDate, SITE.newbornScheduling.plannedLaunchDate, SITE.wellChildScheduling.plannedLaunchDate,
+])].flatMap((date) => [
+  date,
+  new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }),
+]);
 const dedicatedServicePaths = {
   'free-meet-and-greet': '/meet-and-greet/',
   'newborn-care': '/newborn-care/',
@@ -310,6 +316,15 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
   expect(webPage.isPartOf?.['@id'] === website['@id'], `${fileLabel}: WebPage is not linked to WebSite`);
 
   const text = normalizedText(html);
+  for (const date of unannouncedDates) {
+    expect(!text.includes(date), `${fileLabel}: internal target date must not become a public announcement: ${date}`);
+  }
+  expect(!text.includes('Insurance plans will be published once confirmed'), `${fileLabel}: stale insurance availability`);
+  expect(
+    findTags(html, 'main').some((attributes) => attributes.id === 'main' && attributes.tabindex === '-1'),
+    `${fileLabel}: skip-link destination must accept keyboard focus`,
+  );
+  expect(html.includes('href="/new-patients/"'), `${fileLabel}: New Patients must remain discoverable`);
   expect(
     html.includes(`href="${SITE.contact.phoneHref}"`) &&
       html.includes(`href="${SITE.contact.smsHref}"`) &&
@@ -823,7 +838,7 @@ for (const href of ['/vaccines/']) {
 }
 expect(
   !findTags(resourcesPage.html, 'a').some(
-    (attributes) => attributes.href === '/new-patients/',
+    (attributes) => attributes.href === '/new-patients/' && attributes.class?.split(/\s+/).includes('card-lift'),
   ),
   'Resources page must not restore the removed future new-patient card',
 );
@@ -1072,6 +1087,9 @@ for (const article of pages.filter((page) => /\/blog\/[^/]+\/$/.test(page.canoni
 }
 
 const llms = readFileSync(join(dist, 'llms.txt'), 'utf8');
+for (const date of unannouncedDates) {
+  expect(!llms.includes(date), `llms.txt: internal target date must remain unannounced: ${date}`);
+}
 for (const value of [
   `**Practice name:** ${contract.name}`,
   `**Legal entity:** ${contract.legalName}`,
@@ -1467,6 +1485,7 @@ for (const [path, heading, config, fallbackLabel, enabledLabel, faqCount] of [
   const service = schemas.find((value) => hasType(value['@type'], 'Service'));
   expect(service?.url === page.canonical && service.provider?.['@id'] === `${domain}/#medical-clinic`, `${path}: linked Service schema is missing or incorrect`);
   expect(!service.offers, `${path}: do not publish unconfirmed offers or availability`);
+  expect(/planned|plans/i.test(service.description), `${path}: Service schema must retain the planned-care qualification`);
   const serviceFaq = schemas.find((value) => hasType(value['@type'], 'FAQPage'));
   const visibleAnswers = [...page.html.matchAll(/<details\b[^>]*data-service-faq[^>]*>([\s\S]*?)<\/details>/g)]
     .map((match) => ({

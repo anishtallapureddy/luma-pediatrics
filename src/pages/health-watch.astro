@@ -450,6 +450,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
   description="A source-transparent North Texas health snapshot covering air quality, pollen, respiratory illness, gastrointestinal viruses, and provisional disease reports."
   breadcrumbs={[
     { name: 'Home', path: '/' },
+    { name: 'Resources', path: '/resources/' },
     { name: 'Local Health Watch', path: '/health-watch' },
   ]}
 >
@@ -755,6 +756,11 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                 </p>
               </div>
             </div>
+            <nav aria-label="More parent resources" class="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold">
+              <a href="/vaccines/" class="inline-flex min-h-11 items-center underline underline-offset-4">Vaccine schedule</a>
+              <a href="/dosing-charts/" class="inline-flex min-h-11 items-center underline underline-offset-4">Dosing charts</a>
+              <a href="/resources/" class="inline-flex min-h-11 items-center underline underline-offset-4">All parent resources</a>
+            </nav>
           </div>
 
           <div class="mt-6 rounded-xl bg-[rgba(11,29,58,0.04)] border border-[var(--color-border-soft)] p-4 flex items-start gap-3">

@@ -37,7 +37,7 @@ type InputField = 'medication' | 'ageYears' | 'weight' | 'weightUnit' | 'strengt
 
 export type DosingResult =
   | { kind: 'invalid'; field: InputField; message: string }
-  | { kind: 'blocked'; message: string }
+  | { kind: 'blocked'; field: 'ageYears' | 'weight'; message: string }
   | {
       kind: 'dose';
       medicationLabel: string;
@@ -61,6 +61,7 @@ export function calculateDosing(input: DosingInput): DosingResult {
   if (input.ageYears < 2 || input.ageYears > 11) {
     return {
       kind: 'blocked',
+      field: 'ageYears',
       message: 'This calculator is only for ages 2–11. Ask your child’s current healthcare provider or pharmacist for guidance outside this range.',
     };
   }
@@ -77,6 +78,7 @@ export function calculateDosing(input: DosingInput): DosingResult {
   if (!band) {
     return {
       kind: 'blocked',
+      field: 'weight',
       message: 'This weight is outside the supported 24–95 whole-pound chart range. Ask your child’s current healthcare provider or pharmacist; no dose is calculated.',
     };
   }
