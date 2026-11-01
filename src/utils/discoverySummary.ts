@@ -1,4 +1,5 @@
 import { services } from '../data/services.ts';
+import { insurancePlans, additionalInsurancePlans, insuranceCoverageNote } from '../data/insurance.ts';
 import { getMedicalScheduling, type MedicalSchedulingConfig } from './serviceScheduling.ts';
 
 interface DiscoverySite {
@@ -81,7 +82,7 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     `- **Status:** ${site.status}`,
     `- **Opening target:** ${site.openingTargetDate}, subject to readiness; not a confirmed opening.`,
     `- **${site.schema.publishOpeningHours ? 'Office hours' : 'Planned hours'}:** ${hours}`,
-    '- **Insurance:** Confirm accepted plans, coverage and cost-sharing through the New Patients page and your insurer.',
+    `- **Insurance:** See [accepted commercial insurers and networks](${link('/new-patients/#insurance')}). ${insuranceCoverageNote}`,
     '',
     '## Booking and care boundaries',
     '',
@@ -93,6 +94,12 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     `- **Meet & Greet:** A free introduction is planned after opening. It is not an examination, diagnosis or treatment visit and does not establish a physician-patient relationship. No Meet & Greet booking workflow is enabled; [ask about arrangements](${link('/contact/')}).`,
     '- **Current medical concerns:** Contact your child\'s current healthcare provider. For a medical emergency, call 911 or go to the nearest emergency room.',
     '- **Privacy:** Website inquiries are for general questions, not patient intake. Do not submit protected medical information.',
+    '',
+    '## Insurance',
+    '',
+    `- **Major Insurance Plans Accepted:** ${insurancePlans.map(({ name }) => name).join('; ')}.`,
+    `- **Additional Commercial Networks & Plans:** ${additionalInsurancePlans.join('; ')}.`,
+    `${site.name} accepts a variety of commercial insurance plans. ${insuranceCoverageNote} Please contact our office at ${site.contact.phone} to verify coverage before your appointment.`,
     '',
     '## Planned services',
     '',
@@ -114,7 +121,7 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     '',
     '## About this summary',
     '',
-    'This optional plain-text summary is generated from the public website configuration and service catalog. Refer to the linked pages for current policies and clinical context. It is not medical advice, a patient intake channel, or a guarantee of search inclusion.',
+    'This optional plain-text summary is generated from the public website configuration, service catalog, and insurance list. Refer to the linked pages for current policies and clinical context. It is not medical advice, a patient intake channel, or a guarantee of search inclusion.',
     '',
   ].join('\n');
 }

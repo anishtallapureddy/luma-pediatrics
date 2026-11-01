@@ -6,6 +6,7 @@ import {
 } from 'node:fs';
 import { extname, join, relative, sep } from 'node:path';
 import { SITE } from '../src/site.config.ts';
+import { insurancePlans, additionalInsurancePlans, insuranceCoverageNote } from '../src/data/insurance.ts';
 
 const root = process.cwd();
 const dist = join(root, 'dist');
@@ -1325,6 +1326,37 @@ for (const sourceUrl of [
 }
 
 const servicesHtml = readFileSync(join(dist, 'services', 'index.html'), 'utf8');
+const insuranceHtml = readFileSync(join(dist, 'new-patients', 'index.html'), 'utf8');
+const insuranceSection = insuranceHtml.match(/<section\b[^>]*\bid="insurance"[^>]*>([\s\S]*?)<\/section>/)?.[1];
+expect(insuranceSection, 'New Patients must retain its dedicated insurance section');
+const insuranceLists = [...insuranceSection.matchAll(/<ul\b[^>]*>([\s\S]*?)<\/ul>/g)];
+expect(insuranceLists.length === 2, 'Insurance must separate major carriers from additional commercial plans');
+const insuranceLogos = findTags(insuranceLists[0][1], 'img');
+expect(insuranceLogos.length === 5, 'The major insurance list must show five locally hosted logos');
+expect(normalizedText(insuranceLists[0][1]) === '', 'Insurer logos must not repeat visible name captions');
+for (const { name, logo } of insurancePlans) {
+  expect(
+    insuranceLogos.some((image) => image.src === logo && image.alt === name && Number(image.width) > 0 && Number(image.height) > 0) &&
+      existsSync(join(dist, logo.slice(1))),
+    `Insurer logo must have its accessible name, dimensions, and local asset: ${name}`,
+  );
+}
+for (const name of additionalInsurancePlans) {
+  expect(normalizedText(insuranceLists[1][1]).includes(name), `Additional commercial plan is missing: ${name}`);
+}
+expect(
+  normalizedText(insuranceSection).includes(insuranceCoverageNote) &&
+    insuranceSection.includes(`href="tel:${contract.phoneE164}"`) &&
+    normalizedText(insuranceSection).includes('to verify coverage before your visit.'),
+  'Insurance must retain plan-specific coverage verification and the office telephone link',
+);
+expect(
+  !/Medicaid|Molina|Superior Health Plan|\bCHIP\b|\bSTAR(?:\+PLUS| Kids)?\b/i.test(normalizedText(insuranceSection)),
+  'Insurance must contain only the practice-approved commercial list',
+);
+for (const html of [insuranceHtml, home.html, readFileSync(join(dist, 'faq', 'index.html'), 'utf8'), readFileSync(join(dist, 'well-child-visits', 'index.html'), 'utf8')]) {
+  expect(!/credentialing is in progress|insurance participation is not confirmed|Accepted plans are not confirmed/i.test(html), 'Accepted insurance information must not contradict obsolete credentialing copy');
+}
 for (const slug of serviceSlugs) {
   expect(
     servicesHtml.includes(`id="${slug}"`),

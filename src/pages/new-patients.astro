@@ -4,6 +4,7 @@ import PageDecor from '../components/PageDecor.astro';
 import AfterHoursCard from '../components/AfterHoursCard.astro';
 import { Icon } from 'astro-icon/components';
 import { SITE } from '../site.config';
+import { insurancePlans, additionalInsurancePlans, insuranceCoverageNote } from '../data/insurance';
 import { getMedicalScheduling } from '../utils/serviceScheduling';
 
 const medicalScheduling = getMedicalScheduling(SITE);
@@ -63,7 +64,7 @@ const bringList = [
 <BaseLayout
   title="New Patients | Luma Pediatrics in McKinney, TX"
   path="/new-patients"
-  description={`Learn about the planned first-visit experience at ${SITE.name} in McKinney, TX. ${SITE.status}; ${medicalScheduling.enabled ? 'booking is available for selected medical visits; insurance participation is not confirmed.' : 'scheduling and insurance participation are not yet available.'}`}
+  description={`Plan your child's first visit at ${SITE.name} in McKinney, TX. Review accepted commercial insurance plans, coverage verification, and what to bring. ${SITE.status}.`}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'New Patients', path: '/new-patients' },
@@ -77,11 +78,11 @@ const bringList = [
         Planning your child’s first visit
       </h1>
       <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
-        What to bring, what to expect, and where insurance stands.
+        What to bring, what to expect, and accepted insurance plans.
       </p>
       <div class="mt-5 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
         <a href="#what-to-bring" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">What to bring</a>
-        <a href="#insurance" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Insurance status</a>
+        <a href="#insurance" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Accepted insurance</a>
       </div>
     </div>
   </section>
@@ -130,35 +131,48 @@ const bringList = [
 
   <section class="py-16 md:py-20 bg-[var(--color-muted)] reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={8} />
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid gap-10 md:grid-cols-2">
-        <div id="what-to-bring" class="scroll-mt-32">
-          <span class="eyebrow">What to bring</span>
-          <h2 class="mt-5 text-2xl md:text-3xl font-extrabold tracking-tight">A quick checklist</h2>
-          <ul class="mt-6 space-y-2.5">
-            {bringList.map((item) => (
-              <li class="flex gap-3 text-[var(--color-foreground)]/85">
-                <Icon name="lucide:check-circle" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-sage-light)]" stroke-width="1.8" aria-hidden="true" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-          <p class="mt-5 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
-            Expecting a baby?
-            <a href="/blog/newborn-first-week/" class="font-semibold text-[var(--color-primary)] underline underline-offset-4">Read our guide to the first week at home.</a>
-          </p>
-        </div>
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div id="what-to-bring" class="scroll-mt-32">
+        <span class="eyebrow">What to bring</span>
+        <h2 class="mt-5 text-2xl md:text-3xl font-extrabold tracking-tight">A quick checklist</h2>
+        <ul class="mt-6 space-y-2.5">
+          {bringList.map((item) => (
+            <li class="flex gap-3 text-[var(--color-foreground)]/85">
+              <Icon name="lucide:check-circle" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-sage-light)]" stroke-width="1.8" aria-hidden="true" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-5 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
+          Expecting a baby?
+          <a href="/blog/newborn-first-week/" class="font-semibold text-[var(--color-primary)] underline underline-offset-4">Read our guide to the first week at home.</a>
+        </p>
+      </div>
+    </div>
+  </section>
 
-        <div id="insurance" class="scroll-mt-32">
-          <span class="eyebrow eyebrow-sun">Insurance</span>
-          <h2 class="mt-5 text-2xl md:text-3xl font-extrabold tracking-tight">Accepted plans are not confirmed yet</h2>
-          <p class="mt-5 text-[var(--color-foreground)]/85 leading-relaxed">
-            Insurance credentialing is in progress.
-            {medicalScheduling.enabled ? 'Confirmed plans will be published once credentialing is complete; verify coverage and costs before booking.' : 'We will publish confirmed plans before scheduling opens.'}
-            Self-pay care is also planned, with fees discussed before the visit.
-          </p>
-          <a href="/#practice-updates" class="mt-5 inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Get opening and insurance updates</a>
-        </div>
+  <section id="insurance" aria-labelledby="insurance-heading" class="scroll-mt-32 py-16 md:py-20 reveal">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="insurance-heading" class="text-3xl md:text-4xl tracking-tight">Major Insurance Plans Accepted</h2>
+      <ul role="list" class="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-8 rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-6 md:p-8">
+        {insurancePlans.map(({ name, logo, width, height }) => (
+          <li class="flex h-20 w-60 max-w-full items-center justify-center">
+            <img src={logo} width={width} height={height} alt={name} loading="lazy" decoding="async" class="max-w-full max-h-16 h-auto object-contain" />
+          </li>
+        ))}
+      </ul>
+
+      <div class="mt-10">
+        <h2 class="text-2xl md:text-3xl tracking-tight">Other accepted plans and networks</h2>
+        <ul role="list" class="mt-5 grid gap-x-12 gap-y-3 sm:grid-cols-2 list-disc pl-5 text-[var(--color-foreground)]/85 leading-relaxed">
+          {additionalInsurancePlans.map((name) => <li>{name}</li>)}
+        </ul>
+
+        <p class="mt-6 text-[var(--color-foreground)]/85 leading-relaxed">
+          {insuranceCoverageNote} Call{' '}
+          <a href={`tel:${SITE.contact.phoneE164}`} class="font-semibold text-[var(--color-primary)] underline underline-offset-4">{SITE.contact.phone}</a>{' '}
+          to verify coverage before your visit.
+        </p>
       </div>
     </div>
   </section>

@@ -282,3 +282,21 @@ References:
 - https://support.goto.com/connect/help/set-up-athenaone-scheduling-ai-receptionist
 
 No GoTo service, paid plan, Athena access, or booking endpoint was configured.
+
+## Insurance content and logo sources
+
+The practice-approved commercial insurance list lives in `src/data/insurance.ts`.
+Keep the New Patients list, FAQ, and generated discovery summary consistent;
+always retain the specific-plan/network verification notice. Listing an insurer
+does not activate scheduling or guarantee coverage for every plan or service.
+
+Logos are hosted locally under `public/images/insurance/`, without hotlinking or
+altering their artwork. They identify listed insurers, not endorsements.
+
+| Asset | Source |
+| --- | --- |
+| `bcbstx.svg` | BCBSTX official website header: https://www.bcbstx.com/ |
+| `aetna.svg` | Aetna logo download page: https://www.aetna.com/about-us/forms/advertising-marketing-requests/confirmation-pages/download-aetna-logo.html |
+| `cigna.svg` | Cigna official About Us header (Cigna Healthcare mark): https://www.cigna.com/about-us |
+| `unitedhealthcare.svg` | Wikimedia Commons, `PD-textlogo`: https://commons.wikimedia.org/wiki/File:UnitedHealthcare_(logo).svg |
+| `bsw-health-plan.svg` | Baylor Scott & White Health Plan official header: https://www.bswhealthplan.com/ |

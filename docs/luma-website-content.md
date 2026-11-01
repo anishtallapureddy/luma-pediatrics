@@ -12,7 +12,7 @@ Homepage:
 Luma Pediatrics is a future physician-led practice planned for late 2026. Describe planned care for newborns, children, and teens while making clear that the practice is not open, accepting patients, or scheduling appointments.
 
 Insurance:
-Insurance credentialing is in progress. Do not publish accepted-plan claims until confirmed.
+Use the practice-approved commercial insurance list in src/data/insurance.ts. Participation varies by specific plan and network; direct families to the office to verify coverage before an appointment. Carrier participation does not guarantee coverage for every product or service. Keep pre-opening and scheduling disclosures unchanged.
 
 Services:
 Newborn care, well-child visits, sick visits, vaccinations, school/sports/camp physicals, development and behavior guidance, teen health.

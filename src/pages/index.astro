@@ -8,9 +8,6 @@ import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 import { featuredServices as services } from '../data/services';
 import Picture from '../components/Picture.astro';
-import { getMedicalScheduling } from '../utils/serviceScheduling';
-
-const medicalScheduling = getMedicalScheduling(SITE);
 const familyBenefits = [
   {
     title: 'Your concerns are heard.',
@@ -297,7 +294,7 @@ const trustPhotos = [
             Will Luma accept my insurance?
           </h3>
           <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
-            Insurance credentialing is in progress. {medicalScheduling.enabled ? 'Confirmed plans will be published once credentialing is complete.' : 'We’ll publish confirmed plans before scheduling opens.'} Self-pay options are also planned.
+            We accept a variety of commercial insurance plans. Check our list of insurers and networks, then contact the office to verify your specific coverage. Self-pay options are also planned.
           </p>
           <a href="/new-patients/#insurance" class="mt-6 inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
             See insurance and first-visit details →
