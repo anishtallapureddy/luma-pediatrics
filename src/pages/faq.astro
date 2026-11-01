@@ -5,6 +5,7 @@ import AfterHoursCard from '../components/AfterHoursCard.astro';
 import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 import { getMedicalScheduling } from '../utils/serviceScheduling';
+import { insurancePlans, insuranceCoverageNote } from '../data/insurance';
 
 interface FaqItem {
   id: string;
@@ -61,10 +62,8 @@ const faqs: FaqItem[] = [
   {
     id: 'insurance',
     q: 'Which insurance plans will you accept?',
-    a: medicalScheduling.enabled
-      ? 'Insurance credentialing is in progress. Confirmed plans will be published once credentialing is complete. Verify coverage and costs before booking.'
-      : 'Insurance credentialing is in progress. The confirmed list will be published before scheduling opens.',
-    link: { href: '/new-patients/#insurance', label: 'Check insurance status' },
+    a: `${SITE.name} accepts commercial plans from ${insurancePlans.map(({ name }) => name).join(', ')}, with additional commercial networks and employer plans listed on our New Patients page. ${insuranceCoverageNote} Contact our office at ${SITE.contact.phone} to verify coverage before your appointment.`,
+    link: { href: '/new-patients/#insurance', label: 'See the accepted insurance list' },
   },
   {
     id: 'self-pay',

@@ -25,6 +25,20 @@ test('provider privacy applies to the AI-facing summary as well as HTML', () => 
   assert(text.includes(SITE.address.street));
 });
 
+test('insurance summary includes major insurers, additional plans, and plan-specific verification', () => {
+  const text = renderDiscoverySummary({
+    ...SITE,
+    contact: { ...SITE.contact, phone: '(555) 010-0100' },
+  });
+  assert(text.includes('Blue Cross Blue Shield of Texas (BCBS)'));
+  assert(text.includes('Cigna / Great-West'));
+  assert(text.includes('Curative; Coventry / First Health (PPO)'));
+  assert(text.includes('6 Degrees – Fort Worth Firefighters; QuikTrip (Open Access)'));
+  assert(text.includes('Participation varies by specific plan and network.'));
+  assert(text.includes('office at (555) 010-0100 to verify coverage before your appointment.'));
+  assert(!/Medicaid|Molina|Superior Health Plan|Community Medicaid/i.test(text));
+});
+
 test('changed business facts and hours propagate without editing a second summary', () => {
   const site = {
     ...SITE,

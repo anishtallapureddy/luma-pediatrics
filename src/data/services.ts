@@ -135,17 +135,3 @@ export const services: ServiceItem[] = [
 ];
 
 export const featuredServices = services.filter((s) => s.featured);
-
-/**
- * Insurance carriers commonly accepted. Used on /new-patients so families can
- * self-qualify at a glance. Update when the practice confirms its panel.
- * NOTE: representative list - confirm before launch.
- */
-export const insurancePlans = [
-  'Blue Cross Blue Shield of Texas',
-  'Aetna',
-  'Cigna',
-  'UnitedHealthcare',
-  'Scott & White Health Plan',
-  'Curative',
-];
