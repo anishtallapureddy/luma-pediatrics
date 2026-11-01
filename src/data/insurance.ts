@@ -1,9 +1,16 @@
+// Display sizes balance visual weight; the image styles preserve SVG proportions.
 export const insurancePlans = [
   {
     name: 'Blue Cross Blue Shield of Texas (BCBS)',
     logo: '/images/insurance/bcbstx.svg',
-    width: 276,
-    height: 39,
+    width: 240,
+    height: 34,
+  },
+  {
+    name: 'Anthem',
+    logo: '/images/insurance/anthem.svg',
+    width: 170,
+    height: 38,
   },
   {
     name: 'Aetna',
@@ -14,20 +21,20 @@ export const insurancePlans = [
   {
     name: 'Cigna / Great-West',
     logo: '/images/insurance/cigna.svg',
-    width: 101,
-    height: 53,
+    width: 112,
+    height: 59,
   },
   {
     name: 'UnitedHealthcare',
     logo: '/images/insurance/unitedhealthcare.svg',
-    width: 564,
-    height: 177,
+    width: 180,
+    height: 56,
   },
   {
     name: 'Baylor Scott & White Health Plan',
     logo: '/images/insurance/bsw-health-plan.svg',
-    width: 792,
-    height: 141,
+    width: 240,
+    height: 43,
   },
 ] as const;
 
