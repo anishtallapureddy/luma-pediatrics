@@ -19,7 +19,10 @@ import { DOSING_MEDICINES } from '../utils/dosing';
       and the warnings on your bottle.
     </p>
 
-    <fieldset class="mt-6 grid min-w-0 gap-5 sm:grid-cols-2">
+    <noscript>
+      <p class="mt-5 text-sm font-semibold">The calculator requires JavaScript. The reference charts below remain available. Ask your child's current healthcare provider or pharmacist if you need help with a product label.</p>
+    </noscript>
+    <fieldset disabled class="mt-6 grid min-w-0 gap-5 sm:grid-cols-2">
       <legend class="sr-only">Medicine and weight details</legend>
       <div class="sm:col-span-2">
         <label for="dose-medicine" class="block text-sm font-semibold">Medicine and liquid strength</label>
@@ -67,10 +70,10 @@ import { DOSING_MEDICINES } from '../utils/dosing';
       not a kitchen spoon.
     </p>
     <div class="mt-6 flex flex-wrap gap-3">
-      <button type="button" data-dose-calculate class="min-h-11 rounded-full bg-[var(--color-primary)] px-6 py-3 font-semibold text-[var(--color-primary-foreground)] hover:brightness-110 focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2">
+      <button type="button" disabled data-dose-calculate class="min-h-11 rounded-full bg-[var(--color-primary)] px-6 py-3 font-semibold text-[var(--color-primary-foreground)] hover:brightness-110 focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed">
         Check label dose
       </button>
-      <button type="button" data-dose-reset class="min-h-11 rounded-full border border-[var(--color-border-soft)] px-6 py-3 font-semibold text-[var(--color-primary)] hover:bg-[var(--color-muted)] focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2">
+      <button type="button" disabled data-dose-reset class="min-h-11 rounded-full border border-[var(--color-border-soft)] px-6 py-3 font-semibold text-[var(--color-primary)] hover:bg-[var(--color-muted)] focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed">
         Clear details
       </button>
     </div>
@@ -113,6 +116,8 @@ import { DOSING_MEDICINES } from '../utils/dosing';
       throw new Error('Dosing calculator controls are missing.');
     }
     const fields = { medication, ageYears: age, weight, weightUnit: unit, strengthConfirmed: confirm };
+    const fieldset = root.querySelector('fieldset');
+    if (!fieldset) throw new Error('Dosing calculator input group is missing.');
     const clearResult = () => {
       result.hidden = true;
       error.hidden = true;
@@ -135,10 +140,8 @@ import { DOSING_MEDICINES } from '../utils/dosing';
       if (dose.kind !== 'dose') {
         error.textContent = dose.message;
         error.hidden = false;
-        if (dose.kind === 'invalid') {
-          fields[dose.field].setAttribute('aria-invalid', 'true');
-          fields[dose.field].focus();
-        }
+        fields[dose.field].setAttribute('aria-invalid', 'true');
+        fields[dose.field].focus();
         return;
       }
       medicineLabel.textContent = `${dose.medicationLabel} — ${dose.concentration}`;
@@ -169,6 +172,9 @@ import { DOSING_MEDICINES } from '../utils/dosing';
       clearResult();
       medication.focus();
     });
+    fieldset.disabled = false;
+    calculate.disabled = false;
+    reset.disabled = false;
   });
 </script>
 

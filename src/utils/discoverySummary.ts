@@ -11,7 +11,6 @@ interface DiscoverySite {
   domain: string;
   status: string;
   locationShort: string;
-  openingTargetDate: string;
   showProviderProfile: boolean;
   provider: {
     name: string;
@@ -29,8 +28,8 @@ interface DiscoverySite {
   schema: { publishOpeningHours: boolean };
   hours: ReadonlyArray<{ day: string; time: string }>;
   areasServed: readonly string[];
-  newbornScheduling: MedicalSchedulingConfig & { plannedLaunchDate: string };
-  wellChildScheduling: MedicalSchedulingConfig & { plannedLaunchDate: string };
+  newbornScheduling: MedicalSchedulingConfig;
+  wellChildScheduling: MedicalSchedulingConfig;
 }
 
 export function renderDiscoverySummary(site: DiscoverySite) {
@@ -82,7 +81,6 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     `- **Email:** ${site.contact.email}`,
     `- **Website:** ${link('/')}`,
     `- **Status:** ${site.status}`,
-    `- **Opening target:** ${site.openingTargetDate}, subject to readiness; not a confirmed opening.`,
     `- **${site.schema.publishOpeningHours ? 'Office hours' : 'Planned hours'}:** ${hours}`,
     `- **Insurance:** See [accepted commercial insurers and networks](${link('/new-patients/#insurance')}). ${insuranceCoverageNote}`,
     '',
@@ -90,9 +88,9 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     '',
     scheduling.enabled
       ? 'Medical booking is enabled only for the services identified below. Use their linked pages for the approved workflows.'
-      : 'Medical appointment booking is not currently enabled. Planned launch dates never activate scheduling.',
-    `- **Newborn booking:** ${scheduling.newborn.enabled ? 'Enabled' : 'Not enabled'}. See [Newborn Care](${link('/newborn-care/')}). Target launch: ${site.newbornScheduling.plannedLaunchDate}.`,
-    `- **Well-child booking:** ${scheduling.wellChild.enabled ? 'Enabled' : 'Not enabled'}. See [Well-Child Visits](${link('/well-child-visits/')}). Target launch: ${site.wellChildScheduling.plannedLaunchDate}.`,
+      : 'Medical appointment booking is not currently enabled. Scheduling details will be shared closer to opening.',
+    `- **Newborn booking:** ${scheduling.newborn.enabled ? 'Enabled' : 'Not enabled'}. See [Newborn Care](${link('/newborn-care/')}).`,
+    `- **Well-child booking:** ${scheduling.wellChild.enabled ? 'Enabled' : 'Not enabled'}. See [Well-Child Visits](${link('/well-child-visits/')}).`,
     `- **Meet & Greet:** A free introduction is planned after opening. It is not an examination, diagnosis or treatment visit and does not establish a physician-patient relationship. No Meet & Greet booking workflow is enabled; [ask about arrangements](${link('/contact/')}).`,
     '- **Current medical concerns:** Contact your child\'s current healthcare provider. For a medical emergency, call 911 or go to the nearest emergency room.',
     '- **Privacy:** Website inquiries are for general questions, not patient intake. Do not submit protected medical information.',

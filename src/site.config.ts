@@ -269,6 +269,7 @@ export const SITE = {
     { href: '/',              label: 'Home' },
     { href: '/about/',        label: 'About' },
     { href: '/services/',     label: 'Services' },
+    { href: '/new-patients/', label: 'New Patients' },
     { href: '/resources/',    label: 'Resources' },
     { href: '/faq/',          label: 'FAQ' },
     { href: '/contact/',      label: 'Contact' },

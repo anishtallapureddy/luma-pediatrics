@@ -12,20 +12,16 @@ interface Props {
   heading: string;
   intro: string;
   primary: { href: string; label: string; enabled?: boolean };
-  plannedLaunchDate?: string;
 }
 
-const { title, description, path, eyebrow, heading, intro, primary, plannedLaunchDate } = Astro.props;
+const { title, description, path, eyebrow, heading, intro, primary } = Astro.props;
 const hasImage = Astro.slots.has('hero-image');
-const dateFormat = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
-const openingTarget = dateFormat.format(new Date(SITE.openingTargetDate));
-const bookingTarget = plannedLaunchDate ? dateFormat.format(new Date(plannedLaunchDate)) : null;
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   name: heading,
   serviceType: eyebrow,
-  description,
+  description: intro,
   url: new URL(path, SITE.domain).href,
   provider: { '@id': STRUCTURED_DATA_IDS.clinic },
   areaServed: { '@type': 'City', name: 'McKinney' },
@@ -57,10 +53,10 @@ const serviceSchema = {
         <div class="mt-5 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
           <slot name="hero-note">
             <p>
-              Opening is targeted around {openingTarget}, subject to readiness.
+              {SITE.status}.
               {primary.enabled
                 ? ' Online booking for this service is available. The practice is not open yet; confirm appointment dates and coverage before booking.'
-                : bookingTarget ? ` Online medical booking is targeted for ${bookingTarget}, but is not available yet.` : ' Booking is not available yet.'}
+                : ' Appointments are not available yet. Scheduling details will be shared closer to opening.'}
             </p>
           </slot>
         </div>

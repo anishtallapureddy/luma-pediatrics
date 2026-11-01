@@ -53,16 +53,15 @@ Follow the discharge instructions for cord and circumcision care, and ask your b
 
 ## When to call, and when to call 911
 
+**Call 911** for trouble breathing, persistent blue color, seizure-like movements, or unresponsiveness.
+
 Contact your baby's current healthcare provider promptly for these warning signs. Do not wait for a routine appointment:
 
 - **A rectal temperature of 100.4°F (38°C) or higher** in a baby under 8 weeks. This one is always urgent, at any hour
-- Difficulty breathing, grunting, or a bluish color around the lips
 - Fewer than 4 wet diapers in 24 hours by day 5
 - Refusing to feed for more than a few hours
 - Yellow color spreading down the chest, belly, or legs (jaundice)
 - A floppy or unusually sleepy baby who is hard to wake for feeds
-
-**Call 911** for trouble breathing, persistent blue color, seizure-like movements, or unresponsiveness.
 
 ## The most important thing
 

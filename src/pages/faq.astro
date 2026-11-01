@@ -18,15 +18,11 @@ interface FaqItem {
 const saturdayHours = SITE.hours.find(({ day }) => day === 'Saturday');
 const languages = SITE.provider.quickFacts.find(({ label }) => label === 'Languages');
 const medicalScheduling = getMedicalScheduling(SITE);
-const dateFormat = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' } as const;
-const openingTarget = new Date(SITE.openingTargetDate).toLocaleDateString('en-US', dateFormat);
-const bookingTargets = [...new Set([SITE.newbornScheduling.plannedLaunchDate, SITE.wellChildScheduling.plannedLaunchDate])]
-  .map((date) => new Date(date).toLocaleDateString('en-US', dateFormat)).join(' and ');
 const faqs: FaqItem[] = [
   {
     id: 'opening',
     q: 'When are you opening?',
-    a: `Our target opening in ${SITE.locationShort} is ${openingTarget}, subject to readiness. This is not a confirmed opening date; we will share updates as preparations are completed.`,
+    a: `${SITE.status} in ${SITE.locationShort}. We will announce an opening date once preparations are confirmed.`,
     link: { href: '/#practice-updates', label: 'Get opening updates' },
   },
   {
@@ -34,13 +30,13 @@ const faqs: FaqItem[] = [
     q: "How do I schedule my child's first checkup?",
     a: medicalScheduling.enabled
       ? 'Online booking is available for selected medical visit types. The practice is not open yet. The New Patients guide links to approved scheduling options; confirm appointment dates, insurance, and costs before booking.'
-      : `Online medical booking is targeted for ${bookingTargets}, subject to confirmation. Appointments are not available yet. The New Patients guide explains how to prepare for a first checkup.`,
+      : 'Appointments are not available yet. Scheduling details will be shared closer to opening. The New Patients guide explains how to prepare for a first checkup.',
     link: { href: '/new-patients/', label: 'Read the first-visit guide' },
   },
   {
     id: 'choosing-luma',
     q: 'How do I choose Luma for my family?',
-    a: 'Start with the physician introduction on our About page, then review planned services, insurance status, and the first-visit guide. If you would like to meet the pediatrician before choosing care, a Free Meet & Greet is planned after opening.',
+    a: 'Start with the physician introduction on our About page, then review planned services, accepted insurance, self-pay pricing, and the first-visit guide. If you would like to meet the pediatrician before choosing care, a Free Meet & Greet is planned after opening.',
     link: { href: '/new-patients/', label: 'Plan your first visit' },
   },
   {
@@ -82,11 +78,13 @@ const faqs: FaqItem[] = [
     id: 'same-day-visits',
     q: 'Do you offer same-day sick visits?',
     a: 'Same-day sick visits are planned after opening, when capacity allows, for fevers, infections, and minor injuries. Scheduling details are not available yet.',
+    link: { href: '/new-patients/#first-visit', label: 'Read the first-visit guide' },
   },
   {
     id: 'telehealth',
     q: 'Do you offer telehealth / virtual visits?',
     a: 'After opening, we plan to offer secure telehealth follow-ups for appropriate established-patient needs when an in-person exam is not required.',
+    link: { href: '/contact/', label: 'Call or text with general questions about planned visits' },
   },
   ...(saturdayHours ? [{
     id: 'saturday-hours',
@@ -132,7 +130,8 @@ const faqs: FaqItem[] = [
   {
     id: 'physicals',
     q: 'Do you do school, sports, and camp physicals?',
-    a: 'After opening, we plan to offer school, sports, and camp physicals as part of appropriate well-child care.',
+    a: `After opening, we plan to offer school, sports, and camp physicals. A standalone sports physical is ${selfPayPricing.sportsPhysical} for self-pay families and is not a full well-child visit. Ask about form requirements, timing, and any separate fees before your visit.`,
+    link: { href: '/new-patients/#self-pay', label: 'See self-pay pricing and additional charges' },
   },
 ];
 

@@ -10,10 +10,6 @@ import { getMedicalScheduling } from '../utils/serviceScheduling';
 
 const medicalScheduling = getMedicalScheduling(SITE);
 const bookingOptions = [medicalScheduling.newborn, medicalScheduling.wellChild].filter(({ enabled }) => enabled);
-const dateFormat = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' } as const;
-const openingTarget = new Date(SITE.openingTargetDate).toLocaleDateString('en-US', dateFormat);
-const bookingTargets = [...new Set([SITE.newbornScheduling.plannedLaunchDate, SITE.wellChildScheduling.plannedLaunchDate])]
-  .map((date) => new Date(date).toLocaleDateString('en-US', dateFormat)).join(' and ');
 
 /**
  * First-visit walkthrough. Photos are intentionally omitted for now; the
@@ -93,11 +89,11 @@ const bringList = [
     <PageDecor variant="minimal" sparkles={6} />
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <p class="max-w-3xl mx-auto mb-6 text-[var(--color-foreground)]/80 leading-relaxed">
-        Our target opening is {openingTarget}, subject to readiness.
-        {!medicalScheduling.enabled && <> Online medical booking is targeted for {bookingTargets}, but appointments are not available yet.</>}
-        This guide describes visits after opening.
+        {SITE.status} in {SITE.address.city}.{' '}
+        {!medicalScheduling.enabled && <>Appointments are not available yet. Scheduling details will be shared closer to opening.{' '}</>}
+        This guide describes visits after opening.{' '}
         <a href="/#practice-updates" class="font-semibold text-[var(--color-primary)] underline underline-offset-4">Opening updates</a>
-        are optional and are not patient registration.
+        {' '}are optional and are not patient registration.
       </p>
       <ol class="max-w-3xl mx-auto space-y-5">
         {steps.map(({ n, t, d }) => (

@@ -41,6 +41,7 @@ const inputClass =
   </p>
 
   <form
+    hidden
     class="mt-6 grid gap-4 sm:grid-cols-2"
     data-waitlist-form
     data-endpoint={endpoint}
@@ -56,13 +57,14 @@ const inputClass =
     </label>
     <label class="block sm:col-span-1">
       <span class="text-sm font-semibold text-[var(--color-foreground)]">Email</span>
-      <input type="email" name="email" required autocomplete="email" placeholder="you@example.com" class={inputClass} />
+      <input type="email" name="email" required autocomplete="email" placeholder="you@example.com" aria-describedby="practice-updates-error" class={inputClass} />
     </label>
     <input type="hidden" name="consent_version" value="practice-updates-v1-2026-09-07" />
     <label class="sm:col-span-2 flex items-start gap-3 text-sm leading-relaxed">
       <input
         type="checkbox"
         name="consent"
+        aria-describedby="practice-updates-error"
         value="yes"
         required
         class="mt-1 accent-[var(--color-primary)]"
@@ -88,8 +90,16 @@ const inputClass =
       </p>
     </div>
 
-    <p data-waitlist-error class="sm:col-span-2 hidden text-sm font-semibold text-[var(--color-destructive)]" role="alert"></p>
+    <p id="practice-updates-error" data-waitlist-error class="sm:col-span-2 hidden text-sm font-semibold text-[var(--color-destructive)]" role="alert"></p>
   </form>
+
+  <noscript>
+    <p class="mt-6 text-sm leading-relaxed">
+      Online signup requires JavaScript. For opening updates, email{' '}
+      <a href={SITE.contact.emailHref}>{SITE.contact.email}</a>.
+      Please do not send medical information.
+    </p>
+  </noscript>
 
   <div
     data-waitlist-success
@@ -120,30 +130,39 @@ const inputClass =
     const emailAddress = form.getAttribute('data-email') || '';
     const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
-    const showError = (msg) => {
-      if (!errorEl) return;
-      errorEl.textContent = msg;
-      errorEl.classList.remove('hidden');
-    };
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    const clearError = () => {
       if (errorEl) {
         errorEl.textContent = '';
         errorEl.classList.add('hidden');
       }
+      form.querySelectorAll('[aria-invalid]').forEach((field) => field.removeAttribute('aria-invalid'));
+    };
+    const showError = (msg, field) => {
+      if (!errorEl) return;
+      errorEl.textContent = msg;
+      errorEl.classList.remove('hidden');
+      if (field) {
+        field.setAttribute('aria-invalid', 'true');
+        field.focus();
+      }
+    };
+
+    form.addEventListener('input', clearError);
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearError();
 
       const data = new FormData(form);
       if (data.get('botcheck')) return; // honeypot tripped, silently ignore
 
       const email = (data.get('email') || '').toString().trim();
       if (!EMAIL_RE.test(email)) {
-        showError('Please enter a valid email address.');
+        showError('Please enter a valid email address.', form.elements.namedItem('email'));
         return;
       }
 
       if (data.get('consent') !== 'yes') {
-        showError('Please confirm that you agree to receive email updates.');
+        showError('Please confirm that you agree to receive email updates.', form.elements.namedItem('consent'));
         return;
       }
 
@@ -154,6 +173,7 @@ const inputClass =
 
       const original = label ? label.textContent : '';
       if (btn) btn.disabled = true;
+      form.setAttribute('aria-busy', 'true');
       if (label) label.textContent = 'Signing up\u2026';
 
       data.append('page', window.location.pathname);
@@ -178,7 +198,14 @@ const inputClass =
         if (btn) btn.disabled = false;
         if (label) label.textContent = original;
         showError('Something went wrong. Please try again, or email ' + emailAddress + '.');
+      } finally {
+        form.removeAttribute('aria-busy');
       }
     });
+    form.hidden = false;
   });
 </script>
+
+<style is:global>
+  form[data-waitlist-form][hidden] { display: none !important; }
+</style>

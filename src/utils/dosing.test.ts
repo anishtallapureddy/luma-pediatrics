@@ -35,13 +35,19 @@ test('uses the verified label bands for both medicines without crossing a bounda
 
 test('never extrapolates for infant, teenage, or out-of-chart weights', () => {
   for (const ageYears of [0, 1, 12, 18]) {
-    assert.equal(calculateDosing({ ...valid, ageYears }).kind, 'blocked');
+    const result = calculateDosing({ ...valid, ageYears });
+    assert.equal(result.kind, 'blocked');
+    if (result.kind !== 'blocked') throw new Error('Expected an unsupported-age response');
+    assert.equal(result.field, 'ageYears');
   }
   for (const weight of [23.999, 96, 1000]) {
     for (const weightUnit of ['lb', 'kg']) {
-      assert.equal(calculateDosing({
+      const result = calculateDosing({
         ...valid, weightUnit, weight: weightUnit === 'kg' ? weight * 0.45359237 : weight,
-      }).kind, 'blocked');
+      });
+      assert.equal(result.kind, 'blocked');
+      if (result.kind !== 'blocked') throw new Error('Expected an unsupported-weight response');
+      assert.equal(result.field, 'weight');
     }
   }
 });

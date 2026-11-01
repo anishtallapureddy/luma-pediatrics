@@ -1,14 +1,14 @@
 ---
 /**
  * Sticky mobile CTA bar - fixed to the bottom of the viewport on small screens.
- * Provides one-tap Call and Text buttons. Hidden on md+ where the header already
+ * Provides one-tap Call and Text buttons. Hidden on lg+ where the header already
  * exposes contact options.
  */
 import { Icon } from 'astro-icon/components';
 import { SITE } from '../site.config';
 ---
 <div
-  class="mobile-cta-bar md:hidden fixed bottom-0 inset-x-0 z-40 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2"
+  class="mobile-cta-bar lg:hidden fixed bottom-0 inset-x-0 z-40 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2"
   role="region"
   aria-label="Quick contact for general questions, not medical advice"
 >
@@ -39,7 +39,7 @@ import { SITE } from '../site.config';
 
 <style>
   /* Reserve space after the footer for the fixed contact bar. */
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     :global(body) {
       padding-bottom: calc(7rem + env(safe-area-inset-bottom));
     }
