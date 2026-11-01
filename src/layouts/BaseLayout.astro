@@ -253,6 +253,15 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
       href={`${SITE.domain}/rss.xml`}
     />
     <meta name="theme-color" content="#0B1D3A" />
+    <noscript>
+      <style is:inline>
+        .reveal {
+          opacity: 1 !important;
+          transform: none !important;
+          filter: none !important;
+        }
+      </style>
+    </noscript>
 
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />

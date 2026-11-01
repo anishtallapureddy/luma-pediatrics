@@ -14,6 +14,8 @@ export interface ServiceItem {
   short: string;
   full: string;
   nextStep: { href: string; label: string };
+  /** Dedicated service page, when available; otherwise cards use the hub anchor. */
+  detailHref?: string;
   featured?: boolean;
   badge?: string;
 }
@@ -24,10 +26,11 @@ export const services: ServiceItem[] = [
     icon: 'lucide:handshake',
     title: 'Free Meet & Greet',
     short:
-      'After opening, families may schedule a complimentary visit to see the practice and meet the pediatrician.',
+      'Meet our pediatrician and ask about the practice before choosing care. Free introductions are planned after opening.',
     full:
-      'Meet the pediatrician, see the office, and ask questions before choosing a practice. Complimentary meet-and-greets are planned after opening; booking is not available yet.',
-    nextStep: { href: '/about/', label: 'Get to know our pediatrician' },
+      'A complimentary introduction lets families meet our pediatrician and ask about the practice before choosing care. Planned after opening; it is not a medical visit.',
+    nextStep: { href: '/meet-and-greet/', label: 'Explore Meet & Greet' },
+    detailHref: '/meet-and-greet/',
     featured: true,
   },
   {
@@ -37,8 +40,8 @@ export const services: ServiceItem[] = [
     short:
       'Newborn hospital visits at Baylor Scott & White McKinney are planned, subject to hospital arrangements.',
     full:
-      'After opening and completion of hospital arrangements, Luma plans to provide newborn rounding at Baylor Scott & White Medical Center in McKinney, supporting the transition from hospital to outpatient pediatric care.',
-    nextStep: { href: '/new-patients/#what-to-bring', label: 'See what to bring after discharge' },
+      'Hospital newborn rounds at Baylor Scott & White Medical Center in McKinney are planned after opening, subject to assignment, privileges, and final hospital arrangements. Hospital care is separate from routine newborn office visits.',
+    nextStep: { href: '/newborn-care/#first-visits', label: 'Explore newborn office follow-up' },
     featured: true,
   },
   {
@@ -46,10 +49,11 @@ export const services: ServiceItem[] = [
     icon: 'lucide:baby',
     title: 'Newborn Care',
     short:
-      'Feeding support, growth tracking, jaundice screening, and newborn visits.',
+      'Early checkups, feeding guidance, growth and weight monitoring, and support for new parents.',
     full:
-      'Planned newborn visits include breast and bottle-feeding support, growth and weight monitoring, jaundice screening, and time to discuss sleep, crying, and the first weeks at home.',
-    nextStep: { href: '/new-patients/#first-visit', label: 'See what a first visit involves' },
+      'Planned newborn visits focus on feeding, growth, weight monitoring, jaundice, and the questions that come with your baby’s earliest days. Learn about our approach and what to expect at a first visit.',
+    nextStep: { href: '/newborn-care/', label: 'Explore Newborn Care' },
+    detailHref: '/newborn-care/',
     featured: true,
   },
   {
@@ -59,8 +63,9 @@ export const services: ServiceItem[] = [
     short:
       'Routine checkups, developmental screening, and age-specific guidance.',
     full:
-      'Planned well-child visits follow the recommended schedule from infancy through adolescence. Visits include a physical exam, developmental and behavioral screening, growth tracking, age-specific guidance, and time for questions.',
-    nextStep: { href: '/new-patients/#first-visit', label: 'Plan your child’s first visit' },
+      'Planned routine pediatric checkups help monitor growth and development, review recommended screenings and vaccines, and give families time to discuss questions and concerns.',
+    nextStep: { href: '/well-child-visits/', label: 'Explore Well-Child Visits' },
+    detailHref: '/well-child-visits/',
     featured: true,
   },
   {
@@ -68,9 +73,9 @@ export const services: ServiceItem[] = [
     icon: 'lucide:heart',
     title: 'Same-Day Sick Visits',
     short:
-      'Planned same-day appointments for fevers, infections, injuries, and the unexpected.',
+      'Planned same-day appointments for fevers, infections, and minor injuries, when capacity allows.',
     full:
-      'After opening, we plan to offer same-day appointments for fevers, coughs, ear pain, stomach bugs, rashes, and injuries. Availability will depend on the day’s appointment capacity.',
+      'After opening, we plan to offer same-day appointments for fevers, coughs, ear pain, stomach bugs, rashes, and minor injuries. Availability will depend on the day’s appointment capacity.',
     nextStep: { href: '/faq/#same-day-visits', label: 'Read about same-day availability' },
     featured: true,
   },

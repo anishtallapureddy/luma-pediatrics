@@ -2,7 +2,7 @@
 title: "The childhood vaccine schedule, explained"
 description: "A pediatrician's plain-English guide to the AAP childhood vaccine schedule, what each vaccine protects against, and why timing matters."
 publishDate: 2026-09-06
-updatedDate: 2026-09-18
+updatedDate: 2026-11-01
 hero: /images/blog-vaccines.jpg
 heroWide: /images/blog-vaccines-16x9.jpg
 heroSquare: /images/blog-vaccines-1x1.jpg
@@ -12,32 +12,15 @@ tags: ["vaccines", "schedule", "well-visits", "prevention"]
 
 Vaccines are among the most important and thoroughly studied tools in pediatric care. They protect children from diseases that, within living memory, regularly killed or caused lasting disability. They also help protect the people around your child: newborn siblings, grandparents, and neighbors going through treatment that leaves them vulnerable.
 
-And if the schedule looks like an overwhelming wall of acronyms, you are in very good company. Almost every parent feels that way the first time they see it. Here is the short version, the longer version, and honest answers to the questions parents ask most.
+This guide explains the vaccine names, why timing matters, and questions to discuss with your child's healthcare provider.
 
-## The short version, by age
+## Find the age-based schedule
 
-This guide follows the [American Academy of Pediatrics](https://www.healthychildren.org/English/safety-prevention/immunizations/Pages/Recommended-Immunization-Schedules.aspx) immunization schedule. In summary:
-
-- **Birth:** Hepatitis B
-- **1 month:** Hepatitis B
-- **2 months:** DTaP, Hib, IPV (polio), PCV15, Rotavirus (oral)
-- **4 months:** DTaP, Hib, IPV (polio), PCV15, Rotavirus (oral)
-- **6 months:** DTaP, Hib, IPV (polio), PCV15, Rotavirus (oral)
-- **9 months:** Hepatitis B
-- **12 months:** MMR, PCV15
-- **15 months:** Varicella (chickenpox), Hepatitis A
-- **18 months:** Hib, DTaP
-- **24 months:** Hepatitis A
-- **4–6 years:** DTaP, IPV, MMR, Varicella boosters before kindergarten
-- **9–12 years:** HPV, which can begin at age 9
-- **11–12 years:** Tdap, Meningococcal (MenACWY)
-- **16 years:** MenACWY booster, MenB (shared decision-making)
-- **RSV season:** RSV antibody (nirsevimab) for infants under 8 months entering their first season
-- **Annually, age 6 months+:** Flu vaccine; COVID-19 based on age and risk
+See our [childhood vaccine schedule](/vaccines/) for the age-based reference and its review date. It follows the [American Academy of Pediatrics](https://www.healthychildren.org/English/safety-prevention/immunizations/Pages/Recommended-Immunization-Schedules.aspx) framework. Your child's healthcare provider can review prior doses, medical history, and catch-up needs.
 
 ## What each one protects against
 
-Those acronyms are much less intimidating once you know what each one is quietly preventing.
+Use this table to look up the names on your child's vaccine record.
 
 | Vaccine | Protects against |
 | --- | --- |
@@ -58,15 +41,13 @@ Those acronyms are much less intimidating once you know what each one is quietly
 
 ## The questions parents ask most
 
-These come up constantly, and they are all good questions. Asking them is part of being a thoughtful parent, not a sign of doubt.
-
 **Why so many at once?** The doses are timed to the windows in which your child's immune system can build the strongest, longest-lasting protection, and **before** the ages at which these diseases are most dangerous. Spreading vaccines out delays protection without improving safety.
 
 **Are they safe to give together?** Yes. Decades of research support giving recommended vaccines together. The immune system routinely responds to far more antigens during ordinary daily life.
 
 **What about side effects?** Most children have a sore arm or leg, mild fussiness, or a low-grade fever for 24–48 hours. Age-appropriate acetaminophen or ibuprofen may help with discomfort. Severe reactions are rare, and healthcare providers screen for relevant risk factors.
 
-**My child missed a dose. Do we start over?** Usually not, and this worries parents far more than it needs to. A healthcare provider can review the record and create an appropriate catch-up schedule.
+**My child missed a dose. Do we start over?** Usually not. A healthcare provider can review the record and create an appropriate catch-up schedule.
 
 **HPV at 9–12 feels young.** It is a common reaction, and the timing is deliberate. The vaccine works best before exposure, and the immune response is strong at this age. The AAP now prefers starting at 9 rather than waiting until 11–12, because earlier starts improve the odds of finishing the series. Starting before the 15th birthday usually requires two doses instead of three and helps prevent six cancers.
 
@@ -77,7 +58,5 @@ Vaccine records have a way of scattering across every place a child has ever bee
 ## A note from us
 
 Luma Pediatrics plans to follow the AAP immunization schedule after opening. Until then, discuss questions about your child's vaccine schedule with their current healthcare provider.
-
-We know this topic carries more questions than most, and none of them deserve to be rushed. Making the schedule feel understandable, rather than overwhelming, is one of the things we care about most.
 
 *This article is for general educational purposes and is not a substitute for advice from your child's pediatrician.*

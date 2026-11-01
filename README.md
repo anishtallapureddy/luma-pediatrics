@@ -25,6 +25,41 @@ npm run check    # type + content checks
 npm run check:seo # verify GA4, schema, NAP, social metadata, sitemap, and robots after a build
 ```
 
+## Dedicated service pages and launch controls
+
+`/services/` remains the complete Services hub. Newborn Care, Well-Child Visits,
+and the Free Meet & Greet have dedicated pages using `ServicePageLayout`,
+`ServiceProvider`, and `ServiceFaq`. Existing Services anchors remain valid.
+
+Medical booking stays disabled by default. In `src/site.config.ts`,
+`newbornScheduling` and `wellChildScheduling` each have an independent `enabled`
+flag and empty `url`. Their November 16, 2026 launch targets are informational:
+dates never activate booking. The November 30, 2026 opening target remains
+subject to readiness and does not change the clinic's pre-opening status.
+
+Before enabling either medical service, obtain the practice-approved HTTPS
+Phreesia URL for that appointment type; verify visit dates, capacity, insurance,
+fees, and intake/privacy handling. Set its URL and enable flag only with approval,
+then rebuild, validate, and publish through the normal reviewed deployment.
+Invalid enabled URLs fail explicitly. This website adds no intake forms,
+clinical-flow tracking, or advertising pixels.
+
+The Meet & Greet deliberately remains an inquiry link, not medical booking.
+Before replacing it with scheduling, confirm the clinic is open and approve a
+dedicated, capacity-controlled **nonclinical** workflow, attendee policy, and
+visit arrangements. Do not route it to a generic medical appointment type.
+
+**Physician approval before publication:** review the new clinical copy and the
+hospital-rounding section, including assignment, privileges, and final Baylor
+Scott & White McKinney arrangements. No delivery attendance or universal hospital
+coverage is promised.
+Review the complete vaccine reference, including the corrected Hib timing at
+12–15 months and planned product choices. The Hib source-check date is not
+clinical approval; any future physician-review attribution must reflect an
+actual confirmed review.
+
+Run `npm run check`, `npm run test:run`, `npm run build`, and `npm run check:seo`.
+
 ## Google Maps locator
 
 The Contact page progressively enhances its existing iframe map with Google's
@@ -93,6 +128,58 @@ Console owner or full user must paste each URL into **URL Inspection** and
 choose **Request indexing**. Submit
 `https://www.lumapediatrics.com/sitemap-index.xml` once through the Sitemaps
 report. Repeated requests for the same URL do not accelerate crawling.
+
+### Search, maps and AI discovery
+
+The crawl rules explicitly allow Googlebot, Bingbot, Applebot, OpenAI search,
+Claude search/user retrieval and Perplexity. These named rules make the existing
+public-crawl policy clear; the wildcard already allowed unlisted crawlers.
+Training/content-use permissions remain unchanged and are separate from search
+eligibility. Do not treat training access as a ranking or citation guarantee.
+
+`/llms.txt` is generated at build time from `SITE` and the service catalog. It
+includes the three dedicated service pages, current booking controls and the
+provider-visibility flag, rather than maintaining a second, drifting biography.
+It is an optional summary, not a special Google ranking signal or a replacement
+for the public HTML, sitemap and structured data.
+Scroll-reveal sections have a no-JavaScript visibility fallback. Core page
+content and links are present in static HTML; discovery does not depend on
+executing the animation or scheduling scripts.
+
+**Owner-only setup before publication:**
+
+- Verify the canonical domain in Google Search Console and Bing Webmaster
+  Tools; submit the sitemap and inspect the priority URLs after they are live.
+  Review Google's generative-AI inclusion settings and available performance
+  reports in Search Console.
+- Claim or verify the Google Business Profile, Apple Business location
+  (formerly Business Connect) and Bing Places listing. Use one McKinney clinic,
+  the website's exact name/address/phone and an **Opening Soon** status.
+  Confirm the opening target with the practice; do not publish operating hours
+  or mark the clinic open prematurely.
+- Add verified listing URLs to the existing `SITE.social.googleBusiness`,
+  `appleMaps` and `bingPlaces` fields so they join the linked identity schema.
+  Do not invent listing URLs or create separate listings for service-area pages.
+- Reconcile older healthcare-directory and NPPES information with the approved
+  clinic identity. Confirm the organization NPI before requesting corrections;
+  do not replace the approved website details with an unverified directory record.
+  The official CMS NPPES API check on November 1, 2026 matched the configured NPI,
+  legal name and clinic address, but its location telephone did not match the
+  approved office number. The practice owner should correct the registry record
+  and downstream listings; the website retains (469) 200-1151.
+- After an approved deployment, check the existing workflow's IndexNow result,
+  indexing/exclusion reports, search queries and AI referral traffic. Re-check
+  snippets for stale pre-opening or scheduling claims. No URL submission or
+  listing change is performed by a local build.
+
+Official guidance checked November 1, 2026:
+[Google Search and generative AI](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide),
+[Bing Webmaster Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a),
+[OpenAI publisher guidance](https://help.openai.com/en/articles/12627856-publishers-and-developers-faq),
+[Anthropic crawlers](https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler),
+[Applebot](https://support.apple.com/en-us/119829),
+[Google future opening dates](https://support.google.com/business/answer/9174409),
+and [Apple Opening Soon locations](https://support.apple.com/guide/business/add-a-single-location-abcb98816a34/web).
 
 ## Project structure
 

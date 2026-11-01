@@ -2,7 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
 import { SITE } from '../site.config';
+import { getMedicalScheduling } from '../utils/serviceScheduling';
 
+const medicalScheduling = getMedicalScheduling(SITE);
 const lastUpdated = 'September 2026';
 ---
 
@@ -35,8 +37,11 @@ const lastUpdated = 'September 2026';
       <h2>Future practice status</h2>
       <p>
         Luma Pediatrics is a future independent pediatric practice in McKinney, Texas.
-        <strong>{SITE.status}.</strong> The practice is not currently open, accepting patients, or scheduling
-        appointments. Descriptions of services, hours, and availability are plans and may change
+        <strong>{SITE.status}.</strong>
+        {medicalScheduling.enabled
+          ? 'The practice is not currently open or providing clinical care. Online scheduling is available for selected medical visits.'
+          : 'The practice is not currently open, accepting patients, or scheduling appointments.'}
+        Descriptions of services, hours, and availability are plans and may change
         before opening.
       </p>
 

@@ -2,7 +2,9 @@
 import { Icon } from 'astro-icon/components';
 import Logo from './Logo.astro';
 import { SITE } from '../site.config';
+import { getMedicalScheduling } from '../utils/serviceScheduling';
 
+const medicalScheduling = getMedicalScheduling(SITE);
 // Hide the "Home" link in the visible nav (the logo is the Home affordance)
 const navLinks = SITE.nav.filter((n) => n.href !== '/');
 const normalizePath = (path: string) => path.replace(/\/+$/, '') || '/';
@@ -16,6 +18,7 @@ const resourcePaths = [
 ];
 const isActive = (href: string) => {
   const path = normalizePath(href);
+  if (path === '/services' && ['/newborn-care', '/meet-and-greet', '/well-child-visits'].includes(currentPath)) return true;
   if (path === '/resources') {
     return resourcePaths.some(
       (resourcePath) =>
@@ -133,7 +136,7 @@ const isActive = (href: string) => {
         <Icon name="lucide:sparkles" class="w-3.5 h-3.5 text-[var(--color-sun)]" stroke-width="1.8" aria-hidden="true" />
         <strong>{SITE.status} in McKinney.</strong>
       </span>
-      <span>Not currently open or scheduling appointments.</span>
+      <span>{medicalScheduling.enabled ? 'Not currently open. Online scheduling is available for selected medical visits.' : 'Not currently open or scheduling appointments.'}</span>
       <a href="/#practice-updates" class="font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
         Get updates
       </a>

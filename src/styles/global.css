@@ -37,6 +37,7 @@
   --color-sage:                   #6F8064;   /* AA-capable CTA fill */
   --color-sage-light:             #7B8F70;   /* brand sage - backgrounds, decoration */
   --color-sage-hover:             #59694F;
+  --color-sage-text:              #43583E;
   --color-sage-foreground:        #FFFFFF;
 
   /* Golden yellow - decorative highlights only; not used for text on cream (insufficient contrast) */
@@ -314,7 +315,7 @@
     font-family: var(--font-display);
     font-style: italic;
     font-weight: 400;
-    color: var(--color-sage-hover);
+    color: var(--color-sage-text);
     letter-spacing: 0.005em;
   }
 
@@ -578,9 +579,6 @@
     line-height: 1;
   }
 
-  .walkthrough-step {
-    padding: 1rem 0;
-  }
   .walkthrough-photo {
     position: relative;
     overflow: hidden;
@@ -677,7 +675,7 @@
   .hero-credibility-ribbon {
     position: relative;
     z-index: 2;
-    background: var(--color-sage-light);
+    background: var(--color-sage-hover);
     color: var(--color-sage-foreground);
   }
 

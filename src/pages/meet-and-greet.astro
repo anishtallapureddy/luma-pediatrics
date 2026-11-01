@@ -1,0 +1,112 @@
+---
+import ServicePageLayout from '../layouts/ServicePageLayout.astro';
+import ServiceProvider from '../components/ServiceProvider.astro';
+import ServiceFaq from '../components/ServiceFaq.astro';
+import Picture from '../components/Picture.astro';
+import Button from '../components/Button.astro';
+import { SITE } from '../site.config';
+
+const primary = { href: '/contact/', label: 'Ask About a Meet & Greet' };
+const physician = SITE.showProviderProfile
+  ? `Dr. ${SITE.provider.schemaName}`
+  : 'our pediatrician';
+const faqs = [
+  { q: 'Is the Meet & Greet really free?', a: 'Yes. The planned introduction is complimentary. Slots are not available yet.' },
+  { q: 'Can I bring my child?', a: 'Child attendance arrangements have not been confirmed. Please ask the office before making plans; details will be announced when the offering is ready.' },
+  { q: SITE.showProviderProfile ? 'Can I meet Dr. T before my baby is born?' : 'Can I meet the pediatrician before my baby is born?', a: 'Expectant parents are welcome to explore the planned offering. Meet & Greets are planned after opening, once arrangements are confirmed; there are no appointments yet.' },
+  { q: 'Will my child receive medical care during the session?', a: "No. It is an introduction only. Continue using your current healthcare provider for medical concerns." },
+  { q: 'How do I schedule a Meet & Greet?', a: 'Scheduling is not available yet. Ask the office about the planned offering. After opening, booking details will be announced when a separate, capacity-controlled Meet & Greet option is approved.' },
+];
+---
+<ServicePageLayout
+  title="Free Pediatrician Meet & Greet in McKinney, TX | Luma Pediatrics"
+  description={SITE.showProviderProfile ? 'Meet Dr. Praveena Tallapureddy (Dr. T), learn about Luma Pediatrics, and see if our McKinney practice is the right fit for your family.' : 'Meet our pediatrician, learn about Luma Pediatrics, and see if our McKinney practice is the right fit for your family.'}
+  path="/meet-and-greet/"
+  eyebrow="Free Meet & Greet"
+  heading="Meet Your Pediatrician Before You Decide"
+  intro={`Meet ${physician}, ask about our approach to care, and decide whether Luma is right for your family. Complimentary introductions are planned after opening.`}
+  primary={primary}
+>
+  <p slot="hero-note">Dates, visit arrangements, and booking are not available yet.</p>
+  {SITE.showProviderProfile && (
+    <Picture
+      slot="hero-image"
+      src="/images/provider-headshot.jpg"
+      alt="Dr. Praveena Tallapureddy, founder of Luma Pediatrics"
+      width={1003}
+      height={1254}
+      loading="eager"
+      fetchpriority="high"
+    />
+  )}
+
+  <section>
+    <div class="service-width">
+      <h2>What Is a Meet & Greet?</h2>
+      <p class="service-copy mt-5">
+        This is a complimentary introduction, not a billable clinical visit.
+        You can ask how appointments, communication, and establishing care will work.
+      </p>
+      <p class="service-copy mt-4">
+        A Meet &amp; Greet does not include examinations, diagnosis, treatment, prescriptions,
+        or individualized medical advice. Attending does not establish a physician-patient relationship.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="service-width">
+      <h2>What to Expect</h2>
+      <ol class="service-grid">
+        {[
+          [SITE.showProviderProfile ? 'Meet Dr. Tallapureddy' : 'Meet our pediatrician', 'Get to know the pediatrician who founded Luma.'],
+          ["Learn about Luma's approach", 'Discuss continuity of care and how we plan to work with parents.'],
+          ['Ask your questions', 'Ask how visits and communication will work. Visit arrangements will be confirmed when the offering is ready.'],
+          ['Learn how to establish care', 'Find out what records and registration steps will be needed when you are ready.'],
+        ].map(([title, description], index) => (
+          <li class="service-card">
+            <p class="text-sm text-[var(--color-muted-foreground)]">Step {index + 1}</p>
+            <h3 class="mt-3">{title}</h3>
+            <p>{description}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="service-width">
+      <h2>Who Is This For?</h2>
+      <ul class="service-list">
+        <li>Expectant parents choosing a first pediatrician</li>
+        <li>Families with newborns</li>
+        <li>Families moving to McKinney or nearby communities</li>
+        <li>Parents exploring a different pediatric practice</li>
+      </ul>
+      <p class="service-copy mt-5">Expecting a baby? <a href="/newborn-care/" class="service-link">Explore planned newborn care</a>.</p>
+    </div>
+  </section>
+
+  <ServiceProvider
+    heading={SITE.showProviderProfile ? 'Meet Dr. T' : 'Get to Know Luma'}
+    introduction={SITE.showProviderProfile
+      ? `${SITE.provider.shortName}, also known as ${SITE.provider.familiarName}, is a board-certified pediatrician and Luma's founder. She created this independent practice so families could build a continuing relationship with their pediatrician.`
+      : 'Luma is an independent, physician-led practice built around a continuing relationship between families and their pediatrician.'}
+    points={[
+      'One primary pediatrician from the newborn years through adolescence',
+      'Clear communication and time for questions',
+      "Parents involved in decisions about their child's care",
+    ]}
+    showPhoto={false}
+  />
+  <ServiceFaq items={faqs} />
+
+  <section class="service-final">
+    <div class="service-width">
+      <h2>Get to Know Your Child's Future Pediatrician</h2>
+      <p class="service-copy mt-5">Ask about the planned introduction before deciding on care. Please keep inquiries to general practice questions, not medical information.</p>
+      <div class="service-actions mt-6"><Button href={primary.href}>{primary.label}</Button></div>
+      <a href="/new-patients/" class="service-link mt-4">Ready to establish care? Read the New Patients guide</a>
+    </div>
+  </section>
+</ServicePageLayout>

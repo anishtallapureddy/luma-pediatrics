@@ -38,9 +38,9 @@ import { SITE } from '../site.config';
 </div>
 
 <style>
-  /* Add bottom padding to main on mobile so the sticky bar never covers content */
+  /* Reserve space after the footer for the fixed contact bar. */
   @media (max-width: 767px) {
-    :global(main) {
+    :global(body) {
       padding-bottom: calc(7rem + env(safe-area-inset-bottom));
     }
   }

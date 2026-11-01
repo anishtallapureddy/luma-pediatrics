@@ -1,0 +1,128 @@
+---
+import ServicePageLayout from '../layouts/ServicePageLayout.astro';
+import ServiceProvider from '../components/ServiceProvider.astro';
+import ServiceFaq from '../components/ServiceFaq.astro';
+import Picture from '../components/Picture.astro';
+import Button from '../components/Button.astro';
+import { SITE } from '../site.config';
+import { getNewbornScheduling } from '../utils/newbornScheduling';
+
+const primary = getNewbornScheduling(SITE.newbornScheduling);
+const physician = SITE.showProviderProfile
+  ? `Dr. ${SITE.provider.schemaName}`
+  : 'our pediatrician';
+const faqs = [
+  { q: 'When should my newborn see a pediatrician after leaving the hospital?', a: "Follow the timing recommended by your baby's discharge team. The first visit should be arranged soon after discharge, with timing based on feeding, weight, bilirubin results, and other needs. Do not postpone recommended care while waiting for Luma to open." },
+  { q: 'Can I choose Luma Pediatrics before my baby is born?', a: 'You can learn about our pediatrician and planned care before delivery. The practice is not open yet. Make a newborn follow-up plan with your delivery and discharge teams, including a provider who is available when your baby needs care.' },
+  { q: "What should I bring to my newborn's first visit?", a: 'Bring hospital discharge paperwork, a parent or guardian photo ID, insurance information, any available vaccination or screening records, and your questions about feeding, weight, sleep, or other concerns.' },
+  { q: 'Can we discuss breastfeeding, formula feeding, and weight gain?', a: "Yes. Newborn office care includes discussion of feeding and weight changes, with assessment and follow-up based on your baby's needs. Additional feeding support or referral may be recommended when needed." },
+  { q: 'Does my baby need follow-up for jaundice?', a: "Follow your discharge team's bilirubin-testing and follow-up plan. Some babies need earlier or additional checks based on their results and feeding. If you are concerned about jaundice or feeding, contact your baby's current healthcare provider rather than waiting for a future appointment." },
+];
+const topics = [
+  ['Feeding and Nutrition', 'Breastfeeding and formula-feeding questions, intake, and feeding concerns.'],
+  ['Growth and Weight', 'Weight changes and early growth, with follow-up tailored to your baby.'],
+  ['Jaundice and Newborn Health', 'Assessment of jaundice and general newborn health, with appropriate follow-up.'],
+  ['Sleep and Safety', 'Safe sleep guidance and answers to newborn safety questions.'],
+  ['Early Development', 'Typical newborn behavior, reflexes, and early developmental observations.'],
+  ['Guidance for New Parents', 'Practical questions about crying, diaper output, bathing, and the first weeks at home.'],
+];
+---
+<ServicePageLayout
+  title="Newborn Pediatric Care in McKinney, TX | Luma Pediatrics"
+  description={SITE.showProviderProfile ? 'Newborn pediatric care in McKinney, TX with Dr. Praveena Tallapureddy. Learn about first visits, feeding, growth, jaundice, and newborn checkups.' : 'Newborn pediatric care in McKinney, TX. Learn about first visits, feeding, growth, jaundice, and newborn checkups at Luma Pediatrics.'}
+  path="/newborn-care/"
+  eyebrow="Newborn Care"
+  heading="Newborn Pediatric Care in McKinney, TX"
+  intro={`Your baby's first days bring questions about feeding, weight, and what is normal. After opening, Luma plans newborn care with ${physician} to help you understand your baby's needs and next steps.`}
+  primary={primary}
+  plannedLaunchDate={SITE.newbornScheduling.plannedLaunchDate}
+>
+  <Picture
+    slot="hero-image"
+    src="/images/blog-newborn.jpg"
+    alt="A newborn's tiny hand resting against a parent's finger"
+    width={1200}
+    height={900}
+    loading="eager"
+    fetchpriority="high"
+  />
+
+  <section id="first-visits" class="scroll-mt-32">
+    <div class="service-width">
+      <h2>Your Baby's First Pediatric Visits</h2>
+      <p class="service-copy mt-5">Arrange follow-up soon after hospital discharge, following the timing recommended by your baby's discharge team. The right timing and follow-up depend on each baby's needs.</p>
+      <ul class="service-list">
+        <li>A newborn physical examination</li>
+        <li>Growth and weight checks</li>
+        <li>Review of feeding and hydration</li>
+        <li>Jaundice assessment</li>
+        <li>General newborn health and developmental guidance</li>
+        <li>Follow-up visits when needed</li>
+      </ul>
+      <p class="service-copy mt-5"><strong>For care needed now:</strong> use your discharge team or current pediatrician. Do not delay recommended newborn care while Luma is preparing to open.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="service-width">
+      <h2>What We Help With</h2>
+      <div class="service-grid service-grid--three">
+        {topics.map(([title, description]) => <article class="service-card"><h3>{title}</h3><p>{description}</p></article>)}
+      </div>
+    </div>
+  </section>
+
+  <ServiceProvider
+    heading="Why Consider Luma for Your Baby?"
+    introduction={SITE.showProviderProfile
+      ? `${SITE.provider.shortName} is a board-certified pediatrician and the founder of Luma, an independent practice in McKinney. Her approach gives parents a voice in their baby's care.`
+      : "Luma is an independent, physician-led practice in McKinney. Our approach gives parents a voice in their baby's care."}
+    points={[
+      'Continuing care with one pediatrician as your baby grows',
+      'Feeding, growth, and follow-up guidance grounded in evidence-based pediatrics',
+      'Time for questions and clear explanations of the next steps',
+    ]}
+  />
+
+  <section>
+    <div class="service-width">
+      <h2>Preparing for Your First Newborn Appointment</h2>
+      <ul class="service-list">
+        <li>Hospital discharge paperwork</li>
+        <li>Parent or guardian photo ID</li>
+        <li>Insurance information</li>
+        <li>Any available vaccination or screening records</li>
+        <li>Questions about feeding, weight, sleep, or other concerns</li>
+      </ul>
+      <a href="/new-patients/" class="service-link mt-4">See first-visit steps and insurance status</a>
+      <p class="service-copy mt-3">For practical reading before the visit, <a href="/blog/newborn-first-week/">see our educational first-week guide</a>.</p>
+      <p class="service-copy mt-3">Still choosing a pediatrician? <a href="/meet-and-greet/">Learn about the planned Free Meet &amp; Greet</a>.</p>
+    </div>
+  </section>
+
+  <!-- Physician approval required before publication: confirm hospital name, privileges, assignment, and rounding arrangements. -->
+  <section id="hospital-care" class="scroll-mt-32">
+    <div class="service-width">
+      <h2>Hospital Newborn Care Is Separate</h2>
+      <p class="service-copy mt-5">Newborn rounds at Baylor Scott &amp; White Medical Center in McKinney are planned after opening, subject to hospital assignment, privileges, and final arrangements.</p>
+      <p class="service-copy mt-4">This does not mean our pediatrician will attend every delivery or see every newborn at that hospital. Your hospital team will explain who is caring for your baby and help arrange discharge follow-up. Routine newborn office visits are a separate part of care.</p>
+      <a href="/services/#newborn-rounds-bsw-mckinney" class="service-link mt-3">See the Services overview</a>
+    </div>
+  </section>
+
+  <ServiceFaq items={faqs} />
+
+  <section class="service-final">
+    <div class="service-width">
+      <h2>Looking for a pediatrician for your newborn?</h2>
+      <p class="service-copy mt-5">{primary.enabled
+        ? "Review appointment dates and coverage before scheduling your baby's visit."
+        : 'Start with the first-visit guide for records, insurance information, and how to prepare.'}</p>
+      <div class="service-actions mt-6">
+        <Button href={primary.href}>{primary.label}</Button>
+        <Button href={primary.enabled ? SITE.contact.phoneHref : '/contact/'} variant="secondary">{primary.enabled ? 'Call Our Office' : 'Contact Our Office'}</Button>
+      </div>
+      <p class="mt-4">Office: {SITE.contact.phone}</p>
+    </div>
+  </section>
+</ServicePageLayout>
