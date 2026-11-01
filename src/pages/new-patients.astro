@@ -4,6 +4,14 @@ import PageDecor from '../components/PageDecor.astro';
 import AfterHoursCard from '../components/AfterHoursCard.astro';
 import { Icon } from 'astro-icon/components';
 import { SITE } from '../site.config';
+import { getMedicalScheduling } from '../utils/serviceScheduling';
+
+const medicalScheduling = getMedicalScheduling(SITE);
+const bookingOptions = [medicalScheduling.newborn, medicalScheduling.wellChild].filter(({ enabled }) => enabled);
+const dateFormat = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' } as const;
+const openingTarget = new Date(SITE.openingTargetDate).toLocaleDateString('en-US', dateFormat);
+const bookingTargets = [...new Set([SITE.newbornScheduling.plannedLaunchDate, SITE.wellChildScheduling.plannedLaunchDate])]
+  .map((date) => new Date(date).toLocaleDateString('en-US', dateFormat)).join(' and ');
 
 /**
  * First-visit walkthrough. Photos are intentionally omitted for now; the
@@ -13,8 +21,10 @@ import { SITE } from '../site.config';
 const steps = [
   {
     n: '1',
-    t: 'Schedule when appointments open',
-    d: 'Scheduling is not available yet. We’ll share appointment details closer to opening.',
+    t: medicalScheduling.enabled ? 'Schedule an available visit type' : 'Schedule when appointments open',
+    d: medicalScheduling.enabled
+      ? 'Online booking is available for the visit types linked below. The practice is not open yet; confirm appointment dates, insurance, and costs before booking.'
+      : 'Scheduling is not available yet. We’ll share appointment details closer to opening.',
     img: '/images/journey-1.jpg',
     alt: 'A parent booking a pediatric visit online from a warm, sunlit home',
   },
@@ -53,7 +63,7 @@ const bringList = [
 <BaseLayout
   title="New Patients | Luma Pediatrics in McKinney, TX"
   path="/new-patients"
-  description={`Learn about the planned first-visit experience at ${SITE.name} in McKinney, TX. ${SITE.status}; scheduling and insurance participation are not yet available.`}
+  description={`Learn about the planned first-visit experience at ${SITE.name} in McKinney, TX. ${SITE.status}; ${medicalScheduling.enabled ? 'booking is available for selected medical visits; insurance participation is not confirmed.' : 'scheduling and insurance participation are not yet available.'}`}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'New Patients', path: '/new-patients' },
@@ -80,7 +90,9 @@ const bringList = [
     <PageDecor variant="minimal" sparkles={6} />
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <p class="max-w-3xl mx-auto mb-6 text-[var(--color-foreground)]/80 leading-relaxed">
-        This is the planned visit experience after opening.
+        Our target opening is {openingTarget}, subject to readiness.
+        {!medicalScheduling.enabled && <> Online medical booking is targeted for {bookingTargets}, but appointments are not available yet.</>}
+        This guide describes visits after opening.
         <a href="/#practice-updates" class="font-semibold text-[var(--color-primary)] underline underline-offset-4">Opening updates</a>
         are optional and are not patient registration.
       </p>
@@ -95,6 +107,11 @@ const bringList = [
             <div class="min-w-0 flex-1">
               <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight">{t}</h2>
               <p class="mt-3 text-[var(--color-foreground)]/82 leading-relaxed">{d}</p>
+              {n === '1' && bookingOptions.length > 0 && (
+                <div class="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+                  {bookingOptions.map(({ href, label }) => <a href={href} class="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">{label}</a>)}
+                </div>
+              )}
             </div>
           </li>
         ))}
@@ -102,11 +119,12 @@ const bringList = [
     </div>
   </section>
 
-  <!-- AFTER-HOURS GUIDANCE -->
-  <section class="pb-16 reveal relative overflow-hidden">
-    <PageDecor variant="minimal" sparkles={6} />
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <AfterHoursCard />
+  <section class="pb-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl md:text-3xl">Expecting a baby?</h2>
+      <p class="mt-4 leading-relaxed">Choosing a pediatrician can help you prepare for your baby's arrival. <a href="/newborn-care/" class="font-semibold underline underline-offset-4">Explore Newborn Care</a> and learn what to expect during the first visits.</p>
+      <p class="mt-4 leading-relaxed">Want to get to know our pediatrician first? <a href="/meet-and-greet/" class="font-semibold underline underline-offset-4">Learn about our Free Meet &amp; Greet</a>, planned after opening.</p>
+      <p class="mt-4 leading-relaxed">For routine preventive care, <a href="/well-child-visits/" class="font-semibold underline underline-offset-4">explore our Well-Child Visits</a>.</p>
     </div>
   </section>
 
@@ -135,10 +153,9 @@ const bringList = [
           <span class="eyebrow eyebrow-sun">Insurance</span>
           <h2 class="mt-5 text-2xl md:text-3xl font-extrabold tracking-tight">Accepted plans are not confirmed yet</h2>
           <p class="mt-5 text-[var(--color-foreground)]/85 leading-relaxed">
-            We're completing credentialing now, and we'll share the full list of accepted plans closer to opening.
-          </p>
-          <p class="mt-4 text-[var(--color-foreground)]/85 leading-relaxed">
-            We will publish accepted plans before scheduling opens. Self-pay families will also be welcome, with pricing discussed transparently up front.
+            Insurance credentialing is in progress.
+            {medicalScheduling.enabled ? 'Confirmed plans will be published once credentialing is complete; verify coverage and costs before booking.' : 'We will publish confirmed plans before scheduling opens.'}
+            Self-pay care is also planned, with fees discussed before the visit.
           </p>
           <a href="/#practice-updates" class="mt-5 inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Get opening and insurance updates</a>
         </div>
@@ -146,10 +163,10 @@ const bringList = [
     </div>
   </section>
 
-</BaseLayout>
+  <section class="pt-12 pb-16 reveal">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <AfterHoursCard />
+    </div>
+  </section>
 
-<style>
-  .walkthrough-step {
-    padding: 1.5rem;
-  }
-</style>
+</BaseLayout>

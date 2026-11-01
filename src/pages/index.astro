@@ -8,26 +8,22 @@ import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 import { featuredServices as services } from '../data/services';
 import Picture from '../components/Picture.astro';
+import { getMedicalScheduling } from '../utils/serviceScheduling';
 
-const saturdayHours = SITE.hours.find(({ day }) => day === 'Saturday');
-const practiceFacts = [
+const medicalScheduling = getMedicalScheduling(SITE);
+const familyBenefits = [
   {
-    icon: 'lucide:award',
-    title: 'One board-certified pediatrician',
-    body: SITE.showProviderProfile
-      ? `${SITE.provider.name} Board certified by the American Board of Pediatrics.`
-      : 'Planned care with the same pediatrician, from routine checkups to follow-up visits.',
+    title: 'Your concerns are heard.',
+    body: 'Time to discuss your child’s health and questions with a board-certified pediatrician.',
   },
   {
-    icon: 'lucide:baby',
-    title: 'Newborns through young adults',
-    body: 'Care is planned from birth through young adulthood, typically up to age 21.',
+    title: 'You understand the plan.',
+    body: 'Clear explanations of care recommendations and practical guidance on what to do next.',
   },
-  ...(saturdayHours ? [{
-    icon: 'lucide:calendar',
-    title: 'Saturday mornings planned',
-    body: `${saturdayHours.time} after opening. Appointments are not available yet.`,
-  }] : []),
+  {
+    title: 'Care as your child grows.',
+    body: 'Guidance on feeding, development, school, and healthy habits through the teen years.',
+  },
 ];
 
 const serviceGroups = [
@@ -36,7 +32,6 @@ const serviceGroups = [
     description: 'Ways to meet Luma and support your baby’s earliest days.',
     serviceTitles: [
       'Free Meet & Greet',
-      'Newborn Rounds at BSW McKinney',
       'Newborn Care',
     ],
   },
@@ -47,15 +42,6 @@ const serviceGroups = [
       'Well-Child Visits',
       'Same-Day Sick Visits',
       'Vaccinations',
-    ],
-  },
-  {
-    title: 'Growing years and follow-up',
-    description: 'Support for school, adolescence, and appropriate virtual follow-up.',
-    serviceTitles: [
-      'School, Sports & Camp Physicals',
-      'Teen & Adolescent Health',
-      'Telehealth / Virtual Visits',
     ],
   },
 ].map((group) => ({
@@ -89,15 +75,12 @@ const trustPhotos = [
   path="/"
   description={`Board-certified pediatric care planned for newborns through teens in McKinney, TX. ${SITE.name} opens late 2026 with well visits, sick care, vaccines, and more.`}
   socialTitle="Luma Pediatrics | McKinney, TX"
-  socialDescription={`Care for your child. Time for you. Board-certified pediatric care planned for newborns to teens. ${SITE.status} in McKinney, Texas.`}
+  socialDescription={`Helping kids thrive. Helping parents feel confident. Thoughtful pediatric care planned for McKinney, Texas. ${SITE.status}.`}
   ogImageAlt={`Luma Pediatrics logo. ${SITE.status} in McKinney, Texas.`}
   preloadImage="/images/luma-hero-banner.webp"
 >
 
-  <!-- ====================================================================
-       HERO - elegant brand vibe: centered logo + serif wordmark + italic
-       gold tagline, gold sparkles, and one clear credential ribbon below.
-       ==================================================================== -->
+  <!-- HERO - outcome-led copy, approved imagery, and family-focused benefits. -->
   <section class="brand-hero overflow-hidden" data-home-section="hero">
     <div class="brand-cloud cloud-left" aria-hidden="true"></div>
     <div class="brand-cloud cloud-right" aria-hidden="true"></div>
@@ -110,30 +93,31 @@ const trustPhotos = [
     <SparkleField count={12} class="z-0" />
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 flex-1 flex items-center">
-      <div class="fade-up grid gap-8 lg:grid-cols-[0.92fr_1.08fr] items-center w-full">
+      <div class="fade-up grid gap-8 lg:grid-cols-2 items-center w-full">
         <div class="text-center lg:text-left">
-          <h1 class="text-4xl md:text-6xl font-semibold tracking-tight leading-[0.98]" style="font-family: var(--font-display);">
-            Care for your child. Time for you.
+          <h1 class="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.08]" style="font-family: var(--font-display);">
+            <span class="block">Helping kids thrive.</span>{' '}
+            <span class="block">Helping parents feel confident.</span>
           </h1>
-          <div class="mt-5 lg:max-w-xs">
+          <div class="mt-3 lg:max-w-xs">
             <StarDivider span="4rem" />
           </div>
-          <p class="mt-5 text-sm md:text-base text-[var(--color-foreground)]/74 max-w-xl md:max-w-none mx-auto lg:mx-0 leading-relaxed lg:whitespace-nowrap">
-            Planned care for newborns to teens, conveniently located just off US-75.
+          <p class="mt-3 text-sm md:text-base text-[var(--color-foreground)]/80 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+            From newborn checkups and well-child visits to sick care and the teen years, Luma Pediatrics is preparing to welcome McKinney families with thoughtful care, clear answers, and a personal approach to your child's health.
           </p>
 
           <div class="mt-6 flex flex-wrap justify-center lg:justify-start gap-3">
-            <Button href="#practice-updates" variant="primary">
-              Get opening updates
+            <Button href="/new-patients/" variant="primary">
+              Plan Your Child's Visit
               <span class="btn-icon-circle" aria-hidden="true">
                 <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
               </span>
             </Button>
-            <Button href="/services/" variant="secondary">Explore pediatric care</Button>
+            <Button href="/about/" variant="secondary">{SITE.showProviderProfile ? 'Meet Dr. Tallapureddy' : 'About Luma'}</Button>
           </div>
         </div>
 
-        <figure class="hero-poster-image hero-poster-image--wide">
+        <figure class="hero-poster-image hero-poster-image--wide" data-home-visual>
           <Picture
             src="/images/luma-hero-banner.jpg"
             alt="Luma Pediatrics logo above the words Where your child's health shines, set in a sunlit nursery with a teddy bear, stacked books, and a wooden rainbow"
@@ -147,14 +131,13 @@ const trustPhotos = [
     </div>
 
     <div class="hero-credibility-ribbon">
-      <div class="hero-credibility-inner">
-        <span class="hero-credibility-icon" aria-hidden="true">
-          <Icon name="lucide:award" class="w-5 h-5" stroke-width="1.8" />
-        </span>
-        <p class="hero-credibility-copy">
-          <strong>Board-certified pediatric care</strong>
-          for North Texas families, guided by AAP recommendations.
-        </p>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 grid gap-6 md:grid-cols-3" data-family-benefits>
+        {familyBenefits.map(({ title, body }) => (
+          <div>
+            <h2 class="text-xl font-semibold leading-snug text-[var(--color-sage-foreground)]">{title}</h2>
+            <p class="mt-2 text-sm leading-relaxed text-[var(--color-sage-foreground)]">{body}</p>
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -209,10 +192,10 @@ const trustPhotos = [
                 {group.description}
               </p>
             </div>
-            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {group.services.map(({ slug, icon, title, short, badge }) => (
+            <div class:list={['grid gap-5 sm:grid-cols-2', group.services.length > 2 && 'lg:grid-cols-3']}>
+              {group.services.map(({ slug, icon, title, short, badge, detailHref }) => (
                 <a
-                  href={`/services/#${slug}`}
+                  href={detailHref ?? `/services/#${slug}`}
                   class="card-lift group flex h-full flex-col rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 text-[var(--color-foreground)] no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2"
                   aria-label={`Learn more about ${title}`}
                 >
@@ -263,7 +246,7 @@ const trustPhotos = [
           Why consider Luma?
         </h2>
         <p class="mt-6 text-lg text-[var(--color-foreground)]/78 leading-relaxed max-w-2xl mx-auto">
-          A physician-led pediatric practice planned for McKinney, Texas.
+          Get to know our approach to children’s health and the questions families bring to each stage.
         </p>
       </div>
 
@@ -291,22 +274,6 @@ const trustPhotos = [
         </a>
       </p>
 
-      <div class="mt-16 overflow-hidden rounded-[2rem] navy-campaign relative p-8 md:p-12">
-        <SparkleField count={8} />
-        <div class="relative">
-          <div class="grid gap-6 md:grid-cols-3">
-            {practiceFacts.map(({ icon, title, body }) => (
-              <article class="card-lift navy-card rounded-[var(--radius-card)] p-8">
-                <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/15 text-[var(--color-sun)] mb-5" aria-hidden="true">
-                  <Icon name={icon} class="w-6 h-6" stroke-width="1.6" />
-                </span>
-                <h3 class="text-xl font-semibold text-white mb-3" style="font-family: var(--font-display);">{title}</h3>
-                <p class="text-white/85 leading-relaxed">{body}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -330,7 +297,7 @@ const trustPhotos = [
             Will Luma accept my insurance?
           </h3>
           <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
-            Insurance credentialing is in progress. We’ll publish confirmed plans before scheduling opens. Self-pay options are also planned.
+            Insurance credentialing is in progress. {medicalScheduling.enabled ? 'Confirmed plans will be published once credentialing is complete.' : 'We’ll publish confirmed plans before scheduling opens.'} Self-pay options are also planned.
           </p>
           <a href="/new-patients/#insurance" class="mt-6 inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
             See insurance and first-visit details →

@@ -5,10 +5,17 @@ import {
   statSync,
 } from 'node:fs';
 import { extname, join, relative, sep } from 'node:path';
+import { SITE } from '../src/site.config.ts';
 
 const root = process.cwd();
 const dist = join(root, 'dist');
 const domain = 'https://www.lumapediatrics.com';
+const medicalBookingEnabled = SITE.newbornScheduling.enabled || SITE.wellChildScheduling.enabled;
+const dedicatedServicePaths = {
+  'free-meet-and-greet': '/meet-and-greet/',
+  'newborn-care': '/newborn-care/',
+  'well-child-visits': '/well-child-visits/',
+};
 const contract = {
   name: 'Luma Pediatrics',
   legalName: 'Luma Physician Group PLLC',
@@ -30,7 +37,7 @@ const contract = {
   homeDescription:
     'Board-certified pediatric care planned for newborns through teens in McKinney, TX. Luma Pediatrics opens late 2026 with well visits, sick care, vaccines, and more.',
   homeSocialDescription:
-    'Care for your child. Time for you. Board-certified pediatric care planned for newborns to teens. Opening late 2026 in McKinney, Texas.',
+    'Helping kids thrive. Helping parents feel confident. Thoughtful pediatric care planned for McKinney, Texas. Opening late 2026.',
 };
 const serviceSlugs = [
   'free-meet-and-greet',
@@ -156,6 +163,7 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
   const titleMatch = html.match(/<title>([\s\S]*?)<\/title>/i);
   expect(titleMatch, `${fileLabel}: title is missing`);
   const title = decodeHtml(titleMatch[1].trim());
+  expect(findTags(html, 'h1').length === 1, `${fileLabel}: expected one clear H1`);
   const description = singleMeta(html, 'name', 'description', fileLabel);
   const expectedSocialTitle =
     canonical === `${domain}/` ? contract.homeSocialTitle : title;
@@ -163,6 +171,14 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
     canonical === `${domain}/` ? contract.homeSocialDescription : description;
   const robots = singleMeta(html, 'name', 'robots', fileLabel);
   const noindex = robots.includes('noindex');
+  const noScriptStyles = html.match(/<noscript>\s*<style[^>]*>([^<]*)<\/style>\s*<\/noscript>/i)?.[1];
+  expect(
+    noScriptStyles &&
+      /opacity:\s*1\s*!important/.test(noScriptStyles) &&
+      /transform:\s*none\s*!important/.test(noScriptStyles) &&
+      /filter:\s*none\s*!important/.test(noScriptStyles),
+    `${fileLabel}: scroll-reveal content must remain visible without JavaScript`,
+  );
   if (!noindex) {
     expect(title.length <= 70, `${fileLabel}: title is unnecessarily long (${title.length} characters)`);
     expect(
@@ -365,11 +381,12 @@ expect(
   'Home Plan Ahead section must link to the new-patient guide',
 );
 for (const value of [
-  'Board-certified',
   'Why consider Luma?',
-  'One board-certified pediatrician',
-  'Newborns through young adults',
-  'Saturday mornings planned',
+  'Helping kids thrive.',
+  'Helping parents feel confident.',
+  'Your concerns are heard.',
+  'You understand the plan.',
+  'Care as your child grows.',
 ]) {
   expect(homeText.includes(value), `Home page is missing restored content: ${value}`);
 }
@@ -380,21 +397,16 @@ expect(
 );
 for (const service of [
   'Free Meet & Greet',
-  'Newborn Rounds at BSW McKinney',
   'Newborn Care',
   'Well-Child Visits',
   'Same-Day Sick Visits',
   'Vaccinations',
-  'School, Sports & Camp Physicals',
-  'Teen & Adolescent Health',
-  'Telehealth / Virtual Visits',
 ]) {
   expect(homeText.includes(service), `Home page is missing restored service: ${service}`);
 }
 for (const serviceGroup of [
   'Getting started',
   'Everyday pediatric care',
-  'Growing years and follow-up',
 ]) {
   expect(
     homeText.includes(serviceGroup),
@@ -410,9 +422,12 @@ expect(!home.html.includes('hero-status-pill'), 'Home page must not repeat the o
 expect(
   home.html.includes('class="hero-credibility-ribbon"') &&
     homeText.includes(
-      'Board-certified pediatric care for North Texas families, guided by AAP recommendations.',
+      'Your concerns are heard.',
+    ) &&
+    homeText.includes(
+      'Time to discuss your child’s health and questions with a board-certified pediatrician.',
     ),
-  'Board-certified care must appear inside the hero credential ribbon',
+  'The hero must introduce the family-focused benefit strip and board-certified pediatrician',
 );
 expect(
   !home.html.includes('class="sage-sweep"'),
@@ -449,9 +464,37 @@ for (const trustImage of [
     `Trust image must publish intrinsic dimensions: ${trustImage}`,
   );
 }
+const homeHero = home.html.match(/<section\b[^>]*data-home-section="hero"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
+const homeHeader = home.html.match(/<header\b[^>]*>([\s\S]*?)<\/header>/)?.[1] ?? '';
 expect(
-  !homeText.includes('Meet Dr. Tallapureddy'),
-  'Provider spotlight must remain off the homepage',
+  normalizedText(homeHeader).includes(SITE.address.city) &&
+    normalizedText(homeHeader).includes(SITE.status) &&
+    normalizedText(homeHero).includes(SITE.address.city) &&
+    !homeHero.includes('data-home-location') &&
+    !normalizedText(homeHero).includes('ACCEPTING NEW PATIENTS') &&
+    !/opening november 30/i.test(normalizedText(homeHero)),
+  'Header must carry the approved location/opening cue without a duplicate hero label or premature acceptance/date claims',
+);
+for (const service of ['newborn checkups', 'well-child visits', 'sick care']) {
+  expect(normalizedText(homeHero).includes(service), `Home hero must explain planned ${service}`);
+}
+expect(
+  homeHero.includes('href="/new-patients/"') && homeHero.includes("Plan Your Child"),
+  'Home hero must prioritize first-visit planning over email signup',
+);
+expect(
+  !homeHero.includes('/images/provider-headshot.jpg') &&
+    !normalizedText(homeHero).includes('Board-certified pediatrician & founder'),
+  'Home hero must keep the branded image without the removed portrait and credential caption',
+);
+expect(
+  normalizedText(homeHero).includes(SITE.showProviderProfile ? 'Meet Dr. Tallapureddy' : 'About Luma') &&
+    homeHero.includes('href="/about/"'),
+  'Home hero must preserve the physician introduction link and respect provider-profile privacy',
+);
+expect(
+  !home.html.includes('aria-label="Learn more about Newborn Rounds at BSW McKinney"'),
+  'Conditional hospital rounds must not occupy the homepage service preview',
 );
 expect(
   !homeText.includes('We typically respond within one business day'),
@@ -480,11 +523,9 @@ expect(
     home.html.includes('aria-label="Family-centered practice gallery"'),
   'Home gallery must retain the accessible mobile scroll region',
 );
-for (const slug of serviceSlugs.filter(
-  (slug) => slug !== 'adhd-behavior-developmental-care',
-)) {
+for (const slug of ['free-meet-and-greet', 'newborn-care', 'well-child-visits', 'sick-visits', 'vaccinations']) {
   expect(
-    home.html.includes(`href="/services/#${slug}"`),
+    home.html.includes(`href="${dedicatedServicePaths[slug] ?? `/services/#${slug}`}"`),
     `Home service card is missing deep link: ${slug}`,
   );
 }
@@ -707,13 +748,24 @@ expect(
 const firstVisitSteps = [...newPatientsPage.html.matchAll(/<li\b[^>]*class="[^"]*walkthrough-step[^"]*"[^>]*>([\s\S]*?)<\/li>/g)];
 expect(
   firstVisitSteps.length === 4 &&
-    normalizedText(firstVisitSteps[0][1]).includes('Schedule when appointments open') &&
+    normalizedText(firstVisitSteps[0][1]).includes(medicalBookingEnabled ? 'Schedule an available visit type' : 'Schedule when appointments open') &&
     !firstVisitSteps.some((step) => normalizedText(step[1]).includes('Get opening updates')),
   'Opening-news signup must not be a prerequisite in the first-visit walkthrough',
 );
 expect(
   newPatientsPage.html.includes('href="/blog/newborn-first-week/"'),
   'Expecting parents should be able to find the existing newborn guide',
+);
+const newPatientsText = normalizedText(newPatientsPage.html);
+expect(
+  newPatientsText.indexOf('A quick checklist') > -1 &&
+    newPatientsText.indexOf('A quick checklist') < newPatientsText.indexOf('Worried about your child after hours?'),
+  'New Patients must prioritize visit preparation before after-hours guidance',
+);
+const dosingPage = pages.find((page) => page.canonical === `${domain}/dosing-charts/`);
+expect(
+  dosingPage && !normalizedText(dosingPage.html).includes('Call office before giving'),
+  'Pre-opening dosing instructions must not direct families to Luma for clinical advice',
 );
 
 const blogIndex = pages.find((page) => page.canonical === `${domain}/blog/`);
@@ -891,8 +943,11 @@ expect(robots.includes('Allow: /'), 'robots.txt does not allow public crawling')
 for (const userAgent of [
   'Googlebot',
   'Bingbot',
+  'Applebot',
   'OAI-SearchBot',
   'ChatGPT-User',
+  'Claude-SearchBot',
+  'Claude-User',
   'PerplexityBot',
   'Perplexity-User',
   'GPTBot',
@@ -903,6 +958,15 @@ for (const userAgent of [
     robots.includes(`User-agent: ${userAgent}`),
     `robots.txt is missing the explicit ${userAgent} policy`,
   );
+  if (!['GPTBot', 'ClaudeBot', 'Google-Extended'].includes(userAgent)) {
+    const policy = robots.split(/(?=^User-agent:)/m).find(
+      (group) => group.split('\n')[0].trim() === `User-agent: ${userAgent}`,
+    );
+    expect(
+      policy && /^Allow:\s*\/\s*$/m.test(policy) && !/^Disallow:\s*\/\s*$/m.test(policy),
+      `robots.txt must allow public search/retrieval for ${userAgent}`,
+    );
+  }
 }
 expect(
   robots.includes(`Sitemap: ${domain}/sitemap-index.xml`),
@@ -929,6 +993,9 @@ const searchConsolePrioritySource = readFileSync(
   'utf8',
 );
 for (const priorityPath of [
+  '/meet-and-greet/',
+  '/newborn-care/',
+  '/well-child-visits/',
   '/resources/',
   '/dosing-charts/',
   '/blog/',
@@ -996,7 +1063,7 @@ for (const article of pages.filter((page) => /\/blog\/[^/]+\/$/.test(page.canoni
   expect(rss.includes(`<guid isPermaLink="true">${article.canonical}</guid>`), `RSS feed is missing ${article.canonical}`);
 }
 
-const llms = readFileSync(join(root, 'public', 'llms.txt'), 'utf8');
+const llms = readFileSync(join(dist, 'llms.txt'), 'utf8');
 for (const value of [
   `**Practice name:** ${contract.name}`,
   `**Legal entity:** ${contract.legalName}`,
@@ -1005,7 +1072,7 @@ for (const value of [
   `**Phone:** ${contract.phone}`,
   `**Website:** ${domain}/`,
   `**Status:** ${contract.status}`,
-  '**Planned hours:** Mon–Tue and Thu–Fri 7:30 am–4:30 pm · Wed 7:30 am–11:30 am · Sat 8:30 am–12:30 pm · Sun closed',
+  `**Planned hours:** ${SITE.hours.map((day) => `${day.day}: ${day.time}`).join('; ')}`,
 ]) {
   expect(llms.includes(value), `llms.txt is missing canonical fact: ${value}`);
 }
@@ -1027,6 +1094,42 @@ expect(
   llms.includes(`[RSS Feed](${domain}/rss.xml)`),
   'llms.txt must advertise the RSS feed',
 );
+expect(
+  !medicalBookingEnabled || !llms.includes('Medical appointment booking is not currently enabled.'),
+  'llms.txt must not hide an approved medical booking activation',
+);
+if (!medicalBookingEnabled) {
+  expect(
+    llms.includes('Medical appointment booking is not currently enabled.'),
+    'llms.txt must preserve the disabled medical booking state',
+  );
+}
+expect(
+  llms.includes('No Meet & Greet booking workflow is enabled') &&
+    llms.includes('does not establish a physician-patient relationship'),
+  'llms.txt must distinguish the informational Meet & Greet from clinical booking',
+);
+for (const match of llms.matchAll(/\]\((https:\/\/[^)]+)\)/g)) {
+  const url = new URL(match[1]);
+  expect(url.origin === domain, `llms.txt link must use the canonical host: ${url.href}`);
+  if (['/rss.xml', '/sitemap-index.xml'].includes(url.pathname)) {
+    expect(existsSync(join(dist, url.pathname.slice(1))), `llms.txt asset is missing: ${url.href}`);
+    continue;
+  }
+  const page = pages.find((candidate) => candidate.canonical === `${domain}${url.pathname}`);
+  expect(page && !page.noindex, `llms.txt link is not an indexable page: ${url.href}`);
+  if (url.hash) {
+    expect(
+      findTags(page.html, '[a-z][a-z0-9-]*').some(
+        (attributes) => attributes.id === decodeURIComponent(url.hash.slice(1)),
+      ),
+      `llms.txt anchor is missing: ${url.href}`,
+    );
+  }
+}
+for (const path of Object.values(dedicatedServicePaths)) {
+  expect(llms.includes(`${domain}${path}`), `llms.txt is missing the service page ${path}`);
+}
 
 const contactHtml = readFileSync(join(dist, 'contact', 'index.html'), 'utf8');
 const contactText = normalizedText(contactHtml);
@@ -1103,6 +1206,9 @@ const cityPages = pages.filter(
 );
 expect(cityPages.length === 19, `Expected 19 city pages, found ${cityPages.length}`);
 for (const cityPage of cityPages) {
+  for (const path of Object.values(dedicatedServicePaths)) {
+    expect(cityPage.html.includes(`href="${path}"`), `${cityPage.fileLabel}: service card must link to ${path}`);
+  }
   const cityJsonLd = jsonLdObjects(cityPage.html, cityPage.fileLabel);
   const service = cityJsonLd.find((value) => hasType(value['@type'], 'Service'));
   const faq = cityJsonLd.find((value) => hasType(value['@type'], 'FAQPage'));
@@ -1143,7 +1249,6 @@ for (const cityPage of cityPages) {
 
 const textSourceFiles = [
   ...walk(join(root, 'src')),
-  join(root, 'public', 'llms.txt'),
 ].filter((path) => ['.astro', '.ts', '.md', '.txt'].includes(extname(path)));
 const forbidden = [
   /3801 North Central Expressway/i,
@@ -1190,8 +1295,15 @@ expect(
   'Vaccines schedule must list PCV15 for the infant series and reflect the AAP 2026 RSV recommendation',
 );
 expect(
-  /Last reviewed by the Luma Pediatrics clinical team/.test(vaccinesHtml),
-  'Vaccines page must keep its clinical review attestation',
+  normalizedText(vaccinesHtml).includes('12–15 months Hib') &&
+    !normalizedText(vaccinesHtml).includes('18 months Hib'),
+  'Vaccines reference must place the routine Hib final dose at 12–15 months, not 18 months',
+);
+expect(
+  vaccinesHtml.includes('Hib timing reference') &&
+    vaccinesHtml.includes('This source-check date is not a physician review.') &&
+    !/Last reviewed by the Luma Pediatrics clinical team/.test(vaccinesHtml),
+  'Vaccines page must distinguish verified source checking from unconfirmed clinical approval',
 );
 expect(
   /Rotavirus \(oral\)/.test(vaccinesHtml) && vaccinesHtml.includes('ai:lucide:droplet'),
@@ -1227,6 +1339,9 @@ for (const slug of serviceSlugs) {
     nextSteps[0].href.startsWith('/') && !nextSteps[0].href.startsWith('//'),
     `${slug}: next step must lead to a Luma page, not an unconfigured booking service`,
   );
+  if (dedicatedServicePaths[slug]) {
+    expect(nextSteps[0].href === dedicatedServicePaths[slug], `${slug}: overview must link to its dedicated service page`);
+  }
 }
 for (const [path, id] of [
   ['/new-patients/', 'first-visit'],
@@ -1249,6 +1364,56 @@ for (const [path, id] of [
   );
 }
 const faqPage = pages.find((page) => page.canonical === `${domain}/faq/`);
+for (const path of Object.values(dedicatedServicePaths)) {
+  expect(newPatientsPage.html.includes(`href="${path}"`), `New Patients must link to ${path}`);
+  expect(faqPage.html.includes(`href="${path}"`), `FAQ must link to ${path}`);
+}
+const newbornArticle = articlePages.find((page) => page.canonical.endsWith('/newborn-first-week/'));
+expect(newbornArticle?.html.includes('href="/newborn-care/"'), 'The newborn educational article must link to the newborn service page');
+for (const [path, heading, config, fallbackLabel, enabledLabel, faqCount] of [
+  ['/newborn-care/', 'Newborn Pediatric Care in McKinney, TX', SITE.newbornScheduling, 'Plan Your First Visit', 'Schedule a Newborn Visit', 5],
+  ['/well-child-visits/', 'Well-Child Visits in McKinney, TX', SITE.wellChildScheduling, "Plan Your Child's Visit", 'Schedule a Well-Child Visit', 6],
+  ['/meet-and-greet/', 'Meet Your Pediatrician Before You Decide', { enabled: false }, 'Ask About a Meet & Greet', '', 5],
+]) {
+  const page = pages.find((candidate) => candidate.canonical === `${domain}${path}`);
+  expect(page, `Dedicated service page is missing: ${path}`);
+  const headings = [...page.html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
+  expect(headings.length === 1 && normalizedText(headings[0][1]) === heading, `${path}: expected one correct H1`);
+  const primaryLabel = config.enabled ? enabledLabel : fallbackLabel;
+  const primaryHref = config.enabled ? new URL(config.url).href : path === '/meet-and-greet/' ? '/contact/' : '/new-patients/';
+  const primaryLinks = [...page.html.matchAll(/<a\b[^>]*class="[^"]*\bbtn-primary\b[^"]*"[^>]*>([\s\S]*?)<\/a>/g)]
+    .filter((match) => normalizedText(match[1]) === primaryLabel);
+  expect(primaryLinks.length === 2, `${path}: hero and final action must use the correct booking state`);
+  for (const match of primaryLinks) {
+    expect(findTags(match[0], 'a')[0].href === primaryHref, `${path}: incorrect primary CTA destination`);
+  }
+  const schemas = jsonLdObjects(page.html, page.fileLabel);
+  const service = schemas.find((value) => hasType(value['@type'], 'Service'));
+  expect(service?.url === page.canonical && service.provider?.['@id'] === `${domain}/#medical-clinic`, `${path}: linked Service schema is missing or incorrect`);
+  expect(!service.offers, `${path}: do not publish unconfirmed offers or availability`);
+  const serviceFaq = schemas.find((value) => hasType(value['@type'], 'FAQPage'));
+  const visibleAnswers = [...page.html.matchAll(/<details\b[^>]*data-service-faq[^>]*>([\s\S]*?)<\/details>/g)]
+    .map((match) => ({
+      question: normalizedText(match[1].match(/<h3\b[^>]*>([\s\S]*?)<\/h3>/)?.[1] ?? ''),
+      answer: normalizedText(match[1].match(/<p\b[^>]*>([\s\S]*?)<\/p>/)?.[1] ?? ''),
+    }));
+  expect(visibleAnswers.length === faqCount && serviceFaq?.mainEntity?.length === faqCount, `${path}: FAQ count mismatch`);
+  expect(new Set(visibleAnswers.map(({ question }) => question)).size === faqCount, `${path}: duplicate FAQ questions`);
+  for (const { question, answer } of visibleAnswers) {
+    expect(serviceFaq.mainEntity.some((entry) => entry.name === question && entry.acceptedAnswer?.text === answer), `${path}: FAQ schema does not match visible content`);
+  }
+  expect(findTags(page.html, 'form').length === findTags(servicesHtml, 'form').length, `${path}: no new public intake form`);
+  expect(sitemapUrls.has(page.canonical), `${path}: missing sitemap entry`);
+}
+const meetPage = pages.find((page) => page.canonical.endsWith('/meet-and-greet/'));
+const meetText = normalizedText(meetPage.html);
+expect(meetText.includes('does not establish a physician-patient relationship') &&
+  meetText.includes('does not include examinations, diagnosis, treatment, prescriptions, or individualized medical advice') &&
+  meetText.includes('Scheduling is not available yet'),
+  'Meet & Greet must stay nonclinical, relationship-neutral, and unavailable until separately approved');
+const newbornPage = pages.find((page) => page.canonical.endsWith('/newborn-care/'));
+expect(newbornPage.html.includes('id="first-visits"') && newbornPage.html.includes('id="hospital-care"'), 'Newborn office and hospital sections must be distinct');
+expect(normalizedText(newbornPage.html).includes('Do not delay recommended newborn care'), 'Newborn page must not encourage delaying needed care');
 const faqSchema = jsonLdObjects(faqPage.html, faqPage.fileLabel)
   .find((value) => hasType(value['@type'], 'FAQPage'));
 const renderedFaqs = [...faqPage.html.matchAll(/<details\b[^>]*data-faq-answer[^>]*>([\s\S]*?)<\/details>/g)]
@@ -1358,24 +1523,28 @@ expect(
   'Light-background eyebrow text must use the darker sage token',
 );
 expect(
-  /\.tagline-italic-sage\s*\{[\s\S]*?color:\s*var\(--color-sage-hover\)/.test(globalCss),
-  'Sage tagline text must use the darker sage token',
+  /\.tagline-italic-sage\s*\{[^}]*color:\s*var\(--color-sage-text\)/.test(globalCss),
+  'Sage tagline text must use the dedicated darker text token',
 );
 expect(
   /\.trust-photo-grid\s*\{[\s\S]*?scroll-snap-type:\s*inline mandatory/.test(globalCss),
   'Mobile gallery scroll-snap styling is missing',
 );
 expect(
-  /\.hero-credibility-ribbon\s*\{[\s\S]*?background:\s*var\(--color-sage-light\)/.test(
+  /\.hero-credibility-ribbon\s*\{[^}]*background:\s*var\(--color-sage-hover\)/.test(
     globalCss,
   ),
-  'Hero credential ribbon must match the footer sage band',
+  'Hero credential ribbon must use the darker sage background for readable white text',
 );
 expect(
-  /\.hero-credibility-ribbon\s*\{[\s\S]*?color:\s*var\(--color-sage-foreground\)/.test(
+  /\.hero-credibility-ribbon\s*\{[^}]*color:\s*var\(--color-sage-foreground\)/.test(
     globalCss,
   ),
-  'Hero credential ribbon must use the footer white text treatment',
+  'Hero credential ribbon must use the white foreground token',
+);
+expect(
+  /Helping kids thrive\.<\/span>\s+<span[^>]*>Helping parents feel confident\./.test(home.html),
+  'Rendered hero headline must preserve the space between its two lines',
 );
 expect(
   /@media \(min-width: 900px\)\s*\{[\s\S]*?\.hero-credibility-copy\s*\{[\s\S]*?white-space:\s*nowrap/.test(

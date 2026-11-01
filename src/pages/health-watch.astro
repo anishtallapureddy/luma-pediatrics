@@ -243,7 +243,7 @@ function respiratorySummary(r: Snapshot['respiratoryIllness']) {
     return {
       tone: 'warn' as const,
       headline: 'Latest regional respiratory report',
-      sub: 'The hospitalization source did not refresh during the latest check. This summary is showing the last-known-good regional trend.',
+      sub: 'No newer hospitalization report was available at the latest check. The regional trend below comes from the most recent available report.',
     };
   }
   if (hospitalTrend === 'Rising') {
@@ -461,12 +461,11 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
         Local Health Watch
       </h1>
       <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
-        A clearer view of this week's public-health signals.
+        Air quality, pollen, and illness activity.
       </p>
       <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/80 leading-relaxed">
-        Current respiratory and gastrointestinal virus activity from the best
-        available public-health surveillance relevant to North Texas.
-        Geographic coverage varies by virus.
+        Public-health reports relevant to North Texas families.
+        Each card shows the area covered and the latest available reporting date.
       </p>
       {refreshed && (
         <p class="mt-3 text-sm text-[var(--color-muted-foreground)]">
@@ -521,7 +520,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                     </p>
                     {data.airQuality.stale && (
                       <p class="mt-2 text-xs font-semibold text-[#7a5a25]">
-                        Showing the last-known-good reading; current conditions may differ.
+                        Showing the most recent available reading; current conditions may differ.
                       </p>
                     )}
                   </div>
@@ -550,7 +549,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                     </p>
                     {data.pollen.stale && (
                       <p class="mt-2 text-xs font-semibold text-[#7a5a25]">
-                        Showing the last-known-good forecast; current levels may differ.
+                        Showing the most recent available forecast; current levels may differ.
                       </p>
                     )}
                   </div>
@@ -566,7 +565,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                     <Icon name="lucide:activity" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
                   </span>
                   <div class="min-w-0">
-                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">Regional respiratory pressure</p>
+                    <p class="text-[11px] uppercase tracking-[0.16em] font-semibold text-[var(--color-muted-foreground)]">Regional respiratory illness</p>
                     <h2 class="mt-1 text-lg tracking-tight">{respiratory.headline}</h2>
                     <p class="mt-1.5 text-sm text-[var(--color-foreground)]/85 leading-relaxed">{respiratory.sub}</p>
                     {data.respiratoryIllness.currentHospitalizationRates ? (
@@ -585,7 +584,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                     </p>
                     {data.respiratoryIllness.stale && (
                       <p class="mt-2 text-xs font-semibold text-[#7a5a25]">
-                        Showing the last-known-good regional report.
+                        Showing the most recent available regional report.
                       </p>
                     )}
                   </div>
@@ -627,8 +626,8 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                     </p>
                     {data.vaccinePreventable?.stale && (
                       <p class="mt-2 text-xs font-semibold text-[#7a5a25]">
-                        Showing the last-known-good statewide report from{' '}
-                        {lastAvailableDate(data.vaccinePreventable) ?? 'the most recent successful refresh'}.
+                        Showing the most recent available statewide report from{' '}
+                        {lastAvailableDate(data.vaccinePreventable) ?? 'an earlier reporting period'}.
                       </p>
                     )}
                   </div>
@@ -676,7 +675,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                                     <p class="mt-1 text-xs text-[var(--color-muted-foreground)] leading-relaxed">{v.parentNote}</p>
                                   )}
                                   {(v.sourceName || v.geography || v.sourceReportingDate) && (
-                                    <p class="mt-2 text-[10px] text-[var(--color-muted-foreground)] leading-relaxed">
+                                    <p class="mt-2 text-xs text-[var(--color-muted-foreground)] leading-relaxed">
                                       {v.sourceUrl && v.sourceName ? (
                                         <a
                                           href={v.sourceUrl}
@@ -693,29 +692,27 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                                       {v.geography}
                                       {(v.sourceName || v.geography) && v.sourceReportingDate ? ' · ' : ''}
                                       {formatSourceDate(v.sourceReportingDate)}
-                                      {v.stale ? ' · showing last-known-good value' : ''}
+                                      {v.stale ? ' · no newer report available' : ''}
                                     </p>
                                   )}
-                                  {v.metric && (
-                                    <p class="mt-1 text-[10px] text-[var(--color-muted-foreground)] leading-relaxed">
-                                      Metric: {v.metric}
-                                    </p>
-                                  )}
-                                  {v.weeklyValues && v.weeklyValues.length > 1 && (
-                                    <details class="mt-2 text-[11px] text-[var(--color-muted-foreground)]">
-                                      <summary class="cursor-pointer font-medium text-[var(--color-primary)]">
-                                        Recent weekly values
+                                  {(v.metric || (v.weeklyValues && v.weeklyValues.length > 1)) && (
+                                    <details class="mt-2 text-xs text-[var(--color-muted-foreground)]">
+                                      <summary class="min-h-11 cursor-pointer py-3 font-medium text-[var(--color-primary)]">
+                                        Report details
                                       </summary>
-                                      <div class="mt-2 flex flex-wrap gap-1.5">
-                                        {v.weeklyValues.map((point) => (
-                                          <span class="rounded-full bg-[var(--color-card)] px-2 py-1 ring-1 ring-inset ring-[var(--color-border-soft)]">
-                                            {formatSourceDate(point.weekEnding)}: {point.value.toFixed(1)}%
-                                            {typeof point.weeklyTestsReported === 'number'
-                                              ? ` centered 3-week average · ${point.weeklyTestsReported.toLocaleString('en-US')} tests reported for that week`
-                                              : ''}
-                                          </span>
-                                        ))}
-                                      </div>
+                                      {v.metric && <p class="mt-1 leading-relaxed">Measure: {v.metric}</p>}
+                                      {v.weeklyValues && v.weeklyValues.length > 1 && (
+                                        <div class="mt-2 flex flex-wrap gap-1.5">
+                                          {v.weeklyValues.map((point) => (
+                                            <span class="rounded-full bg-[var(--color-card)] px-2 py-1 ring-1 ring-inset ring-[var(--color-border-soft)]">
+                                              {formatSourceDate(point.weekEnding)}: {point.value.toFixed(1)}%
+                                              {typeof point.weeklyTestsReported === 'number'
+                                                ? ` centered 3-week average · ${point.weeklyTestsReported.toLocaleString('en-US')} tests reported for that week`
+                                                : ''}
+                                            </span>
+                                          ))}
+                                        </div>
+                                      )}
                                     </details>
                                   )}
                                 </div>
@@ -729,7 +726,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                       Sources include CDC NREVSS, CDC national respiratory
                       laboratory surveillance, and Texas public-health
                       surveillance. Data checked daily; source reporting
-                      schedules vary.{data.communityVirusWatch?.stale ? ' Some cards are showing their last-known-good values.' : ''}
+                      schedules vary.{data.communityVirusWatch?.stale ? ' Some cards show earlier reports because newer data was not available.' : ''}
                     </p>
                     <p class="mt-2 text-xs text-[var(--color-muted-foreground)]">
                       Percentages represent laboratory tests, not the percentage

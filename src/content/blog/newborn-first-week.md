@@ -2,7 +2,7 @@
 title: "The newborn's first week: a calm parent's guide"
 description: "A pediatrician's practical guide to feeding, sleep, diapering, and the warning signs that mean it's time to call, for parents in the first 7 days at home."
 publishDate: 2026-09-16
-updatedDate: 2026-09-16
+updatedDate: 2026-11-01
 hero: /images/blog-newborn.jpg
 heroWide: /images/blog-newborn-16x9.jpg
 heroSquare: /images/blog-newborn-1x1.jpg
@@ -11,13 +11,9 @@ tags: ["newborn", "first-week", "feeding", "sleep"]
 draft: false
 ---
 
-The first week at home with a newborn is equal parts wonder and worry. You will be tired. Your baby will eat and sleep on a clock nobody else can read. And at some point, probably around 3 a.m., you will find yourself wondering, *"Is this normal?"*
-
-Here is the reassuring truth: almost always, it is. Second- and third-time parents ask the very same question. Below is what to expect in these first seven days, what is worth watching, and the handful of signs that mean it is time to pick up the phone.
+The first week brings feeding, diaper changes, short stretches of sleep, and questions about what to expect. This guide covers common newborn care topics and warning signs to discuss with your baby's current healthcare provider. Keep the follow-up instructions you received at hospital discharge, and ask for help when you are concerned.
 
 ## Feeding
-
-Newborn feeding looks chaotic from the inside and is usually going better than it feels.
 
 **Breastfed babies** typically nurse 8–12 times in 24 hours. Look for at least 15–20 minutes of active sucking per session and 5–6 wet diapers a day by day five.
 
@@ -49,7 +45,7 @@ Diaper counting is unglamorous, and it is the single easiest way to check at hom
 
 ## The cord, the circumcision, and all that peeling skin
 
-Newborn skin and healing can look alarming and is usually completely ordinary.
+Follow the discharge instructions for cord and circumcision care, and ask your baby's healthcare provider about changes that concern you.
 
 - **Umbilical cord:** Keep it dry and open to the air. It usually falls off in 1–3 weeks, and a few drops of blood when it does is normal.
 - **Circumcision:** Petroleum jelly on the gauze with each diaper change for the first 5–7 days.
@@ -57,7 +53,7 @@ Newborn skin and healing can look alarming and is usually completely ordinary.
 
 ## When to call, and when to call 911
 
-Most of the first week needs patience rather than a phone call. These signs are the exceptions, and they deserve same-day attention. Call your pediatrician for:
+Contact your baby's current healthcare provider promptly for these warning signs. Do not wait for a routine appointment:
 
 - **A rectal temperature of 100.4°F (38°C) or higher** in a baby under 8 weeks. This one is always urgent, at any hour
 - Difficulty breathing, grunting, or a bluish color around the lips
@@ -74,6 +70,6 @@ Trust your gut. You know your baby better than anyone else does, even at one wee
 
 Newborns are usually seen within the first 48–72 hours after hospital discharge, and again at 1–2 weeks. Your child's current pediatrician or the hospital's newborn follow-up clinic can arrange those visits.
 
-Luma Pediatrics is opening in late 2026 in McKinney. If you are expecting, or your baby has just arrived, we would love to welcome you when we open. Until then, we hope this guide makes a long week feel a little shorter.
+Luma Pediatrics is not yet open or providing clinical care. Learn about our [planned newborn office care](/newborn-care/), but arrange your baby's current follow-up with their pediatrician or the hospital's newborn clinic. Do not delay care until Luma opens.
 
 *This article is for general educational purposes and is not a substitute for advice from your child's pediatrician.*

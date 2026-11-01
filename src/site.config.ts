@@ -12,6 +12,21 @@ export const SITE = {
   status: 'Opening late 2026',
   /** Opening timeframe phrase - appears in "Opening {openingWindow} in McKinney" copy. */
   openingWindow: 'late 2026',
+  /** Target only; construction readiness still determines the actual opening. */
+  openingTargetDate: '2026-11-30',
+  newbornScheduling: {
+    /** Manual activation only, after approval of the Phreesia workflow and dates. */
+    enabled: false,
+    url: '',
+    /** Informational target, never an automatic activation date. */
+    plannedLaunchDate: '2026-11-16',
+  },
+  wellChildScheduling: {
+    /** Separate approved Phreesia workflow; never reuse the newborn appointment type. */
+    enabled: false,
+    url: '',
+    plannedLaunchDate: '2026-11-16',
+  },
   locationShort: 'McKinney, Texas',
   description:
     'Luma Pediatrics is a board-certified pediatric practice in McKinney, Texas. Opening late 2026, with evidence-based care planned for newborns, children, and teens.',
@@ -48,6 +63,7 @@ export const SITE = {
     /** Visible heading form on the About page ("Meet {displayName}"). */
     displayName: 'Praveena Tallapureddy, MD',
     shortName: 'Dr. Tallapureddy',
+    familiarName: 'Dr. T',
     role: 'Board-certified pediatrician',
     /** First-person welcome shown beside the professional headshot. */
     welcome: [

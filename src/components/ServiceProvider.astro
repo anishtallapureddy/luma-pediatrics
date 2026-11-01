@@ -1,0 +1,39 @@
+---
+import Picture from './Picture.astro';
+import { SITE } from '../site.config';
+interface Props {
+  heading: string;
+  introduction: string;
+  points: string[];
+  showPhoto?: boolean;
+}
+const { heading, introduction, points, showPhoto = true } = Astro.props;
+---
+<section aria-labelledby="service-provider-heading">
+  <div class="service-width service-provider">
+    {SITE.showProviderProfile && showPhoto && (
+      <Picture
+        src="/images/provider-headshot.jpg"
+        alt="Dr. Praveena Tallapureddy, board-certified pediatrician and founder of Luma Pediatrics"
+        width={1003}
+        height={1254}
+        class="service-provider-photo"
+      />
+    )}
+    <div class="min-w-0">
+      <h2 id="service-provider-heading">{heading}</h2>
+      <p class="service-copy mt-5">{introduction}</p>
+      <ul class="service-list">
+        {points.map((point) => <li>{point}</li>)}
+      </ul>
+      <a href="/about/" class="service-link mt-4">Get to know our pediatrician and practice</a>
+    </div>
+  </div>
+</section>
+<style>
+  .service-provider { display: grid; gap: 2rem; align-items: center; }
+  .service-provider :global(.service-provider-photo) { width: 100%; max-width: 18rem; height: auto; margin-inline: auto; border-radius: var(--radius-card); }
+  @media (min-width: 768px) {
+    .service-provider:has(picture) { grid-template-columns: minmax(0, 18rem) minmax(0, 1fr); gap: 3rem; }
+  }
+</style>

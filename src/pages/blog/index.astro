@@ -31,12 +31,6 @@ const intro = 'Start with our published guides below.';
       <p class="mt-6 max-w-2xl mx-auto text-lg text-[var(--color-muted-foreground)] leading-relaxed">
         {intro}
       </p>
-      <a
-        href="/rss.xml"
-        class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-primary)] no-underline hover:underline"
-      >
-        Subscribe to the RSS feed
-      </a>
     </div>
   </section>
 
@@ -87,6 +81,10 @@ const intro = 'Start with our published guides below.';
         })}
       </ul>
     )}
+
+    <p class="mt-8 text-center text-sm">
+      <a href="/rss.xml" class="text-[var(--color-primary)] underline underline-offset-4">RSS feed</a>
+    </p>
 
     <p class="mt-12 text-xs text-[var(--color-muted-foreground)] text-center max-w-2xl mx-auto leading-relaxed">
       Articles on this site are for general educational purposes only and are

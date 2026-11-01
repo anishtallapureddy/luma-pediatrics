@@ -1,0 +1,47 @@
+---
+import { Icon } from 'astro-icon/components';
+
+export interface ServiceFaqItem {
+  q: string;
+  a: string;
+}
+interface Props { items: ServiceFaqItem[]; }
+const { items } = Astro.props;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
+---
+<section aria-labelledby="service-faq-heading">
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+  <div class="service-width">
+    <h2 id="service-faq-heading">Frequently Asked Questions</h2>
+    <div class="mt-6 max-w-3xl space-y-3">
+      {items.map(({ q, a }) => (
+        <details class="service-card service-faq-card group" data-service-faq>
+          <summary class="flex min-h-11 items-center justify-between gap-4 p-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+            <h3 class="service-faq-question">{q}</h3>
+            <span class="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] transition-transform group-open:rotate-180" aria-hidden="true">
+              <Icon name="lucide:chevron-down" class="w-5 h-5" stroke-width="2" />
+            </span>
+          </summary>
+          <p class="service-faq-answer">{a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .service-faq-card { padding: 0; }
+  .service-faq-answer { margin: 0; padding: 0 1.5rem 1.5rem; }
+  .service-faq-question { font-size: 1.125rem; line-height: 1.5; }
+  @media (min-width: 768px) {
+    .service-faq-question { font-size: 1.25rem; }
+  }
+</style>

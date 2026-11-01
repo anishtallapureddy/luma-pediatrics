@@ -1,0 +1,120 @@
+---
+import ServicePageLayout from '../layouts/ServicePageLayout.astro';
+import ServiceProvider from '../components/ServiceProvider.astro';
+import ServiceFaq from '../components/ServiceFaq.astro';
+import Button from '../components/Button.astro';
+import { SITE } from '../site.config';
+import { getServiceScheduling } from '../utils/serviceScheduling';
+
+const primary = getServiceScheduling(SITE.wellChildScheduling, 'well-child');
+const faqs = [
+  { q: 'How often should my child have a well-child visit?', a: "Visits are more frequent in early childhood and continue as children grow. Your pediatrician uses your child's age, health, prior care, and the AAP Bright Futures framework to recommend timing and any additional follow-up." },
+  { q: 'What is the difference between a well-child and sick visit?', a: 'A well-child visit focuses on preventive care, growth, development, and age-appropriate guidance. A sick visit addresses a current illness or symptom. New concerns may need separate time, follow-up, or services rather than being fully addressed during a preventive checkup.' },
+  { q: 'Are vaccinations part of well-child care?', a: "Immunization records are reviewed, and recommended vaccines may be given when indicated for your child's age, health, and prior doses. Not every vaccine is due at every visit." },
+  { q: 'Can we discuss behavioral or developmental concerns?', a: 'Yes. Share concerns about development, behavior, learning, or emotional well-being. Screening and discussion are age-appropriate; some concerns may require a separate evaluation, follow-up, or referral.' },
+  { q: 'Does insurance cover well-child visits?', a: "Preventive services may be covered under your plan rules. Coverage depends on network status and the services provided; additional concerns can have separate coverage and cost-sharing. Luma's insurance participation is not confirmed yet. Verify benefits and costs before scheduling." },
+  { q: 'What should I bring?', a: 'Bring insurance information, available immunization records, a medication list, any relevant school or sports forms, and questions you want to discuss. Ask about form requirements and fees in advance; completion is not automatically included in a preventive visit.' },
+];
+const topics = [
+  ['Growth and Physical Health', 'Height, weight, a physical examination, and review of overall health.'],
+  ['Developmental Milestones', 'Age-appropriate developmental and behavioral screening, with follow-up when concerns arise.'],
+  ['Vaccinations', 'Review of immunization records and recommended vaccines when indicated.'],
+  ['Emotional and Behavioral Health', 'Age-appropriate discussion of emotional well-being, behavior, learning, and school concerns.'],
+  ['Parent Questions and Guidance', 'Nutrition, sleep, safety, activity, and questions that change as children grow.'],
+];
+const stages = [
+  ['Infants', 'Growth, feeding, early development, and immunizations.'],
+  ['Toddlers', 'Developmental milestones, behavior, nutrition, and safety.'],
+  ['Preschool and School-Age Children', 'Growth, learning, sleep, activity, and preventive care.'],
+  ['Teens and Adolescents', 'Physical development, emotional well-being, healthy habits, and age-appropriate preventive screening.'],
+];
+---
+<ServicePageLayout
+  title="Well-Child Visits & Checkups in McKinney, TX | Luma Pediatrics"
+  description={SITE.showProviderProfile ? 'Well-child visits in McKinney with Dr. Praveena Tallapureddy. Routine checkups, growth monitoring, developmental screenings, vaccines, and preventive care.' : 'Well-child visits in McKinney at Luma Pediatrics. Routine checkups, growth monitoring, developmental screenings, vaccines, and preventive care.'}
+  path="/well-child-visits/"
+  eyebrow="Preventive Pediatric Care"
+  heading="Well-Child Visits in McKinney, TX"
+  intro="Checkups are a chance to follow your child's growth, talk through concerns, and keep preventive care on track. Luma plans age-appropriate well-child visits from infancy through adolescence after opening."
+  primary={primary}
+  plannedLaunchDate={SITE.wellChildScheduling.plannedLaunchDate}
+>
+
+  <section>
+    <div class="service-width">
+      <h2>What Happens During a Well-Child Visit?</h2>
+      <p class="service-copy mt-5">Care is tailored to your child's age, history, and needs. Not every screening, test, or vaccine happens at every visit.</p>
+      <div class="service-grid service-grid--three">
+        {topics.map(([title, description]) => <article class="service-card"><h3>{title}</h3><p>{description}</p></article>)}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="service-width">
+      <h2>Well-Child Care at Every Stage</h2>
+      <p class="service-copy mt-5">The AAP Bright Futures framework guides age-appropriate preventive care from infancy through adolescence. Timing and follow-up depend on the child.</p>
+      <div class="service-grid">
+        {stages.map(([title, description], index) => (
+          <article class="service-card">
+            <h3>{title}</h3>
+            <p>{description}</p>
+            {index === 0 && <a href="/newborn-care/" class="service-link mt-3">Newborn care and first visits</a>}
+          </article>
+        ))}
+      </div>
+      <a href="https://www.aap.org/en/practice-management/care-delivery-approaches/periodicity-schedule/" class="service-link mt-4">Read about the AAP Bright Futures preventive-care framework</a>
+    </div>
+  </section>
+
+  <section>
+    <div class="service-width">
+      <h2>Why Preventive Visits Matter</h2>
+      <p class="service-copy mt-5">You can raise questions about sleep, eating, learning, or behavior even when your child is well. Regular visits let the pediatrician compare growth and development over time and decide whether a concern needs a closer look.</p>
+    </div>
+  </section>
+
+  <ServiceProvider
+    heading="Why Consider Luma for Checkups?"
+    introduction={SITE.showProviderProfile
+      ? `${SITE.provider.name} is a board-certified pediatrician and the founder of Luma. This independent McKinney practice is designed for continuing primary care as children grow.`
+      : 'Luma is an independent, physician-led McKinney practice designed for continuing primary care as children grow.'}
+    points={[
+      'Checkups with one primary pediatrician across the stages of childhood',
+      'Questions and concerns included in decisions about care',
+      'Clear guidance on screening, vaccines, and follow-up',
+    ]}
+  />
+
+  <section>
+    <div class="service-width">
+      <h2>Preparing for Your Appointment</h2>
+      <ul class="service-list">
+        <li>Insurance information</li>
+        <li>Immunization records, if available</li>
+        <li>A list of medications and supplements</li>
+        <li>School or sports forms, if applicable</li>
+        <li>Questions and concerns to discuss</li>
+      </ul>
+      <p class="service-copy mt-5">Ask about form requirements, timing, and any fees before the visit. Coverage and cost-sharing vary by insurance plan.</p>
+      <a href="/new-patients/" class="service-link mt-3">See first-visit steps and insurance status</a>
+      <p class="service-copy mt-3">Our planned clinic is at {SITE.address.street}, {SITE.address.city}, {SITE.address.region} {SITE.address.postalCode}.</p>
+      <p class="service-copy mt-3">Still deciding on a practice? <a href="/meet-and-greet/">Learn about our Free Meet &amp; Greet</a>, planned after opening.</p>
+    </div>
+  </section>
+
+  <ServiceFaq items={faqs} />
+
+  <section class="service-final">
+    <div class="service-width">
+      <h2>Make Time for Your Child's Health</h2>
+      <p class="service-copy mt-5">{primary.enabled
+        ? "Review appointment dates and coverage before scheduling your child's checkup."
+        : 'The first-visit guide explains how to prepare your records and check insurance status before appointments open.'}</p>
+      <div class="service-actions mt-6">
+        <Button href={primary.href}>{primary.label}</Button>
+        <Button href="/contact/" variant="secondary">Contact Our Office</Button>
+      </div>
+    </div>
+  </section>
+</ServicePageLayout>

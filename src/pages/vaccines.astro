@@ -5,26 +5,9 @@ import { Icon } from 'astro-icon/components';
 
 /**
  * Simplified childhood vaccine schedule (for parent reference only).
- * Source: AAP Recommended Childhood and Adolescent Immunization Schedule,
- * United States, 2026 (published Jan 26, 2026).
- *
- * Ages below are the specific visit timings Luma Pediatrics uses, chosen
- * within the AAP's recommended ranges, and reviewed by the clinical team.
- * Dose numbers are intentionally omitted; catch-up and combination-product
- * timing vary by child, so the row is the visit rather than the dose count.
- *
- * Notable 2026 points reflected below:
- *   - Routine infant pneumococcal series is PCV15 or PCV20; Luma Pediatrics
- *     uses PCV15. PCV13 is no longer recommended for routine infant
- *     vaccination.
- *   - RSV immunisation (nirsevimab) is part of the routine schedule, but it
- *     is a seasonal monoclonal antibody, not a vaccine, and is not needed
- *     when the birthing parent had the RSV vaccine in pregnancy.
- *   - HPV may begin at age 9; AAP prefers starting earlier than 11-12.
- *   - Rotavirus is given by mouth, so it renders with a droplet icon and an
- *     "(oral)" label rather than the default syringe.
- *
- * Always confirm with your pediatrician - this is a quick parent overview.
+ * Dose counts are omitted because catch-up and combination-product timing
+ * vary by child. Reference ages are not confirmed Luma appointment timings.
+ * Physician approval of the complete table is required before publication.
  */
 const schedule = [
   { age: 'Birth',           shots: ['Hepatitis B'] },
@@ -34,8 +17,9 @@ const schedule = [
   { age: '6 months',        shots: ['DTaP', 'Hib', 'IPV (polio)', 'PCV15', 'Rotavirus (oral)'] },
   { age: '9 months',        shots: ['Hepatitis B'] },
   { age: '12 months',       shots: ['MMR', 'PCV15'] },
+  { age: '12–15 months',    shots: ['Hib'] },
   { age: '15 months',       shots: ['Varicella (chickenpox)', 'Hepatitis A'] },
-  { age: '18 months',       shots: ['Hib', 'DTaP'] },
+  { age: '18 months',       shots: ['DTaP'] },
   { age: '24 months',       shots: ['Hepatitis A'] },
   { age: '4–6 years',       shots: ['DTaP', 'IPV (polio)', 'MMR', 'Varicella'] },
   { age: '9–12 years',      shots: ['HPV (may start at age 9)'] },
@@ -50,7 +34,7 @@ const schedule = [
 /** Oral vaccines get a droplet icon instead of the default syringe. */
 const isOral = (shot: string) => shot.includes('(oral)');
 
-const lastReviewed = 'September 20, 2026';
+const hibReferenceChecked = 'November 1, 2026';
 ---
 <BaseLayout
   title="Childhood Vaccine Schedule | Luma Pediatrics McKinney"
@@ -70,7 +54,7 @@ const lastReviewed = 'September 20, 2026';
         Childhood vaccine schedule
       </h1>
       <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
-        Aligned with current AAP recommendations.
+        A parent reference based on AAP guidance.
       </p>
       <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/80 leading-relaxed">
         Luma plans to follow the American Academy of Pediatrics immunization schedule after opening.
@@ -84,19 +68,19 @@ const lastReviewed = 'September 20, 2026';
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <h2 class="sr-only">Recommended immunization schedule by age</h2>
       <div class="rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] overflow-hidden">
-        <div class="grid grid-cols-[10rem_1fr] sm:grid-cols-[14rem_1fr] bg-[var(--color-muted)] text-[var(--color-primary)] text-xs font-bold uppercase tracking-[0.14em] p-4">
+        <div class="grid grid-cols-[5rem_minmax(0,1fr)] sm:grid-cols-[14rem_minmax(0,1fr)] gap-4 bg-[var(--color-muted)] text-[var(--color-primary)] text-xs font-bold uppercase tracking-[0.14em] p-4">
           <div>Age</div>
           <div>Recommended vaccines</div>
         </div>
         <ul class="divide-y divide-[var(--color-border-soft)]">
           {schedule.map(({ age, shots }) => (
-            <li class="grid grid-cols-[10rem_1fr] sm:grid-cols-[14rem_1fr] gap-4 p-4 md:p-5">
+            <li class="grid grid-cols-[5rem_minmax(0,1fr)] sm:grid-cols-[14rem_minmax(0,1fr)] gap-4 p-4 md:p-5">
               <div class="font-bold text-[var(--color-foreground)]">{age}</div>
               <ul class="flex flex-wrap gap-2">
                 {shots.map((s) => (
-                  <li class="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-muted)] px-3 py-1 text-xs font-semibold text-[var(--color-primary)] ring-1 ring-inset ring-[rgba(200,153,90,0.20)]">
-                    <Icon name={isOral(s) ? 'lucide:droplet' : 'lucide:syringe'} class="w-3.5 h-3.5" stroke-width="2" aria-hidden="true" />
-                    {s}
+                  <li class="inline-flex max-w-full items-center gap-1.5 rounded-full bg-[var(--color-muted)] px-3 py-1 text-xs font-semibold text-[var(--color-primary)] ring-1 ring-inset ring-[rgba(200,153,90,0.20)]">
+                    <Icon name={isOral(s) ? 'lucide:droplet' : 'lucide:syringe'} class="w-3.5 h-3.5 shrink-0" stroke-width="2" aria-hidden="true" />
+                    <span class="min-w-0 break-words">{s}</span>
                   </li>
                 ))}
               </ul>
@@ -118,10 +102,10 @@ const lastReviewed = 'September 20, 2026';
             </dd>
           </div>
           <div>
-            <dt class="font-semibold text-[var(--color-foreground)]">We use PCV15 for pneumococcal protection.</dt>
+            <dt class="font-semibold text-[var(--color-foreground)]">PCV15 is planned for pneumococcal protection.</dt>
             <dd class="mt-1 text-[var(--color-muted-foreground)]">
               PCV15 and PCV20 both replaced PCV13 for the routine infant series, and the AAP accepts
-              either one. Luma Pediatrics uses PCV15. A child who started the series elsewhere on
+              either one. Luma Pediatrics plans to use PCV15 after opening. A child who started the series elsewhere on
               PCV13 or PCV20 does not need to start over.
             </dd>
           </div>
@@ -145,8 +129,10 @@ const lastReviewed = 'September 20, 2026';
 
       <p class="mt-4 text-xs text-[var(--color-muted-foreground)] leading-relaxed">
         Based on the AAP Recommended Childhood and Adolescent Immunization Schedule
-        (United States, 2026). Last reviewed by the Luma Pediatrics clinical team:
-        <strong>{lastReviewed}</strong>.
+        (United States, 2026).
+        <a href="https://www.healthychildren.org/english/health-issues/vaccine-preventable-diseases/Pages/Haemophilus-influenzae-type-b.aspx" target="_blank" rel="noopener noreferrer" class="underline">Hib timing reference</a>
+        checked: <strong>{hibReferenceChecked}</strong>.
+        This source-check date is not a physician review.
       </p>
 
       <div class="mt-8 rounded-xl bg-[rgba(231,108,112,0.10)] border border-[rgba(231,108,112,0.40)] p-4 flex items-start gap-3">

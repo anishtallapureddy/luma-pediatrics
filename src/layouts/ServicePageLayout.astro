@@ -1,0 +1,112 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Button from '../components/Button.astro';
+import PageDecor from '../components/PageDecor.astro';
+import { SITE, STRUCTURED_DATA_IDS } from '../site.config';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  eyebrow: string;
+  heading: string;
+  intro: string;
+  primary: { href: string; label: string; enabled?: boolean };
+  plannedLaunchDate?: string;
+}
+
+const { title, description, path, eyebrow, heading, intro, primary, plannedLaunchDate } = Astro.props;
+const hasImage = Astro.slots.has('hero-image');
+const dateFormat = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const openingTarget = dateFormat.format(new Date(SITE.openingTargetDate));
+const bookingTarget = plannedLaunchDate ? dateFormat.format(new Date(plannedLaunchDate)) : null;
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: heading,
+  serviceType: eyebrow,
+  description,
+  url: new URL(path, SITE.domain).href,
+  provider: { '@id': STRUCTURED_DATA_IDS.clinic },
+  areaServed: { '@type': 'City', name: 'McKinney' },
+};
+---
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services/' },
+    { name: eyebrow, path },
+  ]}
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+  <section class="page-hero py-12 md:py-16 overflow-hidden">
+    <PageDecor variant="minimal" sparkles={0} />
+    <div class:list={['service-width service-hero relative z-10', { 'service-hero--photo': hasImage }]}>
+      <div class="min-w-0">
+        <a href="/services/" class="service-link text-sm">All pediatric services</a>
+        <div class="mt-4"><span class="eyebrow">{eyebrow}</span></div>
+        <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">{heading}</h1>
+        <p class="mt-6 text-lg leading-relaxed text-[var(--color-foreground)]/85">{intro}</p>
+        <div class="service-actions mt-7">
+          <Button href={primary.href}>{primary.label}</Button>
+          <Button href="/about/" variant="secondary">{SITE.showProviderProfile ? 'Meet Dr. Tallapureddy' : 'Meet Our Pediatrician'}</Button>
+        </div>
+        <div class="mt-5 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+          <slot name="hero-note">
+            <p>
+              Opening is targeted around {openingTarget}, subject to readiness.
+              {primary.enabled
+                ? ' Online booking for this service is available. The practice is not open yet; confirm appointment dates and coverage before booking.'
+                : bookingTarget ? ` Online medical booking is targeted for ${bookingTarget}, but is not available yet.` : ' Booking is not available yet.'}
+            </p>
+          </slot>
+        </div>
+      </div>
+      {hasImage && <div class="service-hero-image"><slot name="hero-image" /></div>}
+    </div>
+  </section>
+
+  <div class="service-content">
+    <slot />
+  </div>
+</BaseLayout>
+
+<style is:global>
+  .service-width {
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  .service-hero { max-width: 56rem; }
+  .service-hero--photo { max-width: 72rem; display: grid; gap: 2.5rem; align-items: center; }
+  .service-hero-image { max-width: 25rem; width: 100%; margin-inline: auto; }
+  .service-hero-image img { width: 100%; height: auto; border-radius: var(--radius-card); }
+  .service-content > section { padding-block: 2.5rem; }
+  .service-content h2 { font-size: 2rem; line-height: 1.15; }
+  .service-content h3 { font-size: 1.5rem; line-height: 1.25; }
+  .service-copy { max-width: 46rem; line-height: 1.8; }
+  .service-grid { display: grid; gap: 1rem; margin-top: 1.5rem; }
+  .service-card { background: var(--color-card); border: 1px solid var(--color-border-soft); border-radius: var(--radius-card); padding: 1.5rem; }
+  .service-card p { margin-top: .75rem; line-height: 1.75; }
+  .service-list { list-style: disc; padding-left: 1.25rem; margin-top: 1.25rem; }
+  .service-list li { padding-left: .25rem; margin-top: .6rem; line-height: 1.75; }
+  .service-link { display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 600; text-decoration: underline; text-underline-offset: .25rem; }
+  .service-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .service-final { background: var(--color-muted); }
+  .service-final .service-width { max-width: 56rem; }
+  @media (min-width: 640px) {
+    .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .service-width { padding-inline: 2rem; }
+  }
+  @media (min-width: 1024px) {
+    .service-hero--photo { grid-template-columns: 1.2fr .8fr; }
+    .service-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .service-content > section { padding-block: 3.5rem; }
+  }
+  @media (max-width: 639px) {
+    .service-actions .btn { width: 100%; }
+  }
+</style>

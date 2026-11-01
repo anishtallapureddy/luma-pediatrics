@@ -4,6 +4,7 @@ import PageDecor from '../components/PageDecor.astro';
 import AfterHoursCard from '../components/AfterHoursCard.astro';
 import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
+import { getMedicalScheduling } from '../utils/serviceScheduling';
 
 interface FaqItem {
   id: string;
@@ -14,18 +15,37 @@ interface FaqItem {
 
 const saturdayHours = SITE.hours.find(({ day }) => day === 'Saturday');
 const languages = SITE.provider.quickFacts.find(({ label }) => label === 'Languages');
+const medicalScheduling = getMedicalScheduling(SITE);
+const dateFormat = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' } as const;
+const openingTarget = new Date(SITE.openingTargetDate).toLocaleDateString('en-US', dateFormat);
+const bookingTargets = [...new Set([SITE.newbornScheduling.plannedLaunchDate, SITE.wellChildScheduling.plannedLaunchDate])]
+  .map((date) => new Date(date).toLocaleDateString('en-US', dateFormat)).join(' and ');
 const faqs: FaqItem[] = [
   {
     id: 'opening',
     q: 'When are you opening?',
-    a: `${SITE.status} in ${SITE.locationShort}. Sign up for opening news and updates about our planned services.`,
+    a: `Our target opening in ${SITE.locationShort} is ${openingTarget}, subject to readiness. This is not a confirmed opening date; we will share updates as preparations are completed.`,
     link: { href: '/#practice-updates', label: 'Get opening updates' },
   },
   {
     id: 'booking',
-    q: 'How do I book an appointment?',
-    a: 'Appointments are not available yet. We will publish scheduling information before the practice opens.',
+    q: "How do I schedule my child's first checkup?",
+    a: medicalScheduling.enabled
+      ? 'Online booking is available for selected medical visit types. The practice is not open yet. The New Patients guide links to approved scheduling options; confirm appointment dates, insurance, and costs before booking.'
+      : `Online medical booking is targeted for ${bookingTargets}, subject to confirmation. Appointments are not available yet. The New Patients guide explains how to prepare for a first checkup.`,
     link: { href: '/new-patients/', label: 'Read the first-visit guide' },
+  },
+  {
+    id: 'choosing-luma',
+    q: 'How do I choose Luma for my family?',
+    a: 'Start with the physician introduction on our About page, then review planned services, insurance status, and the first-visit guide. If you would like to meet the pediatrician before choosing care, a Free Meet & Greet is planned after opening.',
+    link: { href: '/new-patients/', label: 'Plan your first visit' },
+  },
+  {
+    id: 'well-child-or-sick',
+    q: 'What is the difference between a well-child and sick visit?',
+    a: 'Well-child visits focus on preventive care, growth, development, and age-appropriate guidance. Sick visits address a current illness or symptom. Additional concerns may need separate time, follow-up, or services.',
+    link: { href: '/well-child-visits/', label: 'Explore Well-Child Visits' },
   },
   ...(SITE.showProviderProfile ? [{
     id: 'pediatrician',
@@ -41,13 +61,17 @@ const faqs: FaqItem[] = [
   {
     id: 'insurance',
     q: 'Which insurance plans will you accept?',
-    a: 'Insurance credentialing is in progress. The confirmed list will be published before scheduling opens.',
+    a: medicalScheduling.enabled
+      ? 'Insurance credentialing is in progress. Confirmed plans will be published once credentialing is complete. Verify coverage and costs before booking.'
+      : 'Insurance credentialing is in progress. The confirmed list will be published before scheduling opens.',
     link: { href: '/new-patients/#insurance', label: 'Check insurance status' },
   },
   {
     id: 'self-pay',
     q: 'Will Luma see self-pay patients?',
-    a: 'Self-pay care is planned after opening. Appointments and fee information are not available yet.',
+    a: medicalScheduling.enabled
+      ? 'Self-pay care is planned after opening. Booking is available for selected medical visits; contact the office to confirm fees before booking.'
+      : 'Self-pay care is planned after opening. Appointments and fee information are not available yet.',
     link: { href: '/new-patients/#insurance', label: 'Read about insurance and self-pay' },
   },
   {
@@ -63,20 +87,20 @@ const faqs: FaqItem[] = [
   ...(saturdayHours ? [{
     id: 'saturday-hours',
     q: 'Is Luma open on Saturdays?',
-    a: `Not yet. Saturday hours are planned for ${saturdayHours.time} after opening. Appointments are not available yet.`,
+    a: `Not yet. Saturday hours are planned for ${saturdayHours.time} after opening. ${medicalScheduling.enabled ? 'The practice is not open yet.' : 'Appointments are not available yet.'}`,
     link: { href: '/contact/#planned-hours', label: 'View planned office hours' },
   }] : []),
   {
     id: 'hospital-newborn-care',
     q: 'Will Luma see my newborn in the hospital?',
-    a: 'Newborn rounds at Baylor Scott & White Medical Center in McKinney are planned after opening and completion of hospital arrangements. Clinic newborn visits are planned for feeding support, growth tracking, and jaundice screening.',
-    link: { href: '/services/#newborn-rounds-bsw-mckinney', label: 'Read about planned newborn care' },
+    a: 'Newborn rounds at Baylor Scott & White Medical Center in McKinney are planned after opening and completion of hospital arrangements, subject to assignment and privileges. This does not guarantee attendance at every delivery or care for every newborn there. Newborn office visits for feeding, growth, weight, and jaundice follow-up are separate.',
+    link: { href: '/newborn-care/', label: 'Explore newborn office care' },
   },
   {
     id: 'meet-and-greet',
     q: 'What is the free Meet & Greet?',
-    a: 'A complimentary visit to see the office and meet the pediatrician before choosing a practice. Meet-and-greets are planned after opening; booking is not available yet.',
-    link: { href: '/about/', label: 'Learn about the pediatrician and practice' },
+    a: 'A complimentary introduction to meet the pediatrician and learn about the practice before choosing care—not a medical appointment or the start of a physician-patient relationship. It is planned after opening; arrangements and booking are not available yet.',
+    link: { href: '/meet-and-greet/', label: 'Explore the planned Free Meet & Greet' },
   },
   ...(SITE.showProviderProfile && languages ? [{
     id: 'languages',
