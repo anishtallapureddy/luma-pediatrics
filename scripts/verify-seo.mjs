@@ -7,6 +7,7 @@ import {
 import { extname, join, relative, sep } from 'node:path';
 import { SITE } from '../src/site.config.ts';
 import { insurancePlans, additionalInsurancePlans, insuranceCoverageNote } from '../src/data/insurance.ts';
+import { selfPayPricing, selfPayServices } from '../src/data/selfPay.ts';
 
 const root = process.cwd();
 const dist = join(root, 'dist');
@@ -1332,7 +1333,7 @@ expect(insuranceSection, 'New Patients must retain its dedicated insurance secti
 const insuranceLists = [...insuranceSection.matchAll(/<ul\b[^>]*>([\s\S]*?)<\/ul>/g)];
 expect(insuranceLists.length === 2, 'Insurance must separate major carriers from additional commercial plans');
 const insuranceLogos = findTags(insuranceLists[0][1], 'img');
-expect(insuranceLogos.length === 5, 'The major insurance list must show five locally hosted logos');
+expect(insuranceLogos.length === insurancePlans.length, 'The major insurance list must show one locally hosted logo per listed insurer');
 expect(normalizedText(insuranceLists[0][1]) === '', 'Insurer logos must not repeat visible name captions');
 for (const { name, logo } of insurancePlans) {
   expect(
@@ -1357,6 +1358,37 @@ expect(
 for (const html of [insuranceHtml, home.html, readFileSync(join(dist, 'faq', 'index.html'), 'utf8'), readFileSync(join(dist, 'well-child-visits', 'index.html'), 'utf8')]) {
   expect(!/credentialing is in progress|insurance participation is not confirmed|Accepted plans are not confirmed/i.test(html), 'Accepted insurance information must not contradict obsolete credentialing copy');
 }
+const selfPaySection = insuranceHtml.match(/<section\b[^>]*\bid="self-pay"[^>]*>([\s\S]*?)<\/section>/)?.[1];
+expect(selfPaySection, 'New Patients must have a dedicated public self-pay summary');
+const selfPayCards = [...selfPaySection.matchAll(/<li\b[^>]*>([\s\S]*?)<\/li>/g)];
+expect(selfPayCards.length === selfPayServices.length, 'Self-pay must show only the public fee summary');
+for (const { name, price, detail } of selfPayServices) {
+  expect(
+    selfPayCards.some(([, card]) => {
+      const text = normalizedText(card);
+      return text.includes(name) && text.includes(price) && text.includes(detail);
+    }),
+    `Public self-pay card must retain its fee and scope: ${name}`,
+  );
+}
+expect(
+  normalizedText(selfPaySection).includes(selfPayPricing.visitFeeNote) &&
+    normalizedText(selfPaySection).includes(selfPayPricing.additionalCharges) &&
+    normalizedText(selfPaySection).includes('after our practice opens') &&
+    selfPaySection.includes(`href="tel:${contract.phoneE164}"`),
+  'Self-pay must explain separate charges, pre-opening availability, and how to request an estimate',
+);
+const selfPayFaq = readFileSync(join(dist, 'faq', 'index.html'), 'utf8');
+expect(
+  selfPayFaq.includes('href="/new-patients/#self-pay"') &&
+    !selfPayFaq.includes('Appointments and fee information are not available yet'),
+  'Self-pay FAQ must link to public pricing without contradicting fee availability',
+);
+expect(
+  !walk(dist).some((path) => /\.(?:xlsx|xlsm|xls)$/i.test(path)) &&
+    !/\bCPT\b|\bHCPCS\b|\bTVFC\b|\.xlsx\b/i.test(normalizedText(selfPaySection)),
+  'The full fee workbook and private billing catalog must not be published',
+);
 for (const slug of serviceSlugs) {
   expect(
     servicesHtml.includes(`id="${slug}"`),
@@ -1379,6 +1411,7 @@ for (const [path, id] of [
   ['/new-patients/', 'first-visit'],
   ['/new-patients/', 'what-to-bring'],
   ['/new-patients/', 'insurance'],
+  ['/new-patients/', 'self-pay'],
   ['/contact/', 'planned-hours'],
   ['/faq/', 'same-day-visits'],
   ['/faq/', 'telehealth'],

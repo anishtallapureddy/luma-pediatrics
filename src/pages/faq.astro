@@ -6,6 +6,7 @@ import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 import { getMedicalScheduling } from '../utils/serviceScheduling';
 import { insurancePlans, insuranceCoverageNote } from '../data/insurance';
+import { selfPayPricing } from '../data/selfPay';
 
 interface FaqItem {
   id: string;
@@ -68,10 +69,8 @@ const faqs: FaqItem[] = [
   {
     id: 'self-pay',
     q: 'Will Luma see self-pay patients?',
-    a: medicalScheduling.enabled
-      ? 'Self-pay care is planned after opening. Booking is available for selected medical visits; contact the office to confirm fees before booking.'
-      : 'Self-pay care is planned after opening. Appointments and fee information are not available yet.',
-    link: { href: '/new-patients/#insurance', label: 'Read about insurance and self-pay' },
+    a: `Self-pay care is planned after opening. A sick or well-child office visit is ${selfPayPricing.officeVisit}, and a standalone sports physical is ${selfPayPricing.sportsPhysical}. These are visit fees only. ${selfPayPricing.additionalCharges} ${medicalScheduling.enabled ? 'Booking is available for selected medical visits; confirm fees before booking.' : 'Appointments are not available yet.'}`,
+    link: { href: '/new-patients/#self-pay', label: 'See self-pay pricing' },
   },
   {
     id: 'same-day-visits',

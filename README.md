@@ -300,3 +300,12 @@ altering their artwork. They identify listed insurers, not endorsements.
 | `cigna.svg` | Cigna official About Us header (Cigna Healthcare mark): https://www.cigna.com/about-us |
 | `unitedhealthcare.svg` | Wikimedia Commons, `PD-textlogo`: https://commons.wikimedia.org/wiki/File:UnitedHealthcare_(logo).svg |
 | `bsw-health-plan.svg` | Baylor Scott & White Health Plan official header: https://www.bswhealthplan.com/ |
+| `anthem.svg` | Wikimedia Commons, `PD-textlogo` (trademarked): https://commons.wikimedia.org/wiki/File:Anthem,_Inc._Logo.svg |
+
+## Public self-pay information
+
+`src/data/selfPay.ts` contains only the practice-approved public fee summary.
+The New Patients page, FAQ, and discovery summary use this shared data. Keep
+full fee workbooks, billing codes, and unpublished rates out of the repository
+and public assets. Visit fees are not bundled prices: retain the separate-charge
+notice, estimate phone link, and pre-opening scheduling safeguards.

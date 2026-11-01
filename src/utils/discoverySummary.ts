@@ -1,5 +1,6 @@
 import { services } from '../data/services.ts';
 import { insurancePlans, additionalInsurancePlans, insuranceCoverageNote } from '../data/insurance.ts';
+import { selfPayPricing, selfPayServices } from '../data/selfPay.ts';
 import { getMedicalScheduling, type MedicalSchedulingConfig } from './serviceScheduling.ts';
 
 interface DiscoverySite {
@@ -101,6 +102,13 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     `- **Additional Commercial Networks & Plans:** ${additionalInsurancePlans.join('; ')}.`,
     `${site.name} accepts a variety of commercial insurance plans. ${insuranceCoverageNote} Please contact our office at ${site.contact.phone} to verify coverage before your appointment.`,
     '',
+    '## Self-pay',
+    '',
+    'These fees apply to visits after the practice opens.',
+    ...selfPayServices.map(({ name, price, detail }) => `- **${name}:** ${price}. ${detail}`),
+    `${selfPayPricing.visitFeeNote} ${selfPayPricing.additionalCharges}`,
+    `Contact our office at ${site.contact.phone} for an estimate before your visit. See [self-pay pricing](${link('/new-patients/#self-pay')}).`,
+    '',
     '## Planned services',
     '',
     ...services.map((service) =>
@@ -121,7 +129,7 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     '',
     '## About this summary',
     '',
-    'This optional plain-text summary is generated from the public website configuration, service catalog, and insurance list. Refer to the linked pages for current policies and clinical context. It is not medical advice, a patient intake channel, or a guarantee of search inclusion.',
+    'This optional plain-text summary is generated from the public website configuration, service catalog, insurance list, and public self-pay summary. Refer to the linked pages for current policies and clinical context. It is not medical advice, a patient intake channel, or a guarantee of search inclusion.',
     '',
   ].join('\n');
 }

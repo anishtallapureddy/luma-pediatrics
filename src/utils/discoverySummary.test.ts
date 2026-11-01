@@ -32,11 +32,31 @@ test('insurance summary includes major insurers, additional plans, and plan-spec
   });
   assert(text.includes('Blue Cross Blue Shield of Texas (BCBS)'));
   assert(text.includes('Cigna / Great-West'));
+  assert(text.includes('Anthem'));
   assert(text.includes('Curative; Coventry / First Health (PPO)'));
   assert(text.includes('6 Degrees – Fort Worth Firefighters; QuikTrip (Open Access)'));
   assert(text.includes('Participation varies by specific plan and network.'));
   assert(text.includes('office at (555) 010-0100 to verify coverage before your appointment.'));
   assert(!/Medicaid|Molina|Superior Health Plan|Community Medicaid/i.test(text));
+});
+
+test('self-pay summary shows public visit fees and separate costs, not a billing catalog', () => {
+  const text = renderDiscoverySummary(SITE);
+  assert(text.includes('**Patient visit (sick or well-child):** $130.'));
+  assert(text.includes('**Sports physical:** $40.'));
+  assert(text.includes('**Testing:** From $10.'));
+  assert(text.includes('**Screenings:** From $10.'));
+  assert(text.includes('Urine pregnancy testing $10.'));
+  assert(text.includes('strep tests from $25 each; cost depends on the test method.'));
+  assert(text.includes('vision and hearing screenings from $20 each.'));
+  const feeSummary = text.slice(text.indexOf('## Self-pay'), text.indexOf('## Planned services'));
+  assert.equal(feeSummary.match(/\$130\b/g)?.length, 1);
+  assert(!/\*\*[^*]*vaccin[^*]*:\*\*/i.test(feeSummary));
+  assert(text.includes('Patient visit and sports physical fees cover the visit only.'));
+  assert(text.includes('These fees apply to visits after the practice opens.'));
+  assert(text.includes('Tests, screenings, vaccines, procedures, and applicable add-on charges are billed separately.'));
+  assert(text.includes(`${SITE.domain}/new-patients/#self-pay`));
+  assert(!/\bCPT\b|\bHCPCS\b|\bTVFC\b|\.xlsx\b/i.test(text));
 });
 
 test('changed business facts and hours propagate without editing a second summary', () => {
