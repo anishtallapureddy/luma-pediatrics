@@ -13,12 +13,9 @@ const root = process.cwd();
 const dist = join(root, 'dist');
 const domain = 'https://www.lumapediatrics.com';
 const medicalBookingEnabled = SITE.newbornScheduling.enabled || SITE.wellChildScheduling.enabled;
-const unannouncedDates = [...new Set([
+const internalTargetDates = [...new Set([
   SITE.openingTargetDate, SITE.newbornScheduling.plannedLaunchDate, SITE.wellChildScheduling.plannedLaunchDate,
-])].flatMap((date) => [
-  date,
-  new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }),
-]);
+])];
 const dedicatedServicePaths = {
   'free-meet-and-greet': '/meet-and-greet/',
   'newborn-care': '/newborn-care/',
@@ -38,14 +35,15 @@ const contract = {
   physicianName: 'Praveena Tallapureddy',
   physicianHonorificPrefix: 'Dr.',
   physicianHonorificSuffix: 'M.D., F.A.A.P.',
-  status: 'Opening late 2026',
+  status: 'Opening November 30 in McKinney',
+  schedulingNotice: 'Online scheduling opens November 16.',
   ga4: 'G-QL30ZJXMW8',
-  socialImage: '/og-luma-pediatrics-2026-09-15.png',
+  socialImage: '/og-luma-pediatrics-opening-november-30.png',
   homeSocialTitle: 'Luma Pediatrics | McKinney, TX',
   homeDescription:
-    'Board-certified pediatric care planned for newborns through teens in McKinney, TX. Luma Pediatrics opens late 2026 with well visits, sick care, vaccines, and more.',
+    'Board-certified pediatric care planned for newborns through teens in McKinney, TX. Opening November 30 in McKinney, with well visits, sick care, vaccines, and more.',
   homeSocialDescription:
-    'Helping kids thrive. Helping parents feel confident. Thoughtful pediatric care planned for McKinney, Texas. Opening late 2026.',
+    'Helping kids thrive and parents feel confident. Thoughtful pediatric care planned for McKinney, Texas. Opening November 30 in McKinney.',
 };
 const serviceSlugs = [
   'free-meet-and-greet',
@@ -316,8 +314,11 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
   expect(webPage.isPartOf?.['@id'] === website['@id'], `${fileLabel}: WebPage is not linked to WebSite`);
 
   const text = normalizedText(html);
-  for (const date of unannouncedDates) {
-    expect(!text.includes(date), `${fileLabel}: internal target date must not become a public announcement: ${date}`);
+  if (!medicalBookingEnabled) {
+    expect(text.includes(contract.schedulingNotice), `${fileLabel}: approved scheduling announcement is missing`);
+  }
+  for (const date of internalTargetDates) {
+    expect(!text.includes(date), `${fileLabel}: internal target fields must not leak into public copy: ${date}`);
   }
   expect(!text.includes('Insurance plans will be published once confirmed'), `${fileLabel}: stale insurance availability`);
   expect(
@@ -405,8 +406,7 @@ expect(
 );
 for (const value of [
   'Why consider Luma?',
-  'Helping kids thrive.',
-  'Helping parents feel confident.',
+  'Helping kids thrive and parents feel confident.',
   'Your concerns are heard.',
   'You understand the plan.',
   'Care as your child grows.',
@@ -494,16 +494,20 @@ expect(
     normalizedText(homeHeader).includes(SITE.status) &&
     normalizedText(homeHero).includes(SITE.address.city) &&
     !homeHero.includes('data-home-location') &&
-    !normalizedText(homeHero).includes('ACCEPTING NEW PATIENTS') &&
-    !/opening november 30/i.test(normalizedText(homeHero)),
-  'Header must carry the approved location/opening cue without a duplicate hero label or premature acceptance/date claims',
+    !normalizedText(homeHero).includes('ACCEPTING NEW PATIENTS'),
+  'Header must carry the approved location/opening cue without a duplicate hero label or premature acceptance claims',
 );
 for (const service of ['newborn checkups', 'well-child visits', 'sick care']) {
   expect(normalizedText(homeHero).includes(service), `Home hero must explain planned ${service}`);
 }
 expect(
-  homeHero.includes('href="/new-patients/"') && homeHero.includes("Plan Your Child"),
-  'Home hero must prioritize first-visit planning over email signup',
+  homeHero.includes('href="/#practice-updates"') && normalizedText(homeHero).includes('Get Opening Updates'),
+  'Home hero must direct opening updates to the existing signup form',
+);
+expect(
+  normalizedText(homeHero).includes('Helping kids thrive and parents feel confident.') &&
+    normalizedText(homeHero).includes('Insurance accepted. No membership fee.'),
+  'Home hero must show the approved headline and insurance/membership message',
 );
 expect(
   !homeHero.includes('/images/provider-headshot.jpg') &&
@@ -1087,8 +1091,11 @@ for (const article of pages.filter((page) => /\/blog\/[^/]+\/$/.test(page.canoni
 }
 
 const llms = readFileSync(join(dist, 'llms.txt'), 'utf8');
-for (const date of unannouncedDates) {
-  expect(!llms.includes(date), `llms.txt: internal target date must remain unannounced: ${date}`);
+if (!medicalBookingEnabled) {
+  expect(llms.includes(contract.schedulingNotice), 'llms.txt: approved scheduling announcement is missing');
+}
+for (const date of internalTargetDates) {
+  expect(!llms.includes(date), `llms.txt: internal target fields must not leak into public copy: ${date}`);
 }
 for (const value of [
   `**Practice name:** ${contract.name}`,
@@ -1466,7 +1473,7 @@ const newbornArticle = articlePages.find((page) => page.canonical.endsWith('/new
 expect(newbornArticle?.html.includes('href="/newborn-care/"'), 'The newborn educational article must link to the newborn service page');
 for (const [path, heading, config, fallbackLabel, enabledLabel, faqCount] of [
   ['/newborn-care/', 'Newborn Pediatric Care in McKinney, TX', SITE.newbornScheduling, 'Plan Your First Visit', 'Schedule a Newborn Visit', 5],
-  ['/well-child-visits/', 'Well-Child Visits in McKinney, TX', SITE.wellChildScheduling, "Plan Your Child's Visit", 'Schedule a Well-Child Visit', 6],
+  ['/well-child-visits/', 'Well-Child Visits in McKinney, TX', SITE.wellChildScheduling, 'Get Opening Updates', 'Schedule a Well-Child Visit', 6],
   ['/meet-and-greet/', 'Meet Your Pediatrician Before You Decide', { enabled: false }, 'Ask About a Meet & Greet', '', 5],
 ]) {
   const page = pages.find((candidate) => candidate.canonical === `${domain}${path}`);
@@ -1474,7 +1481,7 @@ for (const [path, heading, config, fallbackLabel, enabledLabel, faqCount] of [
   const headings = [...page.html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
   expect(headings.length === 1 && normalizedText(headings[0][1]) === heading, `${path}: expected one correct H1`);
   const primaryLabel = config.enabled ? enabledLabel : fallbackLabel;
-  const primaryHref = config.enabled ? new URL(config.url).href : path === '/meet-and-greet/' ? '/contact/' : '/new-patients/';
+  const primaryHref = config.enabled ? new URL(config.url).href : path === '/meet-and-greet/' ? '/contact/' : path === '/well-child-visits/' ? '/#practice-updates' : '/new-patients/';
   const primaryLinks = [...page.html.matchAll(/<a\b[^>]*class="[^"]*\bbtn-primary\b[^"]*"[^>]*>([\s\S]*?)<\/a>/g)]
     .filter((match) => normalizedText(match[1]) === primaryLabel);
   expect(primaryLinks.length === 2, `${path}: hero and final action must use the correct booking state`);
@@ -1638,8 +1645,8 @@ expect(
   'Hero credential ribbon must use the white foreground token',
 );
 expect(
-  /Helping kids thrive\.<\/span>\s+<span[^>]*>Helping parents feel confident\./.test(home.html),
-  'Rendered hero headline must preserve the space between its two lines',
+  normalizedText(homeHero.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? '') === 'Helping kids thrive and parents feel confident.',
+  'Rendered hero headline must match the approved wording',
 );
 expect(
   /@media \(min-width: 900px\)\s*\{[\s\S]*?\.hero-credibility-copy\s*\{[\s\S]*?white-space:\s*nowrap/.test(

@@ -22,7 +22,7 @@ const endpoint = (SITE.forms.waitlistEndpoint ?? '').trim();
 const headline = title ?? 'Get opening updates';
 const intro =
   blurb ??
-  `${SITE.status} in ${SITE.address.city}. Sign up for opening news and occasional updates about our planned services.`;
+  `${SITE.status}. ${SITE.schedulingNotice} Sign up for opening news and occasional updates about our planned services.`;
 
 const isHero = variant === 'hero';
 const inputClass =

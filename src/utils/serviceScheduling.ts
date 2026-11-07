@@ -13,8 +13,8 @@ export function getServiceScheduling(
   if (!config.enabled) {
     return {
       enabled: false,
-      href: '/new-patients/',
-      label: newborn ? 'Plan Your First Visit' : "Plan Your Child's Visit",
+      href: newborn ? '/new-patients/' : '/#practice-updates',
+      label: newborn ? 'Plan Your First Visit' : 'Get Opening Updates',
     };
   }
 

@@ -9,8 +9,8 @@ test('well-child planning does not activate on a date or on the presence of a UR
   for (const config of [disabled, { ...enabled, enabled: false }]) {
     assert.deepEqual(getServiceScheduling(config, 'well-child'), {
       enabled: false,
-      href: '/new-patients/',
-      label: "Plan Your Child's Visit",
+      href: '/#practice-updates',
+      label: 'Get Opening Updates',
     });
   }
 });

@@ -40,7 +40,7 @@ const lastUpdated = 'September 2026';
         <strong>{SITE.status}.</strong>
         {medicalScheduling.enabled
           ? 'The practice is not currently open or providing clinical care. Online scheduling is available for selected medical visits.'
-          : 'The practice is not currently open, accepting patients, or scheduling appointments.'}
+          : `The practice is not currently open or providing clinical care. ${SITE.schedulingNotice}`}
         Descriptions of services, hours, and availability are plans and may change
         before opening.
       </p>

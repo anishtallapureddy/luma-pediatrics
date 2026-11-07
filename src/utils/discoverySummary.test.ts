@@ -25,10 +25,10 @@ test('provider privacy applies to the AI-facing summary as well as HTML', () => 
   assert(text.includes(SITE.address.street));
 });
 
-test('public summary does not announce internal opening or scheduling targets', () => {
+test('public summary includes the scheduling announcement without exposing internal target fields', () => {
   const text = renderDiscoverySummary(SITE);
   assert(text.includes(`**Status:** ${SITE.status}`));
-  assert(text.includes('Scheduling details will be shared closer to opening.'));
+  assert(text.includes(SITE.schedulingNotice));
   for (const target of [SITE.openingTargetDate, SITE.newbornScheduling.plannedLaunchDate, SITE.wellChildScheduling.plannedLaunchDate]) {
     assert(!text.includes(target));
   }

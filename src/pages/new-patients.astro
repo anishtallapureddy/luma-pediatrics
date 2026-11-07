@@ -22,7 +22,7 @@ const steps = [
     t: medicalScheduling.enabled ? 'Schedule an available visit type' : 'Schedule when appointments open',
     d: medicalScheduling.enabled
       ? 'Online booking is available for the visit types linked below. The practice is not open yet; confirm appointment dates, insurance, and costs before booking.'
-      : 'Scheduling is not available yet. We’ll share appointment details closer to opening.',
+      : SITE.schedulingNotice,
     img: '/images/journey-1.jpg',
     alt: 'A parent booking a pediatric visit online from a warm, sunlit home',
   },
@@ -89,8 +89,8 @@ const bringList = [
     <PageDecor variant="minimal" sparkles={6} />
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <p class="max-w-3xl mx-auto mb-6 text-[var(--color-foreground)]/80 leading-relaxed">
-        {SITE.status} in {SITE.address.city}.{' '}
-        {!medicalScheduling.enabled && <>Appointments are not available yet. Scheduling details will be shared closer to opening.{' '}</>}
+        {SITE.status}.{' '}
+        {!medicalScheduling.enabled && <>{SITE.schedulingNotice}{' '}</>}
         This guide describes visits after opening.{' '}
         <a href="/#practice-updates" class="font-semibold text-[var(--color-primary)] underline underline-offset-4">Opening updates</a>
         {' '}are optional and are not patient registration.
@@ -152,6 +152,9 @@ const bringList = [
   <section id="insurance" aria-labelledby="insurance-heading" class="scroll-mt-32 py-16 md:py-20 reveal">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 id="insurance-heading" class="text-3xl md:text-4xl tracking-tight">Major Insurance Plans Accepted</h2>
+      <p class="mt-3 text-sm md:text-base font-semibold text-[var(--color-primary)]">
+        No membership fee.
+      </p>
       <ul role="list" class="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-8 rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-6 md:p-8">
         {insurancePlans.map(({ name, logo, width, height }) => (
           <li class="flex h-20 w-60 max-w-full items-center justify-center">
