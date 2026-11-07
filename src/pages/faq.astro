@@ -22,7 +22,7 @@ const faqs: FaqItem[] = [
   {
     id: 'opening',
     q: 'When are you opening?',
-    a: `${SITE.status} in ${SITE.locationShort}. We will announce an opening date once preparations are confirmed.`,
+    a: `${SITE.status}. ${SITE.schedulingNotice} The practice is not open yet.`,
     link: { href: '/#practice-updates', label: 'Get opening updates' },
   },
   {
@@ -30,7 +30,7 @@ const faqs: FaqItem[] = [
     q: "How do I schedule my child's first checkup?",
     a: medicalScheduling.enabled
       ? 'Online booking is available for selected medical visit types. The practice is not open yet. The New Patients guide links to approved scheduling options; confirm appointment dates, insurance, and costs before booking.'
-      : 'Appointments are not available yet. Scheduling details will be shared closer to opening. The New Patients guide explains how to prepare for a first checkup.',
+      : `${SITE.schedulingNotice} The New Patients guide explains how to prepare for a first checkup.`,
     link: { href: '/new-patients/', label: 'Read the first-visit guide' },
   },
   {
@@ -59,13 +59,13 @@ const faqs: FaqItem[] = [
   {
     id: 'insurance',
     q: 'Which insurance plans will you accept?',
-    a: `${SITE.name} accepts commercial plans from ${insurancePlans.map(({ name }) => name).join(', ')}, with additional commercial networks and employer plans listed on our New Patients page. ${insuranceCoverageNote} Call or text our office at ${SITE.contact.phone} to verify coverage before your appointment.`,
+    a: `${SITE.name} accepts commercial plans from ${insurancePlans.map(({ name }) => name).join(', ')}, with additional commercial networks and employer plans listed on our New Patients page. No membership fee. ${insuranceCoverageNote} Call or text our office at ${SITE.contact.phone} to verify coverage before your appointment.`,
     link: { href: '/new-patients/#insurance', label: 'See the accepted insurance list' },
   },
   {
     id: 'self-pay',
     q: 'Will Luma see self-pay patients?',
-    a: `Self-pay care is planned after opening. A sick or well-child office visit is ${selfPayPricing.officeVisit}, and a standalone sports physical is ${selfPayPricing.sportsPhysical}. These are visit fees only. ${selfPayPricing.additionalCharges} Call or text ${SITE.contact.phone} for an estimate before your visit. ${medicalScheduling.enabled ? 'Booking is available for selected medical visits; confirm fees before booking.' : 'Appointments are not available yet.'}`,
+    a: `Self-pay care is planned after opening. A sick or well-child office visit is ${selfPayPricing.officeVisit}, and a standalone sports physical is ${selfPayPricing.sportsPhysical}. These are visit fees only. ${selfPayPricing.additionalCharges} Call or text ${SITE.contact.phone} for an estimate before your visit. ${medicalScheduling.enabled ? 'Booking is available for selected medical visits; confirm fees before booking.' : SITE.schedulingNotice}`,
     link: { href: '/new-patients/#self-pay', label: 'See self-pay pricing' },
   },
   {

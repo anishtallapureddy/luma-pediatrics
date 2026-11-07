@@ -9,10 +9,11 @@ export const SITE = {
   organizationNpi: '1689504292',
   tagline: "Where your child's health shines.",
   subtagline: 'Bright beginnings. Healthy futures.',
-  status: 'Opening late 2026',
+  status: 'Opening November 30 in McKinney',
+  schedulingNotice: 'Online scheduling opens November 16.',
   /** Opening timeframe phrase - appears in "Opening {openingWindow} in McKinney" copy. */
-  openingWindow: 'late 2026',
-  /** Target only; construction readiness still determines the actual opening. */
+  openingWindow: 'November 30',
+  /** Announced opening date; never activates scheduling or clinical care automatically. */
   openingTargetDate: '2026-11-30',
   newbornScheduling: {
     /** Manual activation only, after approval of the Phreesia workflow and dates. */
@@ -29,11 +30,11 @@ export const SITE = {
   },
   locationShort: 'McKinney, Texas',
   description:
-    'Luma Pediatrics is a board-certified pediatric practice in McKinney, Texas. Opening late 2026, with evidence-based care planned for newborns, children, and teens.',
+    'Luma Pediatrics is a board-certified pediatric practice in McKinney, Texas. Opening November 30 in McKinney, with evidence-based care planned for newborns, children, and teens.',
   disambiguatingDescription:
     'Independent pediatric primary care practice in McKinney, Texas, operated by Luma Physician Group PLLC.',
   domain: 'https://www.lumapediatrics.com',
-  socialImage: '/og-luma-pediatrics-2026-09-15.png',
+  socialImage: '/og-luma-pediatrics-opening-november-30.png',
 
   /**
    * Provider-detail visibility flag.

@@ -56,7 +56,7 @@ const serviceSchema = {
               {SITE.status}.
               {primary.enabled
                 ? ' Online booking for this service is available. The practice is not open yet; confirm appointment dates and coverage before booking.'
-                : ' Appointments are not available yet. Scheduling details will be shared closer to opening.'}
+                : ` ${SITE.schedulingNotice}`}
             </p>
           </slot>
         </div>

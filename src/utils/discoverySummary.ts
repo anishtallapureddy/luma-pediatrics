@@ -10,6 +10,7 @@ interface DiscoverySite {
   organizationNpi: string;
   domain: string;
   status: string;
+  schedulingNotice: string;
   locationShort: string;
   showProviderProfile: boolean;
   provider: {
@@ -88,7 +89,7 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     '',
     scheduling.enabled
       ? 'Medical booking is enabled only for the services identified below. Use their linked pages for the approved workflows.'
-      : 'Medical appointment booking is not currently enabled. Scheduling details will be shared closer to opening.',
+      : `Medical appointment booking is not currently enabled. ${site.schedulingNotice}`,
     `- **Newborn booking:** ${scheduling.newborn.enabled ? 'Enabled' : 'Not enabled'}. See [Newborn Care](${link('/newborn-care/')}).`,
     `- **Well-child booking:** ${scheduling.wellChild.enabled ? 'Enabled' : 'Not enabled'}. See [Well-Child Visits](${link('/well-child-visits/')}).`,
     `- **Meet & Greet:** A free introduction is planned after opening. It is not an examination, diagnosis or treatment visit and does not establish a physician-patient relationship. No Meet & Greet booking workflow is enabled; [ask about arrangements](${link('/contact/')}).`,

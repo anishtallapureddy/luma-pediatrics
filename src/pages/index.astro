@@ -70,10 +70,10 @@ const trustPhotos = [
 <BaseLayout
   title="Luma Pediatrics | Pediatric Primary Care in McKinney, TX"
   path="/"
-  description={`Board-certified pediatric care planned for newborns through teens in McKinney, TX. ${SITE.name} opens late 2026 with well visits, sick care, vaccines, and more.`}
+  description={`Board-certified pediatric care planned for newborns through teens in McKinney, TX. ${SITE.status}, with well visits, sick care, vaccines, and more.`}
   socialTitle="Luma Pediatrics | McKinney, TX"
-  socialDescription={`Helping kids thrive. Helping parents feel confident. Thoughtful pediatric care planned for McKinney, Texas. ${SITE.status}.`}
-  ogImageAlt={`Luma Pediatrics logo. ${SITE.status} in McKinney, Texas.`}
+  socialDescription={`Helping kids thrive and parents feel confident. Thoughtful pediatric care planned for McKinney, Texas. ${SITE.status}.`}
+  ogImageAlt={`Luma Pediatrics logo. ${SITE.status}.`}
   preloadImage="/images/luma-hero-banner.webp"
 >
 
@@ -93,8 +93,8 @@ const trustPhotos = [
       <div class="fade-up grid gap-8 lg:grid-cols-2 items-center w-full">
         <div class="text-center lg:text-left">
           <h1 class="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.08]" style="font-family: var(--font-display);">
-            <span class="block">Helping kids thrive.</span>{' '}
-            <span class="block">Helping parents feel confident.</span>
+            <span class="lg:block">Helping kids thrive</span>{' '}
+            <span class="lg:block">and parents feel confident.</span>
           </h1>
           <div class="mt-3 lg:max-w-xs">
             <StarDivider span="4rem" />
@@ -102,10 +102,13 @@ const trustPhotos = [
           <p class="mt-3 text-sm md:text-base text-[var(--color-foreground)]/80 max-w-xl mx-auto lg:mx-0 leading-relaxed">
             From newborn checkups and well-child visits to sick care and the teen years, Luma Pediatrics is preparing to welcome McKinney families with thoughtful care, clear answers, and a personal approach to your child's health.
           </p>
+          <p class="mt-3 text-sm md:text-base font-semibold text-[var(--color-primary)]">
+            Insurance accepted. No membership fee.
+          </p>
 
           <div class="mt-6 flex flex-wrap justify-center lg:justify-start gap-3">
-            <Button href="/new-patients/" variant="primary">
-              Plan Your Child's Visit
+            <Button href="/#practice-updates" variant="primary">
+              Get Opening Updates
               <span class="btn-icon-circle" aria-hidden="true">
                 <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
               </span>

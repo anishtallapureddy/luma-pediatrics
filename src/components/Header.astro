@@ -133,11 +133,11 @@ const isActive = (href: string) => {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center text-xs sm:text-sm text-[var(--color-foreground)]/85">
       <span class="inline-flex items-center gap-1.5">
         <Icon name="lucide:sparkles" class="w-3.5 h-3.5 text-[var(--color-sun)]" stroke-width="1.8" aria-hidden="true" />
-        <strong>{SITE.status} in McKinney.</strong>
+        <strong>{SITE.status}.</strong>
       </span>
-      <span>{medicalScheduling.enabled ? 'Not currently open. Online scheduling is available for selected medical visits.' : 'Not currently open or scheduling appointments.'}</span>
+      <span>{medicalScheduling.enabled ? 'Not currently open. Online scheduling is available for selected medical visits.' : SITE.schedulingNotice}</span>
       <a href="/#practice-updates" class="hidden sm:inline-flex font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
-        Get updates
+        Get opening updates
       </a>
     </div>
   </div>

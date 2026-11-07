@@ -41,7 +41,7 @@ const faqItems = [
     question: 'Is Luma Pediatrics open and scheduling appointments?',
     answer: medicalScheduling.enabled
       ? `${SITE.status}. The practice is not currently open or providing clinical care. Online scheduling is available for selected medical visits through the New Patients guide.`
-      : `${SITE.status}. The practice is not currently open, accepting patients, or scheduling appointments.`,
+      : `${SITE.status}. ${SITE.schedulingNotice} The practice is not currently open or providing clinical care.`,
   },
 ];
 const serviceSchema = {

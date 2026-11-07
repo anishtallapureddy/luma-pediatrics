@@ -37,7 +37,7 @@ const socialLinks = [
         </p>
         <p class="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--color-primary)] bg-[var(--color-muted)] rounded-full px-2.5 py-1">
           <Icon name="lucide:sparkles" class="w-3.5 h-3.5" stroke-width="1.8" aria-hidden="true" />
-          {SITE.status} · {SITE.locationShort}
+          {SITE.status}.
         </p>
         {socialLinks.length > 0 && (
           <div class="mt-5">
@@ -195,7 +195,7 @@ const socialLinks = [
       <p>
         {medicalScheduling.enabled
           ? 'Luma Pediatrics is not currently open or providing clinical care. Online scheduling is available for selected medical visits.'
-          : 'Luma Pediatrics is not currently open, accepting patients, or scheduling appointments.'}
+          : `Luma Pediatrics is not currently open or providing clinical care. ${SITE.schedulingNotice}`}
       </p>
       <p>
         © {year} {SITE.name}. All rights reserved.
