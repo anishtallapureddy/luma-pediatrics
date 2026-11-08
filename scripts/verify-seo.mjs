@@ -5,6 +5,7 @@ import {
   statSync,
 } from 'node:fs';
 import { extname, join, relative, sep } from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { SITE } from '../src/site.config.ts';
 import { insurancePlans, additionalInsurancePlans, insuranceCoverageNote } from '../src/data/insurance.ts';
 import { selfPayPricing, selfPayServices } from '../src/data/selfPay.ts';
@@ -691,11 +692,16 @@ for (const articlePage of articlePages) {
   );
   const heroPath = String(heroEntry.url).replace(domain, '');
   articleHeroPaths.push(heroPath);
+  const displayedHeroEntry = articleStructuredData.image.find(
+    (image) => image.width === 1200 && image.height === 675,
+  ) ?? heroEntry;
+  const displayedHeroPath = String(displayedHeroEntry.url).replace(domain, '');
   const articleHero = findTags(articlePage.html, 'img').find(
-    (attributes) => attributes.src === heroPath,
+    (attributes) => attributes.src === displayedHeroPath,
   );
   expect(
-    articleHero?.width === '1200' && articleHero?.height === '900',
+    articleHero?.width === String(displayedHeroEntry.width) &&
+      articleHero?.height === String(displayedHeroEntry.height),
     `${articlePage.fileLabel}: article hero must publish intrinsic dimensions`,
   );
   for (const image of articleStructuredData.image) {
@@ -832,6 +838,24 @@ const resourcesPage = pages.find(
   (page) => page.canonical === `${domain}/resources/`,
 );
 expect(resourcesPage, 'Resources page was not generated');
+const recentArticlePaths = articlePages
+  .map((page) => ({
+    path: new URL(page.canonical).pathname,
+    published: Date.parse(singleMeta(
+      page.html, 'property', 'article:published_time', page.fileLabel,
+    )),
+  }))
+  .sort((a, b) => b.published - a.published)
+  .slice(0, 3)
+  .map((article) => article.path);
+for (const href of recentArticlePaths) {
+  expect(
+    findTags(resourcesPage.html, 'a').some(
+      (attributes) => attributes.href === href,
+    ),
+    `Resources page must surface the latest published guide: ${href}`,
+  );
+}
 for (const href of ['/vaccines/']) {
   expect(
     findTags(resourcesPage.html, 'a').some(
@@ -1019,6 +1043,21 @@ const searchConsolePrioritySource = readFileSync(
   join(root, 'scripts', 'search-console-priority.mjs'),
   'utf8',
 );
+const searchConsolePriorityOutput = execFileSync(
+  process.execPath,
+  [join(root, 'scripts', 'search-console-priority.mjs')],
+  { cwd: root, encoding: 'utf8' },
+);
+const searchConsolePriorityUrls = new Set(
+  [...searchConsolePriorityOutput.matchAll(/^\d+\. (\S+)$/gm)]
+    .map((match) => match[1]),
+);
+for (const page of articlePages) {
+  expect(
+    searchConsolePriorityUrls.has(page.canonical),
+    `Search Console priority list must include every published guide: ${page.canonical}`,
+  );
+}
 for (const priorityPath of [
   '/meet-and-greet/',
   '/newborn-care/',

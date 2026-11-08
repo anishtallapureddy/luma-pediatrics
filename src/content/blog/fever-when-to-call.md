@@ -1,57 +1,66 @@
 ---
-title: "Fever in kids: when to worry and when to wait"
-description: "A pediatrician's guide to fevers by age, what's normal, what works at home, and the warning signs that mean it's time to call the doctor."
-publishDate: 2026-10-01
-hero: /images/blog-fever.jpg
-heroAlt: A thermometer resting on a folded blanket beside a child's stuffed animal
+title: "Fever in children: when to call your pediatrician"
+description: "What to watch for when your child has a fever: guidance by age, comfort at home, medication reminders, and when to seek emergency care."
+publishDate: 2026-11-07
+updatedDate: 2026-11-07
+hero: /images/blog-fever-care.jpg
+heroWide: /images/blog-fever-care-16x9.jpg
+heroSquare: /images/blog-fever-care-1x1.jpg
+heroAlt: A digital thermometer on a folded blanket beside a stuffed animal in a softly lit room
 tags: ["fever", "when-to-call", "symptoms", "parents-guide"]
-draft: true
+draft: false
 ---
 
-A fever is the body doing its job, turning up the heat to fight an infection. Most fevers in healthy kids are not dangerous on their own. What matters far more than the *number* on the thermometer is **how your child looks and acts**.
+A fever can be unsettling, especially when it starts in the middle of the night. As a pediatrician, I want to know the temperature—but I also want to know your child’s age, whether they’re drinking, and how they’re acting.
 
-Here is a pediatrician's quick guide.
+Are they making eye contact? Do they perk up enough to talk or play? Are they breathing comfortably? Those details help me decide what needs to happen next.
 
-## What counts as a fever?
+## Young babies need a different approach
 
-A rectal, oral, or temporal-artery reading of **100.4°F (38°C) or higher** is a fever. Underarm temperatures read about a degree low, so add 1°F to underarm readings.
+If your baby is younger than 3 months and has a temperature of **100.4°F (38°C) or higher**, call your pediatrician immediately. Don’t wait until morning, even if your baby seems fine. A rectal temperature is the most accurate reading at this age.[^baby]
 
-## What to do at home
+Get medical advice before giving fever medicine to a young infant. They need to be evaluated, and medicine should not delay that visit.[^infant-medicine]
 
-For a child who is otherwise drinking, peeing, and reasonably comfortable:
+## For older children, look beyond the number
 
-- **Fluids first.** Small, frequent sips of water, breast milk, formula, or an electrolyte drink.
-- **Dress lightly.** Bundling a feverish child traps heat. One thin layer is enough.
-- **Medicine if uncomfortable.** Acetaminophen (Tylenol) is okay from birth at the right weight-based dose. Ibuprofen (Motrin / Advil) is okay from **6 months and older**, never younger. Follow the dosing on the package, or call us.
-- **Never give aspirin to children.** It is linked to a rare but serious condition called Reye's syndrome.
+Tell your pediatrician if your child still seems very sick after the fever comes down, is getting worse, or has other symptoms that concern you.
 
-You do **not** have to break the fever to "feel like you're doing something." Bringing the temperature from 103° to 101° will not change the course of the illness, it just makes your child a little more comfortable.
+Call promptly if your child has:
 
-## Call us, same day
+- Unusual sleepiness, severe fussiness, or a very ill appearance.
+- A stiff neck, severe headache, unexplained rash, or repeated vomiting.
+- A temperature that repeatedly rises above 104°F.
+- A weakened immune system or a condition that requires a specific fever plan.
 
-Call us for any of these:
+Call if the fever lasts **more than 24 hours in a child younger than 2**, or **more than three days in a child age 2 or older**. These aren’t waiting periods—call sooner if something seems wrong.[^call]
 
-- **Any fever in a baby under 3 months**, always urgent
-- Fever **above 104°F** in a child of any age
-- Fever lasting **more than 3 days**, or one that returns after being gone for a day
-- A rash that doesn't blanch (turn white) when you press on it
-- Stiff neck, severe headache, or sensitivity to light
-- Repeated vomiting or refusing all fluids
-- Very few wet diapers / fewer trips to the bathroom (signs of dehydration)
-- Your child is unusually sleepy, very floppy, or hard to wake
-- You just feel that something is wrong
+## What I recommend at home
 
-## Go to the ER, or call 911
+If your child can be cared for at home, offer fluids frequently and keep them comfortably dressed. Watch for a dry mouth, fewer wet diapers or bathroom trips, or difficulty drinking.
 
-- Trouble breathing or fast, hard breathing that doesn't ease between fevers
-- A seizure (febrile seizure) that lasts more than 5 minutes, or any seizure in a child who has not had one before
-- Blue or grey lips or fingertips
-- A child who is unresponsive
+You don’t need to give medicine for every fever. If your child is uncomfortable, fever medicine may help them feel better. For children younger than 2, check the dose with your pediatrician or pharmacist. Skip ice baths, alcohol rubs, and extra layers meant to “sweat it out.”[^comfort]
 
-## The bottom line
+A few medication reminders:
 
-In a child older than 3 months who is otherwise alert, drinking, and reasonably playful, **fever is a symptom, not an emergency.** It is your child's immune system at work.
+- Don’t give ibuprofen to babies younger than 6 months unless a clinician directs you to.[^ibuprofen]
+- Never give aspirin to a child.[^aspirin]
+- Don’t alternate acetaminophen and ibuprofen unless your pediatrician has given you a clear schedule. It’s easy to lose track of doses, especially overnight.[^medicines]
 
-But you know your child. If something feels off, even with a normal temperature, call us. That is exactly what we are here for.
+## When to get emergency care
 
-*This article is for general educational purposes and is not a substitute for advice from your child's pediatrician.*
+**Call 911** if your child is struggling to breathe, has blue or gray lips or a blue or gray face, or cannot be awakened. Go to the emergency department if their ribs pull inward with each breath or they are markedly less alert than usual. These symptoms need attention regardless of the temperature.[^breathing]
+
+When you call your pediatrician, tell us when the fever started, the highest temperature, how you measured it, and any medicine you’ve given. Let us know how your child is drinking and when they last urinated.
+
+And if your main concern is simply, “My child isn’t acting like themselves,” tell us that too.
+
+*This information is for general education and does not replace medical advice from your child’s healthcare provider. For a medical emergency, call 911.*
+
+[^baby]: American Academy of Pediatrics, [Fever and Your Baby](https://www.healthychildren.org/English/health-issues/conditions/fever/Pages/Fever-and-Your-Baby.aspx).
+[^infant-medicine]: American Academy of Pediatrics, [Acetaminophen Dosing Tables for Fever and Pain in Children](https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Acetaminophen-for-Fever-and-Pain.aspx).
+[^call]: American Academy of Pediatrics, [Fever: When to Call the Pediatrician](https://www.healthychildren.org/English/health-issues/conditions/fever/Pages/When-to-Call-the-Pediatrician.aspx).
+[^comfort]: American Academy of Pediatrics, [Fever Without Fear: Information for Parents](https://www.healthychildren.org/English/health-issues/conditions/fever/Pages/Fever-Without-Fear.aspx).
+[^ibuprofen]: American Academy of Pediatrics, [Ibuprofen Dosing Table for Fever and Pain](https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Ibuprofen-for-Fever-and-Pain.aspx).
+[^aspirin]: American Academy of Pediatrics, [Reye Syndrome](https://www.healthychildren.org/English/health-issues/conditions/abdominal/Pages/Reye-Syndrome.aspx).
+[^medicines]: American Academy of Pediatrics, [Ways to Prevent Children’s Medication Errors at Home](https://www.healthychildren.org/English/news/Pages/ways-to-prevent-home-medication-errors.aspx).
+[^breathing]: American Academy of Pediatrics, [Trouble Breathing](https://www.healthychildren.org/English/tips-tools/symptom-checker/Pages/symptomviewer.aspx?symptom=Trouble+Breathing).
