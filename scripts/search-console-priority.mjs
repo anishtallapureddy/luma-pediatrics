@@ -16,7 +16,6 @@ const priorityPaths = [
   '/dosing-charts/',
   '/vaccines/',
   '/blog/',
-  '/blog/vaccine-schedule-explained/',
   '/pediatrician/',
   '/pediatrician/mckinney/',
   '/pediatrician/allen/',
@@ -30,7 +29,13 @@ if (!existsSync(sitemapPath)) {
 }
 
 const sitemap = readFileSync(sitemapPath, 'utf8');
-const urls = priorityPaths.map((path) => `${domain}${path}`);
+const blogUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)]
+  .map((match) => match[1])
+  .filter((url) => /^\/blog\/[^/]+\/$/.test(new URL(url).pathname));
+const urls = [
+  ...priorityPaths.map((path) => `${domain}${path}`),
+  ...blogUrls,
+];
 for (const url of urls) {
   if (!sitemap.includes(`<loc>${url}</loc>`)) {
     throw new Error(`Priority URL is missing from the sitemap: ${url}`);
