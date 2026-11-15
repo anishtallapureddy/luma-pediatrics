@@ -2,11 +2,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageDecor from '../../components/PageDecor.astro';
 import { Icon } from 'astro-icon/components';
-import { CITIES } from '../../data/cities.ts';
+import { CITIES, isIndexedCity } from '../../data/cities.ts';
+
+const primaryCities = CITIES.filter((c) => isIndexedCity(c.slug));
+const otherCities = CITIES.filter((c) => !isIndexedCity(c.slug)).map((c) => c.name);
 import { SITE } from '../../site.config';
 
 const title = 'Pediatric Service Area Near McKinney, TX';
-const description = `Luma Pediatrics plans to welcome families from McKinney and communities across Collin and southern Grayson counties. Opening ${SITE.openingWindow} in McKinney.`;
+const description = `Luma Pediatrics welcomes families from McKinney and communities across Collin and southern Grayson counties. Opening ${SITE.openingWindow} in McKinney.`;
 ---
 
 <BaseLayout
@@ -35,7 +38,7 @@ const description = `Luma Pediatrics plans to welcome families from McKinney and
     <PageDecor variant="minimal" sparkles={6} />
     <div class="site-container relative z-10">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        {CITIES.map((c) => (
+        {primaryCities.map((c) => (
           <a
             href={`/pediatrician/${c.slug}/`}
             class="card-lift group block rounded-[var(--radius-card)] bg-[var(--color-card)] p-6 text-[var(--color-foreground)] no-underline"
@@ -53,6 +56,9 @@ const description = `Luma Pediatrics plans to welcome families from McKinney and
           </a>
         ))}
       </div>
+      <p class="mt-8 text-center text-sm text-[var(--color-muted-foreground)] leading-relaxed">
+        We also welcome families from {new Intl.ListFormat('en-US', { type: 'conjunction' }).format(otherCities)}.
+      </p>
     </div>
   </section>
 </BaseLayout>

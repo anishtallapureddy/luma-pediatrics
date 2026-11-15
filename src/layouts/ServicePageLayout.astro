@@ -54,7 +54,7 @@ const serviceSchema = {
           <slot name="hero-note">
             <p>
               {primary.enabled
-                ? 'Book online anytime. Clinical care begins on opening day; confirm your appointment date and coverage before booking.'
+                ? `Book online anytime for visits from ${SITE.openingWindow} onward.`
                 : 'Appointments are not available yet. Scheduling details will be shared closer to opening.'}
             </p>
           </slot>

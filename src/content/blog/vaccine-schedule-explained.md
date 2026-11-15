@@ -57,6 +57,6 @@ Vaccine records have a way of scattering across every place a child has ever bee
 
 ## A note from us
 
-Luma Pediatrics plans to follow the AAP immunization schedule after opening. Until then, discuss questions about your child's vaccine schedule with their current healthcare provider.
+Luma Pediatrics follows the AAP immunization schedule. Bring your child's vaccine records to your first visit, and we'll review them together.
 
 *This article is for general educational purposes and is not a substitute for advice from your child's pediatrician.*

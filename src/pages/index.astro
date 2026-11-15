@@ -12,9 +12,13 @@ const { appointments } = getMedicalScheduling(SITE);
 const familyBenefits = [
   {
     title: 'Your concerns are heard.',
-    body: 'Time to discuss your child’s health and questions with a board-certified pediatrician.',
+    body: SITE.showProviderProfile
+      ? 'Time to discuss your child’s health and questions with board-certified pediatrician Dr. Praveena Tallapureddy.'
+      : 'Time to discuss your child’s health and questions with a board-certified pediatrician.',
     src: '/images/trust-checkup.jpg',
-    alt: 'A pediatrician using a stethoscope on a smiling girl held by her mother',
+    alt: SITE.showProviderProfile
+      ? 'Dr. Tallapureddy using a stethoscope on a smiling girl held by her mother'
+      : 'A pediatrician using a stethoscope on a smiling girl held by her mother',
   },
   {
     title: 'You understand the plan.',
@@ -40,7 +44,7 @@ const homeServices = homeServiceSlugs.flatMap((slug) => services.filter((service
   socialTitle="Luma Pediatrics | McKinney, TX"
   socialDescription={`Helping kids thrive and parents feel confident. Thoughtful pediatric care in McKinney, Texas. ${SITE.status}. Book an appointment online.`}
   ogImageAlt={`Luma Pediatrics logo. ${SITE.status}.`}
-  preloadImage="/images/trust-family.webp"
+  preloadImage="/images/luma-hero-banner.webp"
 >
 
   <!-- HERO - outcome-led copy, approved imagery, and family-focused benefits. -->
@@ -66,13 +70,13 @@ const homeServices = homeServiceSlugs.flatMap((slug) => services.filter((service
             <StarDivider span="4rem" />
           </div>
           <p class="mt-3 text-sm md:text-base text-[var(--color-foreground)]/80 mx-auto lg:mx-0 leading-relaxed">
-            From newborn checkups and well-child visits to sick care and the teen years, Luma Pediatrics opens {SITE.openingWindow} in McKinney with thoughtful care, clear answers, and a personal approach to your child's health.
+            {SITE.showProviderProfile ? 'Board-certified pediatrician Dr. Praveena Tallapureddy provides' : 'Our board-certified pediatrician provides'} newborn checkups, well-child visits, and sick care through age 21 in McKinney, starting {SITE.openingWindow}.
           </p>
           <p class="mt-3 text-sm md:text-base font-semibold text-[var(--color-primary)]">
             Insurance accepted. No membership fee.
           </p>
 
-          <div class="mt-6 flex flex-wrap justify-center lg:justify-start gap-3">
+          <div class="mt-6 flex flex-wrap justify-center lg:justify-start gap-3" data-hero-cta>
             <Button href={appointments.href} variant="primary">
               {appointments.label}
               <span class="btn-icon-circle" aria-hidden="true">
@@ -83,12 +87,12 @@ const homeServices = homeServiceSlugs.flatMap((slug) => services.filter((service
           </div>
         </div>
 
-        <figure class="hero-poster-image hero-poster-image--wide hero-poster-image--photo" data-home-visual>
+        <figure class="hero-poster-image hero-poster-image--wide" data-home-visual>
           <Picture
-            src="/images/trust-family.jpg"
-            alt="A mother cuddling her happy, laughing baby in a soft, sunlit nursery"
-            width={1200}
-            height={1005}
+            src="/images/luma-hero-banner.jpg"
+            alt="Luma Pediatrics logo above the words Where your child's health shines, set in a sunlit nursery with a teddy bear, stacked books, and a wooden rainbow"
+            width={1440}
+            height={753}
             loading="eager"
             fetchpriority="high"
           />
@@ -188,14 +192,14 @@ const homeServices = homeServiceSlugs.flatMap((slug) => services.filter((service
       <div class="mx-auto text-center mb-12">
         <span class="eyebrow eyebrow-sun">Why Luma</span>
         <h2 class="mt-5 text-3xl md:text-5xl tracking-tight">
-          Why families choose Luma
+          What to expect at Luma
         </h2>
       </div>
 
       <div
         class="trust-photo-grid grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
         tabindex="0"
-        aria-label="Why families choose Luma"
+        aria-label="What to expect at Luma"
         data-family-benefits
       >
         {familyBenefits.map(({ title, body, src, alt }) => (
@@ -247,7 +251,7 @@ const homeServices = homeServiceSlugs.flatMap((slug) => services.filter((service
         <article class="rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-7 md:p-9">
           <span class="eyebrow eyebrow-sun">Insurance &amp; self-pay</span>
           <h3 class="mt-5 text-2xl md:text-3xl tracking-tight">
-            Will Luma accept my insurance?
+            Does Luma accept my insurance?
           </h3>
           <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
             We accept a variety of commercial insurance plans and offer self-pay pricing. Call or text to verify your coverage or ask for an estimate.

@@ -17,7 +17,7 @@ const { appointments } = getMedicalScheduling(SITE);
   <div class="rounded-2xl bg-[var(--color-card)]/95 backdrop-blur ring-1 ring-[var(--color-border-soft)] shadow-[0_-6px_24px_-12px_rgba(11,29,58,0.25)] p-1.5">
     <div class="flex gap-2">
     {appointments.enabled && (
-      <a href={appointments.href} class="min-w-0 flex-1 inline-flex items-center justify-center min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm" aria-label={`${appointments.label} through Phreesia`}>
+      <a href={appointments.href} data-mobile-schedule class="min-w-0 flex-1 inline-flex items-center justify-center min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm" aria-label={`${appointments.label} through Phreesia`}>
         Schedule
       </a>
     )}
@@ -42,6 +42,18 @@ const { appointments } = getMedicalScheduling(SITE);
     </div>
   </div>
 </div>
+
+<script is:inline>
+  (() => {
+    const heroCta = document.querySelector('[data-hero-cta]');
+    const schedule = document.querySelector('[data-mobile-schedule]');
+    if (!heroCta || !schedule || !('IntersectionObserver' in window)) return;
+    schedule.hidden = true;
+    new IntersectionObserver((entries) => {
+      schedule.hidden = entries[0].isIntersecting;
+    }).observe(heroCta);
+  })();
+</script>
 
 <style>
   /* Reserve space after the footer for the fixed contact bar. */

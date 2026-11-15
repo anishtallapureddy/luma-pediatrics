@@ -15,9 +15,7 @@ const footerCities = [
   'Frisco',
   'Prosper',
   'Melissa',
-  'Princeton',
   'Anna',
-  'Fairview',
 ];
 
 const socialLinks = [
@@ -33,7 +31,7 @@ const socialLinks = [
       <div>
         <Logo variant="horizontal" size={46} />
         <p class="mt-4 text-sm text-[var(--color-muted-foreground)] max-w-xs leading-relaxed">
-          {SITE.tagline} Independent, physician-led pediatric care for newborns to teens.
+          {SITE.tagline} Independent, physician-led pediatric care for newborns through age 21.
         </p>
         {socialLinks.length > 0 && (
           <div class="mt-5">
@@ -176,10 +174,8 @@ const socialLinks = [
       <p>
         <strong>Not medical advice.</strong> This website is for informational purposes only and is not a substitute
         for professional medical advice, diagnosis, or treatment. In a medical emergency, call 911 or go to the
-        nearest emergency room.{' '}
-        {medicalScheduling.enabled
-          ? 'Luma Pediatrics is not currently open or providing clinical care. Online scheduling is available for selected medical visits.'
-          : 'Luma Pediatrics is not currently open, accepting patients, or scheduling appointments.'}
+        nearest emergency room.
+        {!medicalScheduling.enabled && ' Luma Pediatrics is not currently open, accepting patients, or scheduling appointments.'}
       </p>
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
         <span>© {year} {SITE.name}. All rights reserved.</span>

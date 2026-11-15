@@ -14,10 +14,10 @@ const physician = SITE.showProviderProfile
 const meetName = SITE.showProviderProfile ? SITE.provider.shortName : 'our pediatrician';
 const faqs = [
   { q: 'Is the Meet & Greet really free?', a: 'Yes. Meet & Greet visits are free, with no obligation to establish care.' },
-  { q: 'Can I bring my child?', a: 'Call or text the office with general questions about who can attend before your Meet & Greet.' },
+  { q: 'Can I bring my child?', a: 'Yes. Children are welcome to come along.' },
   { q: SITE.showProviderProfile ? 'Can I meet Dr. T before my baby is born?' : 'Can I meet the pediatrician before my baby is born?', a: 'Yes. Expectant parents choosing a pediatrician are welcome to schedule a Meet & Greet.' },
   { q: 'Will my child receive medical care during the session?', a: 'No. Meet & Greet visits are introductory only and do not include a medical evaluation or treatment. Continue using your current healthcare provider for medical concerns.' },
-  { q: 'How do I schedule a Meet & Greet?', a: primary.enabled ? 'Choose an available time online through Phreesia using the Schedule a Free Meet & Greet button. Call or text with general questions.' : 'Call or text the office to ask about scheduling a Meet & Greet.' },
+  { q: 'How do I schedule a Meet & Greet?', a: primary.enabled ? 'Use the Schedule a Free Meet & Greet button to schedule online through Phreesia. Call or text with general questions.' : 'Call or text the office to ask about scheduling a Meet & Greet.' },
 ];
 ---
 <ServicePageLayout
@@ -42,7 +42,7 @@ const faqs = [
       <h2>What Is a Meet & Greet?</h2>
       <p class="service-copy mt-5">
         This is a complimentary introduction, not a billable clinical visit.
-        You can ask how appointments, communication, and establishing care will work.
+        You can ask how appointments, communication, and establishing care work.
       </p>
       <p class="service-copy mt-4">
         A Meet &amp; Greet does not include examinations, diagnosis, treatment, prescriptions,
@@ -57,9 +57,9 @@ const faqs = [
       <ol class="service-grid">
         {[
           [SITE.showProviderProfile ? 'Meet Dr. Tallapureddy' : 'Meet our pediatrician', 'Get to know the pediatrician who founded Luma.'],
-          ["Learn about Luma's approach", 'Discuss continuity of care and how we plan to work with parents.'],
+          ["Learn about Luma's approach", 'Discuss continuity of care and how we partner with parents.'],
           ['Ask your questions', 'Ask how visits, scheduling, and communication work at Luma.'],
-          ['Learn how to establish care', 'Find out what records and registration steps will be needed when you are ready.'],
+          ['Learn how to establish care', 'Find out which records and registration steps are needed when you are ready.'],
         ].map(([title, description], index) => (
           <li class="service-card">
             <p class="text-sm text-[var(--color-muted-foreground)]">Step {index + 1}</p>
@@ -80,7 +80,7 @@ const faqs = [
         <li>Families moving to McKinney or nearby communities</li>
         <li>Parents exploring a different pediatric practice</li>
       </ul>
-      <p class="service-copy mt-5">Expecting a baby? <a href="/newborn-care/" class="service-link">Explore planned newborn care</a>.</p>
+      <p class="service-copy mt-5">Expecting a baby? <a href="/newborn-care/" class="service-link">Explore newborn care</a>.</p>
     </div>
   </section>
 
@@ -99,7 +99,7 @@ const faqs = [
 
   <section class="service-final">
     <div class="site-container">
-      <h2>Get to Know Your Child's Future Pediatrician</h2>
+      <h2>{SITE.showProviderProfile ? 'Meet Dr. T Before Your First Visit' : 'Meet Your Pediatrician Before Your First Visit'}</h2>
       <p class="service-copy mt-5">{primary.enabled ? 'Schedule a complimentary Meet & Greet online at a time that works for your family.' : 'Call or text to ask about a Meet & Greet.'} Please keep calls and texts to general practice questions, not medical information.</p>
       <div class="service-actions mt-6"><Button href={primary.href}>{primary.label}</Button></div>
       <a href="/new-patients/" class="service-link mt-4">Ready to establish care? Read the New Patients guide</a>

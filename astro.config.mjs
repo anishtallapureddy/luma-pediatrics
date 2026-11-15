@@ -2,6 +2,9 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import icon from 'astro-icon';
+import { isIndexedCity } from './src/data/cities.ts';
+
+const cityPagePattern = /\/pediatrician\/([^/]+)\/$/;
 
 // https://astro.build/config
 export default defineConfig({
@@ -11,7 +14,12 @@ export default defineConfig({
     inlineStylesheets: 'auto',
   },
   integrations: [
-    sitemap(),
+    sitemap({
+      filter: (page) => {
+        const city = new URL(page).pathname.match(cityPagePattern)?.[1];
+        return !city || isIndexedCity(city);
+      },
+    }),
     icon({
       include: {
         lucide: [

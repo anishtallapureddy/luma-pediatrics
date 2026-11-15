@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Button from '../../components/Button.astro';
 import PageDecor from '../../components/PageDecor.astro';
 import { Icon } from 'astro-icon/components';
-import { CITIES } from '../../data/cities.ts';
+import { CITIES, isIndexedCity } from '../../data/cities.ts';
 import { featuredServices } from '../../data/services';
 import { selfPayPricing } from '../../data/selfPay';
 import { GOOGLE_DIRECTIONS_URL, SITE, STRUCTURED_DATA_IDS } from '../../site.config';
@@ -30,21 +30,21 @@ const pageUrl = `${SITE.domain}/pediatrician/${city.slug}/`;
 const directionsUrl =
   isMcKinney ? GOOGLE_DIRECTIONS_URL : `${GOOGLE_DIRECTIONS_URL}&origin=${encodeURIComponent(`${city.name}, TX`)}`;
 const locationAnswer = city.slug === 'mckinney'
-  ? `${SITE.name} will have one clinic at ${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}.`
-  : `${SITE.name} will have one clinic in McKinney, not a separate ${city.name} office. Use the travel details above to plan a visit to that location.`;
+  ? `${SITE.name} has one clinic at ${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}.`
+  : `${SITE.name} has one clinic in McKinney, not a separate ${city.name} office. Use the travel details above to plan a visit to that location.`;
 const faqItems = [
   {
     question: isMcKinney ? 'Where is Luma Pediatrics in McKinney?' : `Where is Luma Pediatrics relative to ${city.name}?`,
     answer: locationAnswer,
   },
   {
-    question: 'How will I transfer records from another practice?',
+    question: 'How do I transfer records from another practice?',
     answer: 'Review the New Patients checklist, and call or text with general questions about transferring records. Use only the practice-approved intake process for records; do not send them through website signup, email, or text.',
   },
   ...(isMcKinney ? [
     {
-      question: 'What ages and visit types will the McKinney office see?',
-      answer: 'Planned care includes newborn visits, well-child checkups, sick visits, vaccinations, behavioral and developmental care, physicals, and adolescent health. Some needs may require a separate evaluation, follow-up, or referral.',
+      question: 'What ages and visit types does the McKinney office see?',
+      answer: 'Newborn visits, well-child checkups, sick visits, vaccinations, behavioral and developmental care, physicals, and adolescent health. Some needs may require a separate evaluation, follow-up, or referral.',
     },
     {
       question: 'Which appointments can I book online?',
@@ -58,7 +58,7 @@ const faqItems = [
     },
     {
       question: 'What if my child is sick before Luma opens?',
-      answer: `Clinical care begins ${SITE.openingWindow}. Same-day sick visits are planned after opening when capacity allows. For care now, contact your child’s current healthcare provider; do not wait for our opening or a future appointment. For emergencies, call 911.`,
+      answer: `Clinical care begins ${SITE.openingWindow}, with same-day sick visits when capacity allows. Until then, contact your child’s current healthcare provider. For emergencies, call 911.`,
     },
     {
       question: 'Can I call or text the McKinney office?',
@@ -76,7 +76,7 @@ const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   '@id': `${pageUrl}#pediatric-primary-care`,
-  name: `Planned pediatric primary care for ${city.name} families`,
+  name: `Pediatric primary care for ${city.name} families`,
   serviceType: 'Pediatric primary care',
   provider: { '@id': STRUCTURED_DATA_IDS.clinic },
   areaServed: {
@@ -105,6 +105,7 @@ const faqSchema = {
   title={title}
   description={description}
   path={`/pediatrician/${city.slug}/`}
+  noindex={!isIndexedCity(city.slug)}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'Service area', path: '/pediatrician/' },
@@ -217,14 +218,16 @@ const faqSchema = {
           <Icon name="lucide:map-pin" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
           Get directions
         </a>
-        {!isMcKinney && (
-          <a href="/pediatrician/mckinney/" class="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-[var(--color-primary)] underline underline-offset-4">
-            About our McKinney office
+        <div class="mt-3 flex flex-col items-start">
+          {!isMcKinney && (
+            <a href="/pediatrician/mckinney/" class="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--color-primary)] underline underline-offset-4">
+              About our McKinney office
+            </a>
+          )}
+          <a href="/contact/#office-hours" class="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--color-primary)] underline underline-offset-4">
+            See office hours, including Saturdays
           </a>
-        )}
-        <a href="/contact/#planned-hours" class="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-[var(--color-primary)] underline underline-offset-4">
-          See office hours, including Saturdays
-        </a>
+        </div>
       </aside>
     </div>
   </section>

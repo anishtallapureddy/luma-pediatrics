@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
 import Button from '../components/Button.astro';
-import ScenarioPhoto from '../components/ScenarioPhoto.astro';
 import { Icon } from 'astro-icon/components';
 import { services } from '../data/services';
 import { SITE } from '../site.config';
@@ -34,29 +33,6 @@ const { appointments } = getMedicalScheduling(SITE);
           <p class="mt-4 text-sm text-[var(--color-muted-foreground)]">Online booking is available for newborn, behavioral, sick, and well-child visits. For other services, call or text us.</p>
         </div>
       )}
-      <details class="group mt-6">
-        <summary class="mx-auto flex min-h-11 w-fit cursor-pointer list-none items-center gap-2 rounded-full border border-[var(--color-border-soft)] px-5 text-sm font-semibold text-[var(--color-primary)] [&::-webkit-details-marker]:hidden">
-          Find care or visit information
-          <Icon name="lucide:chevron-down" class="w-4 h-4 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" />
-        </summary>
-        <nav aria-label="Find pediatric care" class="mt-5 text-left">
-          <ul class="grid grid-cols-2 sm:grid-cols-3 gap-x-5 gap-y-2 text-sm">
-            {services.map(({ slug, title }) => (
-              <li>
-                <a href={`#${slug}`} class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">{title}</a>
-              </li>
-            ))}
-            <li><a href="/contact/#planned-hours" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Saturday hours</a></li>
-            <li><a href="/after-hours/" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">After-hours guidance</a></li>
-            <li><a href="/faq/#same-day-visits" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Same-day availability</a></li>
-            <li><a href="/faq/#telehealth" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Telehealth eligibility</a></li>
-            <li><a href="/new-patients/#first-visit" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">First visits</a></li>
-            <li><a href="/new-patients/#what-to-bring" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">What to bring</a></li>
-            <li><a href="/new-patients/#insurance" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Accepted insurance</a></li>
-            <li><a href="/new-patients/#self-pay" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Self-pay pricing</a></li>
-          </ul>
-        </nav>
-      </details>
     </div>
   </section>
 
@@ -64,13 +40,10 @@ const { appointments } = getMedicalScheduling(SITE);
     <PageDecor variant="minimal" sparkles={8} />
     <div class="site-container relative z-10">
       <div class="grid gap-5">
-        {services.map(({ slug, icon, title, full, badge, nextStep, photo, relatedCare }) => (
+        {services.map(({ slug, icon, title, full, badge, nextStep, relatedCare }) => (
           <article
             id={slug}
-            class:list={[
-              'card-lift scroll-mt-32 rounded-[var(--radius-card)] bg-[var(--color-card)] p-5 sm:p-7',
-              photo && 'service-overview-card--photo',
-            ]}
+            class="card-lift scroll-mt-32 rounded-[var(--radius-card)] bg-[var(--color-card)] p-5 sm:p-7"
           >
             <div class="flex gap-3 sm:gap-5">
               <span
@@ -100,7 +73,6 @@ const { appointments } = getMedicalScheduling(SITE);
                 )}
               </div>
             </div>
-            {photo && <ScenarioPhoto src={photo.src} alt={photo.alt} />}
           </article>
         ))}
       </div>
@@ -111,7 +83,7 @@ const { appointments } = getMedicalScheduling(SITE);
       </p>
       <div class="mt-12 text-center">
         <h2 class="text-2xl md:text-3xl">Ready to plan a visit?</h2>
-        <p class="mt-3 mb-6 text-[var(--color-muted-foreground)]">Review accepted insurance and self-pay pricing, then choose an appointment for after we open.</p>
+        <p class="mt-3 mb-6 text-[var(--color-muted-foreground)]">Review <a href="/new-patients/#insurance" class="font-semibold text-[var(--color-primary)] underline underline-offset-4">accepted insurance</a> and <a href="/new-patients/#self-pay" class="font-semibold text-[var(--color-primary)] underline underline-offset-4">self-pay pricing</a>, then book your visit online. <a href="/contact/#office-hours" class="font-semibold text-[var(--color-primary)] underline underline-offset-4">Office hours</a> include Saturdays.</p>
         <div class="flex flex-wrap justify-center gap-3">
           <Button href={appointments.href}>{appointments.label}</Button>
           <Button href="/new-patients/" variant="secondary">First-visit guide</Button>
@@ -120,17 +92,3 @@ const { appointments } = getMedicalScheduling(SITE);
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  .service-overview-card--photo {
-    display: grid;
-    gap: 1.5rem;
-    align-items: center;
-  }
-  @media (min-width: 1024px) {
-    .service-overview-card--photo {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
-      gap: 2rem;
-    }
-  }
-</style>

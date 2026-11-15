@@ -33,7 +33,7 @@ test('provider privacy applies to the AI-facing summary as well as HTML', () => 
 
 test('clinical discovery groups hospital information under newborn care and keeps introductions separate', () => {
   const text = renderDiscoverySummary(SITE);
-  const planned = text.slice(text.indexOf('## Planned services'), text.indexOf('## Entity and location'));
+  const planned = text.slice(text.indexOf('## Services'), text.indexOf('## Entity and location'));
   assert(planned.indexOf('[Well-Child Visits]') < planned.indexOf('[Same-Day Sick Visits]'));
   assert(planned.indexOf('[Same-Day Sick Visits]') < planned.indexOf('[Newborn Care]'));
   assert.match(planned, /\[Newborn Care\][^\n]+\n  - \[Newborn Rounds at BSW McKinney\]/);
@@ -84,11 +84,10 @@ test('self-pay summary shows public visit fees and separate costs, not a billing
   assert(text.includes('Urine pregnancy testing $10.'));
   assert(text.includes('strep tests from $25 each; cost depends on the test method.'));
   assert(text.includes('vision and hearing screenings from $20 each.'));
-  const feeSummary = text.slice(text.indexOf('## Self-pay'), text.indexOf('## Planned services'));
+  const feeSummary = text.slice(text.indexOf('## Self-pay'), text.indexOf('## Services'));
   assert.equal(feeSummary.match(/\$130\b/g)?.length, 1);
   assert(!/\*\*[^*]*vaccin[^*]*:\*\*/i.test(feeSummary));
   assert(text.includes('Patient visit and sports physical fees cover the visit only.'));
-  assert(text.includes('These fees apply to visits after the practice opens.'));
   assert(text.includes('Tests, screenings, vaccines, procedures, and applicable add-on charges are billed separately.'));
   assert(text.includes(`${SITE.domain}/new-patients/#self-pay`));
   assert(text.includes(`Call or text ${SITE.contact.phone} for an estimate before your visit.`));

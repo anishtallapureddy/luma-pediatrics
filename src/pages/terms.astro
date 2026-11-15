@@ -36,13 +36,12 @@ const lastUpdated = 'November 1, 2026';
 
       <h2>Opening and appointment status</h2>
       <p>
-        Luma Pediatrics is an independent pediatric practice opening in McKinney, Texas.{' '}
+        Luma Pediatrics is an independent pediatric practice in McKinney, Texas.{' '}
         <strong>{SITE.status}.</strong>{' '}
         {medicalScheduling.enabled
-          ? 'The practice is not currently open or providing clinical care. Online scheduling is available for selected medical visits.'
-          : 'The practice is not currently open, accepting patients, or scheduling appointments.'}
-        Descriptions of services, hours, and availability are plans and may change
-        before opening.
+          ? 'Clinical care begins on opening day; online scheduling is available for selected medical visits.'
+          : 'The practice is not currently open, accepting patients, or scheduling appointments.'}{' '}
+        Descriptions of services, hours, and availability may change.
       </p>
 
       {medicalScheduling.appointments.enabled && (
@@ -65,14 +64,14 @@ const lastUpdated = 'November 1, 2026';
       <h2>No physician-patient relationship</h2>
       <p>
         Visiting this website, joining the email updates list, or contacting Luma Pediatrics by
-        phone, text, or email does not establish a physician-patient relationship. A relationship can
-        be established only after the practice opens and appropriate registration and care occur.
+        phone, text, or email does not establish a physician-patient relationship. A relationship is
+        established only through appropriate registration and care.
       </p>
 
       <h2>Email updates</h2>
       <p>
-        Individuals may voluntarily subscribe to occasional email updates about the planned opening
-        and general services. Email updates are not patient registration or appointment requests.
+        Individuals who subscribe to occasional email updates about the practice receive general
+        news only. Email updates are not patient registration or appointment requests.
         Subscribers may unsubscribe at any time.
       </p>
 

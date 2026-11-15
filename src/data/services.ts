@@ -18,7 +18,6 @@ export interface ServiceItem {
   short: string;
   full: string;
   nextStep: { href: string; label: string };
-  photo?: { src: string; alt: string };
   /** Dedicated service page, when available; otherwise cards use the hub anchor. */
   detailHref?: string;
   featured?: boolean;
@@ -30,8 +29,8 @@ const newbornHospitalCare: NonNullable<ServiceItem['relatedCare']> = {
   slug: 'newborn-rounds-bsw-mckinney',
   title: 'Newborn Rounds at BSW McKinney',
   full:
-    'Hospital newborn rounds at Baylor Scott & White Medical Center in McKinney are planned after opening, subject to assignment, privileges, and final hospital arrangements. Hospital care is separate from routine newborn office visits.',
-  nextStep: { href: '/newborn-care/#hospital-care', label: 'Read about planned hospital newborn care' },
+    'Newborn hospital rounds at Baylor Scott & White Medical Center in McKinney are subject to assignment, privileges, and final hospital arrangements. Hospital care is separate from routine newborn office visits.',
+  nextStep: { href: '/newborn-care/#hospital-care', label: 'Read about hospital newborn care' },
 };
 
 export const services: ServiceItem[] = [
@@ -54,12 +53,8 @@ export const services: ServiceItem[] = [
     short:
       'Same-day appointments for fevers, infections, and minor injuries, when capacity allows.',
     full:
-      'Same-day appointments for fevers, coughs, ear pain, stomach bugs, rashes, and minor injuries, when capacity allows. For care before opening day, contact your child’s current healthcare provider. For emergencies, call 911.',
+      'Same-day appointments for fevers, coughs, ear pain, stomach bugs, rashes, and minor injuries, when capacity allows. For emergencies, call 911.',
     nextStep: appointments.enabled ? { href: appointments.href, label: 'Book a sick visit' } : { href: '/faq/#same-day-visits', label: 'Read about same-day availability' },
-    photo: {
-      src: '/images/scenarios/03_same_day_sick_visits.jpg',
-      alt: 'Illustrative scene of a parent comforting a child holding a tissue and a stuffed animal.',
-    },
     featured: true,
   },
   {
@@ -82,7 +77,7 @@ export const services: ServiceItem[] = [
     short:
       'Keeping your child protected with recommended vaccines based on the latest AAP guidelines.',
     full:
-      'We follow the recommended childhood vaccine schedule aligned with AAP guidance. Questions about timing and catch-up schedules will be discussed during visits.',
+      'We follow the recommended childhood vaccine schedule aligned with AAP guidance. We’re happy to talk through timing and catch-up schedules at any visit.',
     nextStep: { href: '/vaccines/', label: 'View the vaccine schedule' },
     featured: true,
   },
@@ -95,10 +90,6 @@ export const services: ServiceItem[] = [
     full:
       'Care includes evaluations and follow-up for ADHD, learning concerns, and behavioral challenges, along with developmental screening and specialist referrals when needed.',
     nextStep: appointments.enabled ? { href: appointments.href, label: 'Book a behavioral visit' } : { href: '/new-patients/#first-visit', label: 'Learn about a first visit' },
-    photo: {
-      src: '/images/scenarios/05_behavioral_teen_care.jpg',
-      alt: 'Illustrative scene of a parent and teenager having a calm conversation.',
-    },
     featured: true,
   },
   {
@@ -129,7 +120,7 @@ export const services: ServiceItem[] = [
     short:
       'Virtual follow-up visits for appropriate established-patient needs.',
     full:
-      'Luma plans to offer secure video follow-ups for appropriate established-patient needs, such as selected medication, result, behavioral, or ADHD check-ins when an in-person exam is not required.',
+      'Secure video follow-ups for appropriate established-patient needs, such as selected medication, result, behavioral, or ADHD check-ins when an in-person exam is not required.',
     nextStep: { href: '/contact/', label: 'Call or text about telehealth' },
     featured: true,
   },

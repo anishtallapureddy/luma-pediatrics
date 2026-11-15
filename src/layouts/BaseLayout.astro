@@ -129,7 +129,7 @@ const businessSchema = {
   },
   hasMap: GOOGLE_MAP_URL,
   medicalSpecialty: 'Pediatric',
-  isAcceptingNewPatients: false,
+  isAcceptingNewPatients: true,
   additionalProperty: {
     '@type': 'PropertyValue',
     name: 'Opening status',
@@ -321,6 +321,14 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
             if (!element || typeof window.gtag !== 'function') return;
 
             var href = element.getAttribute('href') || '';
+            if (href.indexOf('phreesia.me/') !== -1) {
+              window.gtag('event', 'appointment_click', {
+                booking_type: /meetandgreet/i.test(href) ? 'meet_and_greet' : 'appointment',
+                page_path: window.location.pathname,
+              });
+              return;
+            }
+
             var contactMethod = '';
             if (href.indexOf('tel:') === 0) contactMethod = 'phone';
             else if (href.indexOf('sms:') === 0) contactMethod = 'sms';

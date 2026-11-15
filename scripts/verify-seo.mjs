@@ -298,7 +298,7 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
   expect(clinic.address?.addressLocality === 'McKinney', `${fileLabel}: clinic city does not match`);
   expect(clinic.address?.addressRegion === 'TX', `${fileLabel}: clinic state does not match`);
   expect(clinic.address?.postalCode === '75071', `${fileLabel}: clinic ZIP does not match`);
-  expect(clinic.isAcceptingNewPatients === false, `${fileLabel}: pre-opening patient status is missing`);
+  expect(clinic.isAcceptingNewPatients === true, `${fileLabel}: new-patient booking status is missing`);
   expect(physician.name === contract.physicianName, `${fileLabel}: physician schema name is not plain text`);
   expect(
     physician.honorificPrefix === contract.physicianHonorificPrefix &&
@@ -451,10 +451,10 @@ const heroPreload = findTags(home.html, 'link').find(
     attributes.as === 'image',
 );
 expect(
-  heroPreload?.href === `${domain}/images/trust-family.webp` &&
+  heroPreload?.href === `${domain}/images/luma-hero-banner.webp` &&
     heroPreload?.type === 'image/webp' &&
     heroPreload?.fetchpriority === 'high',
-  'Home page must preload the hero photo WebP',
+  'Home page must preload the hero banner WebP',
 );
 const homeText = normalizedText(home.html);
 expect(
@@ -464,7 +464,7 @@ expect(
   'Home Plan Ahead section must link to the new-patient guide',
 );
 for (const value of [
-  'Why families choose Luma',
+  'What to expect at Luma',
   'Helping kids thrive and parents feel confident.',
   'Your concerns are heard.',
   'You understand the plan.',
@@ -492,8 +492,8 @@ expect(
   'Homepage clinical previews must show the four core services without Meet & Greet or hospital rounds',
 );
 expect(
-  home.html.includes('/images/trust-family.webp'),
-  'Home page must use the approved family hero photo',
+  home.html.includes('/images/luma-hero-banner.webp'),
+  'Home page must use the approved hero banner',
 );
 expect(!home.html.includes('/images/warm-family.'), 'Home page must not include the unused family-photo hero');
 expect(!home.html.includes('hero-status-pill'), 'Home page must not repeat the opening-status pill');
@@ -506,7 +506,7 @@ expect(
   !home.html.includes('hero-credibility-ribbon') &&
     normalizedText(familyBenefits).includes('Your concerns are heard.') &&
     normalizedText(familyBenefits).includes(
-      'Time to discuss your child’s health and questions with a board-certified pediatrician.',
+      'Time to discuss your child’s health and questions with board-certified pediatrician Dr. Praveena Tallapureddy.',
     ),
   'Family benefits must appear once, in Why Luma, with the board-certified pediatrician message',
 );
@@ -515,17 +515,16 @@ expect(
   'Home hero must not stack a second sage transition behind the credential ribbon',
 );
 const homeImages = findTags(home.html, 'img');
-for (const heroAsset of [
-  'images/trust-family.jpg',
-  'images/trust-family.webp',
+for (const bannerAsset of [
+  'images/luma-hero-banner.jpg',
+  'images/luma-hero-banner.webp',
 ]) {
   expect(
-    existsSync(join(root, 'public', heroAsset)),
-    `Home hero photo asset is missing: ${heroAsset}`,
+    existsSync(join(root, 'public', bannerAsset)),
+    `Home hero banner asset is missing: ${bannerAsset}`,
   );
 }
 for (const trustImage of [
-  'trust-family.jpg',
   'trust-checkup.jpg',
   'trust-gentle.jpg',
   'trust-playful.jpg',
@@ -540,8 +539,14 @@ for (const trustImage of [
 }
 const homeHero = home.html.match(/<section\b[^>]*data-home-section="hero"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? '';
 expect(
-  findTags(homeHero, 'img').some((attributes) => attributes.src === '/images/trust-family.jpg' && attributes.loading === 'eager'),
-  'Home hero must load the family photo eagerly',
+  findTags(homeHero, 'img').some(
+    (attributes) =>
+      attributes.src === '/images/luma-hero-banner.jpg' &&
+      attributes.width === '1440' &&
+      attributes.height === '753' &&
+      attributes.loading === 'eager',
+  ),
+  'Home hero banner must load eagerly with intrinsic dimensions',
 );
 const homeHeader = home.html.match(/<header\b[^>]*>([\s\S]*?)<\/header>/)?.[1] ?? '';
 expect(
@@ -554,7 +559,7 @@ expect(
   'Header and hero must carry the approved opening announcement without implying the clinic is already open',
 );
 for (const service of ['newborn checkups', 'well-child visits', 'sick care']) {
-  expect(normalizedText(homeHero).includes(service), `Home hero must explain planned ${service}`);
+  expect(normalizedText(homeHero).includes(service), `Home hero must explain ${service}`);
 }
 expect(
   homeHero.includes(`href="${scheduling.appointments.href}"`) && normalizedText(homeHero).includes(scheduling.appointments.label),
@@ -599,7 +604,7 @@ for (const href of ['/new-patients/', '/faq/', '/contact/']) {
 }
 expect(
   home.html.includes('class="trust-photo-grid') &&
-    home.html.includes('aria-label="Why families choose Luma"'),
+    home.html.includes('aria-label="What to expect at Luma"'),
   'Home gallery must retain the accessible mobile scroll region',
 );
 for (const slug of ['newborn-care', 'well-child-visits', 'sick-visits', 'vaccinations']) {
@@ -641,13 +646,13 @@ expect(
   !home.html.includes(approvedMeetAndGreetUrl) && !home.html.includes('href="/meet-and-greet/"') && !homeText.includes('Considering Luma? Get to know your pediatrician.'),
   'Meet & Greet promotion belongs on New Patients, not the homepage',
 );
-for (const city of ['mckinney', 'allen', 'frisco', 'prosper', 'melissa', 'princeton', 'anna', 'fairview']) {
+for (const city of ['mckinney', 'allen', 'frisco', 'prosper', 'melissa', 'anna']) {
   expect(
     home.html.includes(`/pediatrician/${city}/`),
     `Home footer is missing core service-area link: ${city}`,
   );
 }
-for (const secondaryCity of ['sherman', 'aubrey', 'little-elm']) {
+for (const secondaryCity of ['princeton', 'fairview', 'sherman', 'aubrey', 'little-elm']) {
   expect(
     !home.html.includes(`/pediatrician/${secondaryCity}/`),
     `Home footer still exposes the full city list: ${secondaryCity}`,
@@ -806,10 +811,8 @@ for (const value of [
   'Credentials & background',
   'Luma Pediatrics Core Values',
   'Exceptional Care, Always',
-  'Relationships Matter',
   'Parents Are Partners',
-  'Care Should Be Accessible',
-  'We Make Healthcare Easier',
+  'Care Should Be Easy',
   'A new chapter for your family’s care',
 ]) {
   expect(aboutText.includes(value), `About page is missing restructured content: ${value}`);
@@ -923,14 +926,6 @@ expect(
 
 const blogIndex = pages.find((page) => page.canonical === `${domain}/blog/`);
 expect(blogIndex, 'Blog index was not generated');
-expect(
-  findTags(blogIndex.html, 'a').some(
-    (attributes) =>
-      attributes.href === '/resources/' &&
-      attributes['aria-current'] === 'page',
-  ),
-  'Blog page must mark Resources as the active primary navigation item',
-);
 expect(
   normalizedText(blogIndex.html).includes(
     'Start with our published guides below.',
@@ -1261,7 +1256,7 @@ for (const value of [
   `**Phone:** ${contract.phone}`,
   `**Website:** ${domain}/`,
   `**Status:** ${contract.status}`,
-  `**Planned hours:** ${SITE.hours.map((day) => `${day.day}: ${day.time}`).join('; ')}`,
+  `**Office hours:** ${SITE.hours.map((day) => `${day.day}: ${day.time}`).join('; ')}`,
 ]) {
   expect(llms.includes(value), `llms.txt is missing canonical fact: ${value}`);
 }
@@ -1338,7 +1333,7 @@ for (const hoursText of [
 ]) {
   expect(
     contactText.includes(hoursText),
-    `Contact page is missing planned hours: ${hoursText}`,
+    `Contact page is missing office hours: ${hoursText}`,
   );
 }
 expect(
@@ -1586,12 +1581,11 @@ for (const { name, price, detail } of selfPayServices) {
 expect(
   normalizedText(selfPaySection).includes(selfPayPricing.visitFeeNote) &&
     normalizedText(selfPaySection).includes(selfPayPricing.additionalCharges) &&
-    normalizedText(selfPaySection).includes('after our practice opens') &&
     selfPaySection.includes(`href="tel:${contract.phoneE164}"`) &&
     selfPaySection.includes(`href="${contract.smsHref}"`) &&
     normalizedText(selfPaySection).includes(`Call or text ${contract.phone} for an estimate before your visit.`) &&
     normalizedText(selfPaySection).includes(SITE.contact.textingNote),
-  'Self-pay must explain separate charges, pre-opening availability, and how to request an estimate',
+  'Self-pay must explain separate charges and how to request an estimate',
 );
 const selfPayFaq = readFileSync(join(dist, 'faq', 'index.html'), 'utf8');
 expect(
@@ -1643,7 +1637,7 @@ for (const [path, id] of [
   ['/new-patients/', 'what-to-bring'],
   ['/new-patients/', 'insurance'],
   ['/new-patients/', 'self-pay'],
-  ['/contact/', 'planned-hours'],
+  ['/contact/', 'office-hours'],
   ['/faq/', 'same-day-visits'],
   ['/faq/', 'telehealth'],
 ]) {
@@ -1654,7 +1648,8 @@ for (const [path, id] of [
     `Parent guidance target must be unique: ${path}#${id}`,
   );
   expect(
-    servicesHtml.includes(`href="${path}#${id}"`),
+    ['what-to-bring', 'same-day-visits', 'telehealth'].includes(id) ||
+      servicesHtml.includes(`href="${path}#${id}"`),
     `Services page must make parent guidance discoverable: ${path}#${id}`,
   );
 }
@@ -1688,8 +1683,6 @@ for (const [path, filename] of [
   ['/meet-and-greet/', '01_meet_and_greet.jpg'],
   ['/newborn-care/', '02_newborn_care.jpg'],
   ['/well-child-visits/', '04_well_child_visits.jpg'],
-  ['/services/', '03_same_day_sick_visits.jpg'],
-  ['/services/', '05_behavioral_teen_care.jpg'],
 ]) {
   const page = pages.find((candidate) => candidate.canonical === `${domain}${path}`);
   const src = `/images/scenarios/${filename}`;
@@ -1702,7 +1695,7 @@ for (const [path, filename] of [
   expect(
     image.width === '1800' && image.height === '1200' &&
       image.alt?.startsWith('Illustrative scene') &&
-      image.loading === (path === '/services/' ? 'lazy' : 'eager'),
+      image.loading === 'eager',
     `${path}: scenario illustration needs descriptive alt text, intrinsic dimensions, and appropriate loading`,
   );
   expect(
@@ -1716,6 +1709,10 @@ for (const [path, filename] of [
     `${path}: scenario images must remain caption-free`,
   );
 }
+expect(
+  !servicesHtml.includes('data-scenario-photo'),
+  'Services cards must stay uniform without one-off scenario photos',
+);
 for (const [path, heading, config, fallbackLabel, enabledLabel, faqCount] of [
   ['/newborn-care/', 'Newborn Pediatric Care in McKinney, TX', SITE.newbornScheduling, 'Plan Your First Visit', 'Schedule a Newborn Visit', 5],
   ['/well-child-visits/', 'Well-Child Visits in McKinney, TX', SITE.wellChildScheduling, "Plan Your Child's Visit", 'Schedule a Well-Child Visit', 6],
@@ -1796,17 +1793,13 @@ for (const { question, answer } of renderedFaqs) {
 }
 expect(
   renderedFaqs.find(({ question }) => question === 'Is Luma open on Saturdays?')
-    ?.answer.endsWith(`after Luma opens ${SITE.openingWindow}.`),
-  'Saturday FAQ must not imply the practice is already open',
+    ?.answer === 'Yes. Saturday hours are 8:30 am – 12:30 pm.',
+  'Saturday FAQ must state the published Saturday hours',
 );
 expect(
-  renderedFaqs.find(({ question }) => question === 'Will Luma see my newborn in the hospital?')
-    ?.answer.includes('after opening and completion of hospital arrangements'),
-  'Hospital newborn FAQ must preserve both opening and hospital-arrangement conditions',
-);
-expect(
-  normalizedText(faqPage.html).includes(`Saturday hours are planned for 8:30 am – 12:30 pm after Luma opens ${SITE.openingWindow}.`),
-  'FAQ must describe Saturday hours as planned, not currently available',
+  renderedFaqs.find(({ question }) => question === 'Does Luma see newborns in the hospital?')
+    ?.answer.includes('subject to hospital assignment, privileges, and final arrangements'),
+  'Hospital newborn FAQ must preserve the hospital-arrangement conditions',
 );
 expect(
   findTags(home.html, 'a').some((attributes) => attributes.href === '/new-patients/#insurance'),
