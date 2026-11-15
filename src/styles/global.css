@@ -695,102 +695,12 @@
   .leaf-left { left: 5%; bottom: 4.5rem; transform: rotate(-12deg); }
   .leaf-right { right: 5%; bottom: 3rem; transform: scaleX(-1) rotate(-10deg); }
 
-  .hero-credibility-ribbon {
-    position: relative;
-    z-index: 2;
-    background: var(--color-sage-hover);
-    color: var(--color-sage-foreground);
-  }
-
-  .hero-credibility-inner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.85rem;
-    min-height: 3.75rem;
-    max-width: var(--content-max-width);
-    margin-inline: auto;
-    padding: 0.7rem var(--content-gutter);
-  }
-
-  .hero-credibility-icon {
-    display: inline-flex;
-    flex: none;
-    align-items: center;
-    justify-content: center;
-    width: 2.35rem;
-    height: 2.35rem;
-    border-radius: 9999px;
-    background: var(--color-card);
-    color: var(--color-sage-hover);
-    box-shadow: var(--shadow-soft);
-  }
-
-  .hero-credibility-copy {
-    margin: 0;
-    color: inherit;
-    font-size: clamp(0.84rem, 1vw, 0.95rem);
-    font-weight: 500;
-    line-height: 1.4;
-    text-align: center;
-  }
-
-  .hero-credibility-copy strong {
-    color: inherit;
-    font-weight: 700;
-  }
-
-  .home-section-nav {
-    padding-block: 1.25rem;
-    background: var(--color-card);
-    border-bottom: 1px solid var(--color-border-soft);
-  }
-
-  @media (min-width: 900px) {
-    .hero-credibility-copy {
-      white-space: nowrap;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .hero-credibility-inner {
-      align-items: flex-start;
-      gap: 0.7rem;
-      padding: 1rem;
-    }
-
-    .hero-credibility-copy {
-      font-size: 0.84rem;
-      line-height: 1.5;
-      text-align: left;
-    }
-
-    .hero-credibility-copy strong {
-      display: block;
-      margin-bottom: 0.15rem;
-      font-size: 0.9rem;
-    }
-
-    .home-section-nav {
-      padding-block: 1rem;
-    }
-  }
-
   .campaign-panel {
     overflow: hidden;
     background:
       radial-gradient(28rem 22rem at 12% 38%, rgba(255, 255, 255, 0.68), transparent 70%),
       radial-gradient(24rem 18rem at 83% 16%, rgba(200, 153, 90, 0.11), transparent 64%),
       var(--color-background);
-  }
-
-  .campaign-card {
-    border: 1px solid rgba(200, 153, 90, 0.20);
-    border-radius: 2rem;
-    background: rgba(255, 250, 246, 0.72);
-    box-shadow: var(--shadow-elevated);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
   }
 
   .logo-showcase {
@@ -840,6 +750,12 @@
 
   .hero-poster-image--wide {
     width: 100%;
+  }
+
+  .hero-poster-image--photo img {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center 35%;
   }
 
   @media (max-width: 767px) {

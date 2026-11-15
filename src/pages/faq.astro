@@ -1,15 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
-import AfterHoursCard from '../components/AfterHoursCard.astro';
 import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 import { getMedicalScheduling } from '../utils/serviceScheduling';
 import { insurancePlans, insuranceCoverageNote } from '../data/insurance';
 import { selfPayPricing } from '../data/selfPay';
 
+type FaqGroup = 'start' | 'cost' | 'visits' | 'office';
+
 interface FaqItem {
   id: string;
+  group: FaqGroup;
   q: string;
   a: string;
   link?: { href: string; label: string };
@@ -21,12 +23,14 @@ const medicalScheduling = getMedicalScheduling(SITE);
 const faqs: FaqItem[] = [
   {
     id: 'opening',
+    group: 'start',
     q: 'When are you opening?',
     a: `${SITE.status}. Clinical care begins on opening day. Before then, contact your existing healthcare provider for medical concerns.`,
     link: { href: '/new-patients/', label: 'Prepare for your first visit' },
   },
   {
     id: 'booking',
+    group: 'start',
     q: "How do I schedule my child's first checkup?",
     a: medicalScheduling.appointments.enabled
       ? `Book newborn, behavioral, sick, and well-child checks through Phreesia for ${SITE.openingWindow} or later. Confirm your appointment date, visit type, insurance, and costs before booking. Call or text with general questions about other visit types.`
@@ -37,110 +41,135 @@ const faqs: FaqItem[] = [
   },
   {
     id: 'choosing-luma',
+    group: 'start',
     q: 'How do I choose Luma for my family?',
     a: 'Start with the physician introduction on our About page, then review services, accepted insurance, self-pay pricing, and the first-visit guide. If you would like to meet the pediatrician before choosing care, schedule a free Meet & Greet from our New Patients page.',
     link: { href: '/new-patients/', label: 'Plan your first visit' },
   },
   {
     id: 'well-child-or-sick',
+    group: 'visits',
     q: 'What is the difference between a well-child and sick visit?',
     a: 'Well-child visits focus on preventive care, growth, development, and age-appropriate guidance. Sick visits address a current illness or symptom. Additional concerns may need separate time, follow-up, or services.',
     link: { href: '/well-child-visits/', label: 'Explore Well-Child Visits' },
   },
   ...(SITE.showProviderProfile ? [{
     id: 'pediatrician',
+    group: 'start',
     q: 'Who is the pediatrician at Luma?',
     a: `${SITE.provider.name} is Luma’s founder and a board-certified pediatrician. She trained at ${SITE.provider.education[0]} and ${SITE.provider.education[1]}, and has cared for North Texas families since 2022.`,
     link: { href: '/about/', label: 'Get to know our pediatrician' },
-  }] : []),
+  } satisfies FaqItem] : []),
   {
     id: 'ages',
+    group: 'start',
     q: 'What ages will Luma see?',
-    a: 'Newborns through young adults, typically up to age 21, after the practice opens.',
+    a: 'Newborns through young adults, typically up to age 21.',
   },
   {
     id: 'insurance',
+    group: 'cost',
     q: 'Which insurance plans will you accept?',
     a: `${SITE.name} accepts commercial plans from ${insurancePlans.map(({ name }) => name).join(', ')}, with additional commercial networks and employer plans listed on our New Patients page. No membership fee. ${insuranceCoverageNote} Call or text our office at ${SITE.contact.phone} to verify coverage before your appointment.`,
     link: { href: '/new-patients/#insurance', label: 'See the accepted insurance list' },
   },
   {
     id: 'self-pay',
+    group: 'cost',
     q: 'Will Luma see self-pay patients?',
-    a: `Self-pay care is planned after opening. A sick or well-child office visit is ${selfPayPricing.officeVisit}, and a standalone sports physical is ${selfPayPricing.sportsPhysical}. These are visit fees only. ${selfPayPricing.additionalCharges} Call or text ${SITE.contact.phone} for an estimate before your visit. ${medicalScheduling.enabled ? 'Booking is available for selected medical visits; confirm fees before booking.' : 'Scheduling details will be shared closer to opening.'}`,
+    a: `Yes. A sick or well-child office visit is ${selfPayPricing.officeVisit}, and a standalone sports physical is ${selfPayPricing.sportsPhysical}. These are visit fees only. ${selfPayPricing.additionalCharges} Call or text ${SITE.contact.phone} for an estimate before your visit. ${medicalScheduling.enabled ? 'Booking is available for selected medical visits; confirm fees before booking.' : 'Scheduling details will be shared closer to opening.'}`,
     link: { href: '/new-patients/#self-pay', label: 'See self-pay pricing' },
   },
   {
     id: 'texting',
+    group: 'office',
     q: 'Can I text the office instead of calling?',
     a: `Yes. Call or text ${SITE.contact.phone} for general questions, insurance verification, or self-pay estimates. ${SITE.contact.textingNote} Texting does not book an appointment or establish care. For current medical concerns, contact your existing healthcare provider; for an emergency, call 911.`,
     link: { href: '/contact/', label: 'Choose call, text, or email' },
   },
   {
     id: 'same-day-visits',
+    group: 'visits',
     q: 'Do you offer same-day sick visits?',
-    a: `Same-day sick visits begin after opening, when capacity allows, for fevers, infections, and minor injuries. ${medicalScheduling.appointments.enabled ? 'Check Phreesia for available appointments. Online booking is not urgent medical advice; do not wait for an appointment if your child needs care sooner.' : 'Scheduling details will be shared closer to opening.'}`,
+    a: `Yes, when capacity allows, for fevers, infections, and minor injuries. ${medicalScheduling.appointments.enabled ? 'Check Phreesia for available appointments. Online booking is not urgent medical advice; do not wait for an appointment if your child needs care sooner.' : 'Scheduling details will be shared closer to opening.'}`,
     link: medicalScheduling.appointments.enabled ? { href: medicalScheduling.appointments.href, label: 'Book a sick visit' } : { href: '/new-patients/#first-visit', label: 'Read the first-visit guide' },
   },
   {
     id: 'telehealth',
+    group: 'visits',
     q: 'Do you offer telehealth / virtual visits?',
-    a: 'After opening, we plan to offer secure telehealth follow-ups for appropriate established-patient needs when an in-person exam is not required.',
+    a: 'We plan to offer secure telehealth follow-ups for appropriate established-patient needs when an in-person exam is not required.',
     link: { href: '/contact/', label: 'Call or text about telehealth eligibility and arrangements' },
   },
   ...(saturdayHours ? [{
     id: 'saturday-hours',
+    group: 'office',
     q: 'Is Luma open on Saturdays?',
     a: `Saturday hours are planned for ${saturdayHours.time} after Luma opens ${SITE.openingWindow}.`,
     link: { href: '/contact/#planned-hours', label: 'View planned office hours' },
-  }] : []),
+  } satisfies FaqItem] : []),
   {
     id: 'hospital-newborn-care',
+    group: 'visits',
     q: 'Will Luma see my newborn in the hospital?',
     a: 'Newborn rounds at Baylor Scott & White Medical Center in McKinney are planned after opening and completion of hospital arrangements, subject to assignment and privileges. This does not guarantee attendance at every delivery or care for every newborn there. Newborn office visits for feeding, growth, weight, and jaundice follow-up are separate.',
     link: { href: '/newborn-care/', label: 'Explore newborn office care' },
   },
   {
     id: 'meet-and-greet',
+    group: 'start',
     q: 'What is the free Meet & Greet?',
     a: 'A complimentary introduction to visit our clinic, meet the pediatrician, ask questions, and see if Luma is the right fit for your family. Visits are free, with no obligation to establish care. A Meet & Greet is introductory only: it does not include a medical evaluation or treatment and does not start a physician-patient relationship.',
     link: { href: '/new-patients/#meet-and-greet', label: 'Schedule a free Meet & Greet' },
   },
   ...(SITE.showProviderProfile && languages ? [{
     id: 'languages',
+    group: 'start',
     q: 'Does the pediatrician speak Telugu, Hindi, or Urdu?',
     a: `${SITE.provider.shortName}: ${languages.value}.`,
-  }] : []),
+  } satisfies FaqItem] : []),
   {
     id: 'location',
+    group: 'office',
     q: 'Where will the office be?',
-    a: `${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}, just off US-75. The practice is not currently open.`,
+    a: `${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}, just off US-75.`,
     link: { href: GOOGLE_DIRECTIONS_URL, label: 'Get directions to our McKinney office' },
   },
   {
     id: 'service-area',
+    group: 'office',
     q: 'Which communities will Luma serve?',
-    a: 'Luma welcomes families from McKinney and nearby communities, including Allen, Frisco, Prosper, Melissa, Princeton, Anna, and Fairview, starting on opening day. There is one clinic in McKinney.',
+    a: 'Luma welcomes families from McKinney and nearby communities, including Allen, Frisco, Prosper, Melissa, Princeton, Anna, and Fairview. There is one clinic in McKinney.',
     link: { href: '/pediatrician/', label: 'Explore the McKinney location and service area' },
   },
   {
     id: 'first-visit',
+    group: 'start',
     q: 'What should I bring to a first visit?',
     a: 'Bring a photo ID, your insurance card, your child\'s immunization records (if available), and any forms that need to be signed. For newborns, bring the discharge paperwork from the hospital.',
     link: { href: '/new-patients/#what-to-bring', label: 'See the first-visit checklist' },
   },
   {
     id: 'physicals',
+    group: 'visits',
     q: 'Do you do school, sports, and camp physicals?',
-    a: `After opening, we plan to offer school, sports, and camp physicals. A standalone sports physical is ${selfPayPricing.sportsPhysical} for self-pay families and is not a full well-child visit. Ask about form requirements, timing, and any separate fees before your visit.`,
+    a: `Yes, we offer school, sports, and camp physicals. A standalone sports physical is ${selfPayPricing.sportsPhysical} for self-pay families and is not a full well-child visit. Ask about form requirements, timing, and any separate fees before your visit.`,
     link: { href: '/new-patients/#self-pay', label: 'See self-pay pricing and additional charges' },
   },
 ];
 
+const faqGroups = [
+  { id: 'getting-started', key: 'start', title: 'Getting started' },
+  { id: 'insurance-and-cost', key: 'cost', title: 'Insurance & cost' },
+  { id: 'visits-and-services', key: 'visits', title: 'Visits & services' },
+  { id: 'our-office', key: 'office', title: 'Our office' },
+].map((group) => ({ ...group, faqs: faqs.filter((faq) => faq.group === group.key) }));
+const orderedFaqs = faqGroups.flatMap((group) => group.faqs);
+
 const faqJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: faqs.map(({ q, a }) => ({
+  mainEntity: orderedFaqs.map(({ q, a }) => ({
     '@type': 'Question',
     name: q,
     acceptedAnswer: { '@type': 'Answer', text: a },
@@ -176,36 +205,56 @@ const faqJsonLd = {
   <section class="pb-20 md:pb-28 reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={8} />
     <div class="site-container relative z-10">
-      <div id="after-hours" class="mb-10 scroll-mt-32">
-        <AfterHoursCard />
-      </div>
-
-      <div class="space-y-3">
-        {faqs.map(({ id, q, a, link }, idx) => (
-          <details
-            id={id}
-            data-faq-answer
-            class="group card-lift scroll-mt-32 rounded-[var(--radius-card)] bg-[var(--color-card)] open:bg-[var(--color-card)] [&[open]_.faq-chevron]:rotate-180"
-            open={idx === 0}
+      <nav aria-label="FAQ topics" class="mb-10 flex flex-wrap justify-center gap-2">
+        {faqGroups.map(({ id, title }) => (
+          <a
+            href={`#${id}`}
+            class="inline-flex min-h-11 items-center rounded-full bg-[var(--color-card)] px-4 text-sm font-semibold text-[var(--color-primary)] no-underline ring-1 ring-inset ring-[var(--color-border-soft)] hover:bg-[var(--color-muted)]"
           >
-            <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-              <h2 class="text-lg md:text-xl font-bold pr-2">{q}</h2>
-              <span
-                class="faq-chevron shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] [transition:transform_var(--duration-base)_var(--ease-fluid)]"
-                aria-hidden="true"
-              >
-                <Icon name="lucide:chevron-down" class="w-5 h-5" stroke-width="2" />
-              </span>
-            </summary>
-            <div class="px-6 pb-6 text-[var(--color-foreground)]/85 leading-relaxed">
-              <p>{a}</p>
-              {link && (
-                <a href={link.href} class="mt-3 inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">{link.label}</a>
-              )}
+            {title}
+          </a>
+        ))}
+      </nav>
+
+      <div class="space-y-12">
+        {faqGroups.map(({ id: groupId, title, faqs: groupFaqs }, groupIndex) => (
+          <section id={groupId} aria-labelledby={`${groupId}-heading`} class="scroll-mt-32">
+            <h2 id={`${groupId}-heading`} class="mb-5 text-2xl md:text-3xl tracking-tight">{title}</h2>
+            <div class="space-y-3">
+              {groupFaqs.map(({ id, q, a, link }, idx) => (
+                <details
+                  id={id}
+                  data-faq-answer
+                  class="group card-lift scroll-mt-32 rounded-[var(--radius-card)] bg-[var(--color-card)] open:bg-[var(--color-card)] [&[open]_.faq-chevron]:rotate-180"
+                  open={groupIndex === 0 && idx === 0}
+                >
+                  <summary class="flex items-center justify-between gap-4 p-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                    <h3 class="text-lg md:text-xl font-bold pr-2">{q}</h3>
+                    <span
+                      class="faq-chevron shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] [transition:transform_var(--duration-base)_var(--ease-fluid)]"
+                      aria-hidden="true"
+                    >
+                      <Icon name="lucide:chevron-down" class="w-5 h-5" stroke-width="2" />
+                    </span>
+                  </summary>
+                  <div class="px-6 pb-6 text-[var(--color-foreground)]/85 leading-relaxed">
+                    <p>{a}</p>
+                    {link && (
+                      <a href={link.href} class="mt-3 inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">{link.label}</a>
+                    )}
+                  </div>
+                </details>
+              ))}
             </div>
-          </details>
+          </section>
         ))}
       </div>
+
+      <p id="after-hours" class="mt-12 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 scroll-mt-32 rounded-[var(--radius-card)] bg-[var(--color-muted)] px-6 py-5 text-center text-[var(--color-foreground)]/85 leading-relaxed">
+        <Icon name="lucide:clock" class="w-5 h-5 shrink-0 text-[var(--color-primary)]" stroke-width="1.8" aria-hidden="true" />
+        <span>Need help when the office is closed?</span>
+        <a href="/after-hours/" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">See after-hours care</a>
+      </p>
     </div>
   </section>
   <script>

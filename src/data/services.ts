@@ -42,7 +42,7 @@ export const services: ServiceItem[] = [
     short:
       'Routine checkups, developmental screening, and age-specific guidance.',
     full:
-      'Routine pediatric checkups after opening help monitor growth and development, review recommended screenings and vaccines, and give families time to discuss questions and concerns.',
+      'Routine pediatric checkups help monitor growth and development, review recommended screenings and vaccines, and give families time to discuss questions and concerns.',
     nextStep: { href: '/well-child-visits/', label: 'Explore Well-Child Visits' },
     detailHref: '/well-child-visits/',
     featured: true,
@@ -52,9 +52,9 @@ export const services: ServiceItem[] = [
     icon: 'lucide:heart',
     title: 'Same-Day Sick Visits',
     short:
-      'Same-day appointments after opening for fevers, infections, and minor injuries, when capacity allows.',
+      'Same-day appointments for fevers, infections, and minor injuries, when capacity allows.',
     full:
-      'After opening, we plan to offer same-day appointments for fevers, coughs, ear pain, stomach bugs, rashes, and minor injuries, when capacity allows. For care before opening, contact your child’s current healthcare provider. For emergencies, call 911.',
+      'Same-day appointments for fevers, coughs, ear pain, stomach bugs, rashes, and minor injuries, when capacity allows. For care before opening day, contact your child’s current healthcare provider. For emergencies, call 911.',
     nextStep: appointments.enabled ? { href: appointments.href, label: 'Book a sick visit' } : { href: '/faq/#same-day-visits', label: 'Read about same-day availability' },
     photo: {
       src: '/images/scenarios/03_same_day_sick_visits.jpg',
@@ -69,7 +69,7 @@ export const services: ServiceItem[] = [
     short:
       'Early checkups, feeding guidance, growth and weight monitoring, and support for new parents.',
     full:
-      'Newborn visits after opening focus on feeding, growth, weight monitoring, jaundice, and the questions that come with your baby’s earliest days. Learn about our approach and what to expect at a first visit.',
+      'Newborn visits focus on feeding, growth, weight monitoring, jaundice, and the questions that come with your baby’s earliest days. Learn about our approach and what to expect at a first visit.',
     nextStep: { href: '/newborn-care/', label: 'Explore Newborn Care' },
     detailHref: '/newborn-care/',
     featured: true,
@@ -82,7 +82,7 @@ export const services: ServiceItem[] = [
     short:
       'Keeping your child protected with recommended vaccines based on the latest AAP guidelines.',
     full:
-      'Luma plans to offer the recommended childhood vaccine schedule aligned with AAP guidance. Questions about timing and catch-up schedules will be discussed during visits.',
+      'We follow the recommended childhood vaccine schedule aligned with AAP guidance. Questions about timing and catch-up schedules will be discussed during visits.',
     nextStep: { href: '/vaccines/', label: 'View the vaccine schedule' },
     featured: true,
   },
@@ -93,7 +93,7 @@ export const services: ServiceItem[] = [
     short:
       'ADHD evaluations, behavior support, developmental screening, and specialist referrals when needed.',
     full:
-      'Planned care includes evaluations and follow-up for ADHD, learning concerns, and behavioral challenges, along with developmental screening and specialist referrals when needed.',
+      'Care includes evaluations and follow-up for ADHD, learning concerns, and behavioral challenges, along with developmental screening and specialist referrals when needed.',
     nextStep: appointments.enabled ? { href: appointments.href, label: 'Book a behavioral visit' } : { href: '/new-patients/#first-visit', label: 'Learn about a first visit' },
     photo: {
       src: '/images/scenarios/05_behavioral_teen_care.jpg',
@@ -108,7 +108,7 @@ export const services: ServiceItem[] = [
     short:
       'Support for the physical, emotional, and mental health of tweens and teens.',
     full:
-      'Planned care for tweens and teens includes age-appropriate preventive care, mental health screening, sports medicine, and confidential discussions consistent with applicable law.',
+      'Care for tweens and teens includes age-appropriate preventive care, mental health screening, sports medicine, and confidential discussions consistent with applicable law.',
     nextStep: { href: '/new-patients/#first-visit', label: 'Plan your teen’s first visit' },
     featured: true,
   },
@@ -118,7 +118,7 @@ export const services: ServiceItem[] = [
     title: 'School, Sports & Camp Physicals',
     short: 'Physical exams for school, camp, and athletic clearance.',
     full:
-      'Physical exams are planned for school, summer camp, and athletic clearance. Bring required forms for review, and ask about completion requirements, timing, and any separate fees before your visit.',
+      'Physical exams for school, summer camp, and athletic clearance. Bring required forms for review, and ask about completion requirements, timing, and any separate fees before your visit.',
     nextStep: { href: '/contact/', label: 'Call or text about a physical' },
     featured: true,
   },
@@ -127,9 +127,9 @@ export const services: ServiceItem[] = [
     icon: 'lucide:video',
     title: 'Telehealth / Virtual Visits',
     short:
-      'Planned virtual follow-up visits for appropriate established-patient needs.',
+      'Virtual follow-up visits for appropriate established-patient needs.',
     full:
-      'After opening, Luma plans to offer secure video follow-ups for appropriate established-patient needs, such as selected medication, result, behavioral, or ADHD check-ins when an in-person exam is not required.',
+      'Luma plans to offer secure video follow-ups for appropriate established-patient needs, such as selected medication, result, behavioral, or ADHD check-ins when an in-person exam is not required.',
     nextStep: { href: '/contact/', label: 'Call or text about telehealth' },
     featured: true,
   },

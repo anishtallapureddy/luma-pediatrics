@@ -42,7 +42,7 @@ export function renderDiscoverySummary(site: DiscoverySite) {
   const languages = site.provider.quickFacts.find((fact) => fact.label === 'Languages');
   const hours = site.hours.map((day) => `${day.day}: ${day.time}`).join('; ');
   const pages = [
-    ['Home', '/', 'Practice overview and opening updates.'],
+    ['Home', '/', 'Practice overview, services, and appointment scheduling.'],
     ['About', '/about/', 'Practice approach and approved provider information.'],
     ['Services', '/services/', 'Complete pediatric services overview.'],
     ['Free Meet & Greet', '/meet-and-greet/', 'Complimentary, nonclinical introductions; schedule from the New Patients page.'],

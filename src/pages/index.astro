@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import StarDivider from '../components/StarDivider.astro';
 import SparkleField from '../components/SparkleField.astro';
-import WaitlistForm from '../components/WaitlistForm.astro';
 import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 import { featuredServices as services } from '../data/services';
@@ -14,61 +13,25 @@ const familyBenefits = [
   {
     title: 'Your concerns are heard.',
     body: 'Time to discuss your child’s health and questions with a board-certified pediatrician.',
-  },
-  {
-    title: 'You understand the plan.',
-    body: 'Clear explanations of care recommendations and practical guidance on what to do next.',
-  },
-  {
-    title: 'Care as your child grows.',
-    body: 'Guidance on feeding, development, school, and healthy habits through the teen years.',
-  },
-];
-
-const serviceGroups = [
-  {
-    title: 'Everyday pediatric care',
-    description: 'Routine checkups, sick visits, and care for your baby’s earliest days.',
-    serviceTitles: [
-      'Well-Child Visits',
-      'Same-Day Sick Visits',
-      'Newborn Care',
-    ],
-  },
-  {
-    title: 'Care as your child grows',
-    description: 'Vaccines, behavioral support, and care for tweens and teens.',
-    serviceTitles: [
-      'Vaccinations',
-      'ADHD, Behavior & Developmental Care',
-      'Teen & Adolescent Health',
-    ],
-  },
-].map((group) => ({
-  ...group,
-  services: services.filter((service) =>
-    group.serviceTitles.includes(service.title),
-  ),
-}));
-
-const trustPhotos = [
-  {
-    src: '/images/trust-family.jpg',
-    alt: 'A mother cuddling her happy laughing baby in a soft, sunlit nursery',
-  },
-  {
     src: '/images/trust-checkup.jpg',
     alt: 'A pediatrician using a stethoscope on a smiling girl held by her mother',
   },
   {
+    title: 'You understand the plan.',
+    body: 'Clear explanations of care recommendations and practical guidance on what to do next.',
     src: '/images/trust-gentle.jpg',
     alt: 'A smiling young girl using a stethoscope to listen to her teddy bear',
   },
   {
+    title: 'Care as your child grows.',
+    body: 'Guidance on feeding, development, school, and healthy habits through the teen years.',
     src: '/images/trust-playful.jpg',
     alt: 'A happy toddler sitting on a rug, surrounded by a teddy bear, bunny, and stacking toys',
   },
 ];
+
+const homeServiceSlugs = ['well-child-visits', 'sick-visits', 'newborn-care', 'vaccinations'];
+const homeServices = homeServiceSlugs.flatMap((slug) => services.filter((service) => service.slug === slug));
 ---
 <BaseLayout
   title="Luma Pediatrics | Pediatric Primary Care in McKinney, TX"
@@ -77,7 +40,7 @@ const trustPhotos = [
   socialTitle="Luma Pediatrics | McKinney, TX"
   socialDescription={`Helping kids thrive and parents feel confident. Thoughtful pediatric care in McKinney, Texas. ${SITE.status}. Book an appointment online.`}
   ogImageAlt={`Luma Pediatrics logo. ${SITE.status}.`}
-  preloadImage="/images/luma-hero-banner.webp"
+  preloadImage="/images/trust-family.webp"
 >
 
   <!-- HERO - outcome-led copy, approved imagery, and family-focused benefits. -->
@@ -116,59 +79,21 @@ const trustPhotos = [
                 <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
               </span>
             </Button>
-            <Button href="/about/" variant="secondary">{SITE.showProviderProfile ? 'Meet Dr. Tallapureddy' : 'About Luma'}</Button>
+            <Button href="/about/" variant="secondary">{SITE.showProviderProfile ? 'About Dr. Tallapureddy' : 'About Luma'}</Button>
           </div>
         </div>
 
-        <figure class="hero-poster-image hero-poster-image--wide" data-home-visual>
+        <figure class="hero-poster-image hero-poster-image--wide hero-poster-image--photo" data-home-visual>
           <Picture
-            src="/images/luma-hero-banner.jpg"
-            alt="Luma Pediatrics logo above the words Where your child's health shines, set in a sunlit nursery with a teddy bear, stacked books, and a wooden rainbow"
-            width={1440}
-            height={753}
+            src="/images/trust-family.jpg"
+            alt="A mother cuddling her happy, laughing baby in a soft, sunlit nursery"
+            width={1200}
+            height={1005}
             loading="eager"
             fetchpriority="high"
           />
         </figure>
       </div>
-    </div>
-
-    <div class="hero-credibility-ribbon">
-      <div class="site-container py-7 grid gap-6 md:grid-cols-3" data-family-benefits>
-        {familyBenefits.map(({ title, body }) => (
-          <div>
-            <h2 class="text-xl font-semibold leading-snug text-[var(--color-sage-foreground)]">{title}</h2>
-            <p class="mt-2 text-sm leading-relaxed text-[var(--color-sage-foreground)]">{body}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section
-    class="home-section-nav reveal"
-    data-home-section="credibility"
-  >
-    <div class="site-container">
-      <nav
-        class="flex flex-wrap justify-center gap-2"
-        aria-label="Explore homepage sections"
-      >
-        {[
-          ...(appointments.enabled ? [{ href: '#schedule', label: 'Scheduling' }] : []),
-          { href: '#services', label: 'Care' },
-          { href: '#why-luma', label: 'Why Luma' },
-          { href: '#plan-ahead', label: 'Plan ahead' },
-          { href: '#practice-updates', label: 'Get updates' },
-        ].map((item) => (
-          <a
-            href={item.href}
-            class="inline-flex min-h-9 items-center rounded-full bg-[var(--color-card)] px-3.5 text-sm font-semibold text-[var(--color-primary)] no-underline ring-1 ring-inset ring-[var(--color-border-soft)] hover:bg-[var(--color-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
-          >
-            {item.label}
-          </a>
-        ))}
-      </nav>
     </div>
   </section>
 
@@ -205,60 +130,45 @@ const trustPhotos = [
 
   <section
     id="services"
-    class="scroll-mt-32 py-20 md:py-28 reveal relative"
+    class="scroll-mt-32 py-20 md:py-24 reveal relative"
     data-home-section="services"
   >
     <SparkleField count={6} />
     <div class="site-container relative">
-      <div class="mx-auto text-center mb-14">
-        <span class="eyebrow">Planned care</span>
+      <div class="mx-auto text-center mb-12">
+        <span class="eyebrow">Our care</span>
         <h2 class="mt-5 text-3xl md:text-5xl tracking-tight">Checkups, sick care, and growing up.</h2>
-        <p class="mt-5 tagline-italic-sage text-lg md:text-xl">
-          Find the care you’re looking for and see what we’re planning.
-        </p>
       </div>
 
-      <div class="space-y-14">
-        {serviceGroups.map((group) => (
-          <section>
-            <div class="mb-6">
-              <h3 class="text-2xl md:text-3xl tracking-tight">{group.title}</h3>
-              <p class="mt-2 text-[var(--color-foreground)]/70 leading-relaxed">
-                {group.description}
-              </p>
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {homeServices.map(({ slug, icon, title, short, badge, detailHref }) => (
+          <a
+            href={detailHref ?? `/services/#${slug}`}
+            class="card-lift group flex h-full flex-col rounded-[var(--radius-card)] bg-[var(--color-card)] p-6 text-[var(--color-foreground)] no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2"
+            aria-label={`Learn more about ${title}`}
+          >
+            <span
+              class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-5 ring-1 ring-inset ring-[var(--color-border-soft)]"
+              style="box-shadow: inset 0 1px 1px rgba(255,255,255,0.6);"
+            >
+              <Icon name={icon} class="w-6 h-6" stroke-width="1.6" aria-hidden="true" />
+            </span>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h3 class="text-2xl font-semibold" style="font-family: var(--font-display);">{title}</h3>
+              {badge && (
+                <span class="service-badge">{badge}</span>
+              )}
             </div>
-            <div class:list={['grid gap-5 sm:grid-cols-2', group.services.length > 2 && 'lg:grid-cols-3']}>
-              {group.services.map(({ slug, icon, title, short, badge, detailHref }) => (
-                <a
-                  href={detailHref ?? `/services/#${slug}`}
-                  class="card-lift group flex h-full flex-col rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 text-[var(--color-foreground)] no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2"
-                  aria-label={`Learn more about ${title}`}
-                >
-                  <span
-                    class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] mb-5 ring-1 ring-inset ring-[var(--color-border-soft)]"
-                    style="box-shadow: inset 0 1px 1px rgba(255,255,255,0.6);"
-                  >
-                    <Icon name={icon} class="w-6 h-6" stroke-width="1.6" aria-hidden="true" />
-                  </span>
-                  <div class="flex items-center gap-2 flex-wrap">
-                    <h4 class="text-2xl font-semibold" style="font-family: var(--font-display);">{title}</h4>
-                    {badge && (
-                      <span class="service-badge">{badge}</span>
-                    )}
-                  </div>
-                  <p class="mt-2.5 text-[var(--color-foreground)]/80 leading-relaxed">{short}</p>
-                  <span class="mt-auto pt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)]">
-                    Learn more
-                    <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
-                  </span>
-                </a>
-              ))}
-            </div>
-          </section>
+            <p class="mt-2.5 text-[var(--color-foreground)]/80 leading-relaxed">{short}</p>
+            <span class="mt-auto pt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)]">
+              Learn more
+              <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+            </span>
+          </a>
         ))}
       </div>
 
-      <div class="mt-12 text-center">
+      <div class="mt-10 text-center">
         <Button href="/services/" variant="secondary">
           See all services
           <span class="btn-icon-circle" aria-hidden="true">
@@ -271,26 +181,24 @@ const trustPhotos = [
 
   <section
     id="why-luma"
-    class="trust-gallery scroll-mt-32 py-20 md:py-28 reveal"
+    class="trust-gallery scroll-mt-32 py-20 md:py-24 reveal"
     data-home-section="why-luma"
   >
     <div class="site-container">
       <div class="mx-auto text-center mb-12">
         <span class="eyebrow eyebrow-sun">Why Luma</span>
-        <h2 class="mt-5 text-4xl md:text-6xl tracking-tight">
-          Why consider Luma?
+        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight">
+          Why families choose Luma
         </h2>
-        <p class="mt-6 text-lg text-[var(--color-foreground)]/78 leading-relaxed mx-auto">
-          Get to know our approach to children’s health and the questions families bring to each stage.
-        </p>
       </div>
 
       <div
-        class="trust-photo-grid grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+        class="trust-photo-grid grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
         tabindex="0"
-        aria-label="Family-centered practice gallery"
+        aria-label="Why families choose Luma"
+        data-family-benefits
       >
-        {trustPhotos.map(({ src, alt }) => (
+        {familyBenefits.map(({ title, body, src, alt }) => (
           <figure class="photo-trust-card card-lift">
             <Picture
               src={src}
@@ -299,30 +207,40 @@ const trustPhotos = [
               height={1005}
               loading="lazy"
             />
+            <figcaption>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </figcaption>
           </figure>
         ))}
       </div>
 
-      <p class="mt-6 text-center">
+      <p class="mt-8 text-center">
         <a href="/about/" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">
           Get to know our pediatrician →
         </a>
       </p>
-
     </div>
   </section>
 
   <section
     id="plan-ahead"
-    class="scroll-mt-32 py-20 md:py-24 bg-[var(--color-muted)] reveal"
+    class="campaign-panel scroll-mt-32 reveal"
     data-home-section="practical"
   >
-    <div class="site-container">
+    <div class="brand-cloud cloud-right" aria-hidden="true"></div>
+    <div class="botanical-spray leaf-right" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <SparkleField count={8} />
+
+    <div class="site-container relative z-10 py-20 md:py-24">
       <div class="mx-auto text-center mb-12">
         <span class="eyebrow eyebrow-sun">Plan ahead</span>
-        <h2 class="mt-5 text-3xl md:text-4xl tracking-tight">
+        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight" style="font-family: var(--font-display);">
           Before your first visit
         </h2>
+        <StarDivider class="mt-6" span="3rem" />
       </div>
 
       <div class="grid gap-6 md:grid-cols-2">
@@ -332,7 +250,7 @@ const trustPhotos = [
             Will Luma accept my insurance?
           </h3>
           <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
-            We accept a variety of commercial insurance plans. Call or text to verify your coverage or ask for an estimate. Self-pay pricing is available for care after opening.
+            We accept a variety of commercial insurance plans and offer self-pay pricing. Call or text to verify your coverage or ask for an estimate.
           </p>
           <a href="/new-patients/#insurance" class="mt-6 inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
             See insurance and self-pay details →
@@ -374,52 +292,12 @@ const trustPhotos = [
         </article>
       </div>
 
-      <p class="mt-8 text-center">
-        <a href="/new-patients/" class="font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
-          Preparing for your first visit? View the new-patient guide →
-        </a>
-      </p>
-    </div>
-  </section>
-
-  <section class="py-16 md:py-20 reveal" data-home-section="updates">
-    <div class="site-container">
-      <WaitlistForm variant="hero" />
-    </div>
-  </section>
-
-  <!-- ====================================================================
-       FINAL CTA, "Still have questions?" pairing FAQ + Contact, instead of
-       duplicating the hero. Keeps a strong close without repeating CTAs.
-       ==================================================================== -->
-  <section class="campaign-panel" data-home-section="final">
-    <div class="brand-cloud cloud-right" aria-hidden="true"></div>
-    <div class="botanical-spray leaf-right" aria-hidden="true">
-      <span></span><span></span><span></span><span></span><span></span>
-    </div>
-    <SparkleField count={10} />
-
-    <div class="site-container relative z-10 py-20 md:py-28 text-center">
-      <div class="campaign-card px-5 py-12 md:p-14">
-        <span class="eyebrow eyebrow-sun">Have a question?</span>
-        <h2 class="mt-5 text-3xl md:text-5xl tracking-tight" style="font-family: var(--font-display);">
-          Still have a question?
-        </h2>
-        <StarDivider class="mt-7" span="3rem" />
-        <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/78 mx-auto leading-relaxed">
-          Find answers about insurance, planned hours, and first visits. Prefer to ask us? Call or text with general questions.
-        </p>
-        <div class="mt-9 flex flex-wrap justify-center gap-3">
-          <Button href="/faq/" variant="primary">
-            <Icon name="lucide:info" class="w-5 h-5" stroke-width="1.6" />
-            Browse FAQs
-          </Button>
-          <Button href="/contact/" variant="secondary">
-            Call or text us
-            <span class="btn-icon-circle" aria-hidden="true">
-              <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
-            </span>
-          </Button>
+      <div class="mt-12 text-center">
+        <p class="text-lg text-[var(--color-foreground)]/80">Still have a question?</p>
+        <div class="mt-5 flex flex-wrap justify-center gap-3">
+          <Button href="/new-patients/" variant="secondary">New-patient guide</Button>
+          <Button href="/faq/" variant="secondary">Browse FAQs</Button>
+          <Button href="/contact/" variant="ghost">Contact us</Button>
         </div>
       </div>
     </div>

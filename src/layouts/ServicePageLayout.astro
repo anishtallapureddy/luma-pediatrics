@@ -48,15 +48,14 @@ const serviceSchema = {
         <p class="mt-6 text-lg leading-relaxed text-[var(--color-foreground)]/85">{intro}</p>
         <div class="service-actions mt-7">
           <Button href={primary.href}>{primary.label}</Button>
-          <Button href="/about/" variant="secondary">{SITE.showProviderProfile ? 'Meet Dr. Tallapureddy' : 'Meet Our Pediatrician'}</Button>
+          <Button href="/about/" variant="secondary">{SITE.showProviderProfile ? 'About Dr. Tallapureddy' : 'About Our Pediatrician'}</Button>
         </div>
         <div class="mt-5 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
           <slot name="hero-note">
             <p>
-              {SITE.status}.
               {primary.enabled
-                ? ' Book this visit through Phreesia. Clinical care begins on opening day; confirm your appointment date and coverage before booking.'
-                : ' Appointments are not available yet. Scheduling details will be shared closer to opening.'}
+                ? 'Book online anytime. Clinical care begins on opening day; confirm your appointment date and coverage before booking.'
+                : 'Appointments are not available yet. Scheduling details will be shared closer to opening.'}
             </p>
           </slot>
         </div>

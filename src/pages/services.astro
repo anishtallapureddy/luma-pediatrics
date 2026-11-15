@@ -28,7 +28,6 @@ const { appointments } = getMedicalScheduling(SITE);
       <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
         Checkups, sick visits, and care as your child grows.
       </p>
-      <p class="mt-4 text-sm text-[var(--color-muted-foreground)]">{SITE.status}. Clinical care begins on opening day.</p>
       {appointments.enabled && (
         <div class="mt-6">
           <Button href={appointments.href}>{appointments.label}</Button>
