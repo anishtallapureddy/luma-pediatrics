@@ -1,7 +1,7 @@
 import { services } from '../data/services.ts';
 import { insurancePlans, additionalInsurancePlans, insuranceCoverageNote } from '../data/insurance.ts';
 import { selfPayPricing, selfPayServices } from '../data/selfPay.ts';
-import { getMedicalScheduling, type MedicalSchedulingConfig } from './serviceScheduling.ts';
+import { getMedicalScheduling, getMeetAndGreetScheduling, type MedicalSchedulingConfig } from './serviceScheduling.ts';
 
 interface DiscoverySite {
   name: string;
@@ -32,10 +32,12 @@ interface DiscoverySite {
   appointmentScheduling: MedicalSchedulingConfig;
   newbornScheduling: MedicalSchedulingConfig;
   wellChildScheduling: MedicalSchedulingConfig;
+  meetAndGreetScheduling: MedicalSchedulingConfig;
 }
 
 export function renderDiscoverySummary(site: DiscoverySite) {
   const scheduling = getMedicalScheduling(site);
+  const meetAndGreet = getMeetAndGreetScheduling(site.meetAndGreetScheduling);
   const link = (path: string) => new URL(path, site.domain).href;
   const languages = site.provider.quickFacts.find((fact) => fact.label === 'Languages');
   const hours = site.hours.map((day) => `${day.day}: ${day.time}`).join('; ');
@@ -43,10 +45,11 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     ['Home', '/', 'Practice overview and opening updates.'],
     ['About', '/about/', 'Practice approach and approved provider information.'],
     ['Services', '/services/', 'Complete pediatric services overview.'],
-    ['Free Meet & Greet', '/meet-and-greet/', 'Planned complimentary, nonclinical introductions.'],
+    ['Free Meet & Greet', '/meet-and-greet/', 'Complimentary, nonclinical introductions; schedule from the New Patients page.'],
     ['Newborn Care', '/newborn-care/', 'Newborn office visits and hospital-arrangement information.'],
     ['Well-Child Visits', '/well-child-visits/', 'Preventive pediatric care and visit preparation.'],
     ['New Patients', '/new-patients/', 'Onboarding, insurance and approved scheduling information.'],
+    ['After-Hours Care', '/after-hours/', 'Patient Portal, on-call physician, nurse line, symptom checker, and 911 guidance.'],
     ['FAQ', '/faq/', 'Answers about the practice, visits and pre-opening availability.'],
     ['Parent Resources', '/resources/', 'Parent guides and educational tools.'],
     ['Parent Guides / Blog', '/blog/', 'Published pediatric articles.'],
@@ -96,7 +99,10 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     ] : []),
     `- **Newborn booking:** ${scheduling.newborn.enabled ? 'Available' : 'Not available yet'}. See [Newborn Care](${link('/newborn-care/')}).`,
     `- **Well-child booking:** ${scheduling.wellChild.enabled ? 'Available' : 'Not available yet'}. See [Well-Child Visits](${link('/well-child-visits/')}).`,
-    `- **Meet & Greet:** A free introduction is planned after opening. It is not an examination, diagnosis or treatment visit and does not establish a physician-patient relationship. Meet & Greet appointments are not available yet; [ask about arrangements](${link('/contact/')}).`,
+    `- **Meet & Greet:** A free, no-obligation introduction to visit the clinic and meet the pediatrician. It is introductory only, does not include a medical evaluation or treatment, and does not establish a physician-patient relationship. ${meetAndGreet.enabled
+      ? `Schedule a free Meet & Greet from the [New Patients page](${link('/new-patients/#meet-and-greet')}).`
+      : `Meet & Greet appointments are not available yet; [ask about arrangements](${link('/contact/')}).`}`,
+    `- **After hours:** See [After-Hours Care](${link('/after-hours/')}) for Patient Portal messages, the on-call physician line, the Children's Health nurse line and symptom checker, and 911 guidance.`,
     '- **Current medical concerns:** Contact your child\'s current healthcare provider. For a medical emergency, call 911 or go to the nearest emergency room.',
     '- **Privacy:** Website inquiries are for general questions, not patient intake. Do not submit protected medical information.',
     '',

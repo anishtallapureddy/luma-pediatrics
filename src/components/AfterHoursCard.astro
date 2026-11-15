@@ -2,7 +2,7 @@
 import { Icon } from 'astro-icon/components';
 import { SITE } from '../site.config';
 
-const showTriage = SITE.afterHours.showNurseTriage;
+const { onCallActive } = SITE.afterHours;
 ---
 <aside class="after-hours-card rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-7 md:p-8">
   <div class="flex items-center gap-2 text-[var(--color-primary)]">
@@ -10,39 +10,30 @@ const showTriage = SITE.afterHours.showNurseTriage;
     <span class="eyebrow eyebrow-sun">After-hours care</span>
   </div>
   <h2 class="mt-4 text-2xl md:text-3xl font-extrabold tracking-tight">
-    Worried about your child after hours?
+    Need Help After Hours?
   </h2>
-  <div class:list={['mt-5 grid gap-4', showTriage ? 'sm:grid-cols-2' : '']}>
+  <div class="mt-5 grid gap-4 sm:grid-cols-3">
     <div class="rounded-xl bg-[rgba(231,108,112,0.10)] border border-[rgba(231,108,112,0.40)] p-4">
       <p class="text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-coral)]">Emergency</p>
       <p class="mt-2 text-[var(--color-foreground)]/90 leading-relaxed">
-        If your child is in distress, having trouble breathing, unresponsive, or seriously injured,{' '}
-        <strong>call 911</strong> or go to the nearest emergency room.
+        For a life-threatening emergency, <strong>call 911</strong> or go to the nearest emergency department.
       </p>
     </div>
-    {showTriage && (
-      <div class="rounded-xl bg-[var(--color-muted)] ring-1 ring-inset ring-[rgba(200,153,90,0.25)] p-4">
-        <p class="text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-primary)]">Nurse triage (24/7)</p>
-        <p class="mt-2 text-[var(--color-foreground)]/90 leading-relaxed">
-          For non-emergency concerns when our office is closed, call
-          {' '}<a href={SITE.afterHours.partnerPhoneHref} class="font-semibold">
-            {SITE.afterHours.partner}
-          </a>:
-          <a href={SITE.afterHours.partnerPhoneHref} class="block font-bold text-lg mt-1">
-            {SITE.afterHours.partnerPhone}
-          </a>
-        </p>
-      </div>
-    )}
+    <div class="rounded-xl bg-[var(--color-muted)] p-4">
+      <p class="text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-primary)]">Urgent</p>
+      <p class="mt-2 text-[var(--color-foreground)]/90 leading-relaxed">
+        Call <a href={SITE.contact.phoneHref} class="font-semibold">{SITE.contact.phone}</a> to reach our on-call physician{onCallActive ? '.' : ` once we open ${SITE.openingWindow}.`}
+      </p>
+    </div>
+    <div class="rounded-xl bg-[var(--color-muted)] p-4">
+      <p class="text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-primary)]">Can wait</p>
+      <p class="mt-2 text-[var(--color-foreground)]/90 leading-relaxed">
+        Message us through the Patient Portal. Portal messages are not monitored for emergencies.
+      </p>
+    </div>
   </div>
-  {showTriage ? (
-    <p class="mt-5 text-xs text-[var(--color-muted-foreground)]">
-      {SITE.afterHours.note}
-    </p>
-  ) : (
-    <p class="mt-5 text-sm text-[var(--color-foreground)]/85 leading-relaxed">
-      Luma Pediatrics is not currently providing clinical or after-hours care.
-      For current medical concerns, contact your existing healthcare provider.
-    </p>
-  )}
+  <a href="/after-hours/" class="mt-5 inline-flex min-h-11 items-center gap-1.5 font-semibold text-[var(--color-primary)] underline underline-offset-4">
+    See all after-hours options
+    <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+  </a>
 </aside>

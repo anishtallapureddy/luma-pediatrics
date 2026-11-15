@@ -9,6 +9,7 @@ test('discovery summary follows the service pages and pre-opening care boundarie
     appointmentScheduling: { enabled: false, url: '' },
     newbornScheduling: { enabled: false, url: '' },
     wellChildScheduling: { enabled: false, url: '' },
+    meetAndGreetScheduling: { enabled: false, url: '' },
   });
   for (const path of ['/meet-and-greet/', '/newborn-care/', '/well-child-visits/']) {
     assert(text.includes(`${SITE.domain}${path}`));
@@ -38,7 +39,9 @@ test('clinical discovery groups hospital information under newborn care and keep
   assert.match(planned, /\[Newborn Care\][^\n]+\n  - \[Newborn Rounds at BSW McKinney\]/);
   assert(planned.includes('subject to assignment, privileges, and final hospital arrangements'));
   assert(!planned.includes('[Free Meet & Greet]'));
-  assert(text.includes('**Meet & Greet:** A free introduction is planned after opening.'));
+  assert(text.includes('**Meet & Greet:** A free, no-obligation introduction'));
+  assert(text.includes(`Schedule a free Meet & Greet from the [New Patients page](${SITE.domain}/new-patients/#meet-and-greet)`));
+  assert(!text.includes('Meet & Greet appointments are not available yet'));
 });
 
 test('public summary announces the approved opening while keeping scheduling targets internal', () => {
@@ -137,6 +140,6 @@ test('summary booking availability respects independent manual service activatio
   assert(text.includes('**Well-child booking:** Available'));
   assert(!text.includes('Online medical appointment booking is not available yet.'));
   assert(text.includes('Online booking is available for the visit types listed below.'));
-  assert(text.includes('Meet & Greet appointments are not available yet'));
+  assert(text.includes('Schedule a free Meet & Greet from the [New Patients page]'));
   assert(!text.includes('booking.example.test'));
 });

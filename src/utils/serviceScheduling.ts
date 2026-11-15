@@ -41,12 +41,17 @@ export function getServiceScheduling(config: MedicalSchedulingConfig, service: '
     : getScheduling(config, 'Well-child', 'Schedule a Well-Child Visit', "Plan Your Child's Visit");
 }
 
+export function getMeetAndGreetScheduling(config: MedicalSchedulingConfig) {
+  const state = getScheduling(config, 'Meet & Greet', 'Schedule a Free Meet & Greet', 'Ask About a Meet & Greet');
+  return state.enabled ? state : { ...state, href: '/contact/' };
+}
+
 export function getMedicalScheduling(config: {
   appointmentScheduling: MedicalSchedulingConfig;
   newbornScheduling: MedicalSchedulingConfig;
   wellChildScheduling: MedicalSchedulingConfig;
 }) {
-  const appointments = getScheduling(config.appointmentScheduling, 'Medical', 'Book an appointment', 'Plan Your Visit');
+  const appointments = getScheduling(config.appointmentScheduling, 'Medical', 'Schedule an Appointment', 'Plan Your Visit');
   const newborn = getServiceScheduling(config.newbornScheduling, 'newborn');
   const wellChild = getServiceScheduling(config.wellChildScheduling, 'well-child');
   return { appointments, newborn, wellChild, enabled: appointments.enabled || newborn.enabled || wellChild.enabled };

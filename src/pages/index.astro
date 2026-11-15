@@ -4,7 +4,6 @@ import Button from '../components/Button.astro';
 import StarDivider from '../components/StarDivider.astro';
 import SparkleField from '../components/SparkleField.astro';
 import WaitlistForm from '../components/WaitlistForm.astro';
-import MeetAndGreetInvitation from '../components/MeetAndGreetInvitation.astro';
 import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 import { featuredServices as services } from '../data/services';
@@ -156,6 +155,7 @@ const trustPhotos = [
         aria-label="Explore homepage sections"
       >
         {[
+          ...(appointments.enabled ? [{ href: '#schedule', label: 'Scheduling' }] : []),
           { href: '#services', label: 'Care' },
           { href: '#why-luma', label: 'Why Luma' },
           { href: '#plan-ahead', label: 'Plan ahead' },
@@ -171,6 +171,37 @@ const trustPhotos = [
       </nav>
     </div>
   </section>
+
+  {appointments.enabled && (
+    <section
+      id="schedule"
+      class="scroll-mt-32 pt-14 md:pt-20 reveal"
+      data-home-section="scheduling"
+    >
+      <div class="site-container">
+        <div class="home-scheduling-card mx-auto max-w-3xl rounded-[var(--radius-card)] bg-[var(--color-card)] p-8 md:p-12 text-center ring-1 ring-inset ring-[var(--color-border-soft)]">
+          <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-muted)] text-[var(--color-primary)] ring-1 ring-inset ring-[var(--color-border-soft)]">
+            <Icon name="lucide:calendar-check" class="w-6 h-6" stroke-width="1.6" aria-hidden="true" />
+          </span>
+          <h2 class="mt-5 text-3xl md:text-5xl tracking-tight">Scheduling Made Simple</h2>
+          <p class="mt-5 text-lg leading-relaxed text-[var(--color-foreground)]/85">
+            At Luma Pediatrics, we want getting care for your child to be easy. You can schedule appointments online at your convenience, without having to call during office hours.
+          </p>
+          <p class="mt-4 text-lg leading-relaxed text-[var(--color-foreground)]/85">
+            Whether your child is due for a well visit, feeling sick, or needs follow-up care, you can book an appointment online at a time that works for your family.
+          </p>
+          <div class="mt-8 flex justify-center">
+            <Button href={appointments.href} variant="primary">
+              {appointments.label}
+              <span class="btn-icon-circle" aria-hidden="true">
+                <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
+              </span>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
 
   <section
     id="services"
@@ -235,7 +266,6 @@ const trustPhotos = [
           </span>
         </Button>
       </div>
-      <MeetAndGreetInvitation />
     </div>
   </section>
 

@@ -8,6 +8,7 @@ const OPENING_WINDOW = new Date(`${OPENING_DATE}T00:00:00Z`).toLocaleDateString(
   month: 'long', day: 'numeric', timeZone: 'UTC',
 });
 const PHREESIA_URL = 'https://phreesia.me/LumaPediatricsSelfScheduling';
+const MEET_AND_GREET_URL = 'https://phreesia.me/LumaPediatricsMeetandGreet';
 
 export const SITE = {
   name: 'Luma Pediatrics',
@@ -37,6 +38,11 @@ export const SITE = {
     enabled: true,
     url: PHREESIA_URL,
     plannedLaunchDate: '2026-11-16',
+  },
+  meetAndGreetScheduling: {
+    /** Separate Phreesia link for the free, nonclinical Meet & Greet (New Patients page). */
+    enabled: true,
+    url: MEET_AND_GREET_URL,
   },
   locationShort: 'McKinney, Texas',
   description:
@@ -223,18 +229,23 @@ export const SITE = {
   ],
 
   /**
-   * After-hours guidance. When `showNurseTriage` is true the card shows a
-   * partner pediatric nurse-triage line alongside the universal 911 instruction;
-   * when false, only the 911 guidance + "call our office" line are shown.
-   * IMPORTANT: verify the partner number before enabling nurse triage.
+   * After-hours guidance (/after-hours/). The on-call physician line and Patient
+   * Portal messaging start on opening day; flip `onCallActive` manually then.
+   * Add `patientPortalUrl` once the portal sign-in link is confirmed.
    */
   afterHours: {
-    /** Hidden until the partner nurse-triage line is confirmed. */
-    showNurseTriage: false,
-    partner: "Children's Health Plano",
-    partnerPhone: '(469) 303-2000',
-    partnerPhoneHref: 'tel:+14693032000',
-    note: 'Pediatric nurse triage available 24/7. Verify current line at launch.',
+    onCallActive: false,
+    patientPortalUrl: '',
+    consultationFee: '$50',
+    symptomChecker: {
+      name: "Children's Health Symptom Checker",
+      url: 'https://www.childrens.com/specialties-services/symptom-checker',
+    },
+    nurseLine: {
+      name: "Children's Health 24/7 Community Nurse Line",
+      phone: '844-860-6976',
+      phoneHref: 'tel:+18448606976',
+    },
   },
 
   /** Telehealth offering for med refills + follow-ups. */

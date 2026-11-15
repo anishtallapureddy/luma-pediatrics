@@ -7,9 +7,10 @@ import { Icon } from 'astro-icon/components';
 import { SITE } from '../site.config';
 import { insurancePlans, additionalInsurancePlans, insuranceCoverageNote } from '../data/insurance';
 import { selfPayPricing, selfPayServices } from '../data/selfPay';
-import { getMedicalScheduling } from '../utils/serviceScheduling';
+import { getMedicalScheduling, getMeetAndGreetScheduling } from '../utils/serviceScheduling';
 
 const medicalScheduling = getMedicalScheduling(SITE);
+const meetAndGreet = getMeetAndGreetScheduling(SITE.meetAndGreetScheduling);
 const bookingOptions = medicalScheduling.appointments.enabled
   ? [medicalScheduling.appointments]
   : [medicalScheduling.newborn, medicalScheduling.wellChild].filter(({ enabled }) => enabled);
@@ -89,6 +90,7 @@ const bringList = [
         <a href="#what-to-bring" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">What to bring</a>
         <a href="#insurance" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Accepted insurance</a>
         <a href="#self-pay" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Self-pay pricing</a>
+        <a href="#meet-and-greet" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Free Meet &amp; Greet</a>
       </div>
     </div>
   </section>
@@ -126,11 +128,37 @@ const bringList = [
     </div>
   </section>
 
+  <section id="meet-and-greet" aria-labelledby="meet-and-greet-heading" class="scroll-mt-32 pb-16 md:pb-20 reveal">
+    <div class="site-container">
+      <div class="rounded-[var(--radius-card)] bg-[var(--color-muted)] ring-1 ring-inset ring-[var(--color-border-soft)] p-8 md:p-10">
+        <span class="eyebrow">Free Meet &amp; Greet</span>
+        <h2 id="meet-and-greet-heading" class="mt-5 text-3xl md:text-4xl tracking-tight">
+          {SITE.showProviderProfile ? 'Meet Dr. T' : 'Meet our pediatrician'}
+        </h2>
+        <p class="mt-5 text-lg text-[var(--color-foreground)]/85 leading-relaxed">
+          Choosing a pediatrician is an important decision, and we'd love the opportunity to get to know your family!
+        </p>
+        <p class="mt-4 text-[var(--color-foreground)]/85 leading-relaxed">
+          Schedule a complimentary Meet &amp; Greet to visit our clinic, meet {SITE.showProviderProfile ? SITE.provider.shortName : 'our pediatrician'}, ask questions, and see if Luma Pediatrics is the right fit for your family.
+        </p>
+        <p class="mt-4 text-[var(--color-foreground)]/85 leading-relaxed">
+          These visits are free, with no obligation to establish care.
+        </p>
+        <p class="mt-4 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
+          <strong>Please note:</strong> Meet &amp; Greet visits are introductory only and do not include a medical evaluation or treatment.
+        </p>
+        <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <Button href={meetAndGreet.href}>{meetAndGreet.label}</Button>
+          <a href="/meet-and-greet/" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">What to expect at a Meet &amp; Greet</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="pb-12">
     <div class="site-container">
       <h2 class="text-2xl md:text-3xl">Expecting a baby?</h2>
       <p class="mt-4 leading-relaxed">Choosing a pediatrician can help you prepare for your baby's arrival. <a href="/newborn-care/" class="font-semibold underline underline-offset-4">Explore Newborn Care</a> and learn what to expect during the first visits.</p>
-      <p class="mt-4 leading-relaxed">Want to get to know our pediatrician first? <a href="/meet-and-greet/" class="font-semibold underline underline-offset-4">Learn about our Free Meet &amp; Greet</a>, planned after opening.</p>
       <p class="mt-4 leading-relaxed">For routine preventive care, <a href="/well-child-visits/" class="font-semibold underline underline-offset-4">explore our Well-Child Visits</a>.</p>
     </div>
   </section>

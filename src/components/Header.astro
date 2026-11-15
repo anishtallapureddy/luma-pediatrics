@@ -95,9 +95,13 @@ const isActive = (href: string) => {
           </div>
         </div>
         {medicalScheduling.appointments.enabled && (
-          <div class="hidden lg:block">
-            <Button href={medicalScheduling.appointments.href} class="whitespace-nowrap">Book now</Button>
-          </div>
+          <Button
+            href={medicalScheduling.appointments.href}
+            class="header-schedule-btn whitespace-nowrap"
+            ariaLabel={medicalScheduling.appointments.label}
+          >
+            <span>Schedule<span class="hidden sm:inline">&nbsp;an Appointment</span></span>
+          </Button>
         )}
 
         <button

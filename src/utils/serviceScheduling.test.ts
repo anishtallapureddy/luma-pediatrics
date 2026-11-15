@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { getMedicalScheduling, getServiceScheduling } from './serviceScheduling.ts';
+import { getMedicalScheduling, getMeetAndGreetScheduling, getServiceScheduling } from './serviceScheduling.ts';
 
 const disabled = { enabled: false, url: '', plannedLaunchDate: '2000-01-01' };
 const enabled = { enabled: true, url: 'https://booking.example.test/well-child' };
@@ -47,7 +47,7 @@ test('rejects unsafe well-child URLs and preserves the original parsing error', 
 test('shared medical booking has its own manual gate and validates its destination', () => {
   const config = { appointmentScheduling: enabled, newbornScheduling: disabled, wellChildScheduling: disabled };
   const state = getMedicalScheduling(config);
-  assert.deepEqual(state.appointments, { enabled: true, href: enabled.url, label: 'Book an appointment' });
+  assert.deepEqual(state.appointments, { enabled: true, href: enabled.url, label: 'Schedule an Appointment' });
   assert.equal(state.enabled, true);
   assert.equal(state.newborn.enabled, false);
   const inactive = getMedicalScheduling({ ...config, appointmentScheduling: { ...enabled, enabled: false } });
@@ -56,4 +56,11 @@ test('shared medical booking has its own manual gate and validates its destinati
   for (const url of ['', '/booking', 'http://booking.example.test', 'https://user:password@booking.example.test']) {
     assert.throws(() => getMedicalScheduling({ ...config, appointmentScheduling: { enabled: true, url } }), /approved/);
   }
+});
+
+test('Meet & Greet booking uses its own link and falls back to contacting the office', () => {
+  const url = 'https://booking.example.test/meet-and-greet';
+  assert.deepEqual(getMeetAndGreetScheduling({ enabled: true, url }), { enabled: true, href: url, label: 'Schedule a Free Meet & Greet' });
+  assert.deepEqual(getMeetAndGreetScheduling({ enabled: false, url }), { enabled: false, href: '/contact/', label: 'Ask About a Meet & Greet' });
+  assert.throws(() => getMeetAndGreetScheduling({ enabled: true, url: 'http://booking.example.test' }), /approved/);
 });

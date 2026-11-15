@@ -26,18 +26,6 @@ export interface ServiceItem {
   relatedCare?: Pick<ServiceItem, 'slug' | 'title' | 'full' | 'nextStep'>;
 }
 
-export const meetAndGreet: ServiceItem = {
-  slug: 'free-meet-and-greet',
-  icon: 'lucide:handshake',
-  title: 'Free Meet & Greet',
-  short:
-    'Meet our pediatrician and ask about the practice before choosing care. Free introductions are planned after opening.',
-  full:
-    'A complimentary introduction lets families meet our pediatrician and ask about the practice before choosing care. Planned after opening; it is not a medical visit.',
-  nextStep: { href: '/meet-and-greet/', label: 'Explore Meet & Greet' },
-  detailHref: '/meet-and-greet/',
-};
-
 const newbornHospitalCare: NonNullable<ServiceItem['relatedCare']> = {
   slug: 'newborn-rounds-bsw-mckinney',
   title: 'Newborn Rounds at BSW McKinney',

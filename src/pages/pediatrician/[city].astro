@@ -6,7 +6,6 @@ import WaitlistForm from '../../components/WaitlistForm.astro';
 import { Icon } from 'astro-icon/components';
 import { CITIES } from '../../data/cities.ts';
 import { featuredServices } from '../../data/services';
-import MeetAndGreetInvitation from '../../components/MeetAndGreetInvitation.astro';
 import { selfPayPricing } from '../../data/selfPay';
 import { GOOGLE_DIRECTIONS_URL, SITE, STRUCTURED_DATA_IDS } from '../../site.config';
 import { getMedicalScheduling } from '../../utils/serviceScheduling';
@@ -51,7 +50,7 @@ const faqItems = [
     {
       question: 'Which appointments can I book online?',
       answer: medicalScheduling.appointments.enabled
-        ? `Phreesia supports newborn, behavioral, sick, and well-child visits from ${SITE.openingWindow} onward. For sports physicals, telehealth, or the planned nonclinical Meet & Greet, call or text about arrangements. Online booking does not provide urgent medical advice.`
+        ? `Phreesia supports newborn, behavioral, sick, and well-child visits from ${SITE.openingWindow} onward. For sports physicals or telehealth, call or text about arrangements. Families still choosing a pediatrician can schedule a free, nonclinical Meet & Greet from the New Patients page. Online booking does not provide urgent medical advice.`
         : 'Check the Newborn Care and Well-Child Visits pages for currently available booking options. Call or text with general questions about other visit types.',
     },
     {
@@ -275,10 +274,6 @@ const faqSchema = {
       </p>
     </div>
   </section>
-
-  <div class="site-container">
-    <MeetAndGreetInvitation />
-  </div>
 
   <section class="py-12 md:py-16">
     <div class="site-container">

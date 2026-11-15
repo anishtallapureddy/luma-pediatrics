@@ -12,14 +12,14 @@ const { appointments } = getMedicalScheduling(SITE);
 <div
   class="mobile-cta-bar xl:hidden fixed bottom-0 inset-x-0 z-40 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2"
   role="region"
-  aria-label="Book an appointment or contact the office for general questions, not medical advice"
+  aria-label="Schedule an appointment or contact the office for general questions, not medical advice"
 >
   <div class="rounded-2xl bg-[var(--color-card)]/95 backdrop-blur ring-1 ring-[var(--color-border-soft)] shadow-[0_-6px_24px_-12px_rgba(11,29,58,0.25)] p-1.5">
     <p class="pb-1.5 text-center text-xs text-[var(--color-muted-foreground)]">Call or text: General questions only. No medical advice.</p>
     <div class="flex gap-2">
     {appointments.enabled && (
-      <a href={appointments.href} class="min-w-0 flex-1 inline-flex items-center justify-center min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm" aria-label="Book an appointment through Phreesia">
-        Book now
+      <a href={appointments.href} class="min-w-0 flex-1 inline-flex items-center justify-center min-h-11 px-3 rounded-full bg-[var(--color-primary)] text-white no-underline font-semibold text-sm" aria-label={`${appointments.label} through Phreesia`}>
+        Schedule
       </a>
     )}
     <a
