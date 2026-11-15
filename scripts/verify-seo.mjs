@@ -1932,7 +1932,8 @@ expect(
   'Home section navigation must use a neutral surface below the sage ribbon',
 );
 expect(
-  homeText.includes('Text office') &&
+  homeText.includes('Call us') &&
+    homeText.includes('Text us') &&
     home.html.includes(`href="${contract.smsHref}"`) &&
     homeText.includes('General questions only. No medical advice.') &&
     !homeText.includes('Texting info'),

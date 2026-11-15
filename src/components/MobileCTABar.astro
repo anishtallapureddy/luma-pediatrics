@@ -29,7 +29,7 @@ const { appointments } = getMedicalScheduling(SITE);
       title={`General questions only: call ${SITE.contact.phone}`}
     >
       <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
-      {appointments.enabled ? 'Call' : 'Call office'}
+      <span>{appointments.enabled ? 'Call us' : 'Call office'}</span>
     </a>
     <a
       href={SITE.contact.smsHref}
@@ -38,7 +38,7 @@ const { appointments } = getMedicalScheduling(SITE);
       title={`General questions only: text ${SITE.contact.phone}`}
     >
       <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
-      {appointments.enabled ? 'Text' : 'Text office'}
+      <span>{appointments.enabled ? 'Text us' : 'Text office'}</span>
     </a>
     </div>
   </div>
