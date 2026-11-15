@@ -31,18 +31,56 @@ npm run check:seo # verify GA4, schema, NAP, social metadata, sitemap, and robot
 and the Free Meet & Greet have dedicated pages using `ServicePageLayout`,
 `ServiceProvider`, and `ServiceFaq`. Existing Services anchors remain valid.
 
-Medical booking stays disabled by default. In `src/site.config.ts`,
-`newbornScheduling` and `wellChildScheduling` each have an independent `enabled`
-flag and empty `url`. Their November 16, 2026 launch targets are informational:
-dates never activate booking. The November 30, 2026 opening target remains
-subject to readiness and does not change the clinic's pre-opening status.
+This local announcement draft says **Opening November 30, 2026** and enables
+advance medical booking. It is not an announcement that the clinic is already
+open, and it must not be published until the checks below are completed.
 
-Before enabling either medical service, obtain the practice-approved HTTPS
-Phreesia URL for that appointment type; verify visit dates, capacity, insurance,
-fees, and intake/privacy handling. Set its URL and enable flag only with approval,
-then rebuild, validate, and publish through the normal reviewed deployment.
+`src/site.config.ts` contains the announced date and one shared Phreesia URL:
+`https://phreesia.me/LumaPediatricsSelfScheduling`. The practice confirmed this
+portal supports **newborn, behavioral, sick, and well-child checks**, with
+clinical appointments from **November 30, 2026**. Sports physicals, telehealth,
+and Meet & Greet remain call/text inquiries rather than portal booking promises.
+`appointmentScheduling`,
+`newbornScheduling`, and `wellChildScheduling` retain explicit, independent
+enable flags. Dates never activate booking, operating hours, or clinical care.
+The November 16 scheduling targets remain internal and are not announcements.
 Invalid enabled URLs fail explicitly. This website adds no intake forms,
-clinical-flow tracking, or advertising pixels.
+clinical-flow tracking, or advertising pixels; patient information belongs in
+the practice-approved Phreesia workflow, not email, SMS, or the updates form.
+
+### Required before publishing the opening announcement
+
+- [ ] Confirm November 30, 2026 is still the approved opening date and the
+  clinic, staffing, and required operational arrangements will be ready.
+- [x] **Practice owner confirmed on November 1, 2026:** Phreesia offers newborn,
+  behavioral, sick, and well-child checks from November 30, 2026. This is owner
+  confirmation, not an automated slot audit. Only the Luma-branded welcome screen
+  was inspected; no appointment was created and no patient information was entered.
+- [ ] Recheck the four confirmed visit types and dates just before publication,
+  plus new/returning-patient routing, provider, McKinney address, time zone, duration, capacity,
+  cancellation instructions, and appointment-confirmation workflow.
+- [ ] Confirm plan-specific insurance participation, published self-pay fees,
+  consent/intake handling, and how families transfer records through an approved
+  process. Do not send records or member IDs through website signup, email, or SMS.
+- [ ] Recheck booking links on desktop and mobile, including without JavaScript;
+  retain call/text choices and the nonurgent, asynchronous texting guidance.
+- [ ] Confirm an owner-authorized opening-updates test reaches the intended list.
+  The existing no-CORS endpoint cannot acknowledge delivery; the form reports
+  “Request sent,” not confirmed signup, and analytics records an unconfirmed
+  request rather than a verified lead.
+- [ ] Review the opening social-sharing image and metadata, opening FAQs,
+  New Patients guide, service pages, and all city pages together.
+- [ ] Run the native checks below, review the diff, and explicitly approve the
+  normal PR/deployment. A local build does not publish this draft.
+- [ ] After publication, verify the live pages, Phreesia handoff, social previews,
+  deployment/IndexNow results, and update approved external business listings.
+
+**Separate opening-day change:** once clinical care actually begins, replace
+the announcement/pre-opening/current-provider copy with approved operational
+guidance, confirm real hours and after-hours arrangements, and then explicitly
+enable `SITE.schema.publishOpeningHours`. No calendar date performs that switch.
+The current draft deliberately keeps operational-hours schema unpublished and
+does not claim current clinical availability.
 
 The Meet & Greet deliberately remains an inquiry link, not medical booking.
 Before replacing it with scheduling, confirm the clinic is open and approve a
@@ -105,7 +143,7 @@ canonical NAP/status contract is:
 - 3801 N Central Expy, Suite 302, McKinney, TX 75071
 - (469) 200-1151
 - https://www.lumapediatrics.com/
-- Opening late 2026
+- Opening November 30, 2026 (announcement draft; not yet published)
 
 Planned office hours remain excluded from structured data until
 `SITE.schema.publishOpeningHours` is explicitly enabled after opening.
@@ -210,10 +248,34 @@ The visual design (colors, type, spacing, components, anti-patterns) is document
 - Display: Cormorant Garamond; Body: Plus Jakarta Sans
 - All buttons ≥ 44×44px, 3px focus rings, WCAG AA contrast minimum
 
+Use `.site-container` for every page/section shell, including header and footer:
+one 80rem maximum with shared 16px, 24px, and 32px responsive side gutters.
+Do not add independent max-width or horizontal-padding utilities to these shells.
+Reserve `.reading-width` (48rem) for long-form articles and legal pages only.
+Ordinary section copy, lists, and FAQs must use the full available width of their
+container or grid column, without independent text-width caps.
+
 ## Compliance notes
 
+The five scenario photos under `public/images/scenarios/` are user-supplied,
+AI-generated illustrations, not actual Luma patients, staff, or interiors.
+`ScenarioPhoto.astro` provides caption-free images, WebP/JPEG delivery,
+intrinsic dimensions, and a 384px display-width cap. The supplied 1800x1200
+files were upscaled from 764x508 crops; do not use them as full-width banners.
+Keep the real physician portrait on About only and the office gallery hidden
+until actual clinic photographs are provided.
+
+Clinical service lists lead with well-child, sick, newborn, vaccine, behavioral,
+and teen care, followed by physicals and telehealth. Meet & Greet is a separate
+nonclinical invitation; conditional hospital-rounding information stays within
+Newborn Care. Preserve both older Services deep-link anchors.
+
+The fever guide's `blog-fever-care` cover is a warm-toned crop of the existing
+`blog-fever.jpg` still-life asset, not a clinic or patient photograph. It includes
+4:3 JPEG/WebP and 16:9/1:1 JPEG variants for article and sharing metadata.
+
 - **No PHI on this site.** The email-updates form collects only optional name, email, explicit consent, source page, and timestamps.
-- **No patient intake before opening.** Scheduling, insurance verification, patient forms, and clinical messaging are not offered through the site.
+- **External medical booking only.** Phreesia handles appointment selection and approved intake; the static website, updates form, email, and SMS are not patient-intake or clinical-messaging channels.
 - **WCAG 2.1 AA** target; Lighthouse a11y score 100.
 - **State medical-advertising rules** vary; have the practice's attorney review before launch.
 

@@ -6,6 +6,8 @@ import WaitlistForm from '../../components/WaitlistForm.astro';
 import { Icon } from 'astro-icon/components';
 import { CITIES } from '../../data/cities.ts';
 import { featuredServices } from '../../data/services';
+import MeetAndGreetInvitation from '../../components/MeetAndGreetInvitation.astro';
+import { selfPayPricing } from '../../data/selfPay';
 import { GOOGLE_DIRECTIONS_URL, SITE, STRUCTURED_DATA_IDS } from '../../site.config';
 import { getMedicalScheduling } from '../../utils/serviceScheduling';
 
@@ -14,34 +16,62 @@ export function getStaticPaths() {
 }
 
 const { city } = Astro.props;
+const isMcKinney = city.slug === 'mckinney';
 const medicalScheduling = getMedicalScheduling(SITE);
+const physicianFacts = SITE.provider.quickFacts.filter(({ label }) =>
+  ['Board Certified', 'Education', 'North Texas Experience', 'Languages'].includes(label),
+);
 
 const title = city.slug === 'mckinney'
   ? 'Pediatrician in McKinney, TX'
   : `Pediatrician Near ${city.name}, TX`;
 const description = city.slug === 'mckinney'
-  ? "Explore Luma Pediatrics' future McKinney practice, planned services for newborns through teens, location details, and opening updates."
-  : `Pediatrician near ${city.name}, TX: Luma Pediatrics' future McKinney clinic is about ${city.distanceMi} miles away. Explore planned services, travel details, and updates.`;
+  ? `Board-certified pediatric care at ${SITE.address.street} in McKinney, TX. ${SITE.status}. Explore visits, insurance, self-pay, and booking.`
+  : `Pediatrician near ${city.name}, TX: Luma Pediatrics' McKinney clinic is about ${city.distanceMi} miles away. ${SITE.status}. Book online and plan your visit.`;
 const pageUrl = `${SITE.domain}/pediatrician/${city.slug}/`;
 const directionsUrl =
-  `${GOOGLE_DIRECTIONS_URL}&origin=${encodeURIComponent(`${city.name}, TX`)}`;
+  isMcKinney ? GOOGLE_DIRECTIONS_URL : `${GOOGLE_DIRECTIONS_URL}&origin=${encodeURIComponent(`${city.name}, TX`)}`;
 const locationAnswer = city.slug === 'mckinney'
   ? `${SITE.name} will have one clinic at ${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}.`
   : `${SITE.name} will have one clinic in McKinney, not a separate ${city.name} office. Use the travel details above to plan a visit to that location.`;
 const faqItems = [
   {
-    question: `Where is Luma Pediatrics relative to ${city.name}?`,
+    question: isMcKinney ? 'Where is Luma Pediatrics in McKinney?' : `Where is Luma Pediatrics relative to ${city.name}?`,
     answer: locationAnswer,
   },
   {
     question: 'How will I transfer records from another practice?',
-    answer: 'When registration is available, Luma will share instructions for transferring records. For now, review the New Patients guide to see what to prepare. Do not send medical records through website signup, email, or text.',
+    answer: 'Review the New Patients checklist, and call or text with general questions about transferring records. Use only the practice-approved intake process for records; do not send them through website signup, email, or text.',
   },
+  ...(isMcKinney ? [
+    {
+      question: 'What ages and visit types will the McKinney office see?',
+      answer: 'Planned care includes newborn visits, well-child checkups, sick visits, vaccinations, behavioral and developmental care, physicals, and adolescent health. Some needs may require a separate evaluation, follow-up, or referral.',
+    },
+    {
+      question: 'Which appointments can I book online?',
+      answer: medicalScheduling.appointments.enabled
+        ? `Phreesia supports newborn, behavioral, sick, and well-child visits from ${SITE.openingWindow} onward. For sports physicals, telehealth, or the planned nonclinical Meet & Greet, call or text about arrangements. Online booking does not provide urgent medical advice.`
+        : 'Check the Newborn Care and Well-Child Visits pages for currently available booking options. Call or text with general questions about other visit types.',
+    },
+    {
+      question: 'Does Luma accept insurance or offer self-pay visits?',
+      answer: `Review the accepted commercial insurance list and verify your specific plan before your visit. For self-pay families, patient visits (sick or well-child) are ${selfPayPricing.officeVisit}. ${selfPayPricing.additionalCharges} Call or text for an estimate before your visit.`,
+    },
+    {
+      question: 'What if my child is sick before Luma opens?',
+      answer: `Clinical care begins ${SITE.openingWindow}. Same-day sick visits are planned after opening when capacity allows. For care now, contact your child’s current healthcare provider; do not wait for our opening or a future appointment. For emergencies, call 911.`,
+    },
+    {
+      question: 'Can I call or text the McKinney office?',
+      answer: `Call or text ${SITE.contact.phone} for general questions, insurance verification, or a self-pay estimate. ${SITE.contact.textingNote}`,
+    },
+  ] : []),
   {
     question: 'Is Luma Pediatrics open and scheduling appointments?',
     answer: medicalScheduling.enabled
-      ? `${SITE.status}. The practice is not currently open or providing clinical care. Online scheduling is available for selected medical visits through the New Patients guide.`
-      : `${SITE.status}. ${SITE.schedulingNotice} The practice is not currently open or providing clinical care.`,
+      ? `${SITE.status}. Book available medical appointments online through Phreesia; clinical care begins on opening day. Review the New Patients guide for insurance, fees, and preparation.`
+      : `${SITE.status}. The practice is not currently open, accepting patients, or scheduling appointments.`,
   },
 ];
 const serviceSchema = {
@@ -88,37 +118,49 @@ const faqSchema = {
 
   <section class="page-hero py-12 md:py-16 overflow-hidden">
     <PageDecor />
-    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+    <div class="site-container relative z-10 text-center fade-up">
       <span class="eyebrow">
-        Future service area · {city.name}, TX
+        Service area · {city.name}, TX
       </span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
         {city.slug === 'mckinney'
           ? 'Pediatrician in McKinney'
-          : `A future pediatric option for ${city.name} families`}
+          : `Pediatric care for ${city.name} families`}
       </h1>
-      <p class="mt-6 text-lg md:text-xl text-[var(--color-foreground)]/80 max-w-2xl mx-auto">
+      <p class="mt-6 text-lg md:text-xl text-[var(--color-foreground)]/80 mx-auto">
         {city.intro}
       </p>
       <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <Button href="#practice-updates" variant="primary">
-          Get opening updates
+        <Button href={medicalScheduling.appointments.href} variant="primary">
+          {medicalScheduling.appointments.label}
         </Button>
-        <Button href="/about/" variant="secondary">About Luma</Button>
+        <Button href="/new-patients/" variant="secondary">First-visit guide</Button>
       </div>
     </div>
   </section>
 
   <section class="py-12 md:py-16 reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={5} />
-    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.85fr)] lg:items-start">
+    <div class="site-container relative z-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.85fr)] lg:items-start">
       <div>
         <h2 class="text-2xl md:text-3xl font-display text-[var(--color-foreground)] mb-4">
-          Before choosing Luma
+          {isMcKinney && SITE.showProviderProfile ? `Meet ${SITE.provider.shortName}` : 'Before choosing Luma'}
         </h2>
         <p class="text-[var(--color-foreground)]/80 leading-relaxed">
-          Get to know our pediatrician and explore our planned care. Review accepted commercial insurance and self-pay pricing, then call or text to verify your specific coverage or request an estimate.
+          {isMcKinney && SITE.showProviderProfile
+            ? `${SITE.provider.name} is the board-certified pediatrician and founder of Luma Pediatrics. Our independent McKinney practice is planned around getting to know your child, making time for questions, and explaining the next steps in care.`
+            : 'Get to know our pediatrician and explore our planned care. Review accepted commercial insurance and self-pay pricing, then call or text to verify your specific coverage or request an estimate.'}
         </p>
+        {isMcKinney && SITE.showProviderProfile && (
+          <dl class="mt-6 grid gap-5 sm:grid-cols-2">
+            {physicianFacts.map(({ label, value }) => (
+              <div>
+                <dt class="text-sm font-semibold text-[var(--color-primary)]">{label}</dt>
+                <dd class="mt-1 text-sm text-[var(--color-foreground)]/80 leading-relaxed">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
         <div class="mt-5 flex flex-wrap gap-x-6 gap-y-2">
           <a href="/about/" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">About our pediatrician</a>
           <a href="/new-patients/#insurance" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">Accepted insurance</a>
@@ -128,29 +170,31 @@ const faqSchema = {
 
       <aside class="rounded-[var(--radius-card)] bg-[var(--color-card)] border border-[var(--color-border-soft)] p-6 shadow-[var(--shadow-soft)]">
         <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--color-sage-hover)]">
-          Plan a future visit
+          Plan your visit
         </p>
         <h2 class="mt-2 text-2xl font-display text-[var(--color-foreground)]">
           {city.slug === 'mckinney' ? 'Located in McKinney' : `From ${city.name} to McKinney`}
         </h2>
         <p class="mt-3 text-sm text-[var(--color-foreground)]/75 leading-relaxed">
           {city.slug === 'mckinney'
-            ? 'Find our future McKinney office just off US-75. Travel time varies by neighborhood and traffic.'
+            ? 'Find our McKinney office just off US-75. Travel time varies by neighborhood and traffic.'
             : `One McKinney clinic, serving families from nearby communities. Travel estimates below are from central ${city.name}; your starting point and traffic will affect the trip.`}
         </p>
         <dl id="travel-details" class="mt-5 grid gap-3 text-sm">
-          <div class="flex items-start justify-between gap-4">
-            <dt class="font-semibold text-[var(--color-foreground)]">Distance</dt>
-            <dd class="text-right text-[var(--color-foreground)]/75">
-              {city.distanceMi === 0 ? 'In McKinney' : `About ${city.distanceMi} miles`}
-            </dd>
-          </div>
-          <div class="flex items-start justify-between gap-4">
-            <dt class="font-semibold text-[var(--color-foreground)]">{city.slug === 'mckinney' ? 'Access' : 'Estimated drive'}</dt>
-            <dd class="text-right text-[var(--color-foreground)]/75">{city.driveMinutes}</dd>
-          </div>
+          {!isMcKinney && (
+            <>
+              <div class="flex items-start justify-between gap-4">
+                <dt class="font-semibold text-[var(--color-foreground)]">Distance</dt>
+                <dd class="text-right text-[var(--color-foreground)]/75">About {city.distanceMi} miles</dd>
+              </div>
+              <div class="flex items-start justify-between gap-4">
+                <dt class="font-semibold text-[var(--color-foreground)]">Estimated drive</dt>
+                <dd class="text-right text-[var(--color-foreground)]/75">{city.driveMinutes}</dd>
+              </div>
+            </>
+          )}
           <div>
-            <dt class="font-semibold text-[var(--color-foreground)]">Future clinic</dt>
+            <dt class="font-semibold text-[var(--color-foreground)]">McKinney office address</dt>
             <dd class="mt-1 text-[var(--color-foreground)]/75">
               <address class="not-italic">
                 {SITE.address.street}<br />
@@ -158,17 +202,28 @@ const faqSchema = {
               </address>
             </dd>
           </div>
+          {isMcKinney && (
+            <div>
+              <dt class="font-semibold text-[var(--color-foreground)]">Clinical care begins</dt>
+              <dd class="mt-1 text-[var(--color-foreground)]/75">{SITE.openingWindow}</dd>
+            </div>
+          )}
         </dl>
         <a
           href={directionsUrl}
           target="_blank"
           rel="noopener noreferrer"
           class="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[var(--color-primary)] px-5 text-sm font-semibold text-white no-underline hover:bg-[var(--color-primary-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2"
-          aria-label={`Get directions from ${city.name} to ${SITE.name}`}
+          aria-label={isMcKinney ? `Get directions to ${SITE.name} in McKinney` : `Get directions from ${city.name} to ${SITE.name}`}
         >
           <Icon name="lucide:map-pin" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
           Get directions
         </a>
+        {!isMcKinney && (
+          <a href="/pediatrician/mckinney/" class="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-[var(--color-primary)] underline underline-offset-4">
+            About our McKinney office
+          </a>
+        )}
         <a href="/contact/#planned-hours" class="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-[var(--color-primary)] underline underline-offset-4">
           See planned hours, including Saturdays
         </a>
@@ -176,10 +231,36 @@ const faqSchema = {
     </div>
   </section>
 
+  {isMcKinney && (
+    <section id="first-mckinney-visit" class="py-12 md:py-16">
+      <div class="site-container">
+        <h2 class="text-2xl md:text-3xl tracking-tight">Planning your first visit in McKinney</h2>
+        <div class="mt-7 grid gap-5 lg:grid-cols-3">
+          <div class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-6 ring-1 ring-[var(--color-border-soft)]">
+            <h3 class="text-xl font-semibold">Insurance and benefits</h3>
+            <p class="mt-3 text-[var(--color-foreground)]/80 leading-relaxed">Review accepted commercial insurers and networks, then call or text to verify your specific plan, benefits, and expected costs before your visit.</p>
+            <a href="/new-patients/#insurance" class="mt-4 inline-flex min-h-11 items-center font-semibold">See accepted insurance →</a>
+          </div>
+          <div class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-6 ring-1 ring-[var(--color-border-soft)]">
+            <h3 class="text-xl font-semibold">Self-pay options</h3>
+            <p class="mt-3 text-[var(--color-foreground)]/80 leading-relaxed">Patient visits (sick or well-child) are {selfPayPricing.officeVisit} for families paying without insurance. {selfPayPricing.additionalCharges} Call or text for an estimate before your visit.</p>
+            <a href="/new-patients/#self-pay" class="mt-4 inline-flex min-h-11 items-center font-semibold">View fees and separate costs →</a>
+          </div>
+          <div class="rounded-[var(--radius-card)] bg-[var(--color-card)] p-6 ring-1 ring-[var(--color-border-soft)]">
+            <h3 class="text-xl font-semibold">Records and preparation</h3>
+            <p class="mt-3 text-[var(--color-foreground)]/80 leading-relaxed">Bring a parent or guardian photo ID, insurance information, available immunization records, and your questions. Ask about the approved records-transfer process; do not send medical information by text or email.</p>
+            <a href="/new-patients/#what-to-bring" class="mt-4 inline-flex min-h-11 items-center font-semibold">Check what to bring →</a>
+          </div>
+        </div>
+        <p class="mt-5 text-sm text-[var(--color-muted-foreground)]">{SITE.contact.textingNote}</p>
+      </div>
+    </section>
+  )}
+
   <section class="py-12 md:py-16 bg-[var(--color-muted)]">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="site-container">
       <h2 class="text-2xl md:text-3xl font-display text-[var(--color-foreground)] mb-8 text-center">
-        Care we'll offer {city.name} families
+        Planned services for {city.name} families
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {featuredServices.slice(0, 6).map((svc) => (
@@ -195,8 +276,12 @@ const faqSchema = {
     </div>
   </section>
 
+  <div class="site-container">
+    <MeetAndGreetInvitation />
+  </div>
+
   <section class="py-12 md:py-16">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="site-container">
       <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--color-sage-hover)]">
         Planning ahead
       </p>
@@ -219,7 +304,17 @@ const faqSchema = {
   </section>
 
   <section class="py-16 md:py-20">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="site-container">
+      {isMcKinney && (
+        <aside class="mb-12">
+          <h2 class="text-2xl md:text-3xl tracking-tight">Parent guides from Luma</h2>
+          <ul class="mt-5 grid gap-3 sm:grid-cols-3">
+            <li><a href="/blog/newborn-first-week/" class="inline-flex min-h-11 items-center font-semibold">Your newborn’s first week →</a></li>
+            <li><a href="/blog/vaccine-schedule-explained/" class="inline-flex min-h-11 items-center font-semibold">Understanding childhood vaccines →</a></li>
+            <li><a href="/blog/fever-when-to-call/" class="inline-flex min-h-11 items-center font-semibold">Fever: when to call your pediatrician →</a></li>
+          </ul>
+        </aside>
+      )}
       <WaitlistForm variant="hero" />
     </div>
   </section>

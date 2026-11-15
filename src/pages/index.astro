@@ -4,10 +4,13 @@ import Button from '../components/Button.astro';
 import StarDivider from '../components/StarDivider.astro';
 import SparkleField from '../components/SparkleField.astro';
 import WaitlistForm from '../components/WaitlistForm.astro';
+import MeetAndGreetInvitation from '../components/MeetAndGreetInvitation.astro';
 import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 import { featuredServices as services } from '../data/services';
 import Picture from '../components/Picture.astro';
+import { getMedicalScheduling } from '../utils/serviceScheduling';
+const { appointments } = getMedicalScheduling(SITE);
 const familyBenefits = [
   {
     title: 'Your concerns are heard.',
@@ -25,20 +28,21 @@ const familyBenefits = [
 
 const serviceGroups = [
   {
-    title: 'Getting started',
-    description: 'Ways to meet Luma and support your baby’s earliest days.',
+    title: 'Everyday pediatric care',
+    description: 'Routine checkups, sick visits, and care for your baby’s earliest days.',
     serviceTitles: [
-      'Free Meet & Greet',
+      'Well-Child Visits',
+      'Same-Day Sick Visits',
       'Newborn Care',
     ],
   },
   {
-    title: 'Everyday pediatric care',
-    description: 'Preventive care, sick visits, and recommended protection as children grow.',
+    title: 'Care as your child grows',
+    description: 'Vaccines, behavioral support, and care for tweens and teens.',
     serviceTitles: [
-      'Well-Child Visits',
-      'Same-Day Sick Visits',
       'Vaccinations',
+      'ADHD, Behavior & Developmental Care',
+      'Teen & Adolescent Health',
     ],
   },
 ].map((group) => ({
@@ -70,9 +74,9 @@ const trustPhotos = [
 <BaseLayout
   title="Luma Pediatrics | Pediatric Primary Care in McKinney, TX"
   path="/"
-  description={`Board-certified pediatric care planned for newborns through teens in McKinney, TX. ${SITE.status}, with well visits, sick care, vaccines, and more.`}
+  description={`Board-certified pediatric care for newborns through teens in McKinney, TX. ${SITE.status}. Book newborn, well-child, and sick visits online through Phreesia.`}
   socialTitle="Luma Pediatrics | McKinney, TX"
-  socialDescription={`Helping kids thrive and parents feel confident. Thoughtful pediatric care planned for McKinney, Texas. ${SITE.status}.`}
+  socialDescription={`Helping kids thrive and parents feel confident. Thoughtful pediatric care in McKinney, Texas. ${SITE.status}. Book an appointment online.`}
   ogImageAlt={`Luma Pediatrics logo. ${SITE.status}.`}
   preloadImage="/images/luma-hero-banner.webp"
 >
@@ -89,7 +93,7 @@ const trustPhotos = [
     </div>
     <SparkleField count={12} class="z-0" />
 
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 flex-1 flex items-center">
+    <div class="site-container relative z-10 py-8 md:py-10 flex-1 flex items-center">
       <div class="fade-up grid gap-8 lg:grid-cols-2 items-center w-full">
         <div class="text-center lg:text-left">
           <h1 class="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.08]" style="font-family: var(--font-display);">
@@ -99,16 +103,16 @@ const trustPhotos = [
           <div class="mt-3 lg:max-w-xs">
             <StarDivider span="4rem" />
           </div>
-          <p class="mt-3 text-sm md:text-base text-[var(--color-foreground)]/80 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-            From newborn checkups and well-child visits to sick care and the teen years, Luma Pediatrics is preparing to welcome McKinney families with thoughtful care, clear answers, and a personal approach to your child's health.
+          <p class="mt-3 text-sm md:text-base text-[var(--color-foreground)]/80 mx-auto lg:mx-0 leading-relaxed">
+            From newborn checkups and well-child visits to sick care and the teen years, Luma Pediatrics opens {SITE.openingWindow} in McKinney with thoughtful care, clear answers, and a personal approach to your child's health.
           </p>
           <p class="mt-3 text-sm md:text-base font-semibold text-[var(--color-primary)]">
             Insurance accepted. No membership fee.
           </p>
 
           <div class="mt-6 flex flex-wrap justify-center lg:justify-start gap-3">
-            <Button href="/#practice-updates" variant="primary">
-              Get Opening Updates
+            <Button href={appointments.href} variant="primary">
+              {appointments.label}
               <span class="btn-icon-circle" aria-hidden="true">
                 <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="1.8" />
               </span>
@@ -131,7 +135,7 @@ const trustPhotos = [
     </div>
 
     <div class="hero-credibility-ribbon">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 grid gap-6 md:grid-cols-3" data-family-benefits>
+      <div class="site-container py-7 grid gap-6 md:grid-cols-3" data-family-benefits>
         {familyBenefits.map(({ title, body }) => (
           <div>
             <h2 class="text-xl font-semibold leading-snug text-[var(--color-sage-foreground)]">{title}</h2>
@@ -146,7 +150,7 @@ const trustPhotos = [
     class="home-section-nav reveal"
     data-home-section="credibility"
   >
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="site-container">
       <nav
         class="flex flex-wrap justify-center gap-2"
         aria-label="Explore homepage sections"
@@ -174,8 +178,8 @@ const trustPhotos = [
     data-home-section="services"
   >
     <SparkleField count={6} />
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mx-auto text-center mb-14">
+    <div class="site-container relative">
+      <div class="mx-auto text-center mb-14">
         <span class="eyebrow">Planned care</span>
         <h2 class="mt-5 text-3xl md:text-5xl tracking-tight">Checkups, sick care, and growing up.</h2>
         <p class="mt-5 tagline-italic-sage text-lg md:text-xl">
@@ -186,7 +190,7 @@ const trustPhotos = [
       <div class="space-y-14">
         {serviceGroups.map((group) => (
           <section>
-            <div class="mb-6 max-w-2xl">
+            <div class="mb-6">
               <h3 class="text-2xl md:text-3xl tracking-tight">{group.title}</h3>
               <p class="mt-2 text-[var(--color-foreground)]/70 leading-relaxed">
                 {group.description}
@@ -231,6 +235,7 @@ const trustPhotos = [
           </span>
         </Button>
       </div>
+      <MeetAndGreetInvitation />
     </div>
   </section>
 
@@ -239,13 +244,13 @@ const trustPhotos = [
     class="trust-gallery scroll-mt-32 py-20 md:py-28 reveal"
     data-home-section="why-luma"
   >
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-3xl mx-auto text-center mb-12">
+    <div class="site-container">
+      <div class="mx-auto text-center mb-12">
         <span class="eyebrow eyebrow-sun">Why Luma</span>
         <h2 class="mt-5 text-4xl md:text-6xl tracking-tight">
           Why consider Luma?
         </h2>
-        <p class="mt-6 text-lg text-[var(--color-foreground)]/78 leading-relaxed max-w-2xl mx-auto">
+        <p class="mt-6 text-lg text-[var(--color-foreground)]/78 leading-relaxed mx-auto">
           Get to know our approach to children’s health and the questions families bring to each stage.
         </p>
       </div>
@@ -282,8 +287,8 @@ const trustPhotos = [
     class="scroll-mt-32 py-20 md:py-24 bg-[var(--color-muted)] reveal"
     data-home-section="practical"
   >
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mx-auto text-center mb-12">
+    <div class="site-container">
+      <div class="mx-auto text-center mb-12">
         <span class="eyebrow eyebrow-sun">Plan ahead</span>
         <h2 class="mt-5 text-3xl md:text-4xl tracking-tight">
           Before your first visit
@@ -315,7 +320,7 @@ const trustPhotos = [
             <div>
               <span class="eyebrow eyebrow-sun">Visit us</span>
               <h3 class="mt-3 text-2xl md:text-3xl tracking-tight">
-                Our future McKinney home
+                Our McKinney home
               </h3>
               <address class="mt-3 not-italic text-[var(--color-foreground)]/85 leading-relaxed">
                 {SITE.address.street}<br />
@@ -341,14 +346,14 @@ const trustPhotos = [
 
       <p class="mt-8 text-center">
         <a href="/new-patients/" class="font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
-          Planning a future first visit? View the new-patient guide →
+          Preparing for your first visit? View the new-patient guide →
         </a>
       </p>
     </div>
   </section>
 
   <section class="py-16 md:py-20 reveal" data-home-section="updates">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="site-container">
       <WaitlistForm variant="hero" />
     </div>
   </section>
@@ -364,14 +369,14 @@ const trustPhotos = [
     </div>
     <SparkleField count={10} />
 
-    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
+    <div class="site-container relative z-10 py-20 md:py-28 text-center">
       <div class="campaign-card px-5 py-12 md:p-14">
         <span class="eyebrow eyebrow-sun">Have a question?</span>
         <h2 class="mt-5 text-3xl md:text-5xl tracking-tight" style="font-family: var(--font-display);">
           Still have a question?
         </h2>
         <StarDivider class="mt-7" span="3rem" />
-        <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/78 max-w-2xl mx-auto leading-relaxed">
+        <p class="mt-7 text-base md:text-lg text-[var(--color-foreground)]/78 mx-auto leading-relaxed">
           Find answers about insurance, planned hours, and first visits. Prefer to ask us? Call or text with general questions.
         </p>
         <div class="mt-9 flex flex-wrap justify-center gap-3">

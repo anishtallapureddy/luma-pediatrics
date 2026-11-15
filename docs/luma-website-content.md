@@ -1,6 +1,6 @@
 Luma Pediatrics
 Where your child's health shines.
-Opening late 2026 in McKinney, Texas.
+Opening November 30, 2026 in McKinney, Texas.
 
 Build a modern pediatric clinic website with the following pages:
 Home, About, Services, Resources, New Patients, FAQ, and Contact.
@@ -9,10 +9,10 @@ Tone:
 Warm, modern, trustworthy, family-centered, physician-led.
 
 Homepage:
-Luma Pediatrics is a future physician-led practice planned for late 2026. Describe planned care for newborns, children, and teens while making clear that the practice is not open, accepting patients, or scheduling appointments.
+Luma Pediatrics is a physician-led practice opening November 30, 2026. Advance booking through the approved Phreesia portal is available for newborn, behavioral, sick, and well-child checks from that date. Clinical care begins on opening day; do not describe the clinic as already open. Keep call and asynchronous text options for general questions, insurance verification, self-pay estimates, and inquiries about other visit types. Sports physicals, telehealth, and the nonclinical Meet & Greet do not have confirmed online booking options.
 
 Insurance:
-Use the practice-approved commercial insurance list in src/data/insurance.ts. Participation varies by specific plan and network; direct families to the office to verify coverage before an appointment. Carrier participation does not guarantee coverage for every product or service. Keep pre-opening and scheduling disclosures unchanged.
+Use the practice-approved commercial insurance list in src/data/insurance.ts. Participation varies by specific plan and network; direct families to call or text the office to verify coverage before an appointment. Carrier participation does not guarantee coverage for every product or service. Retain the distinction between advance booking and clinical care starting on opening day.
 
 Services:
 Newborn care, well-child visits, sick visits, vaccinations, school/sports/camp physicals, development and behavior guidance, teen health.

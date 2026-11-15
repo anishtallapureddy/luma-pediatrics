@@ -9,7 +9,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
 
 const description =
-  'Physician-reviewed pediatric information and parent guides from Luma Pediatrics in McKinney, Texas.';
+  'Pediatric information and parent guides from Luma Pediatrics in McKinney, Texas.';
 const intro = 'Start with our published guides below.';
 ---
 <BaseLayout
@@ -24,24 +24,25 @@ const intro = 'Start with our published guides below.';
 >
   <section class="page-hero py-12 md:py-16 overflow-hidden">
     <PageDecor />
-    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+    <div class="site-container relative z-10 text-center fade-up">
       <span class="eyebrow">Blog &amp; Parent Guides</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
         Practical pediatric information
       </h1>
-      <p class="mt-6 max-w-2xl mx-auto text-lg text-[var(--color-muted-foreground)] leading-relaxed">
+      <p class="mt-6 mx-auto text-lg text-[var(--color-muted-foreground)] leading-relaxed">
         {intro}
       </p>
     </div>
   </section>
 
-  <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+  <section class="site-container pb-24">
     {posts.length === 0 ? (
       <p class="text-[var(--color-muted-foreground)]">Posts coming soon.</p>
     ) : (
       <ul class:list={[
         'grid gap-8',
         posts.length > 1 ? 'sm:grid-cols-2' : 'max-w-xl mx-auto',
+        posts.length > 2 && 'lg:grid-cols-3',
       ]}>
         {posts.map((post) => {
           const date = post.data.publishDate.toLocaleDateString('en-US', {
@@ -87,7 +88,7 @@ const intro = 'Start with our published guides below.';
       <a href="/rss.xml" class="text-[var(--color-primary)] underline underline-offset-4">RSS feed</a>
     </p>
 
-    <p class="mt-12 text-xs text-[var(--color-muted-foreground)] text-center max-w-2xl mx-auto leading-relaxed">
+    <p class="mt-12 text-xs text-[var(--color-muted-foreground)] text-center mx-auto leading-relaxed">
       Articles on this site are for general educational purposes only and are
       not a substitute for personalized advice from your child's pediatrician.
       For urgent concerns, contact your child's current healthcare provider or go to the nearest emergency room.

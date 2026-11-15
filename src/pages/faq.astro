@@ -22,21 +22,23 @@ const faqs: FaqItem[] = [
   {
     id: 'opening',
     q: 'When are you opening?',
-    a: `${SITE.status}. ${SITE.schedulingNotice} The practice is not open yet.`,
-    link: { href: '/#practice-updates', label: 'Get opening updates' },
+    a: `${SITE.status}. Clinical care begins on opening day. Before then, contact your existing healthcare provider for medical concerns.`,
+    link: { href: '/new-patients/', label: 'Prepare for your first visit' },
   },
   {
     id: 'booking',
     q: "How do I schedule my child's first checkup?",
-    a: medicalScheduling.enabled
-      ? 'Online booking is available for selected medical visit types. The practice is not open yet. The New Patients guide links to approved scheduling options; confirm appointment dates, insurance, and costs before booking.'
-      : `${SITE.schedulingNotice} The New Patients guide explains how to prepare for a first checkup.`,
-    link: { href: '/new-patients/', label: 'Read the first-visit guide' },
+    a: medicalScheduling.appointments.enabled
+      ? `Book newborn, behavioral, sick, and well-child checks through Phreesia for ${SITE.openingWindow} or later. Confirm your appointment date, visit type, insurance, and costs before booking. Call or text with general questions about other visit types.`
+      : medicalScheduling.enabled
+        ? 'Online booking is available for selected medical visit types through the New Patients guide. Clinical care begins on opening day; confirm your appointment date, insurance, and costs before booking.'
+        : 'Appointments are not available yet. Scheduling details will be shared closer to opening. The New Patients guide explains how to prepare for a first checkup.',
+    link: medicalScheduling.appointments.enabled ? medicalScheduling.appointments : { href: '/new-patients/', label: 'Read the first-visit guide' },
   },
   {
     id: 'choosing-luma',
     q: 'How do I choose Luma for my family?',
-    a: 'Start with the physician introduction on our About page, then review planned services, accepted insurance, self-pay pricing, and the first-visit guide. If you would like to meet the pediatrician before choosing care, a Free Meet & Greet is planned after opening.',
+    a: 'Start with the physician introduction on our About page, then review services, accepted insurance, self-pay pricing, and the first-visit guide. If you would like to meet the pediatrician before choosing care, ask about our Free Meet & Greet, planned after opening.',
     link: { href: '/new-patients/', label: 'Plan your first visit' },
   },
   {
@@ -65,7 +67,7 @@ const faqs: FaqItem[] = [
   {
     id: 'self-pay',
     q: 'Will Luma see self-pay patients?',
-    a: `Self-pay care is planned after opening. A sick or well-child office visit is ${selfPayPricing.officeVisit}, and a standalone sports physical is ${selfPayPricing.sportsPhysical}. These are visit fees only. ${selfPayPricing.additionalCharges} Call or text ${SITE.contact.phone} for an estimate before your visit. ${medicalScheduling.enabled ? 'Booking is available for selected medical visits; confirm fees before booking.' : SITE.schedulingNotice}`,
+    a: `Self-pay care is planned after opening. A sick or well-child office visit is ${selfPayPricing.officeVisit}, and a standalone sports physical is ${selfPayPricing.sportsPhysical}. These are visit fees only. ${selfPayPricing.additionalCharges} Call or text ${SITE.contact.phone} for an estimate before your visit. ${medicalScheduling.enabled ? 'Booking is available for selected medical visits; confirm fees before booking.' : 'Scheduling details will be shared closer to opening.'}`,
     link: { href: '/new-patients/#self-pay', label: 'See self-pay pricing' },
   },
   {
@@ -77,19 +79,19 @@ const faqs: FaqItem[] = [
   {
     id: 'same-day-visits',
     q: 'Do you offer same-day sick visits?',
-    a: 'Same-day sick visits are planned after opening, when capacity allows, for fevers, infections, and minor injuries. Scheduling details are not available yet.',
-    link: { href: '/new-patients/#first-visit', label: 'Read the first-visit guide' },
+    a: `Same-day sick visits begin after opening, when capacity allows, for fevers, infections, and minor injuries. ${medicalScheduling.appointments.enabled ? 'Check Phreesia for available appointments. Online booking is not urgent medical advice; do not wait for an appointment if your child needs care sooner.' : 'Scheduling details will be shared closer to opening.'}`,
+    link: medicalScheduling.appointments.enabled ? { href: medicalScheduling.appointments.href, label: 'Book a sick visit' } : { href: '/new-patients/#first-visit', label: 'Read the first-visit guide' },
   },
   {
     id: 'telehealth',
     q: 'Do you offer telehealth / virtual visits?',
     a: 'After opening, we plan to offer secure telehealth follow-ups for appropriate established-patient needs when an in-person exam is not required.',
-    link: { href: '/contact/', label: 'Call or text with general questions about planned visits' },
+    link: { href: '/contact/', label: 'Call or text about telehealth eligibility and arrangements' },
   },
   ...(saturdayHours ? [{
     id: 'saturday-hours',
     q: 'Is Luma open on Saturdays?',
-    a: `Not yet. Saturday hours are planned for ${saturdayHours.time} after opening. ${medicalScheduling.enabled ? 'The practice is not open yet.' : 'Appointments are not available yet.'}`,
+    a: `Saturday hours are planned for ${saturdayHours.time} after Luma opens ${SITE.openingWindow}.`,
     link: { href: '/contact/#planned-hours', label: 'View planned office hours' },
   }] : []),
   {
@@ -113,12 +115,12 @@ const faqs: FaqItem[] = [
     id: 'location',
     q: 'Where will the office be?',
     a: `${SITE.address.street}, ${SITE.address.city}, ${SITE.address.region} ${SITE.address.postalCode}, just off US-75. The practice is not currently open.`,
-    link: { href: GOOGLE_DIRECTIONS_URL, label: 'Get directions to the future office' },
+    link: { href: GOOGLE_DIRECTIONS_URL, label: 'Get directions to our McKinney office' },
   },
   {
     id: 'service-area',
     q: 'Which communities will Luma serve?',
-    a: 'The future practice is intended for families in McKinney and nearby communities, including Allen, Frisco, Prosper, Melissa, Princeton, Anna, and Fairview. Luma will have one clinic in McKinney.',
+    a: 'Luma welcomes families from McKinney and nearby communities, including Allen, Frisco, Prosper, Melissa, Princeton, Anna, and Fairview, starting on opening day. There is one clinic in McKinney.',
     link: { href: '/pediatrician/', label: 'Explore the McKinney location and service area' },
   },
   {
@@ -157,7 +159,7 @@ const faqJsonLd = {
   <script is:inline type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
   <section class="page-hero py-12 md:py-16 overflow-hidden">
     <PageDecor />
-    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+    <div class="site-container relative z-10 text-center fade-up">
       <span class="eyebrow">FAQ</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
         Questions before choosing Luma
@@ -173,7 +175,7 @@ const faqJsonLd = {
 
   <section class="pb-20 md:pb-28 reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={8} />
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="site-container relative z-10">
       <div id="after-hours" class="mb-10 scroll-mt-32">
         <AfterHoursCard />
       </div>

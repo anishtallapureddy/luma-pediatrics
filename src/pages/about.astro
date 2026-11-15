@@ -7,6 +7,8 @@ import OfficeGallery from '../components/OfficeGallery.astro';
 import Picture from '../components/Picture.astro';
 import { Icon } from 'astro-icon/components';
 import { SITE } from '../site.config';
+import { getMedicalScheduling } from '../utils/serviceScheduling';
+const { appointments } = getMedicalScheduling(SITE);
 
 const principles = [
   {
@@ -48,7 +50,7 @@ const careScope = SITE.provider.quickFacts.find(
 <BaseLayout
   title="About Luma Pediatrics | McKinney Pediatrician"
   path="/about"
-  description={`${SITE.name} is a board-certified, physician-led pediatric practice in McKinney, TX. ${SITE.status}, with planned care for newborns through age 21.`}
+  description={`${SITE.name} is an independent McKinney practice led by a board-certified pediatrician. ${SITE.status}, with planned care for newborns through age 21.`}
   breadcrumbs={[
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
@@ -56,7 +58,7 @@ const careScope = SITE.provider.quickFacts.find(
 >
   <section class="page-hero py-12 md:py-16 overflow-hidden">
     <PageDecor />
-    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+    <div class="site-container relative z-10 text-center fade-up">
       <span class="eyebrow">About</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
         Care that takes the time to know your family.
@@ -64,7 +66,7 @@ const careScope = SITE.provider.quickFacts.find(
       <p class="mt-6 tagline-italic-sage text-lg md:text-xl">
         {SITE.tagline}
       </p>
-      <p class="mt-7 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-2xl mx-auto">
+      <p class="mt-7 text-lg text-[var(--color-foreground)]/80 leading-relaxed mx-auto">
         Luma Pediatrics is an independent, physician-led practice in {SITE.locationShort},
         designed for thoughtful pediatric care from the newborn years through young adulthood.
       </p>
@@ -74,7 +76,7 @@ const careScope = SITE.provider.quickFacts.find(
   <!-- MEET THE PEDIATRICIAN -->
   <section class="provider-spotlight pt-6 pb-20 md:pt-10 md:pb-24 reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={6} />
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="site-container relative z-10">
       {SITE.showProviderProfile ? (
         <div class="provider-card p-6 md:p-10 lg:p-12">
           <!-- Intro: professional headshot + first-person welcome + personal note -->
@@ -150,13 +152,13 @@ const careScope = SITE.provider.quickFacts.find(
             <h2 class="mt-5 text-2xl md:text-3xl tracking-tight">
               Provider profile coming soon
             </h2>
-            <p class="mt-6 text-lg text-[var(--color-foreground)]/82 leading-relaxed max-w-2xl mx-auto">
+            <p class="mt-6 text-lg text-[var(--color-foreground)]/82 leading-relaxed mx-auto">
               Luma Pediatrics is led by a board-certified pediatrician who works closely
               with parents. Full provider profile, photo, and credentials
               will be shared on the site closer to opening day.
             </p>
 
-            <div class="mt-8 max-w-3xl mx-auto">
+            <div class="mt-8 mx-auto">
               <AffiliationsStrip />
             </div>
 
@@ -172,8 +174,8 @@ const careScope = SITE.provider.quickFacts.find(
   <!-- CARE PRINCIPLES -->
   <section class="py-16 md:py-20 bg-[var(--color-muted)] reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={8} />
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="max-w-3xl mx-auto text-center">
+    <div class="site-container relative z-10">
+      <div class="mx-auto text-center">
         <span class="eyebrow eyebrow-sun">Luma Pediatrics Core Values</span>
         <h2 class="mt-5 text-3xl md:text-4xl font-extrabold tracking-tight">
           Our promises to your family.
@@ -204,8 +206,8 @@ const careScope = SITE.provider.quickFacts.find(
   {SITE.showOfficeGallery && (
     <section class="py-16 md:py-20 reveal relative overflow-hidden">
       <PageDecor variant="minimal" sparkles={8} />
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center max-w-2xl mx-auto mb-10">
+      <div class="site-container relative z-10">
+        <div class="text-center mx-auto mb-10">
           <span class="eyebrow eyebrow-sun">Inside Luma</span>
           <h2 class="mt-5 text-3xl md:text-4xl tracking-tight">
             A bright, calm place for kids to come.
@@ -221,16 +223,16 @@ const careScope = SITE.provider.quickFacts.find(
 
   <section class="py-16 md:py-20 reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={5} />
-    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="site-container relative z-10 text-center">
       <span class="eyebrow">Questions about Luma?</span>
       <h2 class="mt-5 text-3xl md:text-4xl tracking-tight">
-        See the care we’re planning.
+        A new chapter for your family’s care.
       </h2>
-      <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
-        Explore our planned services, or call or text us with general questions before opening.
+      <p class="mx-auto mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
+        {SITE.status}. Explore our <a href="/services/">pediatric services</a>, or call or text us with general questions before your visit.
       </p>
       <div class="mt-7 flex flex-wrap justify-center gap-3">
-        <Button href="/services/" variant="primary">Explore pediatric care</Button>
+        <Button href={appointments.href} variant="primary">{appointments.label}</Button>
         <Button href="/contact/" variant="secondary">Call or text us</Button>
       </div>
     </div>

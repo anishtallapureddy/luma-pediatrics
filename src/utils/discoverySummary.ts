@@ -10,7 +10,7 @@ interface DiscoverySite {
   organizationNpi: string;
   domain: string;
   status: string;
-  schedulingNotice: string;
+  openingWindow: string;
   locationShort: string;
   showProviderProfile: boolean;
   provider: {
@@ -29,6 +29,7 @@ interface DiscoverySite {
   schema: { publishOpeningHours: boolean };
   hours: ReadonlyArray<{ day: string; time: string }>;
   areasServed: readonly string[];
+  appointmentScheduling: MedicalSchedulingConfig;
   newbornScheduling: MedicalSchedulingConfig;
   wellChildScheduling: MedicalSchedulingConfig;
 }
@@ -88,11 +89,14 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     '## Booking and care boundaries',
     '',
     scheduling.enabled
-      ? 'Medical booking is enabled only for the services identified below. Use their linked pages for the approved workflows.'
-      : `Medical appointment booking is not currently enabled. ${site.schedulingNotice}`,
-    `- **Newborn booking:** ${scheduling.newborn.enabled ? 'Enabled' : 'Not enabled'}. See [Newborn Care](${link('/newborn-care/')}).`,
-    `- **Well-child booking:** ${scheduling.wellChild.enabled ? 'Enabled' : 'Not enabled'}. See [Well-Child Visits](${link('/well-child-visits/')}).`,
-    `- **Meet & Greet:** A free introduction is planned after opening. It is not an examination, diagnosis or treatment visit and does not establish a physician-patient relationship. No Meet & Greet booking workflow is enabled; [ask about arrangements](${link('/contact/')}).`,
+      ? 'Online booking is available for the visit types listed below.'
+      : 'Online medical appointment booking is not available yet. Scheduling details will be shared closer to opening.',
+    ...(scheduling.appointments.enabled ? [
+      `- **Book an appointment:** [Phreesia](${scheduling.appointments.href}). The practice-approved shared portal supports newborn, behavioral, sick, and well-child checks from ${site.openingWindow} onward. Clinical care begins on opening day; confirm your appointment date, visit type, insurance, and costs. Call or text with general questions about other visit types.`,
+    ] : []),
+    `- **Newborn booking:** ${scheduling.newborn.enabled ? 'Available' : 'Not available yet'}. See [Newborn Care](${link('/newborn-care/')}).`,
+    `- **Well-child booking:** ${scheduling.wellChild.enabled ? 'Available' : 'Not available yet'}. See [Well-Child Visits](${link('/well-child-visits/')}).`,
+    `- **Meet & Greet:** A free introduction is planned after opening. It is not an examination, diagnosis or treatment visit and does not establish a physician-patient relationship. Meet & Greet appointments are not available yet; [ask about arrangements](${link('/contact/')}).`,
     '- **Current medical concerns:** Contact your child\'s current healthcare provider. For a medical emergency, call 911 or go to the nearest emergency room.',
     '- **Privacy:** Website inquiries are for general questions, not patient intake. Do not submit protected medical information.',
     '',
@@ -111,14 +115,17 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     '',
     '## Planned services',
     '',
-    ...services.map((service) =>
+    ...services.flatMap((service) => [
       `- [${service.title}](${link(service.detailHref ?? `/services/#${service.slug}`)}): ${service.full}`,
-    ),
+      ...(service.relatedCare ? [
+        `  - [${service.relatedCare.title}](${link(service.relatedCare.nextStep.href)}): ${service.relatedCare.full}`,
+      ] : []),
+    ]),
     '',
     '## Entity and location',
     '',
     `${site.name} is the public-facing practice name of ${site.legalName}.`,
-    `${site.name} has one future physical clinic in ${site.locationShort}. Service-area pages describe travel to that clinic and do not represent separate ${site.name} offices.`,
+    `${site.name} has one physical clinic in ${site.locationShort}, opening as described above. Service-area pages describe travel to that clinic and do not represent separate ${site.name} offices.`,
     `Nearby communities: ${site.areasServed.join(', ')}.`,
     '',
     '## Pages',

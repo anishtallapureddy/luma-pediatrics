@@ -2,7 +2,7 @@
 import ServicePageLayout from '../layouts/ServicePageLayout.astro';
 import ServiceProvider from '../components/ServiceProvider.astro';
 import ServiceFaq from '../components/ServiceFaq.astro';
-import Picture from '../components/Picture.astro';
+import ScenarioPhoto from '../components/ScenarioPhoto.astro';
 import Button from '../components/Button.astro';
 import { SITE } from '../site.config';
 
@@ -20,7 +20,7 @@ const faqs = [
 ---
 <ServicePageLayout
   title="Free Pediatrician Meet & Greet in McKinney, TX | Luma Pediatrics"
-  description={SITE.showProviderProfile ? 'Meet Dr. Praveena Tallapureddy (Dr. T), learn about Luma Pediatrics, and see if our McKinney practice is the right fit for your family.' : 'Meet our pediatrician, learn about Luma Pediatrics, and see if our McKinney practice is the right fit for your family.'}
+  description={`A free introduction to ${physician} in McKinney, planned after Luma opens ${SITE.openingWindow}. Call or text about arrangements; booking is not available yet.`}
   path="/meet-and-greet/"
   eyebrow="Free Meet & Greet"
   heading="Meet Your Pediatrician Before You Decide"
@@ -28,20 +28,15 @@ const faqs = [
   primary={primary}
 >
   <p slot="hero-note">Dates, visit arrangements, and booking are not available yet.</p>
-  {SITE.showProviderProfile && (
-    <Picture
-      slot="hero-image"
-      src="/images/provider-headshot.jpg"
-      alt="Dr. Praveena Tallapureddy, founder of Luma Pediatrics"
-      width={1003}
-      height={1254}
-      loading="eager"
-      fetchpriority="high"
-    />
-  )}
+  <ScenarioPhoto
+    slot="hero-image"
+    src="/images/scenarios/01_meet_and_greet.jpg"
+    alt="Illustrative scene of two parents and a young child playing with a bead maze."
+    loading="eager"
+  />
 
   <section>
-    <div class="service-width">
+    <div class="site-container">
       <h2>What Is a Meet & Greet?</h2>
       <p class="service-copy mt-5">
         This is a complimentary introduction, not a billable clinical visit.
@@ -55,7 +50,7 @@ const faqs = [
   </section>
 
   <section>
-    <div class="service-width">
+    <div class="site-container">
       <h2>What to Expect</h2>
       <ol class="service-grid">
         {[
@@ -75,7 +70,7 @@ const faqs = [
   </section>
 
   <section>
-    <div class="service-width">
+    <div class="site-container">
       <h2>Who Is This For?</h2>
       <ul class="service-list">
         <li>Expectant parents choosing a first pediatrician</li>
@@ -97,12 +92,11 @@ const faqs = [
       'Clear communication and time for questions',
       "Parents involved in decisions about their child's care",
     ]}
-    showPhoto={false}
   />
   <ServiceFaq items={faqs} />
 
   <section class="service-final">
-    <div class="service-width">
+    <div class="site-container">
       <h2>Get to Know Your Child's Future Pediatrician</h2>
       <p class="service-copy mt-5">Call or text to ask about the planned introduction before deciding on care. Please keep inquiries to general practice questions, not medical information.</p>
       <div class="service-actions mt-6"><Button href={primary.href}>{primary.label}</Button></div>

@@ -9,8 +9,8 @@ test('well-child planning does not activate on a date or on the presence of a UR
   for (const config of [disabled, { ...enabled, enabled: false }]) {
     assert.deepEqual(getServiceScheduling(config, 'well-child'), {
       enabled: false,
-      href: '/#practice-updates',
-      label: 'Get Opening Updates',
+      href: '/new-patients/',
+      label: "Plan Your Child's Visit",
     });
   }
 });
@@ -24,13 +24,13 @@ test('well-child activation uses its own approved workflow and label', () => {
 });
 
 test('medical service activation remains independent and shared notices recognize either service', () => {
-  const state = getMedicalScheduling({ newbornScheduling: disabled, wellChildScheduling: enabled });
+  const state = getMedicalScheduling({ appointmentScheduling: disabled, newbornScheduling: disabled, wellChildScheduling: enabled });
   assert.equal(state.enabled, true);
   assert.equal(state.newborn.enabled, false);
   assert.equal(state.newborn.href, '/new-patients/');
   assert.equal(state.wellChild.href, enabled.url);
   assert.equal(getMedicalScheduling({
-    newbornScheduling: disabled, wellChildScheduling: disabled,
+    appointmentScheduling: disabled, newbornScheduling: disabled, wellChildScheduling: disabled,
   }).enabled, false);
 });
 
@@ -39,7 +39,21 @@ test('rejects unsafe well-child URLs and preserves the original parsing error', 
     assert.throws(() => getServiceScheduling({ enabled: true, url }, 'well-child'), /approved/);
   }
   assert.throws(
-    () => getMedicalScheduling({ newbornScheduling: disabled, wellChildScheduling: { enabled: true, url: '' } }),
+    () => getMedicalScheduling({ appointmentScheduling: disabled, newbornScheduling: disabled, wellChildScheduling: { enabled: true, url: '' } }),
     (err) => err instanceof Error && err.cause instanceof TypeError,
   );
+});
+
+test('shared medical booking has its own manual gate and validates its destination', () => {
+  const config = { appointmentScheduling: enabled, newbornScheduling: disabled, wellChildScheduling: disabled };
+  const state = getMedicalScheduling(config);
+  assert.deepEqual(state.appointments, { enabled: true, href: enabled.url, label: 'Book an appointment' });
+  assert.equal(state.enabled, true);
+  assert.equal(state.newborn.enabled, false);
+  const inactive = getMedicalScheduling({ ...config, appointmentScheduling: { ...enabled, enabled: false } });
+  assert.deepEqual(inactive.appointments, { enabled: false, href: '/new-patients/', label: 'Plan Your Visit' });
+  assert.equal(inactive.enabled, false);
+  for (const url of ['', '/booking', 'http://booking.example.test', 'https://user:password@booking.example.test']) {
+    assert.throws(() => getMedicalScheduling({ ...config, appointmentScheduling: { enabled: true, url } }), /approved/);
+  }
 });

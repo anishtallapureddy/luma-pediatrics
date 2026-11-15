@@ -3,34 +3,44 @@
  * Edit values here → they propagate everywhere.
  */
 
+const OPENING_DATE = '2026-11-30';
+const OPENING_WINDOW = new Date(`${OPENING_DATE}T00:00:00Z`).toLocaleDateString('en-US', {
+  month: 'long', day: 'numeric', timeZone: 'UTC',
+});
+const PHREESIA_URL = 'https://phreesia.me/LumaPediatricsSelfScheduling';
+
 export const SITE = {
   name: 'Luma Pediatrics',
   legalName: 'Luma Physician Group PLLC',
   organizationNpi: '1689504292',
   tagline: "Where your child's health shines.",
   subtagline: 'Bright beginnings. Healthy futures.',
-  status: 'Opening November 30 in McKinney',
-  schedulingNotice: 'Online scheduling opens November 16.',
+  status: `Opening ${OPENING_WINDOW} in McKinney`,
   /** Opening timeframe phrase - appears in "Opening {openingWindow} in McKinney" copy. */
-  openingWindow: 'November 30',
-  /** Announced opening date; never activates scheduling or clinical care automatically. */
-  openingTargetDate: '2026-11-30',
+  openingWindow: OPENING_WINDOW,
+  /** Announced opening date; never automatically activates clinical care or hours. */
+  openingDate: OPENING_DATE,
+  appointmentScheduling: {
+    /** Approved shared portal: newborn, behavioral, sick, and well-child checks. */
+    enabled: true,
+    url: PHREESIA_URL,
+  },
   newbornScheduling: {
-    /** Manual activation only, after approval of the Phreesia workflow and dates. */
-    enabled: false,
-    url: '',
+    /** Explicit manual activation; appointment dates must be checked before publishing. */
+    enabled: true,
+    url: PHREESIA_URL,
     /** Informational target, never an automatic activation date. */
     plannedLaunchDate: '2026-11-16',
   },
   wellChildScheduling: {
-    /** Separate approved Phreesia workflow; never reuse the newborn appointment type. */
-    enabled: false,
-    url: '',
+    /** The practice confirmed that the shared portal supports well-child visits too. */
+    enabled: true,
+    url: PHREESIA_URL,
     plannedLaunchDate: '2026-11-16',
   },
   locationShort: 'McKinney, Texas',
   description:
-    'Luma Pediatrics is a board-certified pediatric practice in McKinney, Texas. Opening November 30 in McKinney, with evidence-based care planned for newborns, children, and teens.',
+    `Luma Pediatrics is an independent practice led by a board-certified pediatrician in McKinney, Texas. Opening ${OPENING_WINDOW}, with evidence-based care for newborns, children, and teens. Book an appointment online through Phreesia.`,
   disambiguatingDescription:
     'Independent pediatric primary care practice in McKinney, Texas, operated by Luma Physician Group PLLC.',
   domain: 'https://www.lumapediatrics.com',

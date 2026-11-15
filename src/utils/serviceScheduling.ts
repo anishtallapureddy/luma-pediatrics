@@ -4,17 +4,17 @@ export interface MedicalSchedulingConfig {
   plannedLaunchDate?: string;
 }
 
-export function getServiceScheduling(
+function getScheduling(
   config: MedicalSchedulingConfig,
-  service: 'newborn' | 'well-child',
+  name: string,
+  label: string,
+  planningLabel: string,
 ) {
-  const newborn = service === 'newborn';
-  const name = newborn ? 'Newborn' : 'Well-child';
   if (!config.enabled) {
     return {
       enabled: false,
-      href: newborn ? '/new-patients/' : '/#practice-updates',
-      label: newborn ? 'Plan Your First Visit' : 'Get Opening Updates',
+      href: '/new-patients/',
+      label: planningLabel,
     };
   }
 
@@ -31,15 +31,23 @@ export function getServiceScheduling(
   return {
     enabled: true,
     href: url.href,
-    label: newborn ? 'Schedule a Newborn Visit' : 'Schedule a Well-Child Visit',
+    label,
   };
 }
 
+export function getServiceScheduling(config: MedicalSchedulingConfig, service: 'newborn' | 'well-child') {
+  return service === 'newborn'
+    ? getScheduling(config, 'Newborn', 'Schedule a Newborn Visit', 'Plan Your First Visit')
+    : getScheduling(config, 'Well-child', 'Schedule a Well-Child Visit', "Plan Your Child's Visit");
+}
+
 export function getMedicalScheduling(config: {
+  appointmentScheduling: MedicalSchedulingConfig;
   newbornScheduling: MedicalSchedulingConfig;
   wellChildScheduling: MedicalSchedulingConfig;
 }) {
+  const appointments = getScheduling(config.appointmentScheduling, 'Medical', 'Book an appointment', 'Plan Your Visit');
   const newborn = getServiceScheduling(config.newbornScheduling, 'newborn');
   const wellChild = getServiceScheduling(config.wellChildScheduling, 'well-child');
-  return { newborn, wellChild, enabled: newborn.enabled || wellChild.enabled };
+  return { appointments, newborn, wellChild, enabled: appointments.enabled || newborn.enabled || wellChild.enabled };
 }

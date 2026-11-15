@@ -2,7 +2,7 @@
 import ServicePageLayout from '../layouts/ServicePageLayout.astro';
 import ServiceProvider from '../components/ServiceProvider.astro';
 import ServiceFaq from '../components/ServiceFaq.astro';
-import Picture from '../components/Picture.astro';
+import ScenarioPhoto from '../components/ScenarioPhoto.astro';
 import Button from '../components/Button.astro';
 import { SITE } from '../site.config';
 import { getNewbornScheduling } from '../utils/newbornScheduling';
@@ -29,25 +29,22 @@ const topics = [
 ---
 <ServicePageLayout
   title="Newborn Pediatric Care in McKinney, TX | Luma Pediatrics"
-  description={SITE.showProviderProfile ? 'Newborn pediatric care in McKinney, TX with Dr. Praveena Tallapureddy. Learn about first visits, feeding, growth, jaundice, and newborn checkups.' : 'Newborn pediatric care in McKinney, TX. Learn about first visits, feeding, growth, jaundice, and newborn checkups at Luma Pediatrics.'}
+  description={`Newborn care in McKinney with ${physician} begins ${SITE.openingWindow}. Learn about first visits${primary.enabled ? ' and book online' : ''}.`}
   path="/newborn-care/"
   eyebrow="Newborn Care"
   heading="Newborn Pediatric Care in McKinney, TX"
-  intro={`Your baby's first days bring questions about feeding, weight, and what is normal. After opening, Luma plans newborn care with ${physician} to help you understand your baby's needs and next steps.`}
+  intro={`Your baby's first days bring questions about feeding, weight, and what is normal. Newborn care with ${physician} begins when Luma opens ${SITE.openingWindow}, helping you understand your baby's needs and next steps.`}
   primary={primary}
 >
-  <Picture
+  <ScenarioPhoto
     slot="hero-image"
-    src="/images/blog-newborn.jpg"
-    alt="A newborn's tiny hand resting against a parent's finger"
-    width={1200}
-    height={900}
+    src="/images/scenarios/02_newborn_care.jpg"
+    alt="Illustrative scene of two parents cuddling their newborn."
     loading="eager"
-    fetchpriority="high"
   />
 
   <section id="first-visits" class="scroll-mt-32">
-    <div class="service-width">
+    <div class="site-container">
       <h2>Your Baby's First Pediatric Visits</h2>
       <p class="service-copy mt-5">Arrange follow-up soon after hospital discharge, following the timing recommended by your baby's discharge team. The right timing and follow-up depend on each baby's needs.</p>
       <ul class="service-list">
@@ -63,7 +60,7 @@ const topics = [
   </section>
 
   <section>
-    <div class="service-width">
+    <div class="site-container">
       <h2>What We Help With</h2>
       <div class="service-grid service-grid--three">
         {topics.map(([title, description]) => <article class="service-card"><h3>{title}</h3><p>{description}</p></article>)}
@@ -84,7 +81,7 @@ const topics = [
   />
 
   <section>
-    <div class="service-width">
+    <div class="site-container">
       <h2>Preparing for Your First Newborn Appointment</h2>
       <ul class="service-list">
         <li>Hospital discharge paperwork</li>
@@ -101,7 +98,7 @@ const topics = [
 
   <!-- Physician approval required before publication: confirm hospital name, privileges, assignment, and rounding arrangements. -->
   <section id="hospital-care" class="scroll-mt-32">
-    <div class="service-width">
+    <div class="site-container">
       <h2>Hospital Newborn Care Is Separate</h2>
       <p class="service-copy mt-5">Newborn rounds at Baylor Scott &amp; White Medical Center in McKinney are planned after opening, subject to hospital assignment, privileges, and final arrangements.</p>
       <p class="service-copy mt-4">This does not mean our pediatrician will attend every delivery or see every newborn at that hospital. Your hospital team will explain who is caring for your baby and help arrange discharge follow-up. Routine newborn office visits are a separate part of care.</p>
@@ -112,7 +109,7 @@ const topics = [
   <ServiceFaq items={faqs} />
 
   <section class="service-final">
-    <div class="service-width">
+    <div class="site-container">
       <h2>Looking for a pediatrician for your newborn?</h2>
       <p class="service-copy mt-5">{primary.enabled
         ? "Review appointment dates and coverage before scheduling your baby's visit."

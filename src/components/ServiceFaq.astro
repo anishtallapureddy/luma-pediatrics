@@ -19,9 +19,9 @@ const schema = {
 ---
 <section aria-labelledby="service-faq-heading">
   <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
-  <div class="service-width">
+  <div class="site-container">
     <h2 id="service-faq-heading">Frequently Asked Questions</h2>
-    <div class="mt-6 max-w-3xl space-y-3">
+    <div class="mt-6 space-y-3">
       {items.map(({ q, a }) => (
         <details class="service-card service-faq-card group" data-service-faq>
           <summary class="flex min-h-11 items-center justify-between gap-4 p-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden">

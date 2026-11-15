@@ -22,7 +22,7 @@ const endpoint = (SITE.forms.waitlistEndpoint ?? '').trim();
 const headline = title ?? 'Get opening updates';
 const intro =
   blurb ??
-  `${SITE.status}. ${SITE.schedulingNotice} Sign up for opening news and occasional updates about our planned services.`;
+  `${SITE.status}. Sign up for opening news and occasional updates about our planned services.`;
 
 const isHero = variant === 'hero';
 const inputClass =
@@ -108,12 +108,15 @@ const inputClass =
     aria-live="polite"
   >
     <span class="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-primary)] text-white" aria-hidden="true">
-      <Icon name="lucide:check" class="w-5 h-5" stroke-width="2.4" />
+      <Icon name="lucide:send" class="w-5 h-5" stroke-width="1.8" />
     </span>
     <div>
-      <p class="font-extrabold text-[var(--color-foreground)]">You're signed up!</p>
+      <p class="font-extrabold text-[var(--color-foreground)]">Request sent</p>
       <p class="mt-1 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
-        Thanks for staying connected. We'll share occasional general updates as opening approaches.
+        This form can't confirm whether your email was added. For confirmation,{' '}
+        <a href={SITE.contact.phoneHref}>call</a>{' or '}
+        <a href={SITE.contact.smsHref}>text</a>{' '}{SITE.contact.phone}.
+        Please do not send medical information.
       </p>
     </div>
   </div>
@@ -174,18 +177,18 @@ const inputClass =
       const original = label ? label.textContent : '';
       if (btn) btn.disabled = true;
       form.setAttribute('aria-busy', 'true');
-      if (label) label.textContent = 'Signing up\u2026';
+      if (label) label.textContent = 'Sending request\u2026';
 
       data.append('page', window.location.pathname);
       data.append('submitted_at', new Date().toISOString());
 
       try {
-        // Apps Script Web Apps don't return CORS headers, so we fire-and-forget
-        // with no-cors; the row is still written to the Sheet.
+        // An opaque response cannot confirm that Apps Script saved the signup.
         await fetch(endpoint, { method: 'POST', mode: 'no-cors', body: data });
         if (typeof window.gtag === 'function') {
-          window.gtag('event', 'generate_lead', {
-            lead_source: 'practice_updates',
+          window.gtag('event', 'practice_updates_request', {
+            form_name: 'practice_updates',
+            delivery_status: 'unconfirmed',
             page_path: window.location.pathname,
           });
         }

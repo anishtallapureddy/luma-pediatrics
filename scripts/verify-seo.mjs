@@ -9,14 +9,20 @@ import { execFileSync } from 'node:child_process';
 import { SITE } from '../src/site.config.ts';
 import { insurancePlans, additionalInsurancePlans, insuranceCoverageNote } from '../src/data/insurance.ts';
 import { selfPayPricing, selfPayServices } from '../src/data/selfPay.ts';
+import { getMedicalScheduling } from '../src/utils/serviceScheduling.ts';
 
 const root = process.cwd();
 const dist = join(root, 'dist');
 const domain = 'https://www.lumapediatrics.com';
-const medicalBookingEnabled = SITE.newbornScheduling.enabled || SITE.wellChildScheduling.enabled;
-const internalTargetDates = [...new Set([
-  SITE.openingTargetDate, SITE.newbornScheduling.plannedLaunchDate, SITE.wellChildScheduling.plannedLaunchDate,
-])];
+const scheduling = getMedicalScheduling(SITE);
+const medicalBookingEnabled = scheduling.enabled;
+const approvedBookingUrl = 'https://phreesia.me/LumaPediatricsSelfScheduling';
+const unannouncedDates = [...new Set([
+  SITE.newbornScheduling.plannedLaunchDate, SITE.wellChildScheduling.plannedLaunchDate,
+])].flatMap((date) => [
+  date,
+  new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }),
+]);
 const dedicatedServicePaths = {
   'free-meet-and-greet': '/meet-and-greet/',
   'newborn-care': '/newborn-care/',
@@ -37,27 +43,31 @@ const contract = {
   physicianHonorificPrefix: 'Dr.',
   physicianHonorificSuffix: 'M.D., F.A.A.P.',
   status: 'Opening November 30 in McKinney',
-  schedulingNotice: 'Online scheduling opens November 16.',
   ga4: 'G-QL30ZJXMW8',
   socialImage: '/og-luma-pediatrics-opening-november-30.png',
   homeSocialTitle: 'Luma Pediatrics | McKinney, TX',
   homeDescription:
-    'Board-certified pediatric care planned for newborns through teens in McKinney, TX. Opening November 30 in McKinney, with well visits, sick care, vaccines, and more.',
+    'Board-certified pediatric care for newborns through teens in McKinney, TX. Opening November 30 in McKinney. Book newborn, well-child, and sick visits online through Phreesia.',
   homeSocialDescription:
-    'Helping kids thrive and parents feel confident. Thoughtful pediatric care planned for McKinney, Texas. Opening November 30 in McKinney.',
+    'Helping kids thrive and parents feel confident. Thoughtful pediatric care in McKinney, Texas. Opening November 30 in McKinney. Book an appointment online.',
 };
 const serviceSlugs = [
-  'free-meet-and-greet',
-  'newborn-rounds-bsw-mckinney',
-  'newborn-care',
   'well-child-visits',
   'sick-visits',
+  'newborn-care',
   'vaccinations',
-  'school-sports-camp-physicals',
   'adhd-behavior-developmental-care',
   'teen-adolescent-health',
+  'school-sports-camp-physicals',
   'telehealth-virtual-visits',
 ];
+const clinicalPreviewPaths = serviceSlugs.slice(0, 6).map(
+  (slug) => dedicatedServicePaths[slug] ?? `/services/#${slug}`,
+);
+
+for (const state of [scheduling.appointments, scheduling.newborn, scheduling.wellChild]) {
+  expect(!state.enabled || state.href === approvedBookingUrl, 'Enabled medical booking must use the practice-approved shared Phreesia portal');
+}
 
 function expect(condition, message) {
   if (!condition) throw new Error(message);
@@ -315,11 +325,45 @@ for (const file of walk(dist).filter((path) => extname(path) === '.html')) {
   expect(webPage.isPartOf?.['@id'] === website['@id'], `${fileLabel}: WebPage is not linked to WebSite`);
 
   const text = normalizedText(html);
-  if (!medicalBookingEnabled) {
-    expect(text.includes(contract.schedulingNotice), `${fileLabel}: approved scheduling announcement is missing`);
+  for (const [, paragraph] of html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/g)) {
+    expect(
+      !/[\w.!?,:;](?:<(?:a|strong|em)\b[^>]*>|<\/(?:a|strong|em)>)\w/.test(paragraph),
+      `${fileLabel}: inline links and emphasis must preserve spaces between words`,
+    );
   }
-  for (const date of internalTargetDates) {
-    expect(!text.includes(date), `${fileLabel}: internal target fields must not leak into public copy: ${date}`);
+  const mainHtml = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1] ?? '';
+  const containers = ['div', 'section', 'article'].flatMap((tag) => findTags(mainHtml, tag))
+    .filter((attributes) => attributes.class?.split(/\s+/).includes('site-container'));
+  const isBlogArticle = canonical.startsWith(`${domain}/blog/`) && canonical !== `${domain}/blog/`;
+  // Blog articles use the reviewed self-contained reading layout in src/pages/blog/article.css.
+  expect(containers.length > 0 || isBlogArticle, `${fileLabel}: page content must use the shared site container`);
+  expect(
+    containers.every((attributes) => !/(?:^|\s)(?:\S+:)?(?:max-w-|px-)/.test(attributes.class)),
+    `${fileLabel}: shared site containers must not override their width or side gutters`,
+  );
+  expect(!html.includes('service-width'), `${fileLabel}: obsolete service-only width must not return`);
+  const isLongForm = ['/privacy/', '/terms/', '/accessibility/', '/notice-of-privacy-practices/']
+    .some((path) => canonical === `${domain}${path}`) ||
+    (canonical.startsWith(`${domain}/blog/`) && canonical !== `${domain}/blog/`);
+  expect(isLongForm || !mainHtml.includes('reading-width'), `${fileLabel}: ordinary page sections must not use a narrow reading column`);
+  expect(
+    canonical === `${domain}/about/` ||
+      !findTags(html, 'img').some(({ src }) => /\/provider-headshot\./.test(src ?? '')),
+    `${fileLabel}: the visible physician portrait belongs only on About`,
+  );
+  expect(!text.includes('Opening late 2026'), `${fileLabel}: the old opening window must not override the announced date`);
+  expect(!/\bnow open\b/i.test(text), `${fileLabel}: advance booking must not claim current clinical operation`);
+  if (medicalBookingEnabled) {
+    expect(!text.includes('Not currently open or scheduling appointments.') && !text.includes('Appointments are not available yet.'), `${fileLabel}: stale disabled medical-booking claim`);
+  }
+  for (const match of html.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/g)) {
+    const label = normalizedText(match[1]);
+    if (/^(?:Book (?:now|an appointment|a sick visit|a behavioral visit)|Schedule a (?:Newborn|Well-Child) Visit)$/i.test(label)) {
+      expect(findTags(match[0], 'a')[0].href === approvedBookingUrl, `${fileLabel}: medical booking CTA must use approved Phreesia destination: ${label}`);
+    }
+  }
+  for (const date of unannouncedDates) {
+    expect(!text.includes(date), `${fileLabel}: internal target date must not become a public announcement: ${date}`);
   }
   expect(!text.includes('Insurance plans will be published once confirmed'), `${fileLabel}: stale insurance availability`);
   expect(
@@ -386,7 +430,18 @@ expect(
 );
 expect(home.html.includes(`googletagmanager.com/gtag/js?id=${contract.ga4}`), 'GA4 loader is missing');
 expect(home.html.includes("'contact_action'"), 'GA4 contact conversion event is missing');
-expect(home.html.includes("'generate_lead'"), 'GA4 lead conversion event is missing');
+expect(
+  home.html.includes("'practice_updates_request'") &&
+    home.html.includes("delivery_status: 'unconfirmed'") &&
+    !home.html.includes("'generate_lead'"),
+  'Updates analytics must report an unconfirmed request, not a verified lead',
+);
+expect(
+  home.html.includes('Request sent') &&
+    home.html.includes("This form can't confirm whether your email was added.") &&
+    !home.html.includes("You're signed up!"),
+  'Opaque updates submissions must not claim confirmed signup',
+);
 const heroPreload = findTags(home.html, 'link').find(
   (attributes) =>
     (attributes.rel ?? '').split(/\s+/).includes('preload') &&
@@ -429,14 +484,20 @@ for (const service of [
   expect(homeText.includes(service), `Home page is missing restored service: ${service}`);
 }
 for (const serviceGroup of [
-  'Getting started',
   'Everyday pediatric care',
+  'Care as your child grows',
 ]) {
   expect(
     homeText.includes(serviceGroup),
     `Home page is missing service group: ${serviceGroup}`,
   );
 }
+expect(
+  JSON.stringify(findTags(home.html, 'a')
+    .filter((attributes) => attributes['aria-label']?.startsWith('Learn more about '))
+    .map((attributes) => attributes.href)) === JSON.stringify(clinicalPreviewPaths),
+  'Homepage clinical previews must follow the core-care hierarchy without Meet & Greet or hospital rounds',
+);
 expect(
   home.html.includes('/images/luma-hero-banner.webp'),
   'Home page must use the approved hero banner',
@@ -495,15 +556,16 @@ expect(
     normalizedText(homeHeader).includes(SITE.status) &&
     normalizedText(homeHero).includes(SITE.address.city) &&
     !homeHero.includes('data-home-location') &&
-    !normalizedText(homeHero).includes('ACCEPTING NEW PATIENTS'),
-  'Header must carry the approved location/opening cue without a duplicate hero label or premature acceptance claims',
+    !normalizedText(homeHero).includes('ACCEPTING NEW PATIENTS') &&
+    normalizedText(homeHero).includes(SITE.openingWindow),
+  'Header and hero must carry the approved opening announcement without implying the clinic is already open',
 );
 for (const service of ['newborn checkups', 'well-child visits', 'sick care']) {
   expect(normalizedText(homeHero).includes(service), `Home hero must explain planned ${service}`);
 }
 expect(
-  homeHero.includes('href="/#practice-updates"') && normalizedText(homeHero).includes('Get Opening Updates'),
-  'Home hero must direct opening updates to the existing signup form',
+  homeHero.includes(`href="${scheduling.appointments.href}"`) && normalizedText(homeHero).includes(scheduling.appointments.label),
+  'Home hero must prioritize approved appointment booking over email signup',
 );
 expect(
   normalizedText(homeHero).includes('Helping kids thrive and parents feel confident.') &&
@@ -742,7 +804,7 @@ for (const value of [
   'Parents Are Partners',
   'Care Should Be Accessible',
   'We Make Healthcare Easier',
-  'See the care we’re planning',
+  'A new chapter for your family’s care',
 ]) {
   expect(aboutText.includes(value), `About page is missing restructured content: ${value}`);
 }
@@ -1130,11 +1192,8 @@ for (const article of pages.filter((page) => /\/blog\/[^/]+\/$/.test(page.canoni
 }
 
 const llms = readFileSync(join(dist, 'llms.txt'), 'utf8');
-if (!medicalBookingEnabled) {
-  expect(llms.includes(contract.schedulingNotice), 'llms.txt: approved scheduling announcement is missing');
-}
-for (const date of internalTargetDates) {
-  expect(!llms.includes(date), `llms.txt: internal target fields must not leak into public copy: ${date}`);
+for (const date of unannouncedDates) {
+  expect(!llms.includes(date), `llms.txt: internal target date must remain unannounced: ${date}`);
 }
 for (const value of [
   `**Practice name:** ${contract.name}`,
@@ -1149,7 +1208,7 @@ for (const value of [
   expect(llms.includes(value), `llms.txt is missing canonical fact: ${value}`);
 }
 expect(
-  llms.includes('one future physical clinic in McKinney, Texas'),
+  llms.includes('one physical clinic in McKinney, Texas'),
   'llms.txt must clarify that Luma has one physical location',
 );
 expect(
@@ -1167,22 +1226,23 @@ expect(
   'llms.txt must advertise the RSS feed',
 );
 expect(
-  !medicalBookingEnabled || !llms.includes('Medical appointment booking is not currently enabled.'),
+  !medicalBookingEnabled || !llms.includes('Online medical appointment booking is not available yet.'),
   'llms.txt must not hide an approved medical booking activation',
 );
 if (!medicalBookingEnabled) {
   expect(
-    llms.includes('Medical appointment booking is not currently enabled.'),
+    llms.includes('Online medical appointment booking is not available yet.'),
     'llms.txt must preserve the disabled medical booking state',
   );
 }
 expect(
-  llms.includes('No Meet & Greet booking workflow is enabled') &&
+  llms.includes('Meet & Greet appointments are not available yet') &&
     llms.includes('does not establish a physician-patient relationship'),
   'llms.txt must distinguish the informational Meet & Greet from clinical booking',
 );
 for (const match of llms.matchAll(/\]\((https:\/\/[^)]+)\)/g)) {
   const url = new URL(match[1]);
+  if (scheduling.appointments.enabled && url.href === approvedBookingUrl) continue;
   expect(url.origin === domain, `llms.txt link must use the canonical host: ${url.href}`);
   if (['/rss.xml', '/sitemap-index.xml'].includes(url.pathname)) {
     expect(existsSync(join(dist, url.pathname.slice(1))), `llms.txt asset is missing: ${url.href}`);
@@ -1233,7 +1293,7 @@ expect(
     contactHtml.includes('class="contact-planning-section') &&
     contactHtml.includes('class="contact-location-layout"') &&
     contactText.includes('Get in touch') &&
-    contactText.includes('Future McKinney location'),
+    contactText.includes('Our McKinney office'),
   'Contact page must separate contact actions from visit planning',
 );
 expect(
@@ -1287,11 +1347,22 @@ for (const cityPage of cityPages) {
   expect(service, `${cityPage.fileLabel}: city-specific Service schema is missing`);
   expect(faq, `${cityPage.fileLabel}: city-specific FAQPage schema is missing`);
   expect(
-    Array.isArray(faq.mainEntity) && faq.mainEntity.length === 3,
-    `${cityPage.fileLabel}: expected three visible FAQ entries`,
+    Array.isArray(faq.mainEntity) && faq.mainEntity.length === (cityPage.canonical.endsWith('/mckinney/') ? 8 : 3),
+    `${cityPage.fileLabel}: local FAQ schema must match its planned question count`,
   );
   const text = normalizedText(cityPage.html);
-  expect(text.includes('Plan a future visit'), `${cityPage.fileLabel}: travel-planning section is missing`);
+  expect(
+    faq.mainEntity.every((entry) => text.includes(entry.name) && text.includes(entry.acceptedAnswer.text)),
+    `${cityPage.fileLabel}: FAQ schema must mirror visible answers`,
+  );
+  expect(
+    JSON.stringify(findTags(cityPage.html, 'a')
+      .filter((attributes) => attributes.class?.split(/\s+/).includes('card-lift'))
+      .map((attributes) => attributes.href)) === JSON.stringify(clinicalPreviewPaths) &&
+      cityPage.html.includes('id="free-meet-and-greet"'),
+    `${cityPage.fileLabel}: clinical previews and the separate Meet & Greet invitation must stay consistent`,
+  );
+  expect(text.includes('Plan your visit'), `${cityPage.fileLabel}: travel-planning section is missing`);
   expect(text.includes('Get directions'), `${cityPage.fileLabel}: directions action is missing`);
   expect(text.includes('Questions from'), `${cityPage.fileLabel}: local FAQ heading is missing`);
   expect(
@@ -1308,8 +1379,10 @@ for (const cityPage of cityPages) {
   );
   expect(text.split(/\s+/).length >= 350, `${cityPage.fileLabel}: page is below the city-page content floor`);
   expect(
-    cityPage.html.replaceAll('&amp;', '&').includes('&origin='),
-    `${cityPage.fileLabel}: directions URL does not include the city origin`,
+    cityPage.canonical.endsWith('/mckinney/')
+      ? !cityPage.html.replaceAll('&amp;', '&').includes('&origin=')
+      : cityPage.html.replaceAll('&amp;', '&').includes('&origin='),
+    `${cityPage.fileLabel}: directions must use the visitor's start in McKinney and the city origin elsewhere`,
   );
   if (!cityPage.canonical.endsWith('/mckinney/')) {
     expect(
@@ -1318,6 +1391,14 @@ for (const cityPage of cityPages) {
     );
   }
 }
+const mckinneyPage = cityPages.find((page) => page.canonical.endsWith('/mckinney/'));
+expect(
+  mckinneyPage.html.includes('id="first-mckinney-visit"') &&
+    normalizedText(mckinneyPage.html).includes(selfPayPricing.officeVisit) &&
+    normalizedText(mckinneyPage.html).includes(selfPayPricing.additionalCharges) &&
+    mckinneyPage.html.includes('href="/blog/fever-when-to-call/"'),
+  'McKinney must provide distinct first-visit, separate-cost, and parent-resource information',
+);
 
 const textSourceFiles = [
   ...walk(join(root, 'src')),
@@ -1464,6 +1545,11 @@ expect(
     !/\bCPT\b|\bHCPCS\b|\bTVFC\b|\.xlsx\b/i.test(normalizedText(selfPaySection)),
   'The full fee workbook and private billing catalog must not be published',
 );
+const clinicalCards = [...servicesHtml.matchAll(/<article\b[^>]*id="([^"]+)"[^>]*>([\s\S]*?)<\/article>/g)];
+expect(
+  JSON.stringify(clinicalCards.map((card) => card[1])) === JSON.stringify(serviceSlugs),
+  'Services must present the eight clinical offerings in the approved order',
+);
 for (const slug of serviceSlugs) {
   expect(
     servicesHtml.includes(`id="${slug}"`),
@@ -1473,13 +1559,24 @@ for (const slug of serviceSlugs) {
     .find((match) => match[1] === slug);
   expect(card, `Services page is missing the ${slug} service card`);
   const nextSteps = findTags(card[2], 'a');
-  expect(nextSteps.length === 1, `${slug}: each service needs one clear next step`);
+  expect(nextSteps.length === (slug === 'newborn-care' ? 2 : 1), `${slug}: preserve the primary next step and only the nested newborn hospital link`);
   expect(
-    nextSteps[0].href.startsWith('/') && !nextSteps[0].href.startsWith('//'),
-    `${slug}: next step must lead to a Luma page, not an unconfigured booking service`,
+    (nextSteps[0].href.startsWith('/') && !nextSteps[0].href.startsWith('//')) ||
+      (scheduling.appointments.enabled && ['sick-visits', 'adhd-behavior-developmental-care'].includes(slug) && nextSteps[0].href === approvedBookingUrl),
+    `${slug}: next step must lead to a Luma page or the approved medical scheduler for a confirmed visit type`,
   );
   if (dedicatedServicePaths[slug]) {
     expect(nextSteps[0].href === dedicatedServicePaths[slug], `${slug}: overview must link to its dedicated service page`);
+  }
+  expect(
+    clinicalCards.find((card) => card[1] === 'newborn-care')[2].includes('id="newborn-rounds-bsw-mckinney"') &&
+      servicesHtml.includes('href="/newborn-care/#hospital-care"') &&
+      servicesHtml.includes('id="free-meet-and-greet"') &&
+      servicesHtml.indexOf('id="free-meet-and-greet"') > servicesHtml.indexOf('id="telehealth-virtual-visits"'),
+    'Hospital information must nest under Newborn Care and Meet & Greet must follow clinical services, retaining legacy anchors',
+  );
+  if (['school-sports-camp-physicals', 'telehealth-virtual-visits'].includes(slug)) {
+    expect(nextSteps[0].href === '/contact/', `${slug}: unconfirmed booking types must remain office inquiries`);
   }
 }
 for (const [path, id] of [
@@ -1509,10 +1606,59 @@ for (const path of Object.values(dedicatedServicePaths)) {
   expect(faqPage.html.includes(`href="${path}"`), `FAQ must link to ${path}`);
 }
 const newbornArticle = articlePages.find((page) => page.canonical.endsWith('/newborn-first-week/'));
+const feverArticle = articlePages.find((page) => page.canonical.endsWith('/fever-when-to-call/'));
+expect(
+  !/physician-reviewed/i.test(blogIndex.html),
+  'Blog discovery metadata must not claim an undocumented physician review of every listed article',
+);
+expect(
+  feverArticle &&
+    normalizedText(feverArticle.html).includes('Fever in children: when to call your pediatrician') &&
+    normalizedText(feverArticle.html).includes('tell us when the fever started') &&
+    normalizedText(feverArticle.html).includes('does not replace medical advice from your child’s healthcare provider') &&
+    normalizedText(feverArticle.html).includes('more than 24 hours in a child younger than 2') &&
+    normalizedText(feverArticle.html).includes('Call 911') &&
+    feverArticle.html.includes('When-to-Call-the-Pediatrician.aspx') &&
+    feverArticle.html.includes('/images/blog-fever-care.jpg') &&
+    blogIndex.html.includes('href="/blog/fever-when-to-call/"'),
+  'The fever guide must be discoverable with its cover, linked pediatric references, and current-care/emergency safeguards',
+);
 expect(newbornArticle?.html.includes('href="/newborn-care/"'), 'The newborn educational article must link to the newborn service page');
+for (const [path, filename] of [
+  ['/meet-and-greet/', '01_meet_and_greet.jpg'],
+  ['/newborn-care/', '02_newborn_care.jpg'],
+  ['/well-child-visits/', '04_well_child_visits.jpg'],
+  ['/services/', '03_same_day_sick_visits.jpg'],
+  ['/services/', '05_behavioral_teen_care.jpg'],
+]) {
+  const page = pages.find((candidate) => candidate.canonical === `${domain}${path}`);
+  const src = `/images/scenarios/${filename}`;
+  const figures = [...page.html.matchAll(/<figure\b[^>]*data-scenario-photo[^>]*>([\s\S]*?)<\/figure>/g)]
+    .filter((match) => findTags(match[1], 'img').some((image) => image.src === src));
+  expect(figures.length === 1, `${path}: expected one matching scenario illustration: ${filename}`);
+  const figure = figures[0][1];
+  const image = findTags(figure, 'img')[0];
+  const webp = src.replace(/\.jpg$/, '.webp');
+  expect(
+    image.width === '1800' && image.height === '1200' &&
+      image.alt?.startsWith('Illustrative scene') &&
+      image.loading === (path === '/services/' ? 'lazy' : 'eager'),
+    `${path}: scenario illustration needs descriptive alt text, intrinsic dimensions, and appropriate loading`,
+  );
+  expect(
+    findTags(figure, 'source').some((source) => source.srcset === webp && source.type === 'image/webp') &&
+      existsSync(join(root, 'public', src.slice(1))) &&
+      existsSync(join(root, 'public', webp.slice(1))),
+    `${path}: scenario illustration needs real JPEG and WebP assets`,
+  );
+  expect(
+    !/<figcaption\b/.test(figure),
+    `${path}: scenario images must remain caption-free`,
+  );
+}
 for (const [path, heading, config, fallbackLabel, enabledLabel, faqCount] of [
   ['/newborn-care/', 'Newborn Pediatric Care in McKinney, TX', SITE.newbornScheduling, 'Plan Your First Visit', 'Schedule a Newborn Visit', 5],
-  ['/well-child-visits/', 'Well-Child Visits in McKinney, TX', SITE.wellChildScheduling, 'Get Opening Updates', 'Schedule a Well-Child Visit', 6],
+  ['/well-child-visits/', 'Well-Child Visits in McKinney, TX', SITE.wellChildScheduling, "Plan Your Child's Visit", 'Schedule a Well-Child Visit', 6],
   ['/meet-and-greet/', 'Meet Your Pediatrician Before You Decide', { enabled: false }, 'Ask About a Meet & Greet', '', 5],
 ]) {
   const page = pages.find((candidate) => candidate.canonical === `${domain}${path}`);
@@ -1520,7 +1666,7 @@ for (const [path, heading, config, fallbackLabel, enabledLabel, faqCount] of [
   const headings = [...page.html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
   expect(headings.length === 1 && normalizedText(headings[0][1]) === heading, `${path}: expected one correct H1`);
   const primaryLabel = config.enabled ? enabledLabel : fallbackLabel;
-  const primaryHref = config.enabled ? new URL(config.url).href : path === '/meet-and-greet/' ? '/contact/' : path === '/well-child-visits/' ? '/#practice-updates' : '/new-patients/';
+  const primaryHref = config.enabled ? new URL(config.url).href : path === '/meet-and-greet/' ? '/contact/' : '/new-patients/';
   const primaryLinks = [...page.html.matchAll(/<a\b[^>]*class="[^"]*\bbtn-primary\b[^"]*"[^>]*>([\s\S]*?)<\/a>/g)]
     .filter((match) => normalizedText(match[1]) === primaryLabel);
   expect(primaryLinks.length === 2, `${path}: hero and final action must use the correct booking state`);
@@ -1531,7 +1677,10 @@ for (const [path, heading, config, fallbackLabel, enabledLabel, faqCount] of [
   const service = schemas.find((value) => hasType(value['@type'], 'Service'));
   expect(service?.url === page.canonical && service.provider?.['@id'] === `${domain}/#medical-clinic`, `${path}: linked Service schema is missing or incorrect`);
   expect(!service.offers, `${path}: do not publish unconfirmed offers or availability`);
-  expect(/planned|plans/i.test(service.description), `${path}: Service schema must retain the planned-care qualification`);
+  expect(path === '/meet-and-greet/'
+    ? /planned|plans/i.test(service.description)
+    : service.description.includes(`when Luma opens ${SITE.openingWindow}`),
+    `${path}: Service schema must retain its opening-date or unconfirmed-service qualification`);
   const serviceFaq = schemas.find((value) => hasType(value['@type'], 'FAQPage'));
   const visibleAnswers = [...page.html.matchAll(/<details\b[^>]*data-service-faq[^>]*>([\s\S]*?)<\/details>/g)]
     .map((match) => ({
@@ -1578,7 +1727,7 @@ for (const { question, answer } of renderedFaqs) {
 }
 expect(
   renderedFaqs.find(({ question }) => question === 'Is Luma open on Saturdays?')
-    ?.answer.startsWith('Not yet.'),
+    ?.answer.endsWith(`after Luma opens ${SITE.openingWindow}.`),
   'Saturday FAQ must not imply the practice is already open',
 );
 expect(
@@ -1587,7 +1736,7 @@ expect(
   'Hospital newborn FAQ must preserve both opening and hospital-arrangement conditions',
 );
 expect(
-  normalizedText(faqPage.html).includes('Saturday hours are planned for 8:30 am – 12:30 pm after opening.'),
+  normalizedText(faqPage.html).includes(`Saturday hours are planned for 8:30 am – 12:30 pm after Luma opens ${SITE.openingWindow}.`),
   'FAQ must describe Saturday hours as planned, not currently available',
 );
 expect(

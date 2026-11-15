@@ -2,13 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageDecor from '../components/PageDecor.astro';
 import GoogleStoreLocator from '../components/GoogleStoreLocator.astro';
+import Button from '../components/Button.astro';
 import { Icon } from 'astro-icon/components';
 import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
+import { getMedicalScheduling } from '../utils/serviceScheduling';
 
-/**
- * Pre-opening contact page. Call, text, and email are for general information
- * only; no scheduling, patient registration, or clinical intake is available.
- */
+const { appointments } = getMedicalScheduling(SITE);
 ---
 <BaseLayout
   title="Contact Luma Pediatrics | McKinney, TX"
@@ -21,19 +20,25 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
 >
   <section class="page-hero py-10 md:py-14 overflow-hidden">
     <PageDecor />
-    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+    <div class="site-container relative z-10 text-center fade-up">
       <span class="eyebrow">Contact</span>
       <h1 class="contact-hero-title mt-5 text-4xl md:text-5xl tracking-tight">Get in touch.</h1>
-      <p class="mt-6 text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-xl mx-auto">
+      <p class="mt-6 text-lg text-[var(--color-foreground)]/80 leading-relaxed mx-auto">
         Call or text for general questions, insurance verification, or a self-pay estimate. You can also email us.
       </p>
+      {appointments.enabled && (
+        <div class="mt-6">
+          <Button href={appointments.href}>{appointments.label}</Button>
+          <p class="mt-4 text-sm text-[var(--color-muted-foreground)]">Book newborn, behavioral, sick, and well-child visits through Phreesia. {SITE.status}; clinical care begins on opening day.</p>
+        </div>
+      )}
     </div>
   </section>
 
   <!-- Clear contact choices followed by concise safety and texting guidance. -->
   <section class="pb-8 md:pb-10 reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={6} />
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="site-container relative z-10">
       <h2 class="sr-only">Ways to contact Luma Pediatrics</h2>
       <div class="contact-primary-actions">
         <a
@@ -121,7 +126,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
   <!-- Location, hours, map, and directions are grouped as one visit-planning task. -->
   <section class="contact-planning-section pt-6 pb-14 md:pt-8 md:pb-16 reveal relative overflow-hidden">
     <PageDecor variant="minimal" sparkles={6} />
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="site-container relative z-10">
       <article class="contact-location-layout">
         <div class="contact-location-details">
           <div class="contact-location-heading">
@@ -130,7 +135,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
             </span>
             <div>
               <p class="contact-location-kicker">Visit us</p>
-              <h2>Future McKinney location</h2>
+              <h2>Our McKinney office</h2>
             </div>
           </div>
 
@@ -145,7 +150,7 @@ import { GOOGLE_DIRECTIONS_URL, SITE } from '../site.config';
           <div id="planned-hours" class="contact-hours scroll-mt-32">
             <div class="contact-hours-heading">
               <Icon name="lucide:clock" class="w-5 h-5" stroke-width="1.7" aria-hidden="true" />
-              <h3>Planned office hours</h3>
+              <h3>Office hours from opening day</h3>
             </div>
             <dl>
               {SITE.hours.map(({ day, time }) => (
