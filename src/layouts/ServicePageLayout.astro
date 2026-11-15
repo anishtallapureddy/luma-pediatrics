@@ -40,7 +40,7 @@ const serviceSchema = {
   <script is:inline type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
   <section class="page-hero py-12 md:py-16 overflow-hidden">
     <PageDecor variant="minimal" sparkles={0} />
-    <div class:list={['service-width service-hero relative z-10', { 'service-hero--photo': hasImage }]}>
+    <div class:list={['site-container service-hero relative z-10', { 'service-hero--photo': hasImage }]}>
       <div class="min-w-0">
         <a href="/services/" class="service-link text-sm">All pediatric services</a>
         <div class="mt-4"><span class="eyebrow">{eyebrow}</span></div>
@@ -48,15 +48,14 @@ const serviceSchema = {
         <p class="mt-6 text-lg leading-relaxed text-[var(--color-foreground)]/85">{intro}</p>
         <div class="service-actions mt-7">
           <Button href={primary.href}>{primary.label}</Button>
-          <Button href="/about/" variant="secondary">{SITE.showProviderProfile ? 'Meet Dr. Tallapureddy' : 'Meet Our Pediatrician'}</Button>
+          <Button href="/about/" variant="secondary">{SITE.showProviderProfile ? 'About Dr. Tallapureddy' : 'About Our Pediatrician'}</Button>
         </div>
         <div class="mt-5 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
           <slot name="hero-note">
             <p>
-              {SITE.status}.
               {primary.enabled
-                ? ' Online booking for this service is available. The practice is not open yet; confirm appointment dates and coverage before booking.'
-                : ` ${SITE.schedulingNotice}`}
+                ? `Book online anytime for visits from ${SITE.openingWindow} onward.`
+                : 'Appointments are not available yet. Scheduling details will be shared closer to opening.'}
             </p>
           </slot>
         </div>
@@ -71,19 +70,13 @@ const serviceSchema = {
 </BaseLayout>
 
 <style is:global>
-  .service-width {
-    max-width: 72rem;
-    margin-inline: auto;
-    padding-inline: 1.25rem;
-  }
-  .service-hero { max-width: 56rem; }
-  .service-hero--photo { max-width: 72rem; display: grid; gap: 2.5rem; align-items: center; }
-  .service-hero-image { max-width: 25rem; width: 100%; margin-inline: auto; }
+  .service-hero--photo { display: grid; gap: 2.5rem; align-items: center; }
+  .service-hero-image { max-width: 24rem; width: 100%; margin-inline: auto; }
   .service-hero-image img { width: 100%; height: auto; border-radius: var(--radius-card); }
   .service-content > section { padding-block: 2.5rem; }
   .service-content h2 { font-size: 2rem; line-height: 1.15; }
   .service-content h3 { font-size: 1.5rem; line-height: 1.25; }
-  .service-copy { max-width: 46rem; line-height: 1.8; }
+  .service-copy { line-height: 1.8; }
   .service-grid { display: grid; gap: 1rem; margin-top: 1.5rem; }
   .service-card { background: var(--color-card); border: 1px solid var(--color-border-soft); border-radius: var(--radius-card); padding: 1.5rem; }
   .service-card p { margin-top: .75rem; line-height: 1.75; }
@@ -92,13 +85,12 @@ const serviceSchema = {
   .service-link { display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 600; text-decoration: underline; text-underline-offset: .25rem; }
   .service-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
   .service-final { background: var(--color-muted); }
-  .service-final .service-width { max-width: 56rem; }
   @media (min-width: 640px) {
     .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .service-width { padding-inline: 2rem; }
   }
   @media (min-width: 1024px) {
     .service-hero--photo { grid-template-columns: 1.2fr .8fr; }
+    .service-hero-image { margin-inline: 0; justify-self: end; }
     .service-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .service-content > section { padding-block: 3.5rem; }
   }

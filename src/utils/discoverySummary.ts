@@ -1,7 +1,7 @@
 import { services } from '../data/services.ts';
 import { insurancePlans, additionalInsurancePlans, insuranceCoverageNote } from '../data/insurance.ts';
 import { selfPayPricing, selfPayServices } from '../data/selfPay.ts';
-import { getMedicalScheduling, type MedicalSchedulingConfig } from './serviceScheduling.ts';
+import { getMedicalScheduling, getMeetAndGreetScheduling, type MedicalSchedulingConfig } from './serviceScheduling.ts';
 
 interface DiscoverySite {
   name: string;
@@ -10,7 +10,7 @@ interface DiscoverySite {
   organizationNpi: string;
   domain: string;
   status: string;
-  schedulingNotice: string;
+  openingWindow: string;
   locationShort: string;
   showProviderProfile: boolean;
   provider: {
@@ -29,23 +29,27 @@ interface DiscoverySite {
   schema: { publishOpeningHours: boolean };
   hours: ReadonlyArray<{ day: string; time: string }>;
   areasServed: readonly string[];
+  appointmentScheduling: MedicalSchedulingConfig;
   newbornScheduling: MedicalSchedulingConfig;
   wellChildScheduling: MedicalSchedulingConfig;
+  meetAndGreetScheduling: MedicalSchedulingConfig;
 }
 
 export function renderDiscoverySummary(site: DiscoverySite) {
   const scheduling = getMedicalScheduling(site);
+  const meetAndGreet = getMeetAndGreetScheduling(site.meetAndGreetScheduling);
   const link = (path: string) => new URL(path, site.domain).href;
   const languages = site.provider.quickFacts.find((fact) => fact.label === 'Languages');
   const hours = site.hours.map((day) => `${day.day}: ${day.time}`).join('; ');
   const pages = [
-    ['Home', '/', 'Practice overview and opening updates.'],
+    ['Home', '/', 'Practice overview, services, and appointment scheduling.'],
     ['About', '/about/', 'Practice approach and approved provider information.'],
     ['Services', '/services/', 'Complete pediatric services overview.'],
-    ['Free Meet & Greet', '/meet-and-greet/', 'Planned complimentary, nonclinical introductions.'],
+    ['Free Meet & Greet', '/meet-and-greet/', 'Complimentary, nonclinical introductions; schedule from the New Patients page.'],
     ['Newborn Care', '/newborn-care/', 'Newborn office visits and hospital-arrangement information.'],
     ['Well-Child Visits', '/well-child-visits/', 'Preventive pediatric care and visit preparation.'],
     ['New Patients', '/new-patients/', 'Onboarding, insurance and approved scheduling information.'],
+    ['After-Hours Care', '/after-hours/', 'Patient Portal, on-call physician, nurse line, symptom checker, and 911 guidance.'],
     ['FAQ', '/faq/', 'Answers about the practice, visits and pre-opening availability.'],
     ['Parent Resources', '/resources/', 'Parent guides and educational tools.'],
     ['Parent Guides / Blog', '/blog/', 'Published pediatric articles.'],
@@ -82,17 +86,23 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     `- **Email:** ${site.contact.email}`,
     `- **Website:** ${link('/')}`,
     `- **Status:** ${site.status}`,
-    `- **${site.schema.publishOpeningHours ? 'Office hours' : 'Planned hours'}:** ${hours}`,
+    `- **Office hours:** ${hours}`,
     `- **Insurance:** See [accepted commercial insurers and networks](${link('/new-patients/#insurance')}). ${insuranceCoverageNote}`,
     '',
     '## Booking and care boundaries',
     '',
     scheduling.enabled
-      ? 'Medical booking is enabled only for the services identified below. Use their linked pages for the approved workflows.'
-      : `Medical appointment booking is not currently enabled. ${site.schedulingNotice}`,
-    `- **Newborn booking:** ${scheduling.newborn.enabled ? 'Enabled' : 'Not enabled'}. See [Newborn Care](${link('/newborn-care/')}).`,
-    `- **Well-child booking:** ${scheduling.wellChild.enabled ? 'Enabled' : 'Not enabled'}. See [Well-Child Visits](${link('/well-child-visits/')}).`,
-    `- **Meet & Greet:** A free introduction is planned after opening. It is not an examination, diagnosis or treatment visit and does not establish a physician-patient relationship. No Meet & Greet booking workflow is enabled; [ask about arrangements](${link('/contact/')}).`,
+      ? 'Online booking is available for the visit types listed below.'
+      : 'Online medical appointment booking is not available yet. Scheduling details will be shared closer to opening.',
+    ...(scheduling.appointments.enabled ? [
+      `- **Book an appointment:** [Phreesia](${scheduling.appointments.href}). The practice-approved shared portal supports newborn, behavioral, sick, and well-child checks from ${site.openingWindow} onward. Clinical care begins on opening day; confirm your appointment date, visit type, insurance, and costs. Call or text with general questions about other visit types.`,
+    ] : []),
+    `- **Newborn booking:** ${scheduling.newborn.enabled ? 'Available' : 'Not available yet'}. See [Newborn Care](${link('/newborn-care/')}).`,
+    `- **Well-child booking:** ${scheduling.wellChild.enabled ? 'Available' : 'Not available yet'}. See [Well-Child Visits](${link('/well-child-visits/')}).`,
+    `- **Meet & Greet:** A free, no-obligation introduction to visit the clinic and meet the pediatrician. It is introductory only, does not include a medical evaluation or treatment, and does not establish a physician-patient relationship. ${meetAndGreet.enabled
+      ? `Schedule a free Meet & Greet from the [New Patients page](${link('/new-patients/#meet-and-greet')}).`
+      : `Meet & Greet appointments are not available yet; [ask about arrangements](${link('/contact/')}).`}`,
+    `- **After hours:** See [After-Hours Care](${link('/after-hours/')}) for Patient Portal messages, the on-call physician line, the Children's Health nurse line and symptom checker, and 911 guidance.`,
     '- **Current medical concerns:** Contact your child\'s current healthcare provider. For a medical emergency, call 911 or go to the nearest emergency room.',
     '- **Privacy:** Website inquiries are for general questions, not patient intake. Do not submit protected medical information.',
     '',
@@ -104,21 +114,23 @@ export function renderDiscoverySummary(site: DiscoverySite) {
     '',
     '## Self-pay',
     '',
-    'These fees apply to visits after the practice opens.',
     ...selfPayServices.map(({ name, price, detail }) => `- **${name}:** ${price}. ${detail}`),
     `${selfPayPricing.visitFeeNote} ${selfPayPricing.additionalCharges}`,
     `Call or text ${site.contact.phone} for an estimate before your visit. See [self-pay pricing](${link('/new-patients/#self-pay')}).`,
     '',
-    '## Planned services',
+    '## Services',
     '',
-    ...services.map((service) =>
+    ...services.flatMap((service) => [
       `- [${service.title}](${link(service.detailHref ?? `/services/#${service.slug}`)}): ${service.full}`,
-    ),
+      ...(service.relatedCare ? [
+        `  - [${service.relatedCare.title}](${link(service.relatedCare.nextStep.href)}): ${service.relatedCare.full}`,
+      ] : []),
+    ]),
     '',
     '## Entity and location',
     '',
     `${site.name} is the public-facing practice name of ${site.legalName}.`,
-    `${site.name} has one future physical clinic in ${site.locationShort}. Service-area pages describe travel to that clinic and do not represent separate ${site.name} offices.`,
+    `${site.name} has one physical clinic in ${site.locationShort}, opening as described above. Service-area pages describe travel to that clinic and do not represent separate ${site.name} offices.`,
     `Nearby communities: ${site.areasServed.join(', ')}.`,
     '',
     '## Pages',

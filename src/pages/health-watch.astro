@@ -456,7 +456,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
 >
   <section class="page-hero py-12 md:py-16 overflow-hidden">
     <PageDecor />
-    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+    <div class="site-container relative z-10 text-center fade-up">
       <span class="eyebrow">For North Texas families</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">
         Local Health Watch
@@ -478,7 +478,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
 
   {!data && (
     <section class="pb-16">
-      <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="site-container">
         <div class="rounded-[var(--radius-card)] bg-[rgba(231,108,112,0.10)] border border-[rgba(231,108,112,0.40)] p-6 flex items-start gap-3">
           <Icon name="lucide:cloud-off" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-coral)]" stroke-width="1.8" aria-hidden="true" />
           <div>
@@ -498,7 +498,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
       <!-- 4 plain-language cards -->
       <section class="pb-12 reveal relative overflow-hidden">
         <PageDecor variant="minimal" sparkles={6} />
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="site-container relative z-10">
           <div class="grid gap-5 sm:grid-cols-2">
             {/* Air */}
             {aqi && (
@@ -675,32 +675,32 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
                                   {v.parentNote && (
                                     <p class="mt-1 text-xs text-[var(--color-muted-foreground)] leading-relaxed">{v.parentNote}</p>
                                   )}
-                                  {(v.sourceName || v.geography || v.sourceReportingDate) && (
-                                    <p class="mt-2 text-xs text-[var(--color-muted-foreground)] leading-relaxed">
-                                      {v.sourceUrl && v.sourceName ? (
-                                        <a
-                                          href={v.sourceUrl}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          class="underline decoration-transparent hover:decoration-current focus-visible:decoration-current"
-                                        >
-                                          {v.sourceName}
-                                        </a>
-                                      ) : (
-                                        v.sourceName
-                                      )}
-                                      {v.sourceName && v.geography ? ' · ' : ''}
-                                      {v.geography}
-                                      {(v.sourceName || v.geography) && v.sourceReportingDate ? ' · ' : ''}
-                                      {formatSourceDate(v.sourceReportingDate)}
-                                      {v.stale ? ' · no newer report available' : ''}
-                                    </p>
-                                  )}
-                                  {(v.metric || (v.weeklyValues && v.weeklyValues.length > 1)) && (
+                                  {(v.sourceName || v.geography || v.sourceReportingDate || v.metric || (v.weeklyValues && v.weeklyValues.length > 1)) && (
                                     <details class="mt-2 text-xs text-[var(--color-muted-foreground)]">
                                       <summary class="min-h-11 cursor-pointer py-3 font-medium text-[var(--color-primary)]">
-                                        Report details
+                                        Source and report details
                                       </summary>
+                                      {(v.sourceName || v.geography || v.sourceReportingDate) && (
+                                        <p class="mt-1 leading-relaxed">
+                                          {v.sourceUrl && v.sourceName ? (
+                                            <a
+                                              href={v.sourceUrl}
+                                              target="_blank"
+                                              rel="noopener noreferrer"
+                                              class="underline decoration-transparent hover:decoration-current focus-visible:decoration-current"
+                                            >
+                                              {v.sourceName}
+                                            </a>
+                                          ) : (
+                                            v.sourceName
+                                          )}
+                                          {v.sourceName && v.geography ? ' · ' : ''}
+                                          {v.geography}
+                                          {(v.sourceName || v.geography) && v.sourceReportingDate ? ' · ' : ''}
+                                          {formatSourceDate(v.sourceReportingDate)}
+                                          {v.stale ? ' · no newer report available' : ''}
+                                        </p>
+                                      )}
                                       {v.metric && <p class="mt-1 leading-relaxed">Measure: {v.metric}</p>}
                                       {v.weeklyValues && v.weeklyValues.length > 1 && (
                                         <div class="mt-2 flex flex-wrap gap-1.5">
@@ -745,10 +745,10 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
 
       <!-- Parent CTAs -->
       <section class="pb-16">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="site-container">
           <div class="rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-6 md:p-8">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-              <div class="max-w-2xl">
+              <div>
                 <h2 class="text-2xl tracking-tight">Have a question about today?</h2>
                 <p class="mt-2 text-[var(--color-foreground)]/80 leading-relaxed">
                   Wheezing, fever, persistent cough, vaccine catch-up, or just unsure? Use this
@@ -766,7 +766,7 @@ const toneClasses: Record<'ok' | 'warn' | 'alert', { bg: string; border: string;
           <div class="mt-6 rounded-xl bg-[rgba(11,29,58,0.04)] border border-[var(--color-border-soft)] p-4 flex items-start gap-3">
             <Icon name="lucide:info" class="w-5 h-5 mt-0.5 shrink-0 text-[var(--color-primary)]" stroke-width="1.8" aria-hidden="true" />
             <p class="text-sm text-[var(--color-foreground)]/85 leading-relaxed">
-              <strong>This is general guidance for our community, not medical advice for your child.</strong>
+              <strong>This is general guidance for our community, not medical advice for your child.</strong>{' '}
               We use public data from EPA AirNow, Google Pollen, CDC, and Texas
               DSHS. Geography and reporting dates are shown with each signal.
               For concerns specific to your child, contact their current

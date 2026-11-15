@@ -2,50 +2,47 @@
 import ServicePageLayout from '../layouts/ServicePageLayout.astro';
 import ServiceProvider from '../components/ServiceProvider.astro';
 import ServiceFaq from '../components/ServiceFaq.astro';
-import Picture from '../components/Picture.astro';
+import ScenarioPhoto from '../components/ScenarioPhoto.astro';
 import Button from '../components/Button.astro';
 import { SITE } from '../site.config';
+import { getMeetAndGreetScheduling } from '../utils/serviceScheduling';
 
-const primary = { href: '/contact/', label: 'Ask About a Meet & Greet' };
+const primary = getMeetAndGreetScheduling(SITE.meetAndGreetScheduling);
 const physician = SITE.showProviderProfile
   ? `Dr. ${SITE.provider.schemaName}`
   : 'our pediatrician';
+const meetName = SITE.showProviderProfile ? SITE.provider.shortName : 'our pediatrician';
 const faqs = [
-  { q: 'Is the Meet & Greet really free?', a: 'Yes. The planned introduction is complimentary. Slots are not available yet.' },
-  { q: 'Can I bring my child?', a: 'Child attendance arrangements have not been confirmed. Please ask the office before making plans; details will be announced when the offering is ready.' },
-  { q: SITE.showProviderProfile ? 'Can I meet Dr. T before my baby is born?' : 'Can I meet the pediatrician before my baby is born?', a: 'Expectant parents are welcome to explore the planned offering. Meet & Greets are planned after opening, once arrangements are confirmed; there are no appointments yet.' },
-  { q: 'Will my child receive medical care during the session?', a: "No. It is an introduction only. Continue using your current healthcare provider for medical concerns." },
-  { q: 'How do I schedule a Meet & Greet?', a: 'Scheduling is not available yet. Call or text with general questions about the planned introduction. After opening, booking details will be shared once arrangements are confirmed.' },
+  { q: 'Is the Meet & Greet really free?', a: 'Yes. Meet & Greet visits are free, with no obligation to establish care.' },
+  { q: 'Can I bring my child?', a: 'Yes. Children are welcome to come along.' },
+  { q: SITE.showProviderProfile ? 'Can I meet Dr. T before my baby is born?' : 'Can I meet the pediatrician before my baby is born?', a: 'Yes. Expectant parents choosing a pediatrician are welcome to schedule a Meet & Greet.' },
+  { q: 'Will my child receive medical care during the session?', a: 'No. Meet & Greet visits are introductory only and do not include a medical evaluation or treatment. Continue using your current healthcare provider for medical concerns.' },
+  { q: 'How do I schedule a Meet & Greet?', a: primary.enabled ? 'Use the Schedule a Free Meet & Greet button to schedule online through Phreesia. Call or text with general questions.' : 'Call or text the office to ask about scheduling a Meet & Greet.' },
 ];
 ---
 <ServicePageLayout
   title="Free Pediatrician Meet & Greet in McKinney, TX | Luma Pediatrics"
-  description={SITE.showProviderProfile ? 'Meet Dr. Praveena Tallapureddy (Dr. T), learn about Luma Pediatrics, and see if our McKinney practice is the right fit for your family.' : 'Meet our pediatrician, learn about Luma Pediatrics, and see if our McKinney practice is the right fit for your family.'}
+  description={`Schedule a free, no-obligation Meet & Greet with ${physician} in McKinney. Visit the clinic, ask questions, and see if Luma is the right fit for your family.`}
   path="/meet-and-greet/"
   eyebrow="Free Meet & Greet"
   heading="Meet Your Pediatrician Before You Decide"
-  intro={`Meet ${physician}, ask about our approach to care, and decide whether Luma is right for your family. Complimentary introductions are planned after opening.`}
+  intro={`Choosing a pediatrician is an important decision. Schedule a complimentary Meet & Greet to visit our clinic, meet ${meetName}, ask questions, and see if Luma Pediatrics is the right fit for your family.`}
   primary={primary}
 >
-  <p slot="hero-note">Dates, visit arrangements, and booking are not available yet.</p>
-  {SITE.showProviderProfile && (
-    <Picture
-      slot="hero-image"
-      src="/images/provider-headshot.jpg"
-      alt="Dr. Praveena Tallapureddy, founder of Luma Pediatrics"
-      width={1003}
-      height={1254}
-      loading="eager"
-      fetchpriority="high"
-    />
-  )}
+  <p slot="hero-note">These visits are free, with no obligation to establish care. Please note: Meet &amp; Greet visits are introductory only and do not include a medical evaluation or treatment.</p>
+  <ScenarioPhoto
+    slot="hero-image"
+    src="/images/scenarios/01_meet_and_greet.jpg"
+    alt="Illustrative scene of two parents and a young child playing with a bead maze."
+    loading="eager"
+  />
 
   <section>
-    <div class="service-width">
+    <div class="site-container">
       <h2>What Is a Meet & Greet?</h2>
       <p class="service-copy mt-5">
         This is a complimentary introduction, not a billable clinical visit.
-        You can ask how appointments, communication, and establishing care will work.
+        You can ask how appointments, communication, and establishing care work.
       </p>
       <p class="service-copy mt-4">
         A Meet &amp; Greet does not include examinations, diagnosis, treatment, prescriptions,
@@ -55,14 +52,14 @@ const faqs = [
   </section>
 
   <section>
-    <div class="service-width">
+    <div class="site-container">
       <h2>What to Expect</h2>
       <ol class="service-grid">
         {[
           [SITE.showProviderProfile ? 'Meet Dr. Tallapureddy' : 'Meet our pediatrician', 'Get to know the pediatrician who founded Luma.'],
-          ["Learn about Luma's approach", 'Discuss continuity of care and how we plan to work with parents.'],
-          ['Ask your questions', 'Ask how visits and communication will work. Visit arrangements will be confirmed when the offering is ready.'],
-          ['Learn how to establish care', 'Find out what records and registration steps will be needed when you are ready.'],
+          ["Learn about Luma's approach", 'Discuss continuity of care and how we partner with parents.'],
+          ['Ask your questions', 'Ask how visits, scheduling, and communication work at Luma.'],
+          ['Learn how to establish care', 'Find out which records and registration steps are needed when you are ready.'],
         ].map(([title, description], index) => (
           <li class="service-card">
             <p class="text-sm text-[var(--color-muted-foreground)]">Step {index + 1}</p>
@@ -75,7 +72,7 @@ const faqs = [
   </section>
 
   <section>
-    <div class="service-width">
+    <div class="site-container">
       <h2>Who Is This For?</h2>
       <ul class="service-list">
         <li>Expectant parents choosing a first pediatrician</li>
@@ -83,7 +80,7 @@ const faqs = [
         <li>Families moving to McKinney or nearby communities</li>
         <li>Parents exploring a different pediatric practice</li>
       </ul>
-      <p class="service-copy mt-5">Expecting a baby? <a href="/newborn-care/" class="service-link">Explore planned newborn care</a>.</p>
+      <p class="service-copy mt-5">Expecting a baby? <a href="/newborn-care/" class="service-link">Explore newborn care</a>.</p>
     </div>
   </section>
 
@@ -97,14 +94,13 @@ const faqs = [
       'Clear communication and time for questions',
       "Parents involved in decisions about their child's care",
     ]}
-    showPhoto={false}
   />
   <ServiceFaq items={faqs} />
 
   <section class="service-final">
-    <div class="service-width">
-      <h2>Get to Know Your Child's Future Pediatrician</h2>
-      <p class="service-copy mt-5">Call or text to ask about the planned introduction before deciding on care. Please keep inquiries to general practice questions, not medical information.</p>
+    <div class="site-container">
+      <h2>{SITE.showProviderProfile ? 'Meet Dr. T Before Your First Visit' : 'Meet Your Pediatrician Before Your First Visit'}</h2>
+      <p class="service-copy mt-5">{primary.enabled ? 'Schedule a complimentary Meet & Greet online at a time that works for your family.' : 'Call or text to ask about a Meet & Greet.'} Please keep calls and texts to general practice questions, not medical information.</p>
       <div class="service-actions mt-6"><Button href={primary.href}>{primary.label}</Button></div>
       <a href="/new-patients/" class="service-link mt-4">Ready to establish care? Read the New Patients guide</a>
     </div>

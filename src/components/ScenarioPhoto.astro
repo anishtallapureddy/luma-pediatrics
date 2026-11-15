@@ -1,0 +1,35 @@
+---
+import Picture from './Picture.astro';
+
+interface Props {
+  src: string;
+  alt: string;
+  loading?: 'lazy' | 'eager';
+}
+
+const { src, alt, loading = 'lazy' } = Astro.props;
+---
+<figure class="scenario-photo" data-scenario-photo>
+  <Picture
+    src={src}
+    alt={alt}
+    width={1800}
+    height={1200}
+    loading={loading}
+    fetchpriority={loading === 'eager' ? 'high' : undefined}
+  />
+</figure>
+
+<style>
+  .scenario-photo {
+    width: 100%;
+    max-width: 24rem;
+    margin: 0 auto;
+  }
+  .scenario-photo :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-card);
+  }
+</style>

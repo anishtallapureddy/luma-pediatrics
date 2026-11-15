@@ -69,6 +69,6 @@ Trust your gut. You know your baby better than anyone else does, even at one wee
 
 Newborns are usually seen within the first 48–72 hours after hospital discharge, and again at 1–2 weeks. Your child's current pediatrician or the hospital's newborn follow-up clinic can arrange those visits.
 
-Luma Pediatrics is not yet open or providing clinical care. Learn about our [planned newborn office care](/newborn-care/), but arrange your baby's current follow-up with their pediatrician or the hospital's newborn clinic. Do not delay care until Luma opens.
+Learn about [newborn care at Luma](/newborn-care/). If your baby's follow-up falls before our opening day, arrange it with the hospital's newborn clinic or another pediatrician. Don't delay newborn care.
 
 *This article is for general educational purposes and is not a substitute for advice from your child's pediatrician.*

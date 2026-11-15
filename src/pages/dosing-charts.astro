@@ -80,7 +80,7 @@ const referencesChecked = 'October 30, 2026';
 >
   <section class="page-hero py-12 md:py-16 overflow-hidden">
     <PageDecor />
-    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+    <div class="site-container relative z-10 text-center fade-up">
       <span class="eyebrow">Parent Resources</span>
       <h1 class="mt-5 font-display text-4xl md:text-5xl tracking-tight text-[var(--color-primary)]">
         Medication Dosing Calculator &amp; Charts
@@ -93,12 +93,12 @@ const referencesChecked = 'October 30, 2026';
     </div>
   </section>
 
-  <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 pb-6">
+  <section class="site-container -mt-4 pb-6">
     <div class="rounded-2xl border-2 border-[var(--color-primary)] bg-[var(--color-muted)] p-5">
       <p class="font-display text-lg text-[var(--color-primary)] flex items-start gap-3">
         <Icon name="lucide:alert-triangle" class="w-6 h-6 mt-1 shrink-0 text-[var(--color-primary)]" stroke-width="2" aria-hidden="true" />
         <span>
-          <strong>Always dose by weight, not age.</strong>
+          <strong>Always dose by weight, not age.</strong>{' '}
           Use a syringe or measuring cup, never a kitchen spoon. If you're
           unsure or your child is under 3 months old with a fever (≥ 100.4 °F /
           38 °C rectal), contact your child's current healthcare provider before giving anything.
@@ -110,7 +110,7 @@ const referencesChecked = 'October 30, 2026';
   <DosingCalculator />
 
   {/* === ACETAMINOPHEN === */}
-  <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 reveal">
+  <section class="site-container py-10 reveal">
     <div class="flex items-baseline justify-between flex-wrap gap-2">
       <h2 class="font-display text-3xl text-[var(--color-primary)]">
         Acetaminophen (Tylenol)
@@ -118,8 +118,8 @@ const referencesChecked = 'October 30, 2026';
       <p class="text-sm text-[var(--color-muted-foreground)]">10–15 mg/kg every 4–6 hours</p>
     </div>
     <p class="mt-3 text-[var(--color-muted-foreground)] leading-relaxed">
-      <strong>Ask your child’s provider before giving to children under 2 years.</strong> Maximum
-      <strong>5 doses in 24 hours</strong>. Liquid concentration shown is the standard
+      <strong>Ask your child’s provider before giving to children under 2 years.</strong> Maximum{' '}
+      <strong>5 doses in 24 hours</strong>. Liquid concentration shown is the standard{' '}
       <strong>infants' / children's suspension: 160 mg per 5 mL</strong> (these are
       the same product since 2011, no separate "infant drops" anymore).
     </p>
@@ -152,7 +152,7 @@ const referencesChecked = 'October 30, 2026';
   </section>
 
   {/* === IBUPROFEN === */}
-  <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 reveal">
+  <section class="site-container py-10 reveal">
     <div class="flex items-baseline justify-between flex-wrap gap-2">
       <h2 class="font-display text-3xl text-[var(--color-primary)]">
         Ibuprofen (Motrin / Advil)
@@ -160,11 +160,11 @@ const referencesChecked = 'October 30, 2026';
       <p class="text-sm text-[var(--color-muted-foreground)]">Product-label weight bands · every 6–8 hours</p>
     </div>
     <p class="mt-3 text-[var(--color-muted-foreground)] leading-relaxed">
-      <strong>Do not give to infants under 6 months without provider direction.</strong>
-      Ask your provider before giving to children under 2 years. Maximum
+      <strong>Do not give to infants under 6 months without provider direction.</strong>{' '}
+      Ask your provider before giving to children under 2 years. Maximum{' '}
       <strong>4 doses in 24 hours</strong>. Give with food or milk to reduce
-      stomach upset. Two common liquid strengths:
-      <strong>infant drops 50 mg/1.25 mL</strong> and
+      stomach upset. Two common liquid strengths:{' '}
+      <strong>infant drops 50 mg/1.25 mL</strong> and{' '}
       <strong>children's suspension 100 mg/5 mL</strong>.
     </p>
 
@@ -198,7 +198,7 @@ const referencesChecked = 'October 30, 2026';
   </section>
 
   {/* === DIPHENHYDRAMINE === */}
-  <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 reveal">
+  <section class="site-container py-10 reveal">
     <div class="flex items-baseline justify-between flex-wrap gap-2">
       <h2 class="font-display text-3xl text-[var(--color-primary)]">
         Diphenhydramine (Benadryl)
@@ -210,7 +210,7 @@ const referencesChecked = 'October 30, 2026';
       direction from your pediatrician. The AAP also <strong>discourages
       diphenhydramine for colds or as a sleep aid</strong>, it can cause
       paradoxical agitation or, rarely, dangerous breathing changes in young
-      children. Use it for true allergic reactions only. Standard liquid is
+      children. Use it for true allergic reactions only. Standard liquid is{' '}
       <strong>12.5 mg per 5 mL</strong>.
     </p>
 
@@ -242,7 +242,7 @@ const referencesChecked = 'October 30, 2026';
   </section>
 
   {/* === WHEN TO CALL === */}
-  <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 reveal">
+  <section class="site-container py-10 reveal">
     <h2 class="font-display text-2xl text-[var(--color-primary)]">When to call your child's healthcare provider</h2>
     <ul class="mt-4 space-y-2 text-[var(--color-foreground)] leading-relaxed list-disc pl-5">
       <li>Any fever in an infant <strong>under 3 months</strong> (rectal ≥ 100.4 °F / 38 °C).</li>
@@ -255,17 +255,17 @@ const referencesChecked = 'October 30, 2026';
   </section>
 
   {/* === SOURCES / DISCLAIMER === */}
-  <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 text-sm text-[var(--color-muted-foreground)] leading-relaxed">
+  <section class="site-container pt-6 pb-20 text-sm text-[var(--color-muted-foreground)] leading-relaxed">
     <h3 class="font-display text-lg text-[var(--color-primary)] mb-2">Sources &amp; reviewed</h3>
     <p>
-      Dosing tables are derived from the
+      Dosing tables are derived from the{' '}
       <a href="https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Acetaminophen-for-Fever-and-Pain.aspx" target="_blank" rel="noopener noreferrer" class="underline">
         American Academy of Pediatrics (HealthyChildren.org) acetaminophen
-      </a>
-      and
+      </a>{' '}
+      and{' '}
       <a href="https://www.healthychildren.org/English/safety-prevention/at-home/medication-safety/Pages/Ibuprofen-for-Fever-and-Pain.aspx" target="_blank" rel="noopener noreferrer" class="underline">
         ibuprofen
-      </a>
+      </a>{' '}
       dosing tables, along with the published manufacturer dosing charts for
       Children's Tylenol, Children's Motrin, and Children's Benadryl.
       Source references checked: <strong>{referencesChecked}</strong>.

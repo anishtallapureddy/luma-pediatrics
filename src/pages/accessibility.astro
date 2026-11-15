@@ -12,15 +12,15 @@ const lastUpdated = 'May 2026';
 >
   <section class="page-hero py-12 md:py-16 overflow-hidden">
     <PageDecor variant="minimal" sparkles={6} />
-    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+    <div class="site-container relative z-10 text-center fade-up">
       <span class="eyebrow">Accessibility</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">Accessibility Statement</h1>
       <p class="mt-5 text-sm text-[var(--color-muted-foreground)]">Last updated: {lastUpdated}</p>
     </div>
   </section>
 
-  <section class="pb-20 md:pb-28 reveal">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose-luma">
+  <section class="site-container pb-20 md:pb-28 reveal">
+    <div class="reading-width mx-auto prose-luma">
       <p>
         {SITE.name} is committed to ensuring that our website is accessible to people with
         disabilities. We strive to meet or exceed the Web Content Accessibility Guidelines (WCAG) 2.2

@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageDecor from '../components/PageDecor.astro';
+import Button from '../components/Button.astro';
+import { Icon } from 'astro-icon/components';
+import { SITE } from '../site.config';
+
+const { onCallActive, patientPortalUrl, consultationFee, symptomChecker, nurseLine } = SITE.afterHours;
+const cardClass = 'rounded-[var(--radius-card)] bg-[var(--color-card)] ring-1 ring-[var(--color-border-soft)] p-7 md:p-8';
+const linkClass = 'font-semibold text-[var(--color-primary)] underline underline-offset-4';
+---
+<BaseLayout
+  title="After-Hours Pediatric Care Help | Luma Pediatrics"
+  description="What to do when Luma Pediatrics is closed: Patient Portal messages, our on-call physician, Children's Health nurse line and symptom checker, and 911."
+  path="/after-hours/"
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'After-Hours Care', path: '/after-hours/' },
+  ]}
+>
+  <section class="page-hero py-12 md:py-16 overflow-hidden">
+    <PageDecor variant="minimal" sparkles={6} />
+    <div class="site-container relative z-10 text-center fade-up">
+      <span class="eyebrow eyebrow-sun">After-hours care</span>
+      <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">Need Help After Hours?</h1>
+      <p class="mt-6 mx-auto max-w-2xl text-lg text-[var(--color-foreground)]/85 leading-relaxed">
+        At Luma Pediatrics, we want you to feel supported and confident about your child's care, even when our office is closed.
+      </p>
+      <p class="mt-5 inline-flex items-center gap-2 rounded-full bg-[rgba(231,108,112,0.10)] px-4 py-2 text-sm font-semibold text-[var(--color-foreground)] ring-1 ring-inset ring-[rgba(231,108,112,0.40)]">
+        <Icon name="lucide:siren" class="w-4 h-4 text-[var(--color-coral)]" stroke-width="1.8" aria-hidden="true" />
+        Life-threatening emergency? Call 911.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-20 md:pb-28 reveal">
+    <div class="site-container">
+      <div class="mx-auto max-w-4xl space-y-6">
+      {!onCallActive && (
+        <p data-after-hours-opening-note class="rounded-[var(--radius-card)] bg-[var(--color-muted)] p-6 text-[var(--color-foreground)]/85 leading-relaxed">
+          <strong>{SITE.status}.</strong>{' '}
+          Patient Portal messaging and our on-call physician line begin when we open. Until then, please contact your child's current healthcare provider with medical questions.
+        </p>
+      )}
+
+      <article id="non-urgent" aria-labelledby="non-urgent-heading" class:list={[cardClass, 'scroll-mt-32']}>
+        <div class="flex items-center gap-2 text-[var(--color-primary)]">
+          <Icon name="lucide:message-circle" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+          <h2 id="non-urgent-heading" class="text-2xl md:text-3xl tracking-tight text-[var(--color-foreground)]">For Non-Urgent Questions</h2>
+        </div>
+        <p class="mt-4 text-[var(--color-foreground)]/85 leading-relaxed">
+          For questions, prescription refill requests, or other concerns that can wait until the next business day, please send us a message through the{' '}
+          {patientPortalUrl
+            ? <a href={patientPortalUrl} class={linkClass}>Patient Portal</a>
+            : <strong>Patient Portal</strong>}.
+          Our team will review and respond during regular business hours.
+        </p>
+        <p class="mt-4 font-semibold text-[var(--color-foreground)]">Portal messages are not monitored for emergencies.</p>
+      </article>
+
+      <article id="urgent" aria-labelledby="urgent-heading" class:list={[cardClass, 'scroll-mt-32']}>
+        <div class="flex items-center gap-2 text-[var(--color-primary)]">
+          <Icon name="lucide:phone" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+          <h2 id="urgent-heading" class="text-2xl md:text-3xl tracking-tight text-[var(--color-foreground)]">For Urgent Medical Concerns</h2>
+        </div>
+        <p class="mt-4 text-[var(--color-foreground)]/85 leading-relaxed">
+          If your child has an urgent medical concern that cannot wait until regular office hours, please call{' '}
+          <a href={SITE.contact.phoneHref} class={linkClass}>Luma Pediatrics at {SITE.contact.phone}</a>{' '}
+          to reach our on-call physician.
+        </p>
+        <p class="mt-4 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
+          An after-hours consultation fee of up to {consultationFee} may apply depending on your insurance plan.
+        </p>
+      </article>
+
+      <section id="resources" aria-labelledby="resources-heading" class="scroll-mt-32 pt-4">
+        <h2 id="resources-heading" class="text-2xl md:text-3xl tracking-tight">Additional After-Hours Resources</h2>
+        <div class="mt-5 grid gap-6 md:grid-cols-2">
+          <article class={cardClass}>
+            <Icon name="lucide:stethoscope" class="w-6 h-6 text-[var(--color-primary)]" stroke-width="1.6" aria-hidden="true" />
+            <h3 class="mt-3 text-xl md:text-2xl tracking-tight">{symptomChecker.name}</h3>
+            <p class="mt-3 text-[var(--color-foreground)]/85 leading-relaxed">
+              Not sure what to do about your child's symptoms? The {symptomChecker.name} provides guidance on common childhood illnesses, home care, and when to seek medical attention.
+            </p>
+            <a href={symptomChecker.url} target="_blank" rel="noopener noreferrer" class:list={[linkClass, 'mt-4 inline-flex min-h-11 items-center gap-1.5']}>
+              Open the Symptom Checker
+              <Icon name="lucide:arrow-up-right" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+              <span class="sr-only">(opens Children's Health website in a new tab)</span>
+            </a>
+          </article>
+          <article class={cardClass}>
+            <Icon name="lucide:phone" class="w-6 h-6 text-[var(--color-primary)]" stroke-width="1.6" aria-hidden="true" />
+            <h3 class="mt-3 text-xl md:text-2xl tracking-tight">{nurseLine.name}</h3>
+            <p class="mt-3 text-[var(--color-foreground)]/85 leading-relaxed">
+              Prefer to speak with someone? Call{' '}
+              <a href={nurseLine.phoneHref} class={linkClass}>{nurseLine.phone}</a>{' '}
+              to speak with a nurse who can help direct you to the appropriate care setting, such as your pediatrician, urgent care, or the emergency department. This service does not provide individualized medical advice or home-care instructions.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <article id="emergencies" aria-labelledby="emergencies-heading" class="scroll-mt-32 rounded-[var(--radius-card)] bg-[rgba(231,108,112,0.10)] border border-[rgba(231,108,112,0.40)] p-7 md:p-8">
+        <div class="flex items-center gap-2 text-[var(--color-coral)]">
+          <Icon name="lucide:siren" class="w-5 h-5" stroke-width="1.8" aria-hidden="true" />
+          <h2 id="emergencies-heading" class="text-2xl md:text-3xl tracking-tight text-[var(--color-foreground)]">For Medical Emergencies</h2>
+        </div>
+        <p class="mt-4 text-[var(--color-foreground)]/90 leading-relaxed">
+          If your child is experiencing a life-threatening emergency, <strong>call 911</strong> or go to the nearest emergency department immediately.
+        </p>
+      </article>
+
+      <div class="pt-4 text-center">
+        <Button href="/contact/" variant="secondary">Office hours &amp; contact</Button>
+      </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

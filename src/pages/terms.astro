@@ -5,7 +5,7 @@ import { SITE } from '../site.config';
 import { getMedicalScheduling } from '../utils/serviceScheduling';
 
 const medicalScheduling = getMedicalScheduling(SITE);
-const lastUpdated = 'September 2026';
+const lastUpdated = 'November 1, 2026';
 ---
 
 <BaseLayout
@@ -19,31 +19,38 @@ const lastUpdated = 'September 2026';
 >
   <section class="page-hero py-12 md:py-16 overflow-hidden">
     <PageDecor variant="minimal" sparkles={6} />
-    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+    <div class="site-container relative z-10 text-center fade-up">
       <span class="eyebrow">Terms &amp; Conditions</span>
       <h1 class="mt-5 text-4xl md:text-5xl tracking-tight">Luma Pediatrics SMS Terms</h1>
       <p class="mt-5 text-sm text-[var(--color-muted-foreground)]">Last updated: {lastUpdated}</p>
     </div>
   </section>
 
-  <section class="pb-20 md:pb-28 reveal">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose-luma">
+  <section class="site-container pb-20 md:pb-28 reveal">
+    <div class="reading-width mx-auto prose-luma">
       <h2>Website Terms &amp; Conditions</h2>
       <p>
         These Terms &amp; Conditions govern your use of the Luma Pediatrics website and its public
         communication channels. By using the website, you agree to these terms.
       </p>
 
-      <h2>Future practice status</h2>
+      <h2>Opening and appointment status</h2>
       <p>
-        Luma Pediatrics is a future independent pediatric practice in McKinney, Texas.
-        <strong>{SITE.status}.</strong>
+        Luma Pediatrics is an independent pediatric practice in McKinney, Texas.{' '}
+        <strong>{SITE.status}.</strong>{' '}
         {medicalScheduling.enabled
-          ? 'The practice is not currently open or providing clinical care. Online scheduling is available for selected medical visits.'
-          : `The practice is not currently open or providing clinical care. ${SITE.schedulingNotice}`}
-        Descriptions of services, hours, and availability are plans and may change
-        before opening.
+          ? 'Clinical care begins on opening day; online scheduling is available for selected medical visits.'
+          : 'The practice is not currently open, accepting patients, or scheduling appointments.'}{' '}
+        Descriptions of services, hours, and availability may change.
       </p>
+
+      {medicalScheduling.appointments.enabled && (
+        <p>
+          Book appointments through <a href={medicalScheduling.appointments.href}>Phreesia</a>.
+          Confirm the visit type, appointment date, insurance, and costs before booking.
+          Online booking does not provide medical advice or make clinical care available before opening.
+        </p>
+      )}
 
       <h2>General information only</h2>
       <p>
@@ -57,14 +64,14 @@ const lastUpdated = 'September 2026';
       <h2>No physician-patient relationship</h2>
       <p>
         Visiting this website, joining the email updates list, or contacting Luma Pediatrics by
-        phone, text, or email does not establish a physician-patient relationship. A relationship can
-        be established only after the practice opens and appropriate registration and care occur.
+        phone, text, or email does not establish a physician-patient relationship. A relationship is
+        established only through appropriate registration and care.
       </p>
 
       <h2>Email updates</h2>
       <p>
-        Individuals may voluntarily subscribe to occasional email updates about the planned opening
-        and general services. Email updates are not patient registration or appointment requests.
+        Individuals who subscribe to occasional email updates about the practice receive general
+        news only. Email updates are not patient registration or appointment requests.
         Subscribers may unsubscribe at any time.
       </p>
 

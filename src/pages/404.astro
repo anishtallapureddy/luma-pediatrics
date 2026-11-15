@@ -5,7 +5,7 @@ import PageDecor from '../components/PageDecor.astro';
 import { Icon } from 'astro-icon/components';
 
 const quickLinks = [
-  { href: '/services/', icon: 'lucide:stethoscope', label: 'Services', desc: 'See planned services.' },
+  { href: '/services/', icon: 'lucide:stethoscope', label: 'Services', desc: 'See what we offer.' },
   { href: '/faq/', icon: 'lucide:info', label: 'FAQ', desc: 'Common questions.' },
   { href: '/contact/', icon: 'lucide:mail', label: 'Contact', desc: 'Call, text, or email for general questions.' },
 ];
@@ -19,7 +19,7 @@ const quickLinks = [
 >
   <section class="page-hero py-20 md:py-28 relative overflow-hidden">
     <PageDecor variant="lush" sparkles={14} />
-    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-up">
+    <div class="site-container relative z-10 text-center fade-up">
       <p
         class="text-7xl md:text-9xl text-[var(--color-sun)] tracking-tight leading-none"
         style="font-family: var(--font-display); font-weight: 500;"
@@ -28,7 +28,7 @@ const quickLinks = [
       </p>
       <h1 class="mt-6 text-3xl md:text-5xl tracking-tight">We can't find that page.</h1>
       <p class="mt-5 tagline-italic-sage text-lg md:text-xl">Let's get you back on track.</p>
-      <p class="mt-6 text-base md:text-lg text-[var(--color-foreground)]/80 leading-relaxed max-w-xl mx-auto">
+      <p class="mt-6 text-base md:text-lg text-[var(--color-foreground)]/80 leading-relaxed mx-auto">
         The link may be outdated or the page may have moved. Try one of the popular pages below.
       </p>
 
@@ -43,7 +43,7 @@ const quickLinks = [
   </section>
 
   <section class="pb-20 md:pb-28 reveal">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="site-container">
       <p class="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)] text-center mb-6">
         Popular pages
       </p>

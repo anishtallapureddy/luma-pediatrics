@@ -1,6 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import Logo from './Logo.astro';
+import Button from './Button.astro';
 import { SITE } from '../site.config';
 import { getMedicalScheduling } from '../utils/serviceScheduling';
 
@@ -32,7 +33,7 @@ const isActive = (href: string) => {
 <header
   class="sticky top-0 z-40 bg-[var(--color-background)] border-b border-[var(--color-border-soft)] [transition:box-shadow_var(--duration-base)_var(--ease-fluid),border-color_var(--duration-base)_var(--ease-fluid)]"
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="site-container">
     <div class="flex min-h-20 items-center justify-between gap-3 py-2">
       <a
         href="/"
@@ -42,13 +43,13 @@ const isActive = (href: string) => {
          <Logo variant="horizontal" size={60} />
       </a>
 
-      <nav aria-label="Primary" class="hidden lg:flex items-center gap-1">
+      <nav aria-label="Primary" class="hidden xl:flex items-center gap-0.5">
         {navLinks.map(({ href, label }) => (
           <a
             href={href}
             aria-current={isActive(href) ? 'page' : undefined}
             class:list={[
-              'px-3 py-2 rounded-full text-[var(--color-foreground)] no-underline font-medium whitespace-nowrap hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid),color_var(--duration-fast)_var(--ease-fluid)]',
+              'px-2 py-2 rounded-full text-[0.9375rem] text-[var(--color-foreground)] no-underline font-medium whitespace-nowrap hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid),color_var(--duration-fast)_var(--ease-fluid)]',
               isActive(href) && 'bg-[rgba(200,153,90,0.14)]',
             ]}
           >
@@ -58,46 +59,51 @@ const isActive = (href: string) => {
       </nav>
 
       <div class="flex items-center gap-2">
-        <div class="hidden lg:flex">
-          <div
-            class="inline-flex items-center overflow-hidden rounded-full bg-[var(--color-card)] ring-1 ring-inset ring-[var(--color-border-soft)]"
-            role="group"
-            aria-label="Contact Luma Pediatrics for general questions, not medical advice"
-          >
+        <div
+          class="hidden xl:flex items-center gap-1.5"
+          role="group"
+          aria-label="Contact Luma Pediatrics for general questions, not medical advice"
+        >
           <a
             href={SITE.contact.phoneHref}
-            class="inline-flex min-h-10 items-center gap-2 px-3 text-[var(--color-foreground)] no-underline font-medium whitespace-nowrap hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
+            class="header-contact-btn"
             aria-label={`Call ${SITE.name} for general questions at ${SITE.contact.phone}`}
             title={`General questions only: call ${SITE.contact.phone}`}
           >
-            <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
-            <span class="hidden xl:inline">Call office</span>
+            <Icon name="lucide:phone" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+            <span>Call us</span>
           </a>
-          <span class="h-5 w-px bg-[var(--color-border-soft)]" aria-hidden="true"></span>
           <a
             href={SITE.contact.smsHref}
-            class="inline-flex min-h-10 items-center gap-2 px-3 text-[var(--color-foreground)] no-underline font-medium whitespace-nowrap hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
+            class="header-contact-btn"
             aria-label={`Text ${SITE.name} for general questions at ${SITE.contact.phone}`}
             title={`General questions only: text ${SITE.contact.phone}`}
           >
-            <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.6" aria-hidden="true" />
-            <span class="hidden xl:inline">Text office</span>
+            <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
+            <span>Text us</span>
           </a>
           <a
             href={SITE.contact.smsDisclosureHref}
-            class="inline-flex min-h-10 w-9 items-center justify-center text-[var(--color-foreground)] no-underline hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
+            class="inline-flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-muted-foreground)] no-underline hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
             aria-label="View text messaging terms"
             title="Text messaging terms"
           >
             <Icon name="lucide:info" class="w-4 h-4" stroke-width="1.7" aria-hidden="true" />
           </a>
-          </div>
         </div>
-        {/* Book Appointment CTA intentionally omitted until online scheduling is live. */}
+        {medicalScheduling.appointments.enabled && (
+          <Button
+            href={medicalScheduling.appointments.href}
+            class="header-schedule-btn whitespace-nowrap xl:px-4"
+            ariaLabel={medicalScheduling.appointments.label}
+          >
+            <span>Schedule<span class="hidden sm:inline">&nbsp;an Appointment</span></span>
+          </Button>
+        )}
 
         <button
           type="button"
-          class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full text-[var(--color-primary)] bg-transparent border border-[var(--color-border-soft)] hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
+          class="xl:hidden inline-flex items-center justify-center w-11 h-11 rounded-full text-[var(--color-primary)] bg-transparent border border-[var(--color-border-soft)] hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
           aria-label="Open menu"
           aria-controls="mobile-menu"
           aria-expanded="false"
@@ -110,7 +116,7 @@ const isActive = (href: string) => {
     </div>
 
     <!-- Mobile drawer - slides down below the header when toggled. -->
-    <div id="mobile-menu" class="lg:hidden mobile-menu-panel" data-mobile-menu data-open="true">
+    <div id="mobile-menu" class="xl:hidden mobile-menu-panel" data-mobile-menu data-open="true">
       <div class="mobile-menu-inner">
         <nav aria-label="Primary mobile" class="flex flex-col py-2">
           {navLinks.map(({ href, label }) => (
@@ -130,15 +136,12 @@ const isActive = (href: string) => {
     </div>
   </div>
   <div class="border-t border-[var(--color-border-soft)] bg-[var(--color-muted)]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center text-xs sm:text-sm text-[var(--color-foreground)]/85">
+    <div class="site-container py-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center text-xs sm:text-sm text-[var(--color-foreground)]/85">
       <span class="inline-flex items-center gap-1.5">
         <Icon name="lucide:sparkles" class="w-3.5 h-3.5 text-[var(--color-sun)]" stroke-width="1.8" aria-hidden="true" />
         <strong>{SITE.status}.</strong>
       </span>
-      <span>{medicalScheduling.enabled ? 'Not currently open. Online scheduling is available for selected medical visits.' : SITE.schedulingNotice}</span>
-      <a href="/#practice-updates" class="hidden sm:inline-flex font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
-        Get opening updates
-      </a>
+      <span>{medicalScheduling.enabled ? 'Now booking online.' : 'Not currently open or scheduling appointments.'}</span>
     </div>
   </div>
 </header>
@@ -166,9 +169,25 @@ const isActive = (href: string) => {
     min-height: 0;
     border-top: 1px solid var(--color-border-soft);
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 1280px) {
     .mobile-menu-panel { display: none; }
   }
+  .header-contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.75rem;
+    padding-inline: 0.75rem;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-button);
+    background: var(--color-card);
+    color: var(--color-primary);
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background-color var(--duration-fast) var(--ease-fluid);
+  }
+  .header-contact-btn:hover { background: var(--color-muted); }
   /* Icon swap - show menu icon when closed, X when open. */
   [data-mobile-menu-toggle] .mobile-menu-icon-close { display: none; }
   [data-mobile-menu-toggle][aria-expanded="true"] .mobile-menu-icon-open { display: none; }
@@ -217,7 +236,7 @@ const isActive = (href: string) => {
     });
 
     // Close when viewport grows past mobile breakpoint
-    var mq = window.matchMedia('(min-width: 1024px)');
+    var mq = window.matchMedia('(min-width: 1280px)');
     var onChange = function () {
       if (!mq.matches) return;
       var focusedHref = panel.contains(document.activeElement)
