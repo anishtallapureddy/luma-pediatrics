@@ -25,6 +25,8 @@ export const SITE = {
     /** Approved shared portal: newborn, behavioral, sick, and well-child checks. */
     enabled: true,
     url: PHREESIA_URL,
+    /** Shows "Appointments available beginning {openingDate}" under the homepage scheduling button; set false on opening day. */
+    showStartNote: true,
   },
   newbornScheduling: {
     /** Explicit manual activation; appointment dates must be checked before publishing. */
@@ -126,7 +128,6 @@ export const SITE = {
     phoneE164: '+14692001151',
     phoneHref: 'tel:+14692001151',
     smsHref: 'sms:+14692001151',
-    smsDisclosureHref: '/contact/#sms-disclosure',
     textingNote: 'Prefer to message? Text us with nonurgent questions. Replies are not immediate; do not send medical information.',
     email: 'hello@lumapediatrics.com',
     emailHref: 'mailto:hello@lumapediatrics.com',
@@ -300,6 +301,7 @@ export const SITE = {
     { href: '/about/',        label: 'About' },
     { href: '/services/',     label: 'Services' },
     { href: '/new-patients/', label: 'New Patients' },
+    { href: '/resources/',    label: 'Resources' },
     { href: '/faq/',          label: 'FAQ' },
     { href: '/contact/',      label: 'Contact' },
   ],

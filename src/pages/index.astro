@@ -9,12 +9,13 @@ import { featuredServices as services } from '../data/services';
 import Picture from '../components/Picture.astro';
 import { getMedicalScheduling } from '../utils/serviceScheduling';
 const { appointments } = getMedicalScheduling(SITE);
+const appointmentsStartDate = new Date(`${SITE.openingDate}T00:00:00Z`).toLocaleDateString('en-US', {
+  month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC',
+});
 const familyBenefits = [
   {
     title: 'Your concerns are heard.',
-    body: SITE.showProviderProfile
-      ? 'Time to discuss your child’s health and questions with board-certified pediatrician Dr. Praveena Tallapureddy.'
-      : 'Time to discuss your child’s health and questions with a board-certified pediatrician.',
+    body: 'We take time to listen, answer your questions, and understand what matters most to your family.',
     src: '/images/trust-checkup.jpg',
     alt: SITE.showProviderProfile
       ? 'Dr. Tallapureddy using a stethoscope on a smiling girl held by her mother'
@@ -22,13 +23,13 @@ const familyBenefits = [
   },
   {
     title: 'You understand the plan.',
-    body: 'Clear explanations of care recommendations and practical guidance on what to do next.',
+    body: 'Clear explanations and practical guidance so you leave each visit knowing what comes next.',
     src: '/images/trust-gentle.jpg',
     alt: 'A smiling young girl using a stethoscope to listen to her teddy bear',
   },
   {
     title: 'Care as your child grows.',
-    body: 'Guidance on feeding, development, school, and healthy habits through the teen years.',
+    body: 'From newborn days through the teen years, we’re here to support your child’s health and development at every stage.',
     src: '/images/trust-playful.jpg',
     alt: 'A happy toddler sitting on a rug, surrounded by a teddy bear, bunny, and stacking toys',
   },
@@ -70,7 +71,7 @@ const homeServices = homeServiceSlugs.flatMap((slug) => services.filter((service
             <StarDivider span="4rem" />
           </div>
           <p class="mt-3 text-sm md:text-base text-[var(--color-foreground)]/80 mx-auto lg:mx-0 leading-relaxed">
-            {SITE.showProviderProfile ? 'Board-certified pediatrician Dr. Praveena Tallapureddy provides' : 'Our board-certified pediatrician provides'} newborn checkups, well-child visits, and sick care through age 21 in McKinney, starting {SITE.openingWindow}.
+            {SITE.showProviderProfile ? 'Board-certified pediatrician Dr. Praveena Tallapureddy provides' : 'Our board-certified pediatrician provides'} personalized, evidence-based care for children from birth through age 21. {SITE.status}.
           </p>
           <p class="mt-3 text-sm md:text-base font-semibold text-[var(--color-primary)]">
             Insurance accepted. No membership fee.
@@ -114,10 +115,10 @@ const homeServices = homeServiceSlugs.flatMap((slug) => services.filter((service
           </span>
           <h2 class="mt-5 text-3xl md:text-5xl tracking-tight">Scheduling Made Simple</h2>
           <p class="mt-5 text-lg leading-relaxed text-[var(--color-foreground)]/85">
-            At Luma Pediatrics, we want getting care for your child to be easy. You can schedule appointments online at your convenience, without having to call during office hours.
+            Your family’s schedule is busy. Booking a pediatric appointment shouldn’t be.
           </p>
           <p class="mt-4 text-lg leading-relaxed text-[var(--color-foreground)]/85">
-            Whether your child is due for a well visit, feeling sick, or needs follow-up care, you can book an appointment online at a time that works for your family.
+            Schedule well-child visits, sick appointments, and follow-up care online, anytime. Just choose a date and time that works for you.
           </p>
           <div class="mt-8 flex justify-center">
             <Button href={appointments.href} variant="primary">
@@ -127,6 +128,11 @@ const homeServices = homeServiceSlugs.flatMap((slug) => services.filter((service
               </span>
             </Button>
           </div>
+          {SITE.appointmentScheduling.showStartNote && (
+            <p class="mt-4 text-sm text-[var(--color-muted-foreground)]" data-appointments-start-note>
+              Appointments available beginning {appointmentsStartDate}.
+            </p>
+          )}
         </div>
       </div>
     </section>
@@ -221,7 +227,7 @@ const homeServices = homeServiceSlugs.flatMap((slug) => services.filter((service
 
       <p class="mt-8 text-center">
         <a href="/about/" class="inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline underline-offset-4">
-          Get to know our pediatrician →
+          {SITE.showProviderProfile ? 'Meet Dr. T →' : 'Meet our pediatrician →'}
         </a>
       </p>
     </div>
@@ -254,10 +260,10 @@ const homeServices = homeServiceSlugs.flatMap((slug) => services.filter((service
             Does Luma accept my insurance?
           </h3>
           <p class="mt-5 text-[var(--color-foreground)]/80 leading-relaxed">
-            We accept a variety of commercial insurance plans and offer self-pay pricing. Call or text to verify your coverage or ask for an estimate.
+            We accept a variety of insurance plans and offer straightforward self-pay pricing. Check our participating plans online, or text us if you have questions about coverage.
           </p>
           <a href="/new-patients/#insurance" class="mt-6 inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
-            See insurance and self-pay details →
+            View insurance &amp; self-pay details →
           </a>
         </article>
 
@@ -296,10 +302,28 @@ const homeServices = homeServiceSlugs.flatMap((slug) => services.filter((service
         </article>
       </div>
 
+      <aside
+        class="mt-6 flex flex-col gap-4 rounded-[var(--radius-card)] bg-[var(--color-card)] p-7 ring-1 ring-[var(--color-border-soft)] md:flex-row md:items-start md:p-9"
+        aria-labelledby="first-visit-prep-heading"
+        data-first-visit-prep
+      >
+        <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[var(--color-muted)] text-[var(--color-primary)] ring-1 ring-inset ring-[rgba(200,153,90,0.30)]" aria-hidden="true">
+          <Icon name="lucide:clipboard-list" class="w-5 h-5" stroke-width="1.8" />
+        </span>
+        <div>
+          <h3 id="first-visit-prep-heading" class="text-2xl tracking-tight">Getting ready for your first visit?</h3>
+          <p class="mt-3 text-[var(--color-foreground)]/80 leading-relaxed">
+            We’ll text you a link to complete registration and paperwork before your appointment. If your child has seen another pediatrician, we’ll help request their medical records with your authorization. For well-child visits, please bring a copy of your child’s vaccination record.
+          </p>
+          <a href="/new-patients/" class="mt-4 inline-flex min-h-11 items-center font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline">
+            View our new-patient guide →
+          </a>
+        </div>
+      </aside>
+
       <div class="mt-12 text-center">
         <p class="text-lg text-[var(--color-foreground)]/80">Still have a question?</p>
         <div class="mt-5 flex flex-wrap justify-center gap-3">
-          <Button href="/new-patients/" variant="secondary">New-patient guide</Button>
           <Button href="/faq/" variant="secondary">Browse FAQs</Button>
           <Button href="/contact/" variant="ghost">Contact us</Button>
         </div>

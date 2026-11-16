@@ -480,7 +480,7 @@ for (const value of [
 }
 expect(
   !homeText.includes('Made for children') &&
-    home.html.includes('Get to know our pediatrician'),
+    home.html.includes('Meet Dr. T →'),
   'Home should remove repetitive gallery captions and connect parents to the pediatrician',
 );
 for (const service of [
@@ -506,15 +506,15 @@ expect(!home.html.includes('hero-status-pill'), 'Home page must not repeat the o
 const familyBenefitsStart = home.html.indexOf('data-family-benefits');
 const familyBenefits =
   familyBenefitsStart >= 0
-    ? home.html.slice(familyBenefitsStart, home.html.indexOf('Get to know our pediatrician', familyBenefitsStart))
+    ? home.html.slice(familyBenefitsStart, home.html.indexOf('Meet Dr. T →', familyBenefitsStart))
     : '';
 expect(
   !home.html.includes('hero-credibility-ribbon') &&
     normalizedText(familyBenefits).includes('Your concerns are heard.') &&
     normalizedText(familyBenefits).includes(
-      'Time to discuss your child’s health and questions with board-certified pediatrician Dr. Praveena Tallapureddy.',
+      'We take time to listen, answer your questions, and understand what matters most to your family.',
     ),
-  'Family benefits must appear once, in Why Luma, with the board-certified pediatrician message',
+  'Family benefits must appear once, in Why Luma, with the approved listening message',
 );
 expect(
   !home.html.includes('class="sage-sweep"'),
@@ -564,9 +564,10 @@ expect(
     normalizedText(homeHero).includes(SITE.openingWindow),
   'Header and hero must carry the approved opening announcement without implying the clinic is already open',
 );
-for (const service of ['newborn checkups', 'well-child visits', 'sick care']) {
-  expect(normalizedText(homeHero).includes(service), `Home hero must explain ${service}`);
-}
+expect(
+  normalizedText(homeHero).includes('personalized, evidence-based care for children from birth through age 21.'),
+  'Home hero must describe care from birth through age 21',
+);
 expect(
   homeHero.includes(`href="${scheduling.appointments.href}"`) && normalizedText(homeHero).includes(scheduling.appointments.label),
   'Home hero must prioritize approved appointment booking over email signup',
@@ -638,8 +639,8 @@ if (scheduling.appointments.enabled) {
   const homeSchedulingText = normalizedText(homeScheduling);
   for (const value of [
     'Scheduling Made Simple',
-    'At Luma Pediatrics, we want getting care for your child to be easy. You can schedule appointments online at your convenience, without having to call during office hours.',
-    'Whether your child is due for a well visit, feeling sick, or needs follow-up care, you can book an appointment online at a time that works for your family.',
+    'Your family’s schedule is busy. Booking a pediatric appointment shouldn’t be.',
+    'Schedule well-child visits, sick appointments, and follow-up care online, anytime. Just choose a date and time that works for you.',
   ]) {
     expect(homeSchedulingText.includes(value), `Home scheduling section is missing approved copy: ${value}`);
   }
@@ -959,6 +960,15 @@ const resourcesPage = pages.find(
   (page) => page.canonical === `${domain}/resources/`,
 );
 expect(resourcesPage, 'Resources page was not generated');
+const recentGuidesStart = resourcesPage.html.indexOf('id="recent-guides-heading"');
+const recentGuidesHtml = recentGuidesStart >= 0 ? resourcesPage.html.slice(recentGuidesStart) : '';
+for (const article of articlePages.filter((page) => recentGuidesHtml.includes(`href="${new URL(page.canonical).pathname}"`))) {
+  const hero = articleHeroPaths[articlePages.indexOf(article)];
+  expect(
+    hero && findTags(recentGuidesHtml, 'img').some((attributes) => attributes.src === hero),
+    `Resources latest guide cards must show the article cover image: ${article.canonical}`,
+  );
+}
 const recentArticlePaths = articlePages
   .map((page) => ({
     path: new URL(page.canonical).pathname,
@@ -1685,6 +1695,17 @@ expect(
   'The fever guide must be discoverable with its cover, linked pediatric references, and current-care/emergency safeguards',
 );
 expect(newbornArticle?.html.includes('href="/newborn-care/"'), 'The newborn educational article must link to the newborn service page');
+for (const page of pages) {
+  for (const sentence of normalizedText(page.html).split(/(?<=[.!?])\s+/)) {
+    if (!sentence.includes('100.4')) continue;
+    for (const [, amount, unit] of sentence.matchAll(/\b(?:under|younger than)\s+(\w+)\s+(weeks?|days?|months?)\b/gi)) {
+      expect(
+        `${amount} ${unit}`.toLowerCase() === '3 months',
+        `${page.canonical}: infant fever guidance must use the under-3-months cutoff, found "${amount} ${unit}"`,
+      );
+    }
+  }
+}
 for (const [path, filename] of [
   ['/meet-and-greet/', '01_meet_and_greet.jpg'],
   ['/newborn-care/', '02_newborn_care.jpg'],

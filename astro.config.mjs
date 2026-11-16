@@ -28,6 +28,7 @@ export default defineConfig({
           'heart',
           'calendar',
           'calendar-check',
+          'clipboard-list',
           'syringe',
           'droplet',
           'phone',

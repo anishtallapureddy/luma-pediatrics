@@ -2,7 +2,7 @@
 title: "The newborn's first week: a calm parent's guide"
 description: "A pediatrician's practical guide to feeding, sleep, diapering, and the warning signs that mean it's time to call, for parents in the first 7 days at home."
 publishDate: 2026-09-16
-updatedDate: 2026-11-01
+updatedDate: 2026-11-15
 hero: /images/blog-newborn.jpg
 heroWide: /images/blog-newborn-16x9.jpg
 heroSquare: /images/blog-newborn-1x1.jpg
@@ -57,7 +57,7 @@ Follow the discharge instructions for cord and circumcision care, and ask your b
 
 Contact your baby's current healthcare provider promptly for these warning signs. Do not wait for a routine appointment:
 
-- **A rectal temperature of 100.4°F (38°C) or higher** in a baby under 8 weeks. This one is always urgent, at any hour
+- **A rectal temperature of 100.4°F (38°C) or higher** in a baby under 3 months. This one is always urgent, at any hour
 - Fewer than 4 wet diapers in 24 hours by day 5
 - Refusing to feed for more than a few hours
 - Yellow color spreading down the chest, belly, or legs (jaundice)

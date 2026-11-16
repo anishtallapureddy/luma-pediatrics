@@ -82,14 +82,6 @@ const isActive = (href: string) => {
             <Icon name="lucide:message-circle" class="w-4 h-4" stroke-width="1.8" aria-hidden="true" />
             <span>Text us</span>
           </a>
-          <a
-            href={SITE.contact.smsDisclosureHref}
-            class="inline-flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-muted-foreground)] no-underline hover:bg-[rgba(200,153,90,0.10)] [transition:background-color_var(--duration-fast)_var(--ease-fluid)]"
-            aria-label="View text messaging terms"
-            title="Text messaging terms"
-          >
-            <Icon name="lucide:info" class="w-4 h-4" stroke-width="1.7" aria-hidden="true" />
-          </a>
         </div>
         {medicalScheduling.appointments.enabled && (
           <Button

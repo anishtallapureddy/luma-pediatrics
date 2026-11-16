@@ -273,6 +273,8 @@ Newborn Care. Preserve both older Services deep-link anchors.
 The fever guide's `blog-fever-care` cover is a warm-toned crop of the existing
 `blog-fever.jpg` still-life asset, not a clinic or patient photograph. It includes
 4:3 JPEG/WebP and 16:9/1:1 JPEG variants for article and sharing metadata.
+The colds guide's `blog-colds-coughs` cover is an AI-generated bedside still life
+with no people, brands, labels, or medicines, in the same 4:3, 16:9, and 1:1 set.
 
 - **No PHI on this site.** The email-updates form collects only optional name, email, explicit consent, source page, and timestamps.
 - **External medical booking only.** Phreesia handles appointment selection and approved intake; the static website, updates form, email, and SMS are not patient-intake or clinical-messaging channels.
