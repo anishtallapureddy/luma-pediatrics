@@ -1,0 +1,79 @@
+---
+/**
+ * BlogCard - image-led article card shared by the Blog index and Resources page.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import Picture from './Picture.astro';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { post, headingLevel: Heading = 'h2' } = Astro.props;
+const date = post.data.publishDate.toLocaleDateString('en-US', {
+  year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
+});
+---
+<li class="blog-card reveal">
+  <a href={`/blog/${post.id}/`} class="block no-underline">
+    {post.data.hero && (
+      <figure class="blog-card-figure">
+        <Picture
+          src={post.data.hero}
+          alt={post.data.heroAlt ?? post.data.title}
+          width={1200}
+          height={900}
+          loading="lazy"
+        />
+      </figure>
+    )}
+    <div class="p-5">
+      <p class="text-xs font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)]">
+        {date}
+      </p>
+      <Heading class="mt-2 font-display text-2xl text-[var(--color-primary)] leading-snug">
+        {post.data.title}
+      </Heading>
+      <p class="mt-2 text-sm text-[var(--color-muted-foreground)] leading-relaxed">
+        {post.data.description}
+      </p>
+      <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)]">
+        Read article
+        <Icon name="lucide:arrow-right" class="w-4 h-4" stroke-width="2" aria-hidden="true" />
+      </span>
+    </div>
+  </a>
+</li>
+
+<style>
+  .blog-card {
+    border-radius: 1.25rem;
+    overflow: hidden;
+    background: var(--color-card);
+    border: 1px solid var(--color-border-soft);
+    box-shadow: var(--shadow-soft);
+    transition:
+      transform var(--duration-base) var(--ease-fluid),
+      box-shadow var(--duration-base) var(--ease-fluid);
+  }
+  .blog-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft-hover);
+  }
+  .blog-card-figure {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    margin: 0;
+  }
+  .blog-card-figure :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-emphasized) var(--ease-fluid);
+  }
+  .blog-card:hover .blog-card-figure :global(img) {
+    transform: scale(1.04);
+  }
+</style>
