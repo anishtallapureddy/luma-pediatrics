@@ -1685,6 +1685,17 @@ expect(
   'The fever guide must be discoverable with its cover, linked pediatric references, and current-care/emergency safeguards',
 );
 expect(newbornArticle?.html.includes('href="/newborn-care/"'), 'The newborn educational article must link to the newborn service page');
+for (const page of pages) {
+  for (const sentence of normalizedText(page.html).split(/(?<=[.!?])\s+/)) {
+    if (!sentence.includes('100.4')) continue;
+    for (const [, amount, unit] of sentence.matchAll(/\b(?:under|younger than)\s+(\w+)\s+(weeks?|days?|months?)\b/gi)) {
+      expect(
+        `${amount} ${unit}`.toLowerCase() === '3 months',
+        `${page.canonical}: infant fever guidance must use the under-3-months cutoff, found "${amount} ${unit}"`,
+      );
+    }
+  }
+}
 for (const [path, filename] of [
   ['/meet-and-greet/', '01_meet_and_greet.jpg'],
   ['/newborn-care/', '02_newborn_care.jpg'],
