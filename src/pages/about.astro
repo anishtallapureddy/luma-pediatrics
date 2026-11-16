@@ -105,10 +105,10 @@ const careScope = SITE.provider.quickFacts.find(
               <aside class="mt-7 flex items-start gap-3 rounded-2xl bg-[var(--color-muted)] p-5 ring-1 ring-inset ring-[var(--color-border-soft)]">
                 <Icon name="lucide:book-open" class="mt-1 w-5 h-5 shrink-0 text-[var(--color-sage-hover)]" stroke-width="1.7" aria-hidden="true" />
                 <div>
-                  <h3 class="text-base font-bold">Outside the office</h3>
-                  <p class="mt-2 text-sm text-[var(--color-foreground)]/80 leading-relaxed">
-                    {SITE.provider.lifeOutside}
-                  </p>
+                  <h3 class="text-base font-bold">Outside the Office</h3>
+                  {SITE.provider.lifeOutside.map((para) => (
+                    <p class="mt-2 text-sm text-[var(--color-foreground)]/80 leading-relaxed">{para}</p>
+                  ))}
                 </div>
               </aside>
             </div>

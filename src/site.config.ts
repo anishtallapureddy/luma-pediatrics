@@ -87,13 +87,16 @@ export const SITE = {
     /** First-person welcome shown beside the professional headshot. */
     welcome: [
       'Hello, and welcome to Luma Pediatrics!',
-      "I'm Dr. Praveena Tallapureddy, a mom of two and proud Aggie. Being both a doctor and a parent shapes how I care for families.",
-      'I founded Luma Pediatrics to create a practice where parents have time to ask questions and children can build a lasting relationship with their pediatrician.',
-      'My goal is simple: listen carefully, explain the options, and make sure families leave with a clear plan.',
+      "I'm Dr. Praveena Tallapureddy, but most of my patients know me as Dr. T! I'm a board-certified pediatrician, a mom of two, and a proud Aggie.",
+      "I've had the privilege of caring for children and families in McKinney since 2022. One of my favorite parts of pediatrics is getting to know families over time, from those early newborn days through all the milestones, big and small.",
+      'Being both a pediatrician and a parent has shaped the way I practice medicine. I know how much it means to have a doctor who listens, takes your concerns seriously, and helps you feel confident in the decisions you make for your child.',
+      'I started Luma Pediatrics to bring that kind of care together with a more thoughtful, convenient experience for families. My goal is simple: for you to feel heard, your child to feel comfortable, and your family to leave every visit with a clear plan.',
     ],
-    /** Personal note shown beside the casual family photo. */
-    lifeOutside:
-      "Outside the office, I spend time with my two children and extended family, take long walks, read, and join our monthly cousins' cooking sessions. I am also an enthusiastic member of my book club.",
+    /** "Outside the Office" paragraphs shown below the welcome. */
+    lifeOutside: [
+      "When I'm not at the clinic, you'll usually find me chasing after my two kids or enjoying a walk with my husband. I love spending time with my big extended family, especially our monthly cousins' cooking sessions, which are always full of good food and lots of laughter!",
+      "When I get a little quiet time, I'm usually curled up with a good book. I'm also an enthusiastic member of my book club, where I've somehow become the official storyteller and recapper!",
+    ],
     /** Quick-facts grid rendered under the bio. */
     quickFacts: [
       { label: 'Board Certified', value: 'American Board of Pediatrics' },
