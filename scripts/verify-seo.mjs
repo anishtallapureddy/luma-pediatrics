@@ -47,6 +47,7 @@ const contract = {
   physicianHonorificSuffix: 'M.D., F.A.A.P.',
   status: 'Opening November 30 in McKinney',
   ga4: 'G-QL30ZJXMW8',
+  googleAds: 'AW-18548997925',
   socialImage: '/og-luma-pediatrics-opening-november-30.png',
   homeSocialTitle: 'Luma Pediatrics | McKinney, TX',
   homeDescription:
@@ -441,6 +442,11 @@ expect(
 );
 expect(home.html.includes(`googletagmanager.com/gtag/js?id=${contract.ga4}`), 'GA4 loader is missing');
 expect(home.html.includes("'contact_action'"), 'GA4 contact conversion event is missing');
+expect(
+  home.html.includes(`"${contract.googleAds}"`) &&
+    home.html.includes('allow_ad_personalization_signals: false'),
+  'Google Ads conversion tag is missing or allows ad personalization',
+);
 expect(
   !home.html.includes("'generate_lead'") && !home.html.includes('id="practice-updates"'),
   'Home must stay focused on scheduling without an email signup or unverified lead analytics',
