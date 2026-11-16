@@ -280,11 +280,19 @@ export const SITE = {
    * - googleSiteVerification: verification token from Google Search Console
    *   (Settings → Ownership verification → HTML tag). Leave empty if using DNS or file method.
    * - bingSiteVerification: optional, from Bing Webmaster Tools.
+   * - googleAdsId / googleAdsConversionLabels: Google Ads conversion tracking
+   *   (Goals → Conversions → each action's event snippet `send_to: 'AW-ID/label'`).
+   *   Leave the ID empty to disable.
    */
   analytics: {
     ga4MeasurementId: 'G-QL30ZJXMW8',
     googleSiteVerification: '',
     bingSiteVerification: '',
+    googleAdsId: 'AW-18548997925',
+    googleAdsConversionLabels: {
+      appointment: 'hZgyCKmRkrkdEKX-7IxF',
+      contact: 'Gn-fCKyRkrkdEKX-7IxF',
+    },
   },
 
   nav: [

@@ -308,11 +308,28 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
           async
           src={`https://www.googletagmanager.com/gtag/js?id=${SITE.analytics.ga4MeasurementId}`}
         />
-        <script is:inline define:vars={{ ga4Id: SITE.analytics.ga4MeasurementId }}>
+        <script
+          is:inline
+          define:vars={{
+            ga4Id: SITE.analytics.ga4MeasurementId,
+            adsId: SITE.analytics.googleAdsId,
+            adsLabels: SITE.analytics.googleAdsConversionLabels,
+          }}
+        >
           window.dataLayer = window.dataLayer || [];
           window.gtag = function () { window.dataLayer.push(arguments); };
           window.gtag('js', new Date());
           window.gtag('config', ga4Id);
+          // Conversion measurement only: health sites may not use remarketing audiences.
+          if (adsId) window.gtag('config', adsId, { allow_ad_personalization_signals: false });
+
+          function reportAdsConversion(label) {
+            if (!adsId || !label) return;
+            window.gtag('event', 'conversion', {
+              send_to: adsId + '/' + label,
+              allow_ad_personalization_signals: false,
+            });
+          }
 
           document.addEventListener('click', function (event) {
             var element = event.target instanceof Element
@@ -326,6 +343,7 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
                 booking_type: /meetandgreet/i.test(href) ? 'meet_and_greet' : 'appointment',
                 page_path: window.location.pathname,
               });
+              reportAdsConversion(adsLabels.appointment);
               return;
             }
 
@@ -340,6 +358,9 @@ const breadcrumbSchema = breadcrumbs && breadcrumbs.length
               contact_method: contactMethod,
               page_path: window.location.pathname,
             });
+            if (contactMethod === 'phone' || contactMethod === 'sms') {
+              reportAdsConversion(adsLabels.contact);
+            }
           });
         </script>
       </>
