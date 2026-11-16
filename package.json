@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=22.22.0"
+    "node": ">=22.23.4"
   },
   "description": "Luma Pediatrics — practice website. Astro + Tailwind v4, deployed to GitHub Pages at https://www.lumapediatrics.com",
   "scripts": {
@@ -26,7 +26,7 @@
     "@iconify-json/lucide": "^1.2.18",
     "@tailwindcss/oxide": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.4.1",
+    "astro": "^7.4.7",
     "astro-icon": "^1.1.5",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.7.0"
